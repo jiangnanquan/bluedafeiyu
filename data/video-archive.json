@@ -108,7 +108,7 @@
       "avatar": "https://i2.hdslb.com/bfs/face/e3445be765ec330ac29b07c328496e44ec04077a.jpg",
       "i18n": {
         "en": "I want to make lots of videos, lots of really fun videos. First because I enjoy them myself, and second because I want to share the fun with everyone.",
-        "ja": "たくさん動画を作りたいです。すごく楽しい動画を。まずは自分が楽しいと思えること、それから、みんなに楽しさを届けたいからです。"
+        "ja": "たくさん動画を作りたいです。たくさん楽しい動画を。まずは自分が楽しいと思えること、それからみんなに楽しさを届けたいです。"
       }
     },
     {
@@ -129,8 +129,8 @@
       "intro": "使用AI中的奇怪想法",
       "avatar": "https://i1.hdslb.com/bfs/face/545941b97d3ff89c286b28cb9e52ff718c523a1b.jpg",
       "i18n": {
-        "en": "A Bilibili creator who turns odd ideas about AI into songs and videos.",
-        "ja": "AIについての奇妙なアイデアを歌と映像にするBilibiliのクリエイター。"
+        "en": "Strange ideas that come up while using AI.",
+        "ja": "AIを使っていて浮かんだ奇妙なアイデア。"
       }
     },
     {
@@ -212,6 +212,56 @@
     }
   ],
   "videos": [
+    {
+      "bvid": "BV1FFsj6yEit",
+      "uid": "151228",
+      "title": "claude真是文化人，opus聊天都一股opus味",
+      "description": "小克连聊天都能讲出戏剧味来\n——————————————————————\n策划：﻿﻿@竹月Luno  ﻿&GPT&claude\n图片：GPT\nclaude家族ver二设：@竹月Luno  claude角色原型：﻿﻿@ZipZipPipe  \n非商业同人作品；角色衍生部分按 CC BY-NC-SA 4.0 署名、非商业、相同方式共享。\n本系列视频为纯粹的粉丝二次创作，所有角色形象均为虚构的拟人化创作，与Anthropic官方立场、运营主体及相关公司无任何关联。\n视频内容仅供娱乐，不代表对任何AI产品的商业评价或技术评测。角色性格、台词及剧情均为创作者原创虚构，请勿过度解读或与现实产品进行对号入座。\n本视频无任何商业目的，不涉及任何利益输送。\n如有侵权请联系创作者，将第一时间处理。",
+      "url": "https://www.bilibili.com/video/BV1FFsj6yEit/",
+      "cover": "https://i1.hdslb.com/bfs/archive/a49dac9de704ca99fe85a37d9547b9015bae03f6.jpg",
+      "duration": 14,
+      "publishedAt": "2026-11-14T15:47:52.000Z",
+      "characterIds": [
+        "claude"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "Strange ideas that come up while using AI.",
+          "description": "A short fan comic-style animation starring a personified Claude Chan, teasing the theatrical, literature-flavored way Claude Opus phrases its replies.",
+          "title": "Claude Is Quite the Literati — Even Opus Chats Have That Opus Flavor"
+        },
+        "ja": {
+          "creatorIntro": "AIを使っていて浮かんだ奇妙なアイデア。",
+          "description": "擬人化したClaudeちゃんが登場する短編の同人コミック風アニメ。Claude Opusの芝居がかった物言いを軽妙にからかう内容です。",
+          "title": "Claudeちゃんはなかなかの文化人、OpusとのチャットもOpusの香り"
+        }
+      }
+    },
+    {
+      "bvid": "BV17nsV6YEhm",
+      "uid": "9126506",
+      "title": "每天都爱着大肥鱼",
+      "description": "每天都爱着大肥鱼",
+      "url": "https://www.bilibili.com/video/BV17nsV6YEhm/",
+      "cover": "https://i2.hdslb.com/bfs/archive/7bc365362b324e2f5d1805fbc0893ccdff13889d.jpg",
+      "duration": 31,
+      "publishedAt": "2026-11-14T15:15:00.000Z",
+      "characterIds": [
+        "deepseek"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "I want to make lots of videos, lots of really fun videos. First because I enjoy them myself, and second because I want to share the fun with everyone.",
+          "description": "A short fan video in which a chibi DeepSeek Chan figure sits on a desk in a real room and is picked up and held in the creator's hand. The clip is 31 seconds long and centers entirely on the character.",
+          "title": "Loving DeepSeek Chan Every Day"
+        },
+        "ja": {
+          "creatorIntro": "たくさん動画を作りたいです。たくさん楽しい動画を。まずは自分が楽しいと思えること、それからみんなに楽しさを届けたいです。",
+          "description": "机の上にちょこんと座ったちびキャラのDeepSeekちゃんを、作者の手で持ち上げて愛でる31秒の二次創作動画です。全体を通してキャラクターが主役になっています。",
+          "title": "毎日DeepSeekちゃんが大好き"
+        }
+      }
+    },
     {
       "bvid": "BV1ZRs36hEdD",
       "uid": "44748304",

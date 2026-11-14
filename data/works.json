@@ -1,55 +1,5 @@
 [
   {
-    "id": "sticker_issue_32_002",
-    "name": "blabla",
-    "description": "Q版DeepSeek娘只露出头部，深蓝色长发垂在两侧，眼睛闭成两道粗黑线，双颊带红晕、小嘴微张，头顶翘着一撮呆毛，身上穿着带白色纹样领口的蓝色外衣。",
-    "commentary": "眼睛一闭，嘴就开始动个不停，一会儿小口一会儿大口，谁也不许打断我。别人发这个大概是嫌群里有人话多，可我看这明明是在认真输出观点。真要嫌吵，就先把耳机摘了再怪我。",
-    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/deepseek/issue-32-002.gif",
-    "thumbnailPath": "submissions/previews/deepseek/issue-32-002.webp",
-    "fullPath": "submissions/large/deepseek/issue-32-002.webp",
-    "format": "gif",
-    "mimeType": "image/gif",
-    "isAnimated": true,
-    "width": 600,
-    "height": 592,
-    "fileSize": 336688,
-    "sha256": "c92276d4eaff742d5be51c782ef051888041685ee9cae84ff877fab05346e65d",
-    "characterId": "deepseek",
-    "tags": [
-      "deepseek",
-      "唠叨",
-      "碎碎念"
-    ],
-    "submitter": {
-      "credit": null,
-      "name": "1cyberlangke1",
-      "url": null,
-      "github": "1cyberlangke1"
-    },
-    "origin": {
-      "type": "self-created",
-      "author": "",
-      "sourceUrl": null,
-      "note": "投稿表单标注为自己创作或生成；图片来自投稿压缩包，按包内文件名收录。"
-    },
-    "license": {
-      "type": "cc0",
-      "note": "投稿表单标注为 CC0 公共领域。"
-    },
-    "status": "published",
-    "createdAt": "2026-09-23T10:51:34Z",
-    "updatedAt": "2026-09-23T10:51:34Z",
-    "tone": "deepseek",
-    "symbol": "",
-    "slug": "deepseek202609230007",
-    "categoryIds": [
-      "illustration"
-    ],
-    "characterIds": [
-      "deepseek"
-    ]
-  },
-  {
     "id": "sticker_issue_32_003",
     "name": "亲亲",
     "description": "Q版DeepSeek娘顶着呆毛、半睁蓝眼，脸颊泛红，双臂夹在胸前，摆出一副被要求亲亲时别扭又害羞的模样。",
@@ -166382,6 +166332,107 @@
           "夕暮れ",
           "クジラの尾",
           "青い髪"
+        ]
+      }
+    }
+  },
+  {
+    "id": "sticker_9a4e0e580a24868f4d830d16",
+    "name": "小肥鱼三视图",
+    "description": "Q 版 DeepSeek 娘的正、侧、背三视图角色设定：深蓝渐变长发配鲸鱼鳍状耳饰，白色蕾丝女仆头饰与深蓝女仆裙，围裙上印着蓝色鲸鱼图案，身后露出蓝色鲸鱼尾，裙摆滚边和鞋履细节完整可辨。",
+    "commentary": "本鱼转个身给你们看——正面、侧面、背面，鳍和尾巴都在这儿，没有藏。围裙上那条鲸鱼就是我，别认错。裙摆那圈金线和蕾丝滚边画得挺细，拿去当立绘或建模参考都够用。",
+    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/deepseek/9a4e0e580a24868f.png",
+    "thumbnailPath": "submissions/previews/deepseek/9a4e0e580a24868f.webp",
+    "fullPath": "submissions/large/deepseek/9a4e0e580a24868f.webp",
+    "format": "png",
+    "mimeType": "image/png",
+    "isAnimated": false,
+    "width": 2480,
+    "height": 1385,
+    "fileSize": 2057520,
+    "sha256": "9a4e0e580a24868f4d830d16ff48a10aaf1d23246b270a3f093c485e9a0bcbd9",
+    "characterId": "deepseek",
+    "tags": [
+      "DeepSeek 娘",
+      "Q 版",
+      "女仆装",
+      "三视图",
+      "角色设定"
+    ],
+    "submitter": {
+      "credit": "named",
+      "name": "这个刀子真甜",
+      "url": "https://b23.tv/1c7pwHu",
+      "github": ""
+    },
+    "origin": {
+      "via": "web"
+    },
+    "license": {},
+    "status": "published",
+    "createdAt": "2026-11-14T16:09:11.500Z",
+    "updatedAt": "2026-11-14T16:09:11.500Z",
+    "tone": "deepseek",
+    "symbol": "",
+    "slug": "deepseek202611140007",
+    "categoryIds": [
+      "setting"
+    ],
+    "characterIds": [
+      "deepseek"
+    ],
+    "i18n": {
+      "sourceHash": "23df7e521317086e1880aa04d4dc1ca661cbb63dd467fbd8acfecbe666566e3d",
+      "en": {
+        "commentary": "Turn me around — front, side, back, fins and tail all in view, nothing hidden. That whale on the apron is me, so don't mix me up with anyone else. The gold piping and lace along the hem are drawn carefully enough to serve as a reference for illustrations or modeling.",
+        "description": "A chibi character design sheet of DeepSeek Chan in front, side and back views: long gradient-blue hair with whale-fin ear accessories, a white lace maid headdress and navy maid dress, a blue whale motif printed on the apron, and a blue whale tail behind her. Skirt trim and shoe details stay fully readable.",
+        "faq": [
+          {
+            "answer": "Front, side and back views of the same character, drawn as a chibi design reference for illustrations and modeling.",
+            "question": "Which views does this character sheet include?"
+          },
+          {
+            "answer": "DeepSeek Chan, drawn as a chibi girl in a navy maid dress with whale-fin ear accessories and a whale tail.",
+            "question": "Which character is depicted?"
+          }
+        ],
+        "licenseNote": "",
+        "name": "DeepSeek Chan Chibi Three-View Sheet",
+        "originNote": "Fan art first posted on Bilibili: https://b23.tv/1c7pwHu",
+        "seoDescription": "Front, side and back views of a chibi DeepSeek Chan in a navy maid dress with whale-fin ears and a whale tail — a complete character design reference.",
+        "seoTitle": "DeepSeek Chan Chibi Three-View Character Sheet",
+        "tags": [
+          "DeepSeek Chan",
+          "Chibi",
+          "Maid Outfit",
+          "Three-View",
+          "Character Design"
+        ]
+      },
+      "ja": {
+        "commentary": "くるっと一回転——正面も側面も背面も、ヒレも尻尾も全部見せてるよ、隠してない。エプロンのクジラはあたしだから、間違えないでね。裾の金の縁取りとレースが丁寧に描いてあるから、イラストやモデリングの参考にも十分使えるの。",
+        "description": "ちびキャラの DeepSeek Chan の正面・側面・背面の三面図。濃紺から明るい青へと変わるロングヘアにクジラのヒレ型の耳飾り、白いレースのメイドヘッドドレスと紺のメイド服、エプロンには青いクジラの模様、背後には青いクジラの尾びれ。スカートの縁取りと靴の細部まで読み取れる。",
+        "faq": [
+          {
+            "answer": "同じキャラクターの正面・側面・背面で、イラストやモデリングの参考にするためのちびキャラ設定図。",
+            "question": "この設定図にはどの向きが収録されていますか？"
+          },
+          {
+            "answer": "クジラのヒレ型の耳飾りと尾びれを備え、紺のメイド服を着たちびキャラの DeepSeek Chan。",
+            "question": "描かれているのはどのキャラクターですか？"
+          }
+        ],
+        "licenseNote": "",
+        "name": "DeepSeek Chan ちびキャラ三面図",
+        "originNote": "Bilibili で初出の二次創作: https://b23.tv/1c7pwHu",
+        "seoDescription": "紺のメイド服にクジラの耳と尾びれを備えたちびキャラ DeepSeek Chan の正面・側面・背面三面図。設定資料として使える一枚。",
+        "seoTitle": "DeepSeek Chan ちびキャラ三面図・キャラクター設定",
+        "tags": [
+          "DeepSeek Chan",
+          "ちびキャラ",
+          "メイド服",
+          "三面図",
+          "キャラクター設定"
         ]
       }
     }
