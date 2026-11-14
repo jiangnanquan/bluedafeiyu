@@ -100,6 +100,7 @@ async function makeWorkspace(t, { works = [], contentFiles = {} } = {}) {
     'data/blue-fish-editorial.json': '[]\n',
     'data/video-archive.json': '{"schema":"video-archive/1","creators":[],"videos":[]}\n',
     'data/blue-fish-ids.json': '[]\n',
+    'ops/deploy-server.sh': '#!/bin/sh\nexit 0\n',
   };
   const contentBase = {
     'dist/submissions/originals/.keep': 'keep\n',
@@ -200,6 +201,7 @@ function makeFakeExec(state = {}) {
       return ok();
     }
     if (cmd === 'bash' || cmd === 'sh') {
+      state.prebuiltAtDeploy = fs.existsSync(path.join(state.workDir || '', 'build-check'));
       state.deployRuns = (state.deployRuns || 0) + 1;
       if (state.failDeploy) return fail('deploy failed');
       return ok();
@@ -569,14 +571,14 @@ test('新增一张图：下载、派生、构建校验、提交白名单、推�
     originals: [{ workId: record.id, sha256: digest, characterId: 'deepseek', ext: 'png', targetPath, submissionId: 'sub_one' }],
     summary: { added: 1, updated: 0, hidden: 0, restored: 0, deleted: 0, topics: 0 },
   });
-  const state = { statuses: [], snapshot, submissionBody: TINY_PNG };
+  const state = { statuses: [], snapshot, submissionBody: TINY_PNG, workDir: path.join(ws.intake, 'work') };
   const backend = await startBackend(t, state);
   const submission = await startSubmissionService(t, state);
   const exec = makeFakeExec(state);
   writeRequest(ws, runId);
 
   const result = await capture(() => main(['--run', runId], {
-    env: envFor(ws, backend, { submissionServiceUrl: submission.url }),
+    env: envFor(ws, backend, { submissionServiceUrl: submission.url, PUBLISH_DEPLOY_CMD: '' }),
     exec,
     fetchImpl: makePublishFetch(state), runIssueReconcile: () => {},
   }));
@@ -587,6 +589,7 @@ test('新增一张图：下载、派生、构建校验、提交白名单、推�
   assert.ok(output.commits.site);
   assert.ok(output.commits.content);
   assert.equal(state.deployRuns, 1);
+  assert.equal(state.prebuiltAtDeploy, false, '部署前应释放未使用的预检产物');
   assert.equal(state.submissionCalls, 1);
   assert.deepEqual(state.submissionPaths, ['/api/v1/items/sub_one/raw']);
   assert.equal(state.submissionAuth, 'Bearer submission-token');
