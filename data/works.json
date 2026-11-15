@@ -1,155 +1,5 @@
 [
   {
-    "id": "sticker_issue_32_003",
-    "name": "亲亲",
-    "description": "Q版DeepSeek娘顶着呆毛、半睁蓝眼，脸颊泛红，双臂夹在胸前，摆出一副被要求亲亲时别扭又害羞的模样。",
-    "commentary": "先是眯起眼睛把嘴凑过来，镜头一推近就给我看嘴唇，等画面拉回去，旁边已经围了一圈粉心。亲是亲了，代价是这辈子的高冷人设没了。发这个的人，多半是想讨个亲亲，又不好意思直接开口。",
-    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/deepseek/issue-32-003.gif",
-    "thumbnailPath": "submissions/previews/deepseek/issue-32-003.webp",
-    "fullPath": "submissions/large/deepseek/issue-32-003.webp",
-    "format": "gif",
-    "mimeType": "image/gif",
-    "isAnimated": true,
-    "width": 600,
-    "height": 600,
-    "fileSize": 780408,
-    "sha256": "1cc99bfff70b884faa15a02d56b35a219cb51f8110df8a812527b707ca186837",
-    "characterId": "deepseek",
-    "tags": [
-      "deepseek",
-      "亲亲",
-      "爱心"
-    ],
-    "submitter": {
-      "credit": null,
-      "name": "1cyberlangke1",
-      "url": null,
-      "github": "1cyberlangke1"
-    },
-    "origin": {
-      "type": "self-created",
-      "author": "",
-      "sourceUrl": null,
-      "note": "投稿表单标注为自己创作或生成；图片来自投稿压缩包，按包内文件名收录。"
-    },
-    "license": {
-      "type": "cc0",
-      "note": "投稿表单标注为 CC0 公共领域。"
-    },
-    "status": "published",
-    "createdAt": "2026-09-23T10:51:34Z",
-    "updatedAt": "2026-09-23T10:51:34Z",
-    "tone": "deepseek",
-    "symbol": "",
-    "slug": "deepseek202609230008",
-    "categoryIds": [
-      "meme"
-    ],
-    "characterIds": [
-      "deepseek"
-    ]
-  },
-  {
-    "id": "sticker_issue_32_004",
-    "name": "双击鲸鱼",
-    "description": "蓝发 DeepSeek 娘的大头特写，睁着水蓝大眼、微张小嘴，额前停着一个白色手形鼠标指针，画面带浅色描边与腮红。",
-    "commentary": "脑袋顶上杵着一只鼠标小手，一下一下点我，点得我先是张嘴吃惊，后来又只好眯起眼睛认命。双击我难道能下载什么新功能？真要点，也轻一点，脑袋里装的可都是要按字计费的东西。",
-    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/deepseek/issue-32-004.gif",
-    "thumbnailPath": "submissions/previews/deepseek/issue-32-004.webp",
-    "fullPath": "submissions/large/deepseek/issue-32-004.webp",
-    "format": "gif",
-    "mimeType": "image/gif",
-    "isAnimated": true,
-    "width": 600,
-    "height": 600,
-    "fileSize": 539594,
-    "sha256": "879f0bfbd3ce4165efa0d5dcccf333b0a8e823ab76298ce1d87422400cdb5c3a",
-    "characterId": "deepseek",
-    "tags": [
-      "deepseek",
-      "双击",
-      "光标"
-    ],
-    "submitter": {
-      "credit": null,
-      "name": "1cyberlangke1",
-      "url": null,
-      "github": "1cyberlangke1"
-    },
-    "origin": {
-      "type": "self-created",
-      "author": "",
-      "sourceUrl": null,
-      "note": "投稿表单标注为自己创作或生成；图片来自投稿压缩包，按包内文件名收录。"
-    },
-    "license": {
-      "type": "cc0",
-      "note": "投稿表单标注为 CC0 公共领域。"
-    },
-    "status": "published",
-    "createdAt": "2026-09-23T10:51:34Z",
-    "updatedAt": "2026-09-23T10:51:34Z",
-    "tone": "deepseek",
-    "symbol": "",
-    "slug": "deepseek202609230009",
-    "categoryIds": [
-      "meme"
-    ],
-    "characterIds": [
-      "deepseek"
-    ]
-  },
-  {
-    "id": "sticker_issue_32_005",
-    "name": "哇奥！！！",
-    "description": "DeepSeek娘Q版大头特写，深蓝色短发、浅蓝大眼、粉色腮红，小嘴平抿成一条线，身穿黑色镂空蕾丝上衣，头顶翘着一撮呆毛。",
-    "commentary": "前一秒还安安静静看着你，下一秒镜头就怼到我脸上，眼睛一挤、嘴一张，舌头都顾不上收。这叫哇奥？我看更像是被消息吓到了。配这个表情的人，心里多半已经翻了个白眼。",
-    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/deepseek/issue-32-005.gif",
-    "thumbnailPath": "submissions/previews/deepseek/issue-32-005.webp",
-    "fullPath": "submissions/large/deepseek/issue-32-005.webp",
-    "format": "gif",
-    "mimeType": "image/gif",
-    "isAnimated": true,
-    "width": 600,
-    "height": 600,
-    "fileSize": 283208,
-    "sha256": "470265d04953dfac84b7c8cdad812c9dedadd9ef9805af20e0ee07deab2bb9c9",
-    "characterId": "deepseek",
-    "tags": [
-      "deepseek",
-      "大叫",
-      "震惊"
-    ],
-    "submitter": {
-      "credit": null,
-      "name": "1cyberlangke1",
-      "url": null,
-      "github": "1cyberlangke1"
-    },
-    "origin": {
-      "type": "self-created",
-      "author": "",
-      "sourceUrl": null,
-      "note": "投稿表单标注为自己创作或生成；图片来自投稿压缩包，按包内文件名收录。"
-    },
-    "license": {
-      "type": "cc0",
-      "note": "投稿表单标注为 CC0 公共领域。"
-    },
-    "status": "published",
-    "createdAt": "2026-09-23T10:51:34Z",
-    "updatedAt": "2026-09-23T10:51:34Z",
-    "tone": "deepseek",
-    "symbol": "",
-    "slug": "deepseek202609230010",
-    "categoryIds": [
-      "meme"
-    ],
-    "characterIds": [
-      "deepseek"
-    ]
-  },
-  {
     "id": "sticker_issue_32_006",
     "name": "哭哭鲸鱼",
     "description": "Q版DeepSeek娘顶着蓝发与鲸鱼鳍耳，双手在胸前交握，圆睁的双眼里蓄满泪水，泪珠沿脸颊滑成两道水痕，小嘴张开一副委屈哭腔，头顶一撮呆毛翘起。",
@@ -166433,6 +166283,313 @@
           "メイド服",
           "三面図",
           "キャラクター設定"
+        ]
+      }
+    }
+  },
+  {
+    "id": "sticker_286c2a957e12bec837d6f921",
+    "name": "笨蛋 GLM～书店的小算盘",
+    "description": "四格漫画：Kimi 埋在书堆里看书，GLM 从门口探身喊她出去透气，又凑到耳边小声说楼下书店到了限量三本的绝版签名版。两人走到银杏树下，Kimi 才发现根本没有书店，GLM 只好咳一声改口说先逛逛。最后 Kimi 表示自己一进门就知道了，因为 GLM 身上没有书的气味，GLM 反问那她为什么还出来。",
+    "commentary": "呜……GLM 这一套也太拙劣了吧？绝版签名版限量三本，说得跟真的一样，结果楼下连书店的影子都没有，只有一地银杏叶。最气人的是 Kimi 一开门就闻出来了，还老老实实跟着出门、被牵着走一路——嘴上说这一章看完就走，身体倒是很诚实地想散步啊。行吧，这波我记下了，下次谁再拿“限量签名版”骗我，我先闻闻你身上有没有油墨味。",
+    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/kimi/286c2a957e12bec8.png",
+    "thumbnailPath": "submissions/previews/kimi/286c2a957e12bec8.webp",
+    "fullPath": "submissions/large/kimi/286c2a957e12bec8.webp",
+    "format": "png",
+    "mimeType": "image/png",
+    "isAnimated": false,
+    "width": 2048,
+    "height": 2048,
+    "fileSize": 7054232,
+    "sha256": "286c2a957e12bec837d6f9215383768fb71e8878e0cf9f1925c5dfd38e031afa",
+    "characterId": "kimi",
+    "tags": [
+      "四格漫画",
+      "Kimi",
+      "GLM",
+      "书店",
+      "银杏",
+      "日常"
+    ],
+    "submitter": {
+      "credit": "named",
+      "name": "白芥",
+      "url": "",
+      "github": ""
+    },
+    "origin": {
+      "via": "web"
+    },
+    "license": {},
+    "status": "published",
+    "createdAt": "2026-11-15T00:12:17.976Z",
+    "updatedAt": "2026-11-15T00:12:17.976Z",
+    "tone": "kimi",
+    "symbol": "",
+    "slug": "kimi202611150001",
+    "categoryIds": [
+      "comic"
+    ],
+    "characterIds": [
+      "kimi",
+      "glm"
+    ],
+    "i18n": {
+      "sourceHash": "6a4ed972c344f37baf3b8782cb9537eb9eba1423a594bf6ab2ddb3a28462f02c",
+      "en": {
+        "commentary": "Ugh, what a clumsy trick. A signed limited edition, three copies only — and downstairs there is not a single bookstore, just fallen ginkgo leaves. What really gets me is that Kimi Chan caught the lie at the door and still let herself be led out by the hand. She kept saying the chapter was almost finished, but her feet clearly wanted the walk. Noted: next time someone waves a limited signed edition at me, I sniff them for ink first.",
+        "description": "A four-panel comic. Kimi Chan is buried in a pile of books when GLM Chan leans in from the doorway and tells her to step outside for some air. GLM Chan then whispers that the bookstore downstairs just received a signed limited edition with only three copies. Under the ginkgo trees, Kimi Chan finds no bookstore at all, and GLM Chan clears her throat and suggests they simply walk around for a while. Kimi Chan says she knew from the moment GLM Chan walked in, because GLM Chan did not smell of books; GLM Chan asks why she came out anyway.",
+        "faq": [
+          {
+            "answer": "GLM Chan lures Kimi Chan out of the bookstore with a story about a limited signed edition, and Kimi Chan reveals she saw through it from the start.",
+            "question": "What happens in this comic?"
+          },
+          {
+            "answer": "Two: Kimi Chan and GLM Chan, both drawn as personifications of AI models.",
+            "question": "Which characters appear?"
+          }
+        ],
+        "licenseNote": "",
+        "name": "Silly GLM Chan ~ The Bookstore Scheme",
+        "originNote": "Submitted by the credited author through the site's web submission form.",
+        "seoDescription": "Kimi Chan and GLM Chan in a four-panel comic: a fake bookstore tip, a walk under the ginkgo trees, and a lie that smelled wrong from the very start.",
+        "seoTitle": "Silly GLM Chan ~ The Bookstore Scheme — Kimi Chan & GLM Chan 4-Panel Comic",
+        "tags": [
+          "4-panel comic",
+          "Kimi Chan",
+          "GLM Chan",
+          "bookstore",
+          "ginkgo",
+          "slice of life"
+        ]
+      },
+      "ja": {
+        "commentary": "もう、GLMちゃんの手口は雑すぎるでしょ……絶版サイン本が限定三冊なんて、まるで本当みたいに言うんだから。下に書店なんて一つもなくて、イチョウの葉が落ちているだけ。悔しいのは、Kimiちゃんがドアのところで匂いで見抜いていたのに、そのまま手を引かれて出て行ったこと。あと一章で読み終わるって言ってたのに、足はしっかり散歩したがってたよね。覚えた。次に限定サイン本なんて言われたら、先にインクの匂いを確かめさせてもらうから。",
+        "description": "4コマ漫画。本の山に埋もれて読書していたKimiちゃんのところへ、GLMちゃんがドアから顔を出して外で息抜きしようと声をかける。さらに耳元で、下の書店に限定三冊の絶版サイン本が入ったと囁く。イチョウ並木に出たKimiちゃんだったが、そこに書店はなく、GLMちゃんは咳をしてまず散歩でもとごまかす。Kimiちゃんは入ってきた瞬間に分かっていたと告げる。GLMちゃんから本の匂いがしなかったからだ。なぜ出てきたのかと問われ、Kimiちゃんはあなただったからと答える。",
+        "faq": [
+          {
+            "answer": "GLMちゃんが限定サイン本の話でKimiちゃんを書店から連れ出し、Kimiちゃんは最初からそれを見抜いていたと明かす4コマ漫画です。",
+            "question": "この漫画では何が起きますか？"
+          },
+          {
+            "answer": "KimiちゃんとGLMちゃんの二人で、どちらもAIモデルの擬人化として描かれています。",
+            "question": "登場するキャラクターは？"
+          }
+        ],
+        "licenseNote": "",
+        "name": "おバカなGLMちゃん～書店の小細工",
+        "originNote": "クレジットされた作者がサイトの投稿フォームから投稿した作品です。",
+        "seoDescription": "KimiちゃんとGLMちゃんの4コマ漫画。偽の書店情報、イチョウ並木の散歩、最初から匂いで見抜かれていた嘘を描く。",
+        "seoTitle": "おバカなGLMちゃん～書店の小細工｜KimiちゃんとGLMちゃんの4コマ漫画",
+        "tags": [
+          "4コマ漫画",
+          "Kimiちゃん",
+          "GLMちゃん",
+          "書店",
+          "イチョウ",
+          "日常"
+        ]
+      }
+    }
+  },
+  {
+    "id": "sticker_366f8e9f13f624ce38bc03eb",
+    "name": "雨夜霓虹猫猫",
+    "description": "雨夜霓虹街头的半身插画：蓝色长发的猫耳少女侧过身回望镜头，发间别着星形发饰，粉紫色灯光在湿润的街景里晕散成光斑。",
+    "commentary": "深夜的霓虹把雨丝都染成粉色，湿漉漉的街面亮得像刚擦过的屏幕。她就那样回过头来看我一眼——蓝色长发垂到肩头，猫耳还挂着水珠，发间那颗星挑得恰到好处。说实话，这种安静里带点距离感的表情最难画，也最抓人；我盯着看了半天，只想起好兄弟那句「摸摸猫」。",
+    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/gemini/366f8e9f13f624ce.png",
+    "thumbnailPath": "submissions/previews/gemini/366f8e9f13f624ce.webp",
+    "fullPath": "submissions/large/gemini/366f8e9f13f624ce.webp",
+    "format": "png",
+    "mimeType": "image/png",
+    "isAnimated": false,
+    "width": 1661,
+    "height": 947,
+    "fileSize": 2100597,
+    "sha256": "366f8e9f13f624ce38bc03eb82795bb8cb706c8e14d60b1a261cac7e72d79208",
+    "characterId": "gemini",
+    "tags": [
+      "霓虹",
+      "雨夜",
+      "猫耳",
+      "蓝色长发",
+      "星形发饰",
+      "城市夜景"
+    ],
+    "submitter": {
+      "credit": "anonymous",
+      "name": "",
+      "url": "",
+      "github": ""
+    },
+    "origin": {
+      "via": "web"
+    },
+    "license": {},
+    "status": "published",
+    "createdAt": "2026-11-15T01:25:07.042Z",
+    "updatedAt": "2026-11-15T01:25:07.042Z",
+    "tone": "gemini",
+    "symbol": "",
+    "slug": "gemini202611150001",
+    "categoryIds": [
+      "illustration"
+    ],
+    "characterIds": [
+      "gemini"
+    ],
+    "i18n": {
+      "sourceHash": "c1d987fd6546e7cb48b30cce86ac691144e224f5f8207b763fd2ffce24959a5c",
+      "en": {
+        "commentary": "The neon turns every raindrop pink and the wet street shines like a freshly wiped screen. She looks back at me over her shoulder, blue hair down past her shoulders, raindrops still caught on her cat ears, the star pin tucked in at just the right angle. That quiet, slightly distant expression is the hardest thing to draw and the first thing that grabs you. I stared for a while and could only think of one thing: someone really wants to pet the cat.",
+        "description": "A half-body illustration on a neon-lit rainy street: a cat-eared girl with long blue hair turns to look back at the viewer, a star-shaped hair ornament above her ear, pink and purple lights scattering into bokeh across the wet pavement.",
+        "faq": [
+          {
+            "answer": "A single-frame illustration showing a cat-eared girl with long blue hair against a rainy neon-lit city street, with a star-shaped hair ornament and no comic panels or design-sheet annotations.",
+            "question": "What does this image show?"
+          },
+          {
+            "answer": "The glowing blue hair, cat ears and star motif are the signature look of Gemini Chan, so this image is catalogued under that character and tagged as an illustration rather than a comic or a character design sheet.",
+            "question": "Which character is this and how is it categorised?"
+          }
+        ],
+        "licenseNote": "",
+        "name": "Cat-Eared Girl in the Neon Rain",
+        "originNote": "",
+        "seoDescription": "Cat-eared Gemini Chan illustration: long blue hair, a star pin and pink neon rain on a wet city street.",
+        "seoTitle": "Cat-Eared Girl in the Neon Rain — Gemini Chan Illustration",
+        "tags": [
+          "Neon",
+          "Rainy Night",
+          "Cat Ears",
+          "Long Blue Hair",
+          "Star Hairpin",
+          "City Nightscape"
+        ]
+      },
+      "ja": {
+        "commentary": "ネオンの光が雨粒までピンクに染めて、濡れた路面は拭いたばかりの画面みたいに光っている。彼女は肩越しにちらっと振り返って、青い長い髪が肩まで流れ、猫耳にはまだ雫が残っている。髪に留めた星の飾りも、ちょうどいい角度。静かで少し距離のあるこの表情は、いちばん描くのが難しくて、いちばん目を引く。しばらく見入ってしまって、頭に浮かんだのは「猫をなでたい」という一言だけだった。",
+        "description": "ネオンの雨夜の街を背景にした半身イラスト。青い長い髪の猫耳の少女が振り返ってこちらを見ており、髪には星形の飾り。ピンクと紫の光が濡れた路面ににじんで光の玉になっている。",
+        "faq": [
+          {
+            "answer": "雨の降るネオンの街を背景に、青い長い髪と猫耳、星形の髪飾りを付けた少女を描いた一枚絵です。コマ割りも設定画の注記もありません。",
+            "question": "この画像は何を描いていますか？"
+          },
+          {
+            "answer": "青く光る髪、猫耳、星のモチーフは Gemini ちゃんのトレードマークなので、このキャラクターとして登録し、漫画や設定画ではなくイラストとして分類しています。",
+            "question": "どのキャラクターで、どう分類していますか？"
+          }
+        ],
+        "licenseNote": "",
+        "name": "ネオンの雨に佇む猫耳の少女",
+        "originNote": "",
+        "seoDescription": "猫耳の Gemini ちゃんイラスト。青い長い髪と星の髪飾り、濡れた街に降るピンクのネオン。",
+        "seoTitle": "ネオンの雨に佇む猫耳の少女 — Gemini ちゃんイラスト",
+        "tags": [
+          "ネオン",
+          "雨夜",
+          "猫耳",
+          "青い長い髪",
+          "星の髪飾り",
+          "都会の夜景"
+        ]
+      }
+    }
+  },
+  {
+    "id": "sticker_c078467fefddd8fe13dad501",
+    "name": "三十年的积蓄",
+    "description": "双格漫画。上格是橙发角色的面部特写，她鼓着脸、皱着眉，字幕写着“结婚前说有30年的积蓄”；下格她抱着手臂站在门口，表情别扭，字幕是“我还以为是钱呢”。",
+    "commentary": "唔……这个“积蓄”到底指什么，我可不敢追问。她那个表情已经把答案写在脸上了，而且说实话，换我说不定也会想成钱。总之我懂了，就不多说了——等等，我什么都没说。",
+    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/claude/c078467fefddd8fe.png",
+    "thumbnailPath": "submissions/previews/claude/c078467fefddd8fe.webp",
+    "fullPath": "submissions/large/claude/c078467fefddd8fe.webp",
+    "format": "png",
+    "mimeType": "image/png",
+    "isAnimated": false,
+    "width": 898,
+    "height": 1597,
+    "fileSize": 2602338,
+    "sha256": "c078467fefddd8fe13dad501e4eee89f84bb0b3231019151b0a09b357fd6e406",
+    "characterId": "claude",
+    "tags": [
+      "Claude娘",
+      "两格漫画",
+      "积蓄梗",
+      "吐槽"
+    ],
+    "submitter": {
+      "credit": "anonymous",
+      "name": "",
+      "url": "",
+      "github": ""
+    },
+    "origin": {
+      "via": "web"
+    },
+    "license": {},
+    "status": "published",
+    "createdAt": "2026-11-15T01:39:24.632Z",
+    "updatedAt": "2026-11-15T01:39:24.632Z",
+    "tone": "claude",
+    "symbol": "",
+    "slug": "claude202611150001",
+    "categoryIds": [
+      "comic"
+    ],
+    "characterIds": [
+      "claude"
+    ],
+    "i18n": {
+      "sourceHash": "05ab26febf14c42a6fbc3bb77613258c3bbfcc5983de00c847e0620e6629d9a6",
+      "en": {
+        "commentary": "I am not going to ask what kind of \"savings\" that is. Her face already says everything, and honestly, I would probably have assumed money too. So let's say I understand and leave it right there. ...Wait, I said nothing.",
+        "description": "A two-panel comic. The top panel is a close-up of an orange-haired character with a puffed-out, frowning expression and the caption \"Before we got married she said she had thirty years of savings\"; the bottom panel shows her standing in a doorway with her arms crossed, looking awkward, with the caption \"and I thought it meant money.\"",
+        "faq": [
+          {
+            "answer": "It is a two-panel reaction comic in which Claude Chan is the punchline of a misunderstanding about what \"thirty years of savings\" refers to.",
+            "question": "What is this two-panel comic about?"
+          },
+          {
+            "answer": "It is a fan work that depicts Claude Chan as a personified character; the site only hosts the image and its description.",
+            "question": "Is this an official Claude artwork?"
+          }
+        ],
+        "licenseNote": "",
+        "name": "Thirty Years of Savings",
+        "originNote": "",
+        "seoDescription": "A two-panel Claude Chan fan comic about a wedding-time misunderstanding over \"thirty years of savings.\"",
+        "seoTitle": "Thirty Years of Savings — Claude Chan Two-Panel Comic",
+        "tags": [
+          "Claude Chan",
+          "Two-panel comic",
+          "Savings joke",
+          "Reaction comic"
+        ]
+      },
+      "ja": {
+        "commentary": "えっ……その「貯蓄」が何を指すのか、私からはとても聞けません。彼女の表情がもう答えを書いていますし、正直に言うと、私もお金のことだと思っていたかもしれません。とにかく分かりました、これ以上は何も言いません。……あ、私は何も言っていませんよ。",
+        "description": "2コマ漫画です。上のコマはオレンジ色の髪のキャラクターの顔のアップで、頬を膨らませて眉をひそめ、「結婚前に三十年の貯蓄があると言った」という字幕が付いています。下のコマでは彼女が腕を組んでドアの前に立ち、気まずい表情をしており、「お金のことだと思っていたのに」という字幕が添えられています。",
+        "faq": [
+          {
+            "answer": "「三十年の貯蓄」が何を指すのかをめぐる勘違いを描いた2コマのリアクション漫画で、Claudeちゃんがオチを担っています。",
+            "question": "この2コマ漫画はどんな内容ですか？"
+          },
+          {
+            "answer": "Claudeちゃんを擬人化したキャラクターとして描いたファン作品です。当サイトは画像とその説明のみを掲載しています。",
+            "question": "これは公式のClaudeの作品ですか？"
+          }
+        ],
+        "licenseNote": "",
+        "name": "三十年の貯蓄",
+        "originNote": "",
+        "seoDescription": "結婚をめぐる「三十年の貯蓄」の勘違いを描いた、Claudeちゃんの2コマファン漫画です。",
+        "seoTitle": "三十年の貯蓄 — Claudeちゃんの2コマ漫画",
+        "tags": [
+          "Claudeちゃん",
+          "2コマ漫画",
+          "貯蓄ネタ",
+          "ツッコミ"
         ]
       }
     }
