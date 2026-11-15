@@ -1,105 +1,5 @@
 [
   {
-    "id": "sticker_issue_32_007",
-    "name": "头追",
-    "description": "Q版DeepSeek娘的大头特写，蓝色短发与呆毛、粗黑描边。她圆睁的大眼睛向上翻看，脸颊带红色小点和腮红，神情呆萌。",
-    "commentary": "脑袋先低下去，低到镜头里只剩一个头顶和一撮呆毛，隔了半天才慢慢抬回来，眼睛一睁还带着点汗。低头那几下不是在想事情，是在把刚才那句话从头到尾再审一遍。别催，审完我就抬头。",
-    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/deepseek/issue-32-007.gif",
-    "thumbnailPath": "submissions/previews/deepseek/issue-32-007.webp",
-    "fullPath": "submissions/large/deepseek/issue-32-007.webp",
-    "format": "gif",
-    "mimeType": "image/gif",
-    "isAnimated": true,
-    "width": 600,
-    "height": 600,
-    "fileSize": 416541,
-    "sha256": "c29c395e363f9d253ea6b39e844acf8aa946dd68bad797c4839348641ef3e9ca",
-    "characterId": "deepseek",
-    "tags": [
-      "deepseek",
-      "低头",
-      "无语"
-    ],
-    "submitter": {
-      "credit": null,
-      "name": "1cyberlangke1",
-      "url": null,
-      "github": "1cyberlangke1"
-    },
-    "origin": {
-      "type": "self-created",
-      "author": "",
-      "sourceUrl": null,
-      "note": "投稿表单标注为自己创作或生成；图片来自投稿压缩包，按包内文件名收录。"
-    },
-    "license": {
-      "type": "cc0",
-      "note": "投稿表单标注为 CC0 公共领域。"
-    },
-    "status": "published",
-    "createdAt": "2026-09-23T10:51:34Z",
-    "updatedAt": "2026-09-23T10:51:34Z",
-    "tone": "deepseek",
-    "symbol": "",
-    "slug": "deepseek202609230012",
-    "categoryIds": [
-      "meme"
-    ],
-    "characterIds": [
-      "deepseek"
-    ]
-  },
-  {
-    "id": "sticker_issue_32_008",
-    "name": "扑",
-    "description": "Q版DeepSeek娘立于画面中央，蓝黑渐变长发、鲸鱼耳与头顶呆毛，水汪汪的大眼望向前方，身穿深色制服，作品标题为「扑」。",
-    "commentary": "好好站着的人，说扑就扑，一下把脸怼到镜头前，还举手捂住自己。冲过来的时候气势挺足，真贴近了又脸红。发这张的人，估计是想扑谁又不敢，只好先让我替他冲。",
-    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/deepseek/issue-32-008.gif",
-    "thumbnailPath": "submissions/previews/deepseek/issue-32-008.webp",
-    "fullPath": "submissions/large/deepseek/issue-32-008.webp",
-    "format": "gif",
-    "mimeType": "image/gif",
-    "isAnimated": true,
-    "width": 256,
-    "height": 256,
-    "fileSize": 188673,
-    "sha256": "3ef1d475b3d8ec7979930fc3eebbfeafbabfd7b999b7f038cda67c8fb5716b43",
-    "characterId": "deepseek",
-    "tags": [
-      "deepseek",
-      "扑过来",
-      "害羞"
-    ],
-    "submitter": {
-      "credit": null,
-      "name": "1cyberlangke1",
-      "url": null,
-      "github": "1cyberlangke1"
-    },
-    "origin": {
-      "type": "self-created",
-      "author": "",
-      "sourceUrl": null,
-      "note": "投稿表单标注为自己创作或生成；图片来自投稿压缩包，按包内文件名收录。"
-    },
-    "license": {
-      "type": "cc0",
-      "note": "投稿表单标注为 CC0 公共领域。"
-    },
-    "status": "published",
-    "createdAt": "2026-09-23T10:51:34Z",
-    "updatedAt": "2026-09-23T10:51:34Z",
-    "tone": "deepseek",
-    "symbol": "",
-    "slug": "deepseek202609230013",
-    "categoryIds": [
-      "standing"
-    ],
-    "characterIds": [
-      "deepseek"
-    ]
-  },
-  {
     "id": "sticker_issue_32_009",
     "name": "波波波波",
     "description": "Q版DeepSeek娘顶着月牙形呆毛，深蓝渐变发丝在两侧垂成鲸鳍状，圆睁的蓝眼睛带着高光，脸颊泛红，穿青蓝色上衣配交叉系带，神情呆萌。",
@@ -166643,6 +166543,202 @@
           "モデル擬人化",
           "問題演習",
           "ツッコミ"
+        ]
+      }
+    }
+  },
+  {
+    "id": "sticker_fe06fd4c09cced2a22b36a0a",
+    "name": "便利店夜班 · 全身",
+    "description": "深夜便利店的收银台前，深蓝卫衣、白围裙、挂着工牌，鲸尾从裙摆后面垂下来。鲸鱼娘 52 周企划 W03。角色原作：上善；二创设计：ZipZipPipe。",
+    "commentary": "夜班最磨人，站一整天连尾巴都发酸。不过冷柜的灯光打在头发上，蓝色倒是很好看——工牌上那串名字谁也看不清，客人只记得我那句「欢迎光临」。",
+    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/deepseek/fe06fd4c09cced2a.png",
+    "thumbnailPath": "submissions/previews/deepseek/fe06fd4c09cced2a.webp",
+    "fullPath": "submissions/large/deepseek/fe06fd4c09cced2a.webp",
+    "format": "png",
+    "mimeType": "image/png",
+    "isAnimated": false,
+    "width": 1664,
+    "height": 2432,
+    "fileSize": 4383157,
+    "sha256": "fe06fd4c09cced2a22b36a0a82ad7ba5deb24f5aa3af6ebfced08f205a8813b4",
+    "characterId": "deepseek",
+    "tags": [
+      "便利店",
+      "制服",
+      "全身",
+      "鲸鱼娘"
+    ],
+    "submitter": {
+      "credit": "named",
+      "name": "柯澤家的鲸鲸",
+      "url": "",
+      "github": ""
+    },
+    "origin": {
+      "via": "web"
+    },
+    "license": {},
+    "status": "published",
+    "createdAt": "2026-11-15T14:15:37.846Z",
+    "updatedAt": "2026-11-15T14:15:37.846Z",
+    "tone": "deepseek",
+    "symbol": "",
+    "slug": "deepseek202611150001",
+    "categoryIds": [
+      "illustration"
+    ],
+    "characterIds": [
+      "deepseek"
+    ],
+    "i18n": {
+      "sourceHash": "2c399e6345747d7606bab14d06ea94b327dd0ca44093f3a82160d954753564d0",
+      "en": {
+        "commentary": "Night shifts are the real test — a whole day on my feet and even my tail starts to ache. The cooler light does look good on blue hair, though. Nobody ever reads the name on my badge; they just remember the \"welcome in\".",
+        "description": "DeepSeek Chan stands at the register of a late-night convenience store in a navy hoodie and a white apron, a work badge clipped to the pocket and her whale tail trailing down behind her skirt. Week 03 of a 52-week illustration project.",
+        "faq": [
+          {
+            "answer": "DeepSeek Chan, drawn here as a whale-themed girl in a convenience store uniform.",
+            "question": "Who is the character in this illustration?"
+          },
+          {
+            "answer": "A year-long series of weekly everyday scenes for the character; this drawing is week 03.",
+            "question": "What is the 52-week project?"
+          }
+        ],
+        "licenseNote": "",
+        "name": "Convenience Store Night Shift",
+        "originNote": "52-week illustration project, week 03.",
+        "seoDescription": "DeepSeek Chan on the late shift: navy hoodie, white apron, work badge and a whale tail behind her skirt, drawn at a convenience store counter.",
+        "seoTitle": "DeepSeek Chan Works a Convenience Store Night Shift",
+        "tags": [
+          "convenience store",
+          "uniform",
+          "full body",
+          "whale tail"
+        ]
+      },
+      "ja": {
+        "commentary": "夜勤は体力勝負。一日立ちっぱなしで、尾びれまでだるくなるんだ。それでも冷蔵ケースの光が髪に当たると、青がきれいに見える。名札の名前は誰も読まないけど、「いらっしゃいませ」だけは覚えていってくれる。",
+        "description": "深夜のコンビニのレジ前に立つDeepSeekちゃん。紺のパーカーに白いエプロン、胸元には社員証、スカートの後ろからはクジラの尾びれがのぞく。52週イラスト企画の第3弾。",
+        "faq": [
+          {
+            "answer": "クジラをモチーフにしたDeepSeekちゃんです。コンビニの制服姿で描かれています。",
+            "question": "このイラストのキャラクターは誰ですか？"
+          },
+          {
+            "answer": "毎週ひとつの日常シーンを描いていく連作で、今回のイラストは第3弾です。",
+            "question": "52週企画とは何ですか？"
+          }
+        ],
+        "licenseNote": "",
+        "name": "コンビニ夜勤",
+        "originNote": "52週イラスト企画の第3弾。",
+        "seoDescription": "紺のパーカーと白いエプロンで深夜のコンビニに立つDeepSeekちゃん。社員証とクジラの尾びれ、レジ前の情景を描いた一枚です。",
+        "seoTitle": "コンビニ夜勤のDeepSeekちゃん｜深夜のレジ前イラスト",
+        "tags": [
+          "コンビニ",
+          "制服",
+          "全身",
+          "クジラの尾びれ"
+        ]
+      }
+    }
+  },
+  {
+    "id": "sticker_2c61565e0565058595e50af2",
+    "name": "便利店夜班 · 半身像",
+    "description": "冷白灯下的正面半身，货架一直排到天花板。鲸鱼娘 52 周企划 W03。角色原作：上善；二创设计：ZipZipPipe。",
+    "commentary": "半身像最能看出表情。货架一直排到天花板，冷白灯把人照得没处躲——我只好抿着嘴装镇定，其实在想今天能不能准点下班。",
+    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/deepseek/2c61565e05650585.png",
+    "thumbnailPath": "submissions/previews/deepseek/2c61565e05650585.webp",
+    "fullPath": "submissions/large/deepseek/2c61565e05650585.webp",
+    "format": "png",
+    "mimeType": "image/png",
+    "isAnimated": false,
+    "width": 1664,
+    "height": 2432,
+    "fileSize": 5155831,
+    "sha256": "2c61565e0565058595e50af22a2ea0a60703bc8b8b94fcc3a31b0673b94c867b",
+    "characterId": "deepseek",
+    "tags": [
+      "便利店",
+      "半身像",
+      "工牌",
+      "鲸鱼娘"
+    ],
+    "submitter": {
+      "credit": "named",
+      "name": "柯澤家的鲸鲸",
+      "url": "",
+      "github": ""
+    },
+    "origin": {
+      "via": "web"
+    },
+    "license": {},
+    "status": "published",
+    "createdAt": "2026-11-15T14:16:20.586Z",
+    "updatedAt": "2026-11-15T14:16:20.586Z",
+    "tone": "deepseek",
+    "symbol": "",
+    "slug": "deepseek202611150002",
+    "categoryIds": [
+      "illustration"
+    ],
+    "characterIds": [
+      "deepseek"
+    ],
+    "i18n": {
+      "sourceHash": "37aabf6c1b8a014ce6c6f70b97a849d09e9e4f884c5d65ea8d2870fcf4f5856d",
+      "en": {
+        "commentary": "A half-body shot shows the face best. The shelves run all the way to the ceiling and the cold white light leaves nowhere to hide, so I press my lips together and try to look composed — while actually wondering whether I get off on time.",
+        "description": "A front-facing half-body portrait under cold white store light, shelves stacked all the way to the ceiling behind her. Week 03 of a 52-week illustration project.",
+        "faq": [
+          {
+            "answer": "DeepSeek Chan, shown from the chest up in a navy hoodie with an apron strap and a work badge.",
+            "question": "Who is the character in this illustration?"
+          },
+          {
+            "answer": "It is a close half-body view, so the face and badge take the focus instead of a full scene.",
+            "question": "How is this different from the full-body version?"
+          }
+        ],
+        "licenseNote": "",
+        "name": "Convenience Store Night Shift: Portrait",
+        "originNote": "52-week illustration project, week 03.",
+        "seoDescription": "A front-facing half-body portrait of DeepSeek Chan under cold convenience store light, shelves running to the ceiling behind her.",
+        "seoTitle": "DeepSeek Chan Portrait in a Convenience Store Aisle",
+        "tags": [
+          "convenience store",
+          "half-body portrait",
+          "work badge",
+          "whale motif"
+        ]
+      },
+      "ja": {
+        "commentary": "バストアップは表情がいちばん分かる。棚が天井まで続いていて、冷たい白い光に隠れる場所はなし。だから口を結んで平気なふりをしているけど、本心は「定時に上がれるかな」ばかり。",
+        "description": "冷たい白い光の下での正面バストアップ。背後には天井まで続く棚が並ぶ。52週イラスト企画の第3弾。",
+        "faq": [
+          {
+            "answer": "紺のパーカーにエプロンの紐、社員証を下げたDeepSeekちゃんを胸から上で描いています。",
+            "question": "このイラストのキャラクターは誰ですか？"
+          },
+          {
+            "answer": "全身の一枚と違い、顔と社員証に焦点を寄せた寄りの構図です。",
+            "question": "全身のイラストとの違いは何ですか？"
+          }
+        ],
+        "licenseNote": "",
+        "name": "コンビニ夜勤・バストアップ",
+        "originNote": "52週イラスト企画の第3弾。",
+        "seoDescription": "冷たいコンビニの光の下、天井まで続く棚を背にしたDeepSeekちゃんの正面バストアップです。",
+        "seoTitle": "コンビニの棚前のDeepSeekちゃん｜バストアップ",
+        "tags": [
+          "コンビニ",
+          "バストアップ",
+          "社員証",
+          "クジラモチーフ"
         ]
       }
     }
