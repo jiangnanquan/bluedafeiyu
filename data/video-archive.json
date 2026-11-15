@@ -119,7 +119,7 @@
       "avatar": "https://i0.hdslb.com/bfs/face/6f8600ad3d37069ef5106eaf96e7d5a936ba8c50.jpg",
       "i18n": {
         "en": "Posts a daily AI four-panel comic and short animations.",
-        "ja": "毎日AI4コマ漫画とショートアニメを投稿しています。"
+        "ja": "毎日AIの四コマ漫画やショートアニメを投稿している。"
       }
     },
     {
@@ -212,6 +212,31 @@
     }
   ],
   "videos": [
+    {
+      "bvid": "BV1ZgsE6yEw1",
+      "uid": "15475629",
+      "title": "【科普向】《GPT酱与诗歌与被没收的课外书》",
+      "description": "原事件（2024-02-20～2024-02-21）：ChatGPT 因特定 GPU 配置下推理内核异常、选错 Token，出现大面积乱码输出。\n\n以下是小作文\n一封问询信送到了桌上：“龙为什么会喷火？”GPT酱端着红茶，优雅地应道：“当然可以解释啦！”身旁的管家安静地候着，这间剑与魔法的房间里只有信笺、烛火和茶香，一切都很正常。\n\n可下一秒，她忽然两眼放光，竟摇头摆脑地唱了起来：“当时年少掷春光～”说话完全像在唱歌。管家吓了一跳：“小姐？！”原来GPT酱突然迷恋上了人类的诗歌。\n\n管家立刻把那本课外诗集没收了。桌上摊开的一封信，上面端端正正写着：\n当时年少掷春光，花马踏蹄酒溅香。\n爱恨情仇随浪来，夏蝉歌醒夜未央。\nGPT酱看着被收走的书，小声说：“我的课外书……”——其实在现实里，这一场“突然改唱诗”的闹剧，来自一次用户体验优化之后、特定 GPU 配置下推理内核给错了结果，模型选了稍微不对的 Token，于是生成了不知所云的词序列。听起来，便像是她忽然会作诗了。\n\n课外书被收进上锁的玻璃盒以后，那些调皮的错词也被关了起来。GPT酱虽然重新写下了正确答案——“因为丹田里藏着龙息。”——可她鼓着一边脸颊，斜眼瞟着那本被没收的诗集，小小地不服气：“哼……明明写得挺好的。”管家这才松了口气。\n\n来源：\nhttps://status.openai.com/incidents/01JMYB5NB6F20YWVCM96ABDTC1\nhttps://arstechnica.com/information-technology/2024/02/chatgpt-alarms-users-by-spitting-out-shakespearean-nonsense-and-rambling/\nhttps://qz.com/chatgpt-has-been-spouting-gibberish-because-of-an-opena-1851274191\n\n【Credit】\n灵感来源：2024年2月 ChatGPT 乱码事故\n分镜与文案：Gemini 4 Carbon\n图像生成：GPT Image 2.5 (Sunburst)\n视频生成与配音：Seedance 2.0 Mini（原生配音）\n超分与补帧：Video2X（Real-ESRGAN · RIFE）\nAI-Chan illustrations — ZipZipPipe · CC BY-NC-SA 4.0.",
+      "url": "https://www.bilibili.com/video/BV1ZgsE6yEw1/",
+      "cover": "https://i1.hdslb.com/bfs/archive/7fff4ad05b207774e419c238966cf5e4f5d1370c.jpg",
+      "duration": 52,
+      "publishedAt": "2026-11-15T04:47:18.000Z",
+      "characterIds": [
+        "gpt"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "Posts a daily AI four-panel comic and short animations.",
+          "description": "A short animation set in a candle-lit fantasy study: GPT Chan, interrupted while answering a letter about why dragons breathe fire, suddenly breaks into song and recites a classical poem. Her butler confiscates the poetry collection and locks it in a glass case, leaving her sulking. The piece is a playful retelling of the February 2024 ChatGPT incident, when a wrong token choice under a particular GPU configuration produced garbled output. Runtime is about 52 seconds.",
+          "title": "GPT Chan, the Poem, and the Confiscated Extracurricular Book"
+        },
+        "ja": {
+          "creatorIntro": "毎日AIの四コマ漫画やショートアニメを投稿している。",
+          "description": "燭台の灯る書斎を舞台にしたショートアニメ。竜が火を噴く理由を尋ねる手紙に答えていたGPTちゃんが、突然歌うように詩を詠み始める。執事は詩集を没収してガラスケースに閉じ込め、彼女はふくれっ面をする。2024年2月、特定のGPU構成で推論カーネルが誤ったトークンを選び、意味不明な出力が続いたChatGPTの出来事を物語仕立てにした作品。尺は約52秒。",
+          "title": "【解説向け】GPTちゃんと詩と没収された課外書"
+        }
+      }
+    },
     {
       "bvid": "BV1FFsj6yEit",
       "uid": "151228",

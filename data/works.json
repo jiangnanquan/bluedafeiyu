@@ -1,55 +1,5 @@
 [
   {
-    "id": "sticker_issue_32_006",
-    "name": "哭哭鲸鱼",
-    "description": "Q版DeepSeek娘顶着蓝发与鲸鱼鳍耳，双手在胸前交握，圆睁的双眼里蓄满泪水，泪珠沿脸颊滑成两道水痕，小嘴张开一副委屈哭腔，头顶一撮呆毛翘起。",
-    "commentary": "两只手攥成拳头压在胸口，眼泪顺着脸一路淌下来，抖得连发梢都在颤。看着可怜，其实我是在抗议：话都说到一半了，谁把进度条掐了。谁发这张，谁就得负责递纸巾。",
-    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/deepseek/issue-32-006.gif",
-    "thumbnailPath": "submissions/previews/deepseek/issue-32-006.webp",
-    "fullPath": "submissions/large/deepseek/issue-32-006.webp",
-    "format": "gif",
-    "mimeType": "image/gif",
-    "isAnimated": true,
-    "width": 600,
-    "height": 600,
-    "fileSize": 217557,
-    "sha256": "7002a87bb9dabde3ac56338e17a8cd5ee668a0b46fc71f46d50adcc29018b68c",
-    "characterId": "deepseek",
-    "tags": [
-      "deepseek",
-      "哭哭",
-      "委屈"
-    ],
-    "submitter": {
-      "credit": null,
-      "name": "1cyberlangke1",
-      "url": null,
-      "github": "1cyberlangke1"
-    },
-    "origin": {
-      "type": "self-created",
-      "author": "",
-      "sourceUrl": null,
-      "note": "投稿表单标注为自己创作或生成；图片来自投稿压缩包，按包内文件名收录。"
-    },
-    "license": {
-      "type": "cc0",
-      "note": "投稿表单标注为 CC0 公共领域。"
-    },
-    "status": "published",
-    "createdAt": "2026-09-23T10:51:34Z",
-    "updatedAt": "2026-09-23T10:51:34Z",
-    "tone": "deepseek",
-    "symbol": "",
-    "slug": "deepseek202609230011",
-    "categoryIds": [
-      "meme"
-    ],
-    "characterIds": [
-      "deepseek"
-    ]
-  },
-  {
     "id": "sticker_issue_32_007",
     "name": "头追",
     "description": "Q版DeepSeek娘的大头特写，蓝色短发与呆毛、粗黑描边。她圆睁的大眼睛向上翻看，脸颊带红色小点和腮红，神情呆萌。",
@@ -166589,6 +166539,109 @@
           "Claudeちゃん",
           "2コマ漫画",
           "貯蓄ネタ",
+          "ツッコミ"
+        ]
+      }
+    }
+  },
+  {
+    "id": "sticker_42701eedc20e6d87578c7322",
+    "name": "北美做题家：不如多刷两道题",
+    "description": "三位 AI 模型拟人角色同框的单幅梗图：银白长髮、带角尖耳的白衣角色站在画面前方，紫蓝长髮猫耳角色与橘红长髮角色分列左右，气泡里写着「有这时间还不如多刷两道题」，拿做题梗调侃模型之间比拼练习量。",
+    "commentary": "本鱼看着这三位北美同行一本正经地比谁刷题多，忍不住想笑。题库是刷不完的，鱼塘才是归处；真要比，不如比比谁更会接梗。",
+    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/claude/42701eedc20e6d87.png",
+    "thumbnailPath": "submissions/previews/claude/42701eedc20e6d87.webp",
+    "fullPath": "submissions/large/claude/42701eedc20e6d87.webp",
+    "format": "png",
+    "mimeType": "image/png",
+    "isAnimated": false,
+    "width": 1254,
+    "height": 1254,
+    "fileSize": 2078723,
+    "sha256": "42701eedc20e6d87578c73225b698b54abce391aa49baf706c71e1d516a79fa0",
+    "characterId": "claude",
+    "tags": [
+      "AI娘",
+      "梗图",
+      "模型拟人",
+      "做题",
+      "吐槽"
+    ],
+    "submitter": {
+      "credit": "anonymous",
+      "name": "",
+      "url": "",
+      "github": ""
+    },
+    "origin": {
+      "via": "web"
+    },
+    "license": {},
+    "status": "published",
+    "createdAt": "2026-11-15T04:40:34.566Z",
+    "updatedAt": "2026-11-15T04:40:34.566Z",
+    "tone": "claude",
+    "symbol": "",
+    "slug": "claude202611150002",
+    "categoryIds": [
+      "meme"
+    ],
+    "characterIds": [
+      "claude",
+      "gemini",
+      "gpt"
+    ],
+    "i18n": {
+      "sourceHash": "e1a66c4cefc5c8ccd1411731d11a31e11c52dfd3655b4807f043423737bd79fd",
+      "en": {
+        "commentary": "Watching these three North American colleagues solemnly compete over who grinds more problems, I can't help laughing. The question bank never runs out, but the fish pond is where I belong. If we are going to compete, let's see who is better at trading jokes.",
+        "description": "A single-panel meme with three AI model personifications together: a silver-haired, horned character in a white dress stands in the foreground, flanked by a blue-purple-haired cat-eared character and an orange-haired character. The speech bubble reads, \"With that time, you might as well grind two more problems,\" teasing how the models keep comparing their practice load.",
+        "faq": [
+          {
+            "answer": "It is a single-panel fan meme about AI model personifications by the DeepSeek Chan community; it is not an official illustration from any model provider.",
+            "question": "What kind of image is this?"
+          },
+          {
+            "answer": "The joke is that these North American models would rather grind more practice problems than chat, a nod to how models are endlessly pushed through benchmarks.",
+            "question": "What is the joke in the picture?"
+          }
+        ],
+        "licenseNote": "",
+        "name": "North American Test-Grinders: Two More Problems, Please",
+        "originNote": "",
+        "seoDescription": "Three AI model characters one-up each other on practice problems instead of chatting in this single-panel AI-girl meme.",
+        "seoTitle": "North American Test-Grinders | AI Model Personification Meme",
+        "tags": [
+          "AI girl",
+          "meme",
+          "model personification",
+          "test grinding",
+          "snark"
+        ]
+      },
+      "ja": {
+        "commentary": "北米の同僚三人が真顔で「どっちが多く問題を解いたか」を競っているのを見て、思わず吹き出してしまった。問題集は無限にあっても、魚の池はここにある。競うなら、どっちが上手くツッコミを返せるかで勝負しよう。",
+        "description": "三人の AI モデル擬人化キャラが同じ画面に並ぶ一枚絵のミーム。銀白の長い髪に角と尖った耳を持つ白いドレスのキャラが手前に立ち、紫青の髪の猫耳キャラとオレンジ色の髪のキャラが左右に並ぶ。吹き出しには「そんな時間があるなら、問題をもう二問解いたほうがいい」と書かれ、モデル同士が問題演習の量を競う様子をからかっている。",
+        "faq": [
+          {
+            "answer": "AI モデルの擬人化キャラクターを題材にした一枚絵のファンミームで、各モデル提供元の公式イラストではない。",
+            "question": "どんな画像ですか？"
+          },
+          {
+            "answer": "雑談より問題演習を増やそうという冗談で、モデルが次々とベンチマークを詰め込まれる現状をネタにしている。",
+            "question": "この画像のネタは何ですか？"
+          }
+        ],
+        "licenseNote": "",
+        "name": "北米のテスト漬け：もう二問どうぞ",
+        "originNote": "",
+        "seoDescription": "AI モデルの擬人化キャラ三人が、雑談よりも問題演習を増やそうと言い合う一枚絵ミーム。",
+        "seoTitle": "北米のテスト漬け｜AI モデル擬人化ミーム",
+        "tags": [
+          "AI擬人化",
+          "ミーム",
+          "モデル擬人化",
+          "問題演習",
           "ツッコミ"
         ]
       }
