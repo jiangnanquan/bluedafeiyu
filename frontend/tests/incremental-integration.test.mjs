@@ -101,10 +101,14 @@ test('real Astro builds: no-op, edits, additions, removals, cold-cache fallback 
  assert.equal(prebuilt.report.mode,'prebuilt');assert.equal(prebuilt.report.rendered,0);
  assert.equal(fs.existsSync(path.join(prebuilt.out,path.basename(extra))),false);
  sameArtifacts(prebuilt.out,initial.out,'validated preflight reuse',[path.basename(extra)]);
+ // Prebuilt reuse does not mutate Astro's cache, which still contains the
+ // serial fixture. Restore the ordinary fixture before measuring template reuse.
+ const componentBaseline=build('component-baseline','prebuilt',['--full']);
+ sameArtifacts(componentBaseline.out,initial.out,'component cache baseline',[path.basename(extra)]);
  const about=path.join(fixture,'frontend/src/components/pages/AboutPage.astro');
  // Exercise a rendered component change, rather than a compiler-optional comment.
  fs.writeFileSync(about,fs.readFileSync(about,'utf8').replace('<DocumentPage>','<DocumentPage><span hidden data-component-cache-verification></span>'));
- const component=build('component','noop');assert.equal(component.report.mode,'incremental');assert.ok(component.report.rendered<initial.report.rendered);
+ const component=build('component','component-baseline');assert.equal(component.report.mode,'incremental');assert.ok(component.report.rendered<initial.report.rendered);
  assert.ok(fs.readFileSync(path.join(component.out,'about.html'),'utf8').includes('data-component-cache-verification'));
  assert.equal(fs.existsSync(path.join(component.out,'works/orphan-from-failed-build.html')),false);
  const componentFull=build('component-full','noop',['--full']);sameArtifacts(component.out,componentFull.out,'component artifacts');

@@ -68,7 +68,7 @@ test('published event routes preserve language, metadata, archive links and clos
       assert.equal(document.querySelectorAll('.event-tabs a').length, 2);
       assert.ok(document.querySelector('.event-tabs a').getAttribute('href').startsWith(prefix + '/events/'));
       assert.equal(document.querySelector('link[rel="canonical"]').getAttribute('href'), 'https://xn--pssy23gqgbz2d718b.com' + prefix + url);
-      assert.equal(document.querySelector('.main-nav [aria-current="page"]').getAttribute('href'), prefix + '/events.html');
+      assert.equal(document.querySelector('.sidebar [aria-current="page"]').getAttribute('href'), prefix + '/events.html');
       if (url === eventPaths.archived) {
         assert.equal(document.querySelector('.event-archive-copy .button').getAttribute('href'), prefix + events[0].href);
         const schema = JSON.parse(document.querySelector('script[type="application/ld+json"]').textContent);

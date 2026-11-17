@@ -1,7 +1,8 @@
 ---
 import {archiveContext} from '../../lib/archive.mjs';
 import {comicPageURL} from '../archive/ComicSeries.mjs';
-const {topics,icon}=archiveContext;
+import {guideLinks} from '../archive/GuidePages.mjs';
+const {topics,icon,collectionCard}=archiveContext;
 const {kind}=Astro.props;
 const serial=kind==='serials';
 const entries=topics.filter(topic=>serial?Boolean(topic.reader):!topic.reader);
@@ -25,21 +26,11 @@ const entries=topics.filter(topic=>serial?Boolean(topic.reader):!topic.reader);
     <div class="serial-index-actions">
       <p class="serial-index-count"><b>{topic.reader.totalPages}</b><span data-i18n="d.home.bodyPages">页正文</span></p>
       {topic.reader.pages.length<topic.reader.totalPages&&<p class="comic-card-pages" data-i18n-tpl="d.home.availablePages" data-i18n-vars={JSON.stringify({count:topic.reader.pages.length,total:topic.reader.totalPages})}>已收录 {topic.reader.pages.length} / {topic.reader.totalPages} 页</p>}
-      <a class="serial-index-button primary" href={comicPageURL(topic.id,1)} data-i18n="d.home.startReading">开始阅读</a>
-      <a class="serial-index-button" href={comicPageURL(topic.id)} data-i18n="d.home.coverContents">封面与目录</a>
+      <a class="button primary" href={comicPageURL(topic.id,1)} data-i18n="d.home.startReading">开始阅读</a>
+      <a class="button" href={comicPageURL(topic.id)} data-i18n="d.home.coverContents">封面与目录</a>
     </div>
   </article>)}</div>
   <aside class="serial-index-note"><Fragment set:html={icon('book',20)} /><p data-i18n="d.home.serialReadingNote">连载按原稿顺序编排，封面不占正文页码。进入后可逐页阅读，也可从目录跳转。</p></aside>
-</section>:<section class="theme-index-grid" aria-label="主题合集" data-i18n-attr="aria-label:d.home.topics">
-  {entries.map((topic,index)=><a class="theme-index-card" href={'/topics/'+topic.id+'.html'} data-collection-id={topic.id}>
-    <div class="theme-index-cover">{topic.cover&&<img src={topic.cover.i} width={topic.cover.w} height={topic.cover.h} alt={topic.name} loading={index<3?'eager':'lazy'} decoding="async" />}</div>
-    <div class="theme-index-tags"><span data-i18n={topic.author?'d.home.authorTopic':'d.home.curatedTopic'}>{topic.author?'作者专题':'主题合集'}</span><span data-i18n-tpl="d.home.characterIndexCount" data-i18n-vars={JSON.stringify({count:topic.list.length})}>{topic.list.length} 件作品</span></div>
-    <h2>{topic.name}</h2>
-    {topic.author?<p class="theme-index-author">{topic.author.name}</p>:<p class="theme-index-author" data-i18n="d.home.editorPicks">站长精选</p>}
-  </a>)}
-</section>}
+</section>:<section class="collection-grid" aria-label="主题合集" data-i18n-attr="aria-label:d.home.topics"><Fragment set:html={entries.map(topic=>collectionCard(topic)).join('')} /></section>}
 {!entries.length&&<p class="collection-index-empty" data-i18n="d.home.collectionsEmpty">新的作品合集将在这里展示。</p>}
-<footer class="collection-index-footer">
-  <div><strong data-i18n="d.home.brand">蓝色大肥鱼</strong><p data-i18n="d.home.collectionFooter">非官方同人整理项目 · 作品版权归原作者所有</p><p><a href="https://weekly.xn--pssy23gqgbz2d718b.com/" target="_blank" rel="noopener noreferrer" data-i18n="d.home.weekly">AI 娘周刊 ↗</a> · <a href="https://github.com/lmy414/ai-girl-stickers" target="_blank" rel="noopener noreferrer">GitHub ↗</a></p></div>
-  <nav aria-label="页脚导航" data-i18n-attr="aria-label:d.home.footerNav"><a href="/community-projects.html" data-i18n="d.home.projects">社区项目</a><a href="/friend-links.html" data-i18n="d.home.friends">友情链接</a><a href="/about.html" data-i18n="d.home.aboutRights">关于与版权</a><a href="/changelog.html" data-i18n="d.home.log">日志</a></nav>
-</footer>
+{!serial&&<section class="section intro-panel"><h2 data-i18n="d.guide.label">专题导览</h2><Fragment set:html={guideLinks(archiveContext)} /></section>}

@@ -9,7 +9,7 @@ const work={slug:'frozen-name',id:'stable-id',n:'作品',d:'介绍',i:'/thumb.we
 test('redesigned card preserves intrinsic image proportions, stable URL, ID and preview semantics',()=>{
  const {document}=parseHTML(renderHomeCard(work,{eager:true}));
  assert.equal(document.querySelector('.work-card').dataset.slug,work.slug);
- for(const link of document.querySelectorAll('[data-preview]')){assert.equal(link.href,'/works/frozen-name.html');assert.equal(link.dataset.preview,work.slug);assert.equal(link.getAttribute('aria-controls'),'preview-dialog');}
+ for(const link of document.querySelectorAll('a[data-preview]')){assert.equal(link.href,'/works/frozen-name.html');assert.equal(link.dataset.preview,work.slug);assert.equal(link.getAttribute('aria-controls'),'preview-dialog');}
  assert.equal(document.querySelector('img').getAttribute('width'),'600');assert.equal(document.querySelector('img').getAttribute('height'),'1200');
  assert.equal(document.querySelector('img').getAttribute('loading'),'eager');assert.equal(document.querySelector('[style]'),null);
 });
@@ -28,12 +28,11 @@ test('home image and title open the shared real preview, retain modifiers and re
  click(document.querySelector('[data-preview-close]'));assert.equal(dialog.open,false);assert.equal(focused,opener);
  }
 });
-test('homepage is a source component using live gallery data without preview-site guards or embedded images',()=>{
- const page=fs.readFileSync(new URL('../src/pages/index.astro',import.meta.url),'utf8');assert.match(page,/HomePage/);
- const source=fs.readFileSync(new URL('../src/components/home/HomeBody.astro',import.meta.url),'utf8');
- assert.match(source,/orderWorks\(galleryWorks\)/);assert.match(source,/galleryWorks.length/);assert.match(source,/src="\/avatar.png"/);assert.match(source,/alt="蓝色大肥鱼" data-i18n-attr="alt:d.home.brand"/);
- assert.doesNotMatch(source,/data:image|preview-isolation|noindex|DecompressionStream/);
- const css=fs.readFileSync(new URL('../src/components/home/HomePage.css',import.meta.url),'utf8');assert.match(css,/height:56px;min-height:56px;flex:0 0 56px/);assert.match(css,/flex-direction:column;gap:12px/);assert.match(css,/column-count:5/);
+test('homepage uses the shared shell, production data and the single work renderer',()=>{
+ const page=fs.readFileSync(new URL('../src/components/home/HomePage.astro',import.meta.url),'utf8');assert.match(page,/ArchivePage/);assert.match(page,/archivePages/);
+ const source=fs.readFileSync(new URL('../src/components/archive/PageComposition.mjs',import.meta.url),'utf8');assert.match(source,/orderWorks\(galleryWorks\)/);assert.match(source,/galleryWorks.length/);
+ const shell=fs.readFileSync(new URL('../src/components/library/SiteShell.astro',import.meta.url),'utf8');assert.match(shell,/src="\/avatar.png"/);assert.match(shell,/<slot/);
+ assert.doesNotMatch(source,/data:image|preview-isolation|DecompressionStream/);
  assert.ok(Object.values(homeCopy).every(row=>row.length===3&&row.every(Boolean)));
 });
 

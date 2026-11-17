@@ -262,7 +262,7 @@ export async function localizeHtml(html, base, locale, snapshot) {
     script.textContent = JSON.stringify(data).replace(/</g, '\\u003c');
   }
   // 无 JS 时保留可折叠的语言入口；JS 入口由 lang.js 绑定统一交互。
-  for (const host of document.querySelectorAll('[data-lang-host]')) {
+  for (const host of document.querySelectorAll('[data-lang-host],[data-language-fallback]')) {
     host.replaceChildren();
     const fallback = document.createElement('noscript');
     fallback.innerHTML = '<details class="lang-fallback"><summary class="lang-trigger">◎ ' + locale.label + ' ⌄</summary><div class="lang-menu">' + LOCALES.map(other => '<a class="lang-option" href="' + escape(localizedPath(base, other)) + '" lang="' + other.html + '">' + other.label + '</a>').join('') + '</div></details>';
