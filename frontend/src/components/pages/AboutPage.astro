@@ -11,7 +11,7 @@ const characters = site.characters.filter(c => c.status === 'active');
 const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', inLanguage: 'zh-CN', mainEntity: aboutQuestions.map(row => ({ '@type': 'Question', name: row[0], acceptedAnswer: { '@type': 'Answer', text: row[3] } })) };
 ---
 <V2 title={aboutSEO[0]} desc={aboutDescription[0]} path="/about.html" active="about" bodyPage="about" robots="index,follow" schemas={[faqSchema]}>
-<div class="about-page">
+<div class="about-page" data-document-content>
 <PageHeading eyebrow="ABOUT THE ARCHIVE" title={aboutCopy.pageTitle[0]} titleKey="d.about.pageTitle" description={aboutCopy.pageLead[0]} descriptionKey="d.about.pageLead" />
 <nav class="anchor-nav" aria-label="本页目录" data-i18n-attr="aria-label:d.about.contents"><a class="tab" href="#what-is-blue-dafeiyu" data-i18n="d.about.whatTitle">{aboutCopy.whatTitle[0]}</a><a class="tab" href="#faq" data-i18n="d.about.faqTitle">{aboutCopy.faqTitle[0]}</a><a class="tab" href="#license" data-i18n="about.license.title">许可与版权</a><a class="tab" href="#open-data-api" data-i18n="d.openApi">开放接口</a><a class="tab" href="#analytics" data-i18n="about.privacy.title">统计与隐私</a><a class="tab" href="#site-pages" data-i18n="d.about.sitePages">站点的其他页面</a></nav>
 <div class="about-content"><div>

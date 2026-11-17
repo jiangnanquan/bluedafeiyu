@@ -9,7 +9,7 @@ const {mode='image'}=Astro.props;
 const path=mode==='video'?'/submit-video.html':'/submit.html';
 ---
 <Archive title="AI娘二创投稿与视频作者登记 | 蓝色大肥鱼" desc="提交 AI 娘原图或 ZIP 图片集，或登记自己的 Bilibili 主页。图片与视频逐条审核，通过后收录到对应档案。" {path} active="submit" bodyAttrs={{'data-submission-mode':mode}} bodyPage="submit" robots="noindex,follow">
-  <div class="submission-page">
+  <div class="submission-page" data-document-content>
     <div data-submission-heading="image" hidden={mode!=='image'}><PageHeading eyebrow="SUBMIT" title={submissionCopy.imageTitle[0]} titleKey="d.submission.imageTitle" description={submissionCopy.imageLead[0]} descriptionKey="d.submission.imageLead" /></div>
     <div data-submission-heading="video" hidden={mode!=='video'}><PageHeading eyebrow="CREATOR REGISTRATION" title={submissionCopy.videoTitle[0]} titleKey="d.submission.videoTitle" description={submissionCopy.videoLead[0]} descriptionKey="d.submission.videoLead" /></div>
     <nav class="submission-media-tabs section-tabs" role="tablist" aria-label="投稿方式" data-i18n-attr="aria-label:d.design.submissionMode">

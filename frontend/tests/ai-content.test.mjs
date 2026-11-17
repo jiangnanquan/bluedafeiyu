@@ -37,7 +37,7 @@ test('不把投稿者署名当成作者，不扩大作品授权', () => {
   assert.throws(() => createAiDocuments(bad), /路径非法/);
 });
 test('说明正文取自公开页面，去除表单和导航，保留真实政策与链接', () => {
-  const md = documentMarkdown('<html><body><nav>导航</nav><main><div class="document-page"><h1>许可</h1><p>图片授权未明，<a href="/about.html#licensing">申请许可</a>。</p><ul><li>仅记录许可。</li></ul><form>内部表单</form><p hidden>内部提示</p></div></main></body></html>', '/about.html');
+  const md = documentMarkdown('<html><body><nav>导航</nav><main><div data-document-content><h1>许可</h1><nav>页内导航</nav><p>图片授权未明，<a href="/about.html#licensing">申请许可</a>。</p><ul><li>仅记录许可。</li></ul><form>内部表单</form><p hidden>内部提示</p></div></main></body></html>', '/about.html');
   assert.ok(md.includes('# 许可'));
   assert.ok(md.includes('https://xn--pssy23gqgbz2d718b.com/about.html#licensing'));
   for (const word of ['导航', '内部表单', '内部提示']) assert.ok(!md.includes(word));

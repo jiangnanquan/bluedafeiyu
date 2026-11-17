@@ -20,9 +20,9 @@ const page = (name, route, body) => `# ${label(name)}\n\n原始页面：${link(n
 // 说明页直接读取本次构建的正文，版权、投稿规则只有一份维护来源。
 export function documentMarkdown(html, route) {
   const { document } = parseHTML(html);
-  const body = document.querySelector('.document-page');
+  const body = document.querySelector('[data-document-content]');
   if (!body) throw new Error(`说明页缺少正文：${route}`);
-  for (const node of body.querySelectorAll('script,style,svg,form,button,figure,[hidden],[aria-hidden="true"]')) node.remove();
+  for (const node of body.querySelectorAll('script,style,svg,form,button,figure,nav,[hidden],[aria-hidden="true"]')) node.remove();
   function render(node) {
     if (node.nodeType === 3) return node.textContent.replace(/\s+/g, ' ');
     const tag = node.localName;
