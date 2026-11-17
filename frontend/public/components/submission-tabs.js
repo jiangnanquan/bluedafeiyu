@@ -5,6 +5,7 @@ export function installSubmissionTabs({document=globalThis.document,window=globa
   if(!tabs.length||!image||!video)return;
   const select=mode=>{
     image.hidden=mode!=='image';video.hidden=mode!=='video';
+    document.querySelectorAll('[data-submission-heading]').forEach(heading=>heading.hidden=heading.dataset.submissionHeading!==mode);
     tabs.forEach(tab=>{const active=tab.dataset.submissionMode===mode;tab.setAttribute('aria-selected',String(active));tab.tabIndex=active?0:-1;});
   };
   tabs.forEach((tab,i)=>{

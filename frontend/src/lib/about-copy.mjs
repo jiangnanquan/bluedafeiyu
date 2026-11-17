@@ -1,6 +1,10 @@
 import {openApiCopy} from './open-api-copy.mjs';
 export const aboutCopy = {
   ...openApiCopy,
+  pageTitle:['关于与版权','About & copyright','サイト情報と著作権'],
+  pageLead:['蓝色大肥鱼是一个非官方同人整理项目。这里介绍本站、图片来源与版权，以及开放数据接口的使用方法。','Blue Dafeiyu is an unofficial fan archive. Learn about the site, image sources, copyright and the public data API.','藍色大肥魚は非公式のファンアーカイブです。サイト、画像の出典と著作権、公開データAPIの使い方をご案内します。'],
+  contents:['本页目录','On this page','このページの目次'],
+  sitePages:['站点的其他页面','More pages','ほかのページ'],
   whatTitle: ['蓝色大肥鱼是什么？', 'What is Blue Dafeiyu?', '藍色大肥魚とは？'],
   whatText: ['“蓝色大肥鱼”是 DeepSeek娘的社区昵称，也常被叫作“大肥鱼”“鲸鱼娘”或“哦鲸鲸”。据 17173 的报道，有网友把 DeepSeek 的蓝鲸标志交给模型辨认，模型给出了“蓝色大肥鱼”的评价，这个称呼随后在社区流传。这里讲的是社区玩梗与二创，不是官方角色设定。', 'Blue Dafeiyu is a community nickname for DeepSeek Chan, the whale girl. According to a report by 17173, a user asked DeepSeek to identify its blue whale logo and the model described it as a big blue plump fish. The name then spread through fan communities. This is a community meme and fan interpretation, not an official character design.', '藍色大肥魚は、クジラの少女DeepSeekちゃんのコミュニティでの愛称です。17173の報道によると、ユーザーがDeepSeekの青いクジラのロゴをモデルに見せたところ、大きく太った青い魚という評価が返り、この呼び名が広まりました。コミュニティのミームと二次創作であり、公式キャラクター設定ではありません。'],
   source: ['阅读昵称由来的报道（17173，2026 年 8 月 21 日）', 'Read the report on the nickname (17173, August 21, 2026)', '愛称の由来に関する報道（17173、2026年8月21日）'],
@@ -20,7 +24,7 @@ export const aboutQuestions = [
   ['本站是 DeepSeek 官方网站吗？', 'Is this an official DeepSeek website?', 'DeepSeekの公式サイトですか？',
     '不是。本站是非官方同人整理项目，与 DeepSeek 及其他 AI 产品厂商没有官方关联。作品来自社区创作，署名、来源与授权记录保留在各自详情页。', 'No. This is an unofficial fan archive with no official affiliation to DeepSeek or other AI product companies. Works are created by the community; credits, sources and license notes are retained on their detail pages.', 'いいえ。DeepSeekやほかのAI製品の提供元とは公式な関係を持たない、非公式ファンアーカイブです。コミュニティ作品のクレジット、出典、利用許諾は各作品に掲載しています。'],
   ['社群在哪里加入？', 'Where can I join the community?', 'コミュニティにはどこから参加できますか？',
-    '本站的公开交流在 Discord 和 QQ 群「蓝色大肥鱼.com」（群号 1134100615），微信公众号也可以扫码关注。社群页汇总了三个入口的链接和二维码，Discord、QQ 与微信都可以直接找到我们。', 'The public community lives on Discord and in the QQ group “Blue Dafeiyu.com” (group number 1134100615); you can also follow the WeChat Official Account by scanning its QR code. The community page collects all three links and QR codes, so you can reach us on Discord, QQ or WeChat.', '公開コミュニティはDiscordとQQグループ「Blue Dafeiyu.com」（グループ番号 1134100615）で、WeChat公式アカウントもQRコードからフォローできます。コミュニティページに3つの入口のリンクとQRコードをまとめてあり、Discord・QQ・WeChatのどれからでも参加できます。'],
+    '本站的公开交流在 Discord 和 QQ 群「蓝色大肥鱼」，微信公众号也可以扫码关注。社群页汇总了三个入口的链接和二维码，Discord、QQ 与微信都可以直接找到我们。', 'The public community lives on Discord and in the QQ group “Blue Dafeiyu”; you can also follow the WeChat Official Account by scanning its QR code. The community page collects all three links and QR codes, so you can reach us on Discord, QQ or WeChat.', '公開コミュニティはDiscordとQQグループ「藍色大肥魚」で、WeChat公式アカウントもQRコードからフォローできます。コミュニティページに3つの入口のリンクとQRコードをまとめてあり、Discord・QQ・WeChatのどれからでも参加できます。'],
 ];
 export const aboutSEO = ['蓝色大肥鱼是什么？DeepSeek娘（大肥鱼）昵称由来与本站介绍', 'What Is Blue Dafeiyu? DeepSeek Chan’s Nickname & Fan Archive', '藍色大肥魚とは？DeepSeekちゃんの愛称とサイト紹介'];
 export const aboutDescription = ['蓝色大肥鱼（大肥鱼、鲸鱼娘）是 DeepSeek娘的社区昵称。了解名字由来、本站收录的 AI 娘作品、浏览与下载方法、版权规则、Discord 与 QQ 社群、微信公众号和投稿常见问题。', 'Learn about Blue Dafeiyu, the community nickname for DeepSeek Chan, and this unofficial AI girl fan archive: artwork, browsing, downloads, copyright, the Discord and QQ communities, the WeChat Official Account, and submission questions.', 'DeepSeekちゃんの愛称である藍色大肥魚の由来と、非公式AIファンアーカイブの収録作品、探し方、元画像、利用許諾、DiscordとQQのコミュニティ、WeChat公式アカウント、投稿について紹介します。'];

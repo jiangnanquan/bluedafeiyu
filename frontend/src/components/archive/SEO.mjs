@@ -36,12 +36,12 @@ export function createSEO(ctx) {
   for (const t of topics.filter(t => !t.reader)) add('/topics/' + t.id + '.html', t.list, t.name + ' · AI 娘作品合集', 'topic', { topic: t });
   const main = {
     '/index.html': Object.values(homeMeta(works.length)),
-    '/characters.html': ['AI 娘角色档案：DeepSeek娘、GPT娘与更多角色 — 蓝色大肥鱼', `浏览 ${chars.length} 位有作品的 AI 娘角色，查看名字、现有别名和代表作品，进入各角色的表情包、插画、设定图与漫画档案。`],
+    '/characters.html': ['AI 娘角色档案：DeepSeek娘、GPT娘与更多角色 — 蓝色大肥鱼', `浏览 ${chars.length} 位 AI 娘角色，查看名字、现有别名和代表作品，进入各角色的表情包、插画、设定图与漫画档案。`],
     '/topics.html': ['AI 娘主题合集与作者作品集 — 蓝色大肥鱼', '浏览猫鲸作者作品集与日常场景选题，按问候、工作、安慰和角色初见阅读作品。主题合集保留作品来源、署名与授权记录。'],
     '/serials.html': ['AI 娘连载漫画 — 蓝色大肥鱼', '浏览已收录的 AI 娘连载漫画，从封面进入，按原稿页码阅读故事。'],
     '/search.html': ['搜索 AI 娘作品、角色与标签 — 蓝色大肥鱼', '用作品名、角色别名、图片说明或标签查找已收录的 AI 娘作品，并按角色与作品类型筛选。'],
     '/submit.html': ['投稿 AI 娘二创作品：来源与授权填写指南 — 蓝色大肥鱼', '了解 AI 娘图片投稿需要填写的角色、作品类型、原始来源、署名和授权信息。站内投稿和 GitHub 表单均会进入审核队列。'],
-    '/community.html': ['Discord、QQ 群与微信公众号：加入蓝色大肥鱼社群 — 蓝色大肥鱼', `查看蓝色大肥鱼的 Discord 社区、QQ 群「${SITE.community.qq.name}」（群号 ${SITE.community.qq.number}）和微信公众号，获取加入链接与二维码，分享作品、参加活动或反馈归档问题。`],
+    '/community.html': ['Discord、QQ 群与微信公众号：加入蓝色大肥鱼社群 — 蓝色大肥鱼', `查看蓝色大肥鱼的 Discord 社区、QQ 群「${SITE.community.qq.name}」和微信公众号，获取加入链接与二维码，分享作品、参加活动或反馈归档问题。`],
     '/about.html': ['关于蓝色大肥鱼：图片来源、版权与使用许可', '了解 AI 娘二创档案的整理方式、图片署名与授权状态、统计与隐私，以及补署名和下架申请流程。'],
     '/changelog.html': ['蓝色大肥鱼更新日志：内容收录与站点变更', '查阅蓝色大肥鱼正式站点的历史更新记录，了解作品收录、功能和维护变更。查看正式站点的内容收录与功能变更。'],
     '/projects.html': ['友情链接墙 — 蓝色大肥鱼', '按项目类、网站类浏览蓝色大肥鱼的友情链接，发现相关项目、图片来源与创作网站。'],
@@ -182,11 +182,6 @@ export function createSEO(ctx) {
   };
   function enrich(url, content) {
     const c = collections.get(url);
-    if (url === '/index.html' && !content.includes('class="guide"')) {
-      const ds = chars.find(c => c.id === 'deepseek');
-      if (ds) content = content.replace('<section class="section">', `<section class="section">${sectionHead('DeepSeek娘表情包与二创', '蓝色大肥鱼、鲸鱼娘：从代表作品进入角色档案。', '/characters/deepseek.html', '浏览 DeepSeek娘的全部作品')}${grid(ds.list.filter(w => w.k.includes('meme')).slice(8, 12))}</section><section class="section">`);
-      content += `<section class="section intro-panel">${sectionHead('第一次来，怎样找到想要的图？')}<div class="reading-columns"><div><h3>按角色和类型找</h3><p>本站收录社区创作的 AI 娘表情包、插画、立绘设定与漫画。先选择角色，再按作品类型浏览；想按具体台词或情绪找图，可以使用搜索。</p><div class="role-entry-links">${chars.slice(0, 5).map(c => `<a class="tag" href="/characters/${c.id}.html">${esc(c.name)}表情包与二创</a>`).join('')}</div></div><div><h3>按主题连着看</h3><p>作者作品集保留投稿者的作品线索。日常场景选题把一组相关作品串起来，作品来源与授权仍保留在每张作品详情中。</p><a class="text-link" href="/topics.html">浏览作者作品集与主题合集</a></div></div>${questions([['蓝色大肥鱼与 DeepSeek娘是什么关系？', '<p>本站角色记录将“蓝色大肥鱼”和“鲸鱼娘”列为 DeepSeek娘的别名。本网站是非官方同人整理项目；这里收录的是社区二创，各作品来源请查看详情。</p>'], ['怎样下载原图并确认使用范围？', '<p>打开作品详情，使用“下载原图”查看原始图片，同时核对来源、署名和授权备注。图片可下载不代表可以任意转载或商用。</p><a class="text-link" href="/about.html#license">阅读授权说明</a>']])}</section>`;
-    }
     if (c?.kind === 'character') {
       content += roleNotes(c.character);
     }

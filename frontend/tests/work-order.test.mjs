@@ -3,7 +3,6 @@ import assert from 'node:assert/strict';
 import {parseHTML} from 'linkedom';
 import {orderWorks, shuffledSlugs} from '../public/components/work-order.js';
 import {selectDownloadHighlights, renderDownloadPick, DOWNLOAD_HIGHLIGHT_COUNT, installHomeDownloads} from '../public/components/home-downloads.js';
-import {installMasonry} from '../src/scripts/masonry.mjs';
 
 const works = [
   {id:'a',slug:'a',dt:'2026-10-23',createdAt:'2026-10-23T01:00:00Z'},
@@ -56,24 +55,6 @@ test('download highlights include four measured published works, ignore unknown 
   const {document}=parseHTML(renderDownloadPick(work,{card:()=>'<article class="work-card"></article>',label:'Download original'}));
   assert.equal(document.querySelector('[data-download-work]').dataset.downloadWork,'a');
   assert.equal(document.querySelector('[data-download-work]').getAttribute('href'),work.o);
-});
-
-test('the masonry installer ignores a saved grid preference and always packs into shortest columns',()=>{
-  const {document,window}=parseHTML('<html><body><main><div class="work-grid"><article class="work-card"></article><article class="work-card"></article><article class="work-card"></article></div></main></body></html>');
-  const grid=document.querySelector('.work-grid');
-  Object.defineProperty(grid,'clientWidth',{value:420});
-  [...grid.children].forEach((item,i)=>Object.defineProperty(item,'offsetHeight',{value:[100,200,150][i]}));
-  const frames=[];
-  const overrides={document,window,localStorage:{getItem(){throw Error('obsolete layout preference was read');}},getComputedStyle:()=>({getPropertyValue:name=>name==='--columns'?'2':'20'}),requestAnimationFrame:callback=>(frames.push(callback),frames.length),cancelAnimationFrame:()=>{},ResizeObserver:class{observe(){}},MutationObserver:class{observe(){}}};
-  const before=Object.fromEntries(Object.keys(overrides).map(key=>[key,Object.getOwnPropertyDescriptor(globalThis,key)]));
-  try{
-    for(const [key,value] of Object.entries(overrides))Object.defineProperty(globalThis,key,{value,writable:true,configurable:true});
-    installMasonry();frames.at(-1)();
-    assert.ok(grid.classList.contains('is-laid-out'));
-    assert.equal(grid.classList.contains('layout-grid'),false);
-    assert.deepEqual([...grid.children].map(item=>[item.style.left,item.style.top]),[['0px','0px'],['220px','0px'],['0px','120px']]);
-    assert.equal(grid.style.height,'270px');
-  }finally{for(const [key,descriptor] of Object.entries(before))if(descriptor)Object.defineProperty(globalThis,key,descriptor);else delete globalThis[key];}
 });
 
 test('the download component replaces its whole fallback row using real counts and keeps four originals when statistics fail',async()=>{

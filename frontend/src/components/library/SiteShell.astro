@@ -4,14 +4,15 @@ const {activePage=''}=Astro.props;
 ---
 <a class="skip-link" href="#main" data-i18n="v2.skip">跳到正文</a>
 <div class="app" id="app">
-  <aside class="sidebar" aria-label="站点导航" data-i18n-attr="aria-label:d.home.nav">
+  <button class="drawer-backdrop" type="button" data-drawer-close tabindex="-1" aria-label="关闭导航" data-i18n-attr="aria-label:d.closeNavigation"></button>
+  <aside class="sidebar" id="site-sidebar" aria-label="站点导航" data-i18n-attr="aria-label:d.home.nav">
     <div class="brand">
-      <a class="brand-mark" href="/" aria-label="蓝色大肥鱼首页" data-i18n-attr="aria-label:d.home.homeLabel"><img src="/avatar.png" width="40" height="40" alt="蓝色大肥鱼" data-i18n-attr="alt:d.home.brand" decoding="async"></a>
+      <a class="brand-mark" href="/" aria-label="蓝色大肥鱼首页" data-i18n-attr="aria-label:d.home.homeLabel"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s4-5 9-5 9 5 9 5-4 5-9 5-9-5-9-5Z"/><circle cx="16" cy="12" r="1"/></svg></a>
       <a class="brand-text" href="/">
         <div class="brand-name" data-i18n="d.home.brand">蓝色大肥鱼</div>
         <div class="brand-sub" data-i18n="d.home.brandSub">AI 娘同人档案</div>
       </a>
-      <button class="collapse" id="collapse" type="button" aria-label="收起侧栏" data-i18n-attr="aria-label:d.home.collapse" aria-expanded="true"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/><path d="m16 15-3-3 3-3"/></svg></button>
+      <button class="collapse" id="collapse" type="button" aria-label="收起侧栏" aria-controls="site-sidebar" aria-expanded="true"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/><path d="m16 15-3-3 3-3"/></svg></button>
     </div>
     <nav class="nav-section" aria-label="图片与角色" data-i18n-attr="aria-label:d.home.imagesRoles">
       <div class="nav-label" data-i18n="d.home.imagesRoles">图片与角色</div>
@@ -37,7 +38,7 @@ const {activePage=''}=Astro.props;
 
   <div class="main">
     <header class="topbar">
-      <button class="mobile-menu" id="menu" type="button" aria-label="打开导航" data-i18n-attr="aria-label:d.home.openNav" aria-expanded="false"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/><path d="m16 15-3-3 3-3"/></svg></button>
+      <button class="mobile-menu" id="menu" type="button" aria-label="打开导航" data-i18n-attr="aria-label:d.home.openNav" aria-controls="site-sidebar" aria-expanded="false"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/><path d="m16 15-3-3 3-3"/></svg></button>
       <form class="search" action="/search.html" method="get" role="search">
         <svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
         <input type="search" name="q" placeholder="搜索图片、角色或创作者" aria-label="搜索图片、角色或创作者" data-i18n-attr="placeholder:d.home.search,aria-label:d.home.search">
@@ -59,4 +60,4 @@ const {activePage=''}=Astro.props;
       </div>
     </header>
 
-    <main class="content" id="main"><slot /><Footer /></main></div></div>
+    <main class="content" id="main"><slot /></main><Footer /></div></div>

@@ -558,7 +558,7 @@
       "page.characters.title": "AI-Girl Characters - Browse Fan Art by Character | DeepSeek Chan",
       "page.characters.desc": "Browse AI-girl fan art by character: DeepSeek Chan, Claude Chan, GPT Chan, Qwen Chan, GLM Chan and more.",
       "page.community.title": "Discord, QQ Group and WeChat: Join the Community | DeepSeek Chan",
-      "page.community.desc": "Join the DeepSeek Chan community on Discord, in the QQ group “Blue Dafeiyu.com” (group number 1134100615), or follow the WeChat Official Account. Share fan art, join events or report a problem with the archive.",
+      "page.community.desc": "Join the DeepSeek Chan community on Discord, in the QQ group “Blue Dafeiyu”, or follow the WeChat Official Account. Share fan art, join events or report a problem with the archive.",
       "page.search.title": "Search AI-Girl Fan Art | DeepSeek Chan",
       "page.search.desc": "Search AI-girl fan art by title, character, alias or tag."
     },
@@ -1086,7 +1086,7 @@
       "page.characters.title": "AI娘キャラ一覧 - キャラ別に二次創作を見る | DeepSeek Chan",
       "page.characters.desc": "DeepSeek娘、Claude娘、GPT娘、Qwen娘、GLM娘などキャラ別に AI娘の二次創作を見られます。",
       "page.community.title": "Discord・QQグループ・WeChat：コミュニティに参加 | DeepSeek Chan",
-      "page.community.desc": "DeepSeek ChanのDiscordコミュニティ、QQグループ「Blue Dafeiyu.com」（グループ番号 1134100615）、WeChat公式アカウントを案内します。作品の共有やイベント参加、アーカイブの不具合報告ができます。",
+      "page.community.desc": "DeepSeek ChanのDiscordコミュニティ、QQグループ「藍色大肥魚」、WeChat公式アカウントを案内します。作品の共有やイベント参加、アーカイブの不具合報告ができます。",
       "page.search.title": "AI娘二次創作を検索 | DeepSeek Chan",
       "page.search.desc": "作品名・キャラ・別名・タグで AI娘の二次創作を検索できます。"
     }

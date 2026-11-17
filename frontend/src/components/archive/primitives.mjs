@@ -1,4 +1,4 @@
-import {renderPageHeading} from './PageHeading.mjs';
+import {renderPageHeading,renderSectionHeading} from './PageHeading.mjs';
 
 export function createPrimitives(ctx) {
 const { translations, modelVendors } = ctx;
@@ -15,10 +15,10 @@ const icon = (name, size = 20) => {
   return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name] || paths.grid}</svg>`;
 };
 const button = (href, label, cls = '') => `<a class="button ${cls}" href="${esc(href)}">${label}</a>`;
-const tagLink = tag => `<a class="tag" href="/search.html?q=${encodeURIComponent(tag)}">${esc(tag)}</a>`;
+const tagLink = tag => `<a class="tag chip" href="/search.html?q=${encodeURIComponent(tag)}">${esc(tag)}</a>`;
 const workHref = w => '/works/' + w.slug + '.html';
-const sectionHead = (title, sub = '', link = '', label = '') => `<div class="section-head"><div><h2><span class="marker-highlight">${title}</span></h2>${sub ? `<p>${sub}</p>` : ''}</div>${link ? `<a class="text-link" href="${link}">${label || tr('viewAll','查看全部','View all','すべて見る')}${icon('arrow',17)}</a>` : ''}</div>`;
-const breadcrumbs = rows => `<nav class="breadcrumbs" aria-label="当前位置">${rows.map(([name,href])=>href ? `<a href="${href}">${name}</a>` : `<span>${name}</span>`).join('<span aria-hidden="true">/</span>')}</nav>`;
+const sectionHead = (title, sub = '', link = '', label = '') => renderSectionHeading({title,description:sub,extra:link?`<a href="${esc(link)}">${label || tr('viewAll','查看全部','View all','すべて見る')} →</a>`:''});
+const breadcrumbs = rows => `<nav class="breadcrumbs" aria-label="当前位置">${rows.map(([name,href])=>href ? `<a href="${href}">${name}</a>` : `<span aria-current="page">${name}</span>`).join('<span aria-hidden="true">/</span>')}</nav>`;
 const pageHead = (eyebrow, title, desc = '', extra = '') => renderPageHeading({eyebrow, title, description:desc, extra});
 
 return {esc, absolute, tr, old, icon, button, tagLink, workHref, sectionHead, breadcrumbs, pageHead, modelVendorLine};

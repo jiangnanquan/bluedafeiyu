@@ -1,4 +1,3 @@
-import {renderArchiveTabs} from './ArchiveTabs.mjs';
 export function createListing(ctx) {
   const { works, chars, types, esc, tr, old, icon, grid, pageHead } = ctx;
   // `character` turns the bar into the role-library variant: the role and type
@@ -21,18 +20,19 @@ export function createListing(ctx) {
       tr('characterPage.search','搜索作品、作者或标签','Search works, creators or tags','作品・作者・タグを検索');
       return `<form class="filter-bar character-filter" id="filter-form">${roleSelect}${typeSelect}${character.tabs}<div class="character-filter-row"><input id="search-q" name="q" type="search" autocomplete="off" aria-label="搜索作品、作者或标签" placeholder="搜索作品、作者或标签" data-i18n-attr="aria-label:d.characterPage.search,placeholder:d.characterPage.search">${creationSelect}${sortSelect}${directionSelect}${reset}</div><p class="character-visually-hidden" id="creation-filter-help">${creationHelp}</p></form>`;
     }
-    const fields = `<div class="filter-fields"><label>${tr('roleFilter','角色（多选）','Characters','キャラクター（複数可）')}${roleSelect}</label><label>${tr('typeFilter','类型','Type','種類')}${typeSelect}</label><label>${tr('creationFilter','创作方式','Creation method','制作方法')}${creationSelect}</label><label>${tr('sortFilter','排序','Sort','並び順')}${sortSelect}</label><label>${tr('sortDirection','顺序','Direction','順序')}${directionSelect}</label></div>`;
-    const roleHelp = tr('roleMatchAll','可多选：同时包含全部所选角色（AND）','Select multiple: match all selected characters (AND)','複数選択：選んだキャラクターすべてを含む作品（AND）');
-    if (compact) {
-      return `<form class="filter-bar browse-filter" id="filter-form">${fields}<div class="browse-filter-footer"><details class="browse-filter-guide"><summary>${tr('browseFilterGuide','筛选说明','Filter guide','絞り込みの説明')}</summary><div class="browse-filter-guide-content"><p id="character-filter-help">${roleHelp}</p><p id="creation-filter-help">${creationHelp}</p></div></details>${reset}</div></form>`;
-    }
-    return `<form class="filter-bar" id="filter-form">${fields}${reset}<p class="filter-help" id="character-filter-help">${roleHelp}</p><p class="source-note creation-method-note" id="creation-filter-help">${creationHelp}</p></form>`;
+    const roleHelp=tr('roleMatchAll','可多选：同时包含全部所选角色（AND）','Select multiple: match all selected characters (AND)','複数選択：選んだキャラクターすべてを含む作品（AND）');
+    const chips=compact?`<div class="chips catalog-type-chips"><button class="chip" type="button" data-catalog-type="" aria-pressed="${!initialType}">${tr('allTypes','全部类型','All types','すべての種類')} (${list.length})</button>${types.map(type=>`<button class="chip" type="button" data-catalog-type="${type.id}" aria-pressed="${initialType===type.id}">${old('v2.type.'+type.id,type.name)} (${list.filter(work=>work.k.includes(type.id)).length})</button>`).join('')}<a class="chip" href="/gifs.html">${tr('gifTitle','GIF 动图库','GIF archive','GIFアニメ')}</a></div>`:'';
+    const typeState=compact?typeSelect.replace('<select ','<select hidden '):typeSelect;
+    return `<form class="filters catalog-filters" id="filter-form">${chips}<div class="catalog-filter-controls">${roleSelect}${typeState}${creationSelect}${sortSelect}${directionSelect}${reset}</div><details class="catalog-filter-guide"><summary>${tr('browseFilterGuide','筛选说明','Filter guide','絞り込みの説明')}</summary><p id="character-filter-help">${roleHelp}</p><p id="creation-filter-help">${creationHelp}</p><p>${tr('statsSnapshot','下载量指按钮点击次数','Downloads count button clicks','ダウンロード数はボタンのクリック数')}</p></details></form>`;
   }
-  function browsePage(list, base, title, type = '', char = '', n = 1, intro = '') {
-    const galleryTabs=['/browse.html','/gifs.html'].includes(base)?renderArchiveTabs(base==='/gifs.html'?'gifs':'browse',ctx):'';
-    const page = Math.min(n, Math.max(1, Math.ceil(list.length / 24)));
-    const sliced = list.slice((page - 1) * 24, page * 24);
-    return `${pageHead(tr('archiveLabel','作品档案 / ARCHIVE','ARCHIVE / WORKS','作品アーカイブ / ARCHIVE'),title,intro || tr('browseLead','按角色与类型找图，或让随机顺序带你逛逛。','Filter by character and type, or explore in random order.','キャラクターや種類で絞り込むか、ランダムに楽しめます。'))}${galleryTabs}${filters(char,type,base.startsWith('/topics/')?'curated':'latest',list,null,base==='/browse.html')}<div class="results-line"><p id="result-count" aria-live="polite">${list.length} ${old('v2.work','作品')}</p><small data-stats-note>${tr('statsSnapshot','下载量指按钮点击次数','Downloads count button clicks','ダウンロード数はボタンのクリック数')}</small></div><div id="results" data-list="${esc(JSON.stringify(list.map(w=>w.slug)))}">${grid(sliced,'',true)}</div><div class="load-more-wrap"><button class="button" type="button" data-load-more hidden>${tr('loadMore','再看一些','Load more','もっと見る')}</button></div><div class="related-note">${icon('book',23)}<p>${tr('tryTopics','想一次看完同一组作品？去合集里逛逛。','Want a themed selection? Explore the collections.','テーマに沿って楽しむなら、コレクションへ。')}</p><a class="text-link" href="/topics.html">${old('v2.nav.collections','合集')}${icon('arrow',16)}</a></div>`;
+  function browsePage(list,base,title,type='',char='',n=1,intro='') {
+    const page=Math.min(n,Math.max(1,Math.ceil(list.length/24)));
+    const sliced=list.slice((page-1)*24,page*24);
+    const gif=base==='/gifs.html',category=base.startsWith('/categories/');
+    const label=gif?'GIF ARCHIVE':category?'CATEGORY':'ARCHIVE';
+    const lead=tr('browseLead','按角色、类型与排序筛选，点击图片可在当前页大图浏览。','Filter by character, type and order. Open an image to preview it on this page.','キャラクター、種類、並び順で絞り込み、画像を開くと同じページでプレビューできます。');
+    const trail=gif||category?ctx.breadcrumbs([[tr('allWorks','全部图片','All images','画像一覧'),'/browse.html'],[title]]):'';
+    return `${trail}${pageHead(label,title,lead)}${gif&&intro?`<aside class="note">${icon('image',20)}<p>${intro}</p></aside>`:''}${filters(char,type,base.startsWith('/topics/')?'curated':'latest',list,null,base==='/browse.html')}<p class="catalog-result" id="result-count" aria-live="polite">${list.length} ${old('v2.work','作品')}</p><div id="results" data-list="${esc(JSON.stringify(list.map(w=>w.slug)))}">${grid(sliced,'',true)}</div><div class="load-more-wrap"><button class="button" type="button" data-load-more hidden>${tr('loadMore','再看一些','Load more','もっと見る')}</button></div>`;
   }
-  return { filters, browsePage };
+  return {filters,browsePage};
 }

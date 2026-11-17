@@ -14,15 +14,6 @@
       Object.assign(panel.style, {width:px(width), maxHeight:px(height), left:px(left), top:top === null ? 'auto' : px(top), bottom:bottom === null ? 'auto' : px(bottom)});
     },
     tooltip(tip, left, top) { Object.assign(tip.style, {left:px(left), top:px(top)}); },
-    masonryReset(grid, items = []) {
-      grid.style.height = '';
-      for (const item of items) Object.assign(item.style, {width:'', left:'', top:''});
-    },
-    masonryWidth(items, width) { for (const item of items) item.style.width = px(width); },
-    masonryPlace(grid, items, result) {
-      items.forEach((item, i) => Object.assign(item.style, {left:px(result.positions[i].left), top:px(result.positions[i].top)}));
-      grid.style.height = px(result.height);
-    },
     columns(grid, count) { grid.style.setProperty('--cols', Number(count)); },
     previewImage(image, width, height, thumb = '') {
       if (width && height) { image.style.setProperty('--r', String(width / height)); image.style.setProperty('--w', px(width)); }

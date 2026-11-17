@@ -36,27 +36,34 @@ export function comicWorkNavigation(ctx, topic, work) {
   return `<section class="section comic-work-navigation" data-comic-topic="${ctx.esc(topic.id)}"><h2>${ctx.esc(topic.name)}</h2><p>${ctx.tr('comic.originalNumber','原稿页码','Original page number','原稿ページ')} ${number || ctx.tr('comic.coverImage','封面','Cover','表紙')} / ${topic.reader.totalPages}</p><div class="detail-actions">${ctx.button(comicPageURL(topic.id,number),ctx.tr('comic.read','按页阅读连载','Read the series','連載を読む'),'primary')}${ctx.button(comicPageURL(topic.id),ctx.tr('comic.contents','页码目录','Page contents','ページ目次'))}</div></section>`;
 }
 
-export function createComicSeries(ctx, topic) {
-  const {esc:e, tr, icon, button, breadcrumbs, write} = ctx;
-  const t = key => label(ctx,key);
-  const reader = topic.reader;
-  const byId = new Map(topic.list.map(work => [work.id, work]));
-  const pages = new Map(reader.pages.map(page => [page.number, byId.get(page.workId)]));
-  const missing = Array.from({length:reader.totalPages}, (_, i) => i + 1).filter(number => !pages.has(number));
-  const pageLabel = number => `${t('page','原稿第','Original page','原稿')} ${number} ${t('pageSuffix','页','','ページ')}`;
-  const coverLabel = () => t('cover','封面与目录','Cover & contents','表紙と目次');
-  const contents = number => `<nav class="comic-pages" aria-label="${e(topic.name)}"><a href="${comicPageURL(topic.id)}" ${!number?'aria-current="page"':''}>${coverLabel()}</a>${Array.from({length:reader.totalPages}, (_, i) => i + 1).map(n => `<a href="${comicPageURL(topic.id,n)}" ${n===number?'aria-current="page"':''} ${pages.has(n)?'':'class="comic-missing-link"'}>${n}${pages.has(n)?'':`<small>${t('unavailableShort','缺页','Missing','未収録')}</small>`}</a>`).join('')}</nav>`;
-  const navigation = number => `<nav class="comic-navigation" aria-label="${e(topic.name)}"><div>${number ? button(comicPageURL(topic.id,number-1),icon('back',16)+t('previous','上一页','Previous','前へ')) : `<span class="comic-boundary">${t('beginning','连载封面','Series cover','連載の表紙')}</span>`}</div><p>${number?pageLabel(number):coverLabel()} <span>/ ${reader.totalPages}</span></p><div>${number<reader.totalPages?button(comicPageURL(topic.id,number+1),t('next','下一页','Next','次へ')+icon('arrow',16),'primary'):`<span class="comic-boundary">${t('end','本次投稿到此','End of this submission','今回の投稿はここまで')}</span>`}</div></nav>`;
-  const profileURL = topic.author?.url || topic.author?.channels?.[0]?.url;
-  const author = topic.author?.name ? `<div class="author-line topic-author">${topic.avatar?`<img class="author-avatar" src="${e(topic.avatar)}" alt="" width="56" height="56">`:''}<div><span class="eyebrow">${t('author','作者署名','Creator credit','作者クレジット')}</span><b>${e(topic.author.name)}</b></div>${profileURL?`<a class="button small" href="${e(profileURL)}" target="_blank" rel="noopener noreferrer">${tr('comic.authorPage','作者主页','Creator profile','作者のページ')} ${icon('external',14)}</a>`:''}</div>` : '';
-  const availability = missing.length ? `<p class="comic-availability">${t('missingIntro','以下原稿页暂未收录：','Original pages not yet available:','未収録の原稿ページ：')} <b>${missing.join('、')}</b>。${t('keepNumbers','保留原稿页码，缺页不会重新编号。','Original page numbers are preserved.','欠番を詰めず、原稿のページ番号を保持しています。')}</p>` : '';
-
-  for (let number = 0; number <= reader.totalPages; number++) {
-    const work = number ? pages.get(number) : topic.cover;
-    const heading = `${breadcrumbs([[tr('comic.archiveTitle','连载漫画','Comic series','連載漫画'),'/serials.html'],...(number?[[e(topic.name),comicPageURL(topic.id)]]:[]),[number?pageLabel(number):e(topic.name)]])}<header class="comic-heading topic-hero"><div><p class="eyebrow">${t('serial','连载漫画','COMIC SERIES','連載漫画')}</p><h1>${e(topic.name)}</h1>${!number?`<p class="lede">${e(topic.summary)}</p>`:''}${author}<p class="comic-credits">${e(reader.credits)}</p></div></header>`;
-    const image = work ? `<figure class="comic-sheet" data-comic-work="${e(work.id)}"><img src="${e(work.l)}" alt="${e(work.n)}" width="${work.v?.[0]||work.w||480}" height="${work.v?.[1]||work.h||480}" fetchpriority="high"><figcaption>${number?pageLabel(number):t('coverImage','封面','Cover','表紙')} · ${button('/works/'+work.slug+'.html',t('details','查看详情与原图','Details & original','詳細と元画像'),'small')}</figcaption></figure>` : `<section class="comic-unavailable"><h2>${pageLabel(number)} · ${t('unavailable','暂未收录','Not yet available','未収録')}</h2><p>${t('missingBody','本页暂未收录，可继续翻页。','This original page is not yet available. You can continue to the next page.','この原稿ページは未収録です。次のページに進めます。')}</p></section>`;
-    const actions = !number ? `<div class="comic-intro-actions">${button(comicPageURL(topic.id,1),tr('comic.start','开始阅读','Start reading','読み始める'),'primary')}${button('#comic-contents',t('contents','页码目录','Page contents','ページ目次'))}<button class="button" type="button" data-download-topic="${e(topic.id)}">${icon('download',16)}${t('download','打包下载已收录页','Download available pages','収録ページをZIPでダウンロード')}</button></div>` : '';
-    const content = `${heading}${actions}<section class="comic-reader" data-comic-reader="${e(topic.id)}" data-comic-page="${number}">${!number?availability:''}${navigation(number)}${image}${navigation(number)}<details class="comic-contents" id="comic-contents" ${!number?'open':''}><summary>${t('contents','页码目录','Page contents','ページ目次')}</summary>${contents(number)}</details></section>`;
-    write(comicPageURL(topic.id,number),topic.name,'browse',content,{comic:{topicId:topic.id,number},desc:topic.summary,dependencies:[topic,number,work]});
+export function createComicSeries(ctx,topic) {
+  const {esc:e,tr,icon,button,breadcrumbs,write}=ctx;
+  const t=key=>label(ctx,key),reader=topic.reader;
+  const byId=new Map(topic.list.map(work=>[work.id,work]));
+  const pages=new Map(reader.pages.map(page=>[page.number,byId.get(page.workId)]));
+  const missing=Array.from({length:reader.totalPages},(_,i)=>i+1).filter(n=>!pages.get(n));
+  const pageLabel=n=>`${t('page')} ${n} ${t('pageSuffix')}`;
+  const missingNote=missing.length?`<p class="comic-availability">${t('missingIntro')} ${missing.join('、')} · ${t('keepNumbers')}</p>`:'';
+  const author=topic.author;
+  const uid=author?.channels?.map(channel=>channel.url.match(/space\.bilibili\.com\/(\d+)/)?.[1]).find(Boolean);
+  const authorHref=author?'/creators/'+(uid?'bilibili-'+uid:topic.id)+'.html':'';
+  const contents=number=>`<nav class="comic-pages" aria-label="${e(topic.name)}"><a href="${comicPageURL(topic.id)}" ${number===0?'aria-current="page"':''}>${t('cover')}</a>${Array.from({length:reader.totalPages},(_,i)=>i+1).map(n=>`<a href="${comicPageURL(topic.id,n)}" ${n===number?'aria-current="page"':''} ${pages.get(n)?'':'class="comic-missing-link"'}>${n}${pages.get(n)?'':`<small>${t('unavailableShort')}</small>`}</a>`).join('')}</nav>`;
+  const unavailable=number=>`<section class="comic-unavailable"><h2>${number?pageLabel(number):t('coverImage')} · ${t('unavailable')}</h2><p>${t('missingBody')}</p></section>`;
+  for(let number=0;number<=reader.totalPages;number++) {
+    const work=number?pages.get(number):topic.cover;
+    const trail=breadcrumbs([[tr('comic.archiveTitle','连载漫画','Comic series','連載漫画'),'/serials.html'],...(number?[[e(topic.name),comicPageURL(topic.id)]]:[]),[number?pageLabel(number):e(topic.name)]]);
+    const image=(cls)=>work?`<figure class="${cls} comic-sheet" data-comic-work="${e(work.id)}"><img src="${e(work.l)}" width="${work.v?.[0]||work.w||480}" height="${work.v?.[1]||work.h||480}" alt="${e(work.n)}" fetchpriority="high" decoding="async"></figure>`:unavailable(number);
+    let content;
+    if(number===0) {
+      const thumbs=Array.from({length:reader.totalPages},(_,i)=>i+1).map(n=>{
+        const item=pages.get(n);
+        return `<a class="page-cell${item?'':' comic-missing-link'}" href="${comicPageURL(topic.id,n)}">${item?`<img src="${e(item.i||item.l)}" width="${item.p?.[0]||item.w}" height="${item.p?.[1]||item.h}" alt="${e(item.n)}" loading="lazy">`:`<span>${t('unavailableShort')}</span>`}<span>P${String(n).padStart(2,'0')}</span></a>`;
+      }).join('');
+      content=`${trail}<section class="cd-hero" data-comic-reader="${e(topic.id)}" data-comic-page="0">${image('cd-portrait')}<div class="cd-head"><div class="eyebrow"><span>COMIC SERIES</span><i aria-hidden="true"></i></div><h1>${e(topic.name)}</h1><p class="cd-alias">${e(topic.summary)}</p><p class="serial-index-credits">${e(reader.credits||'')}</p><div class="cd-stats"><span><b>${reader.pages.length}</b> / ${reader.totalPages} ${t('pages')}</span>${author?`<a class="author-name" href="${authorHref}">${e(author.name)}</a>`:''}</div><div class="cd-acts comic-intro-actions">${button(comicPageURL(topic.id,1),tr('comic.start','开始阅读','Start reading','読み始める'),'primary')}<button class="button" type="button" data-download-topic="${e(topic.id)}">${icon('download',16)}${t('download')}</button>${authorHref?button(authorHref,tr('comic.authorPage','作者主页','Creator profile','作者のページ')):''}</div></div></section>${missingNote}<div class="sec"><h2>${t('contents')}</h2><span>${t('keepNumbers')}</span></div><div class="page-grid" id="comic-contents">${thumbs}</div>`;
+    } else {
+      const nav=`<nav class="rd-nav comic-navigation" aria-label="${e(topic.name)}">${number>0?button(comicPageURL(topic.id,number-1),icon('back',16)+t('previous')):`<button class="button" type="button" disabled>${t('beginning')}</button>`}<span class="rd-end">${number} / ${reader.totalPages}</span>${number<reader.totalPages?button(comicPageURL(topic.id,number+1),t('next')+icon('arrow',16),'primary'):button(comicPageURL(topic.id),t('end'),'primary')}</nav>`;
+      content=`${trail}<section data-comic-reader="${e(topic.id)}" data-comic-page="${number}"><div class="rd-top">${button(comicPageURL(topic.id),icon('back',16)+t('contents'))}${work?button('/works/'+work.slug+'.html',t('details')):''}<span class="rd-progress">${pageLabel(number)} / ${reader.totalPages}</span></div><div class="rd-head"><h1>${e(work?.n||topic.name)}${work?'':' · '+pageLabel(number)}</h1><span>${e(reader.credits||author?.name||'')}</span></div>${image('rd-stage')}${nav}<details class="comic-contents" id="comic-contents"><summary>${t('contents')}</summary>${contents(number)}</details></section>`;
+    }
+    write(comicPageURL(topic.id,number),topic.name,'serials',content,{comic:{topicId:topic.id,number},desc:topic.summary,dependencies:[topic,number,work]});
   }
 }

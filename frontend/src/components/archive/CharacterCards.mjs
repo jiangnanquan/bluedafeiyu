@@ -1,9 +1,8 @@
 import {resolveCharacterPortrait} from './CharacterPortrait.mjs';
-import {renderShareButton} from '../../../public/components/share-card-model.js';
 export function createCharacterCards(ctx) {
   const { editorial, esc, old, icon, card } = ctx;
 const roleCover = c => c.list.find(w=>w.slug===editorial.characterCovers[c.id]) || c.list.find(w=>w.k.includes('setting')) || c.list.find(w=>w.k.includes('illustration')) || c.list[0] || {i:'/avatar.png',w:96,h:96,col:'var(--blue)',cs:'var(--blue-pale)',n:c.name,placeholder:true};
-const roleCard = c => { const w=roleCover(c), portrait=resolveCharacterPortrait(c,w); return `<article class="role-share-card"><a href="/characters/${c.id}.html" class="role-card"><div class="role-art"><img src="${esc(portrait.image?.path||w.i)}" width="${w.w}" height="${w.h}" alt="${esc(c.name)}" loading="lazy"></div><div class="role-body"><h3>${esc(c.name)}</h3><p>${esc(c.aliases.join(' / ') || c.name)}</p><span>${c.list.length} ${old('v2.work','作品')}${icon('arrow',16)}</span></div></a>${renderShareButton('/characters/'+c.id+'.html',{compact:true})}</article>`; };
+const roleCard = c => { const w=roleCover(c), {image}=resolveCharacterPortrait(c,w), href='/characters/'+c.id+'.html'; return `<article class="role-card"><a class="role-art" href="${href}"><img src="${esc(image?.path||w.i)}" width="${image?.width||w.w}" height="${image?.height||w.h}" alt="${esc(c.name)}" loading="lazy" decoding="async"></a><div class="role-body"><h3><a href="${href}">${esc(c.name)}</a></h3><a class="role-count" href="${href}">${c.list.length} ${old('v2.work','作品')}${c.aliases.length?' · '+esc(c.aliases.slice(0,2).join('/')):''}</a></div></article>`; };
 
   return { roleCover, roleCard };
 }

@@ -7,7 +7,7 @@ import {videoTerminology} from '../src/lib/video-terminology.mjs';
 import {renderVideoArchive} from '../src/components/archive/VideoPages.mjs';
 import {createPrimitives} from '../src/components/archive/primitives.mjs';
 
-test('monthly video archive keeps every approved video in Shanghai date order', () => {
+test('flat video archive keeps every approved video in Shanghai date order', () => {
   const ctx = createPrimitives({translations:{en:{},ja:{}},modelVendors:{}});
   const video = (bvid, publishedAt) => ({bvid,publishedAt,uid:'1',title:'A <video>',url:`https://www.bilibili.com/video/${bvid}/`,cover:'https://i1.hdslb.com/bfs/archive/test.jpg'});
   const videos = [video('BVold','2026-10-31T15:59:00Z'),video('BVnew','2026-11-02T00:00:00Z'),video('BVboundary','2026-10-31T16:01:00Z')];
@@ -15,12 +15,11 @@ test('monthly video archive keeps every approved video in Shanghai date order', 
   const {document} = parseHTML(renderVideoArchive(ctx,{videos,creators:[{uid:'1',name:'Creator <name>'}]}));
   assert.deepEqual([...document.querySelectorAll('[data-video-bvid]')].map(el=>el.dataset.videoBvid),['BVnew','BVboundary','BVold']);
   assert.deepEqual(videos.map(v=>v.bvid),originalOrder);
-  assert.deepEqual([...document.querySelectorAll('[data-video-month]')].map(el=>el.dataset.videoMonth),['2026-11','2026-10']);
-  assert.match(document.querySelector('[data-video-month="2026-11"] .video-archive-month-head').textContent,/2 条/);
+  assert.equal(document.querySelectorAll('.video-grid .video-card').length,3);
   assert.equal(document.querySelector('[data-video-bvid="BVboundary"] time').textContent,'2026-11-01');
   assert.equal(document.querySelector('[data-video-title]').textContent,'A <video>');
   assert.equal(document.querySelector('[data-creator-name]').textContent,'Creator <name>');
-  assert.equal(document.querySelector('.video-archive-register').getAttribute('href'),'/submit.html?media=video#creator-registration');
+  assert.equal(document.querySelector('.video-archive-register').getAttribute('href'),'/submit-video.html');
   for(const link of document.querySelectorAll('a[href^="https://www.bilibili.com/video/"]'))assert.equal(link.getAttribute('target'),'_blank');
   assert.equal(document.querySelectorAll('template').length,0);
   const actual=parseHTML(renderVideoArchive(ctx,videoArchive)).document;
@@ -28,7 +27,7 @@ test('monthly video archive keeps every approved video in Shanghai date order', 
   assert.equal(new Set([...actual.querySelectorAll('[data-video-bvid]')].map(el=>el.dataset.videoBvid)).size,videoArchive.videos.length);
 });
 
-test('monthly video archive provides an empty state and creator registration without videos', () => {
+test('video archive provides an empty state and creator registration without videos', () => {
   const ctx=createPrimitives({translations:{en:{},ja:{}},modelVendors:{}});
   const {document}=parseHTML(renderVideoArchive(ctx,{videos:[],creators:[]}));
   assert.equal(document.querySelectorAll('[data-video-month]').length,0);

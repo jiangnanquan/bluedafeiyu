@@ -52,6 +52,11 @@ test('reader renders each original page separately with both boundaries and expl
   for(let number=0;number<=28;number++){
     const {document}=parseHTML(pages.get(comicPageURL(topic.id,number)).content);
     assert.equal(document.querySelector('[data-comic-reader]').getAttribute('data-comic-page'),String(number));
+    if(number===0){
+      const entries=[...document.querySelectorAll('.page-grid .page-cell')];
+      assert.equal(entries.length,28);
+      assert.deepEqual(entries.map(a=>a.getAttribute('href')),Array.from({length:28},(_,i)=>comicPageURL(topic.id,i+1)));
+    }else{
     assert.equal(document.querySelectorAll('.comic-pages [aria-current="page"]').length,1);
     assert.equal(document.querySelector('.comic-pages [aria-current="page"]').getAttribute('href'),comicPageURL(topic.id,number));
     assert.equal(document.querySelectorAll('.comic-pages a').length,29);
@@ -59,6 +64,7 @@ test('reader renders each original page separately with both boundaries and expl
     const nav=document.querySelector('.comic-navigation');
     if(number>0)assert.ok(nav.querySelector(`a[href="${comicPageURL(topic.id,number-1)}"]`));
     if(number<28)assert.ok(nav.querySelector(`a[href="${comicPageURL(topic.id,number+1)}"]`));
+    }
     const workId=number?serial.reader.pages.find(page=>page.number===number)?.workId:serial.coverWorkId;
     if(workId){
       assert.equal(document.querySelector('.comic-sheet').getAttribute('data-comic-work'),workId);
@@ -86,14 +92,15 @@ test('reader supports missing covers, missing pages and serials without creator 
 test('serial directory renders one cover card per explicit series and handles missing covers',()=>{
   let content='';
   const base={id:'one',name:'One',summary:'First',reader:{totalPages:3,pages:[{number:2,workId:'page'}]},cover:{i:'/cover.webp',w:300,h:400},author:{name:'Artist'}};
-  const ctx={topics:[base,{...base,id:'two',name:'Two',cover:null,author:null},{id:'collection'}],esc:String,tr:(_key,zh)=>zh,old:(_key,zh)=>zh,icon:()=>'',pageHead:(_eyebrow,title,lead)=>`<header><h1>${title}</h1><p>${lead}</p></header>`,write:(_url,_title,_active,html)=>content=html};
+  const ctx={topics:[base,{...base,id:'two',name:'Two',cover:null,author:null},{id:'collection'}],esc:String,tr:(_key,zh)=>zh,old:(_key,zh)=>zh,icon:()=>'',button:(url,label)=>`<a href="${url}">${label}</a>`,pageHead:(_eyebrow,title,lead)=>`<header><h1>${title}</h1><p>${lead}</p></header>`,write:(_url,_title,_active,html)=>content=html};
   createComicArchive(ctx);
   const {document}=parseHTML(content);
-  assert.equal(document.querySelectorAll('.comic-card').length,2);
+  assert.equal(document.querySelectorAll('.serial-item').length,2);
   assert.equal(document.querySelector('[data-comic-series="one"] img').getAttribute('src'),'/cover.webp');
   assert.equal(document.querySelector('[data-comic-series="one"] a').getAttribute('href'),'/topics/one.html');
-  assert.match(document.querySelector('[data-comic-series="one"] .comic-card-pages').textContent,/1 \/ 3/);
-  assert.match(document.querySelector('[data-comic-series="two"] .comic-card-cover').textContent,/封面暂未收录/);
+  assert.equal(document.querySelector('[data-comic-series="one"] .serial-count b').textContent,'1');
+  assert.match(document.querySelector('[data-comic-series="one"] .serial-count span').textContent,/3/);
+  assert.match(document.querySelector('[data-comic-series="two"] .serial-cover').textContent,/封面暂未收录/);
 });
 
 test('built gallery separates serial members while retaining the reader, search and stable details',()=>{

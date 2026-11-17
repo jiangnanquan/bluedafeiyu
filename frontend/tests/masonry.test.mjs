@@ -1,35 +1,26 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {masonryPositions} from '../src/scripts/masonry.mjs';
-import {initialMasonryScript} from '../src/components/layout/Masonry.mjs';
-import vm from 'node:vm';
+import {parseHTML} from 'linkedom';
+import {createWorkCards} from '../src/components/archive/WorkCards.mjs';
+import {renderPagedFeed} from '../src/components/archive/PagedFeed.mjs';
 
-test('initial layout uses resolved CSS tracks instead of stale viewport column hints',()=>{
-  const items=[100,200,50].map(offsetHeight=>({offsetHeight,hidden:false,matches:()=>true}));
-  const grid={children:items,clientWidth:412,classList:{add:value=>assert.equal(value,'is-laid-out')}};
-  let placed;
-  vm.runInNewContext(initialMasonryScript().replace(/^<script>|<\/script>$/g,''),{
-    document:{currentScript:{previousElementSibling:grid}},
-    getComputedStyle:()=>({gridTemplateColumns:'200px 200px',getPropertyValue:key=>key==='--columns'?'6':'12px'}),
-    SiteComponents:{masonryWidth:(nodes,width)=>{assert.equal(nodes.length,3);assert.equal(width,200);},masonryPlace:(_grid,_items,result)=>{placed=JSON.parse(JSON.stringify(result));}}
-  });
-  assert.deepEqual(placed,masonryPositions([100,200,50],2,200,12));
+const works=Array.from({length:55},(_,i)=>({id:'stable-'+i,slug:'frozen-'+i,n:'Work '+i,i:'/thumb.webp',w:320,h:400+i*3,k:['meme'],roles:[],tg:[],dt:'2026.11.17'}));
+test('native column cards retain source order, stable links and dimensions without scripting geometry',()=>{
+ const {document}=parseHTML(createWorkCards().grid(works));
+ const grid=document.querySelector('.work-grid.masonry');
+ assert.deepEqual([...grid.children].map(node=>node.dataset.slug),works.map(work=>work.slug));
+ assert.equal(document.querySelector('script,[style]'),null);
+ for(const [i,card] of [...grid.children].entries()) {
+  assert.equal(card.querySelector('.work-title').getAttribute('href'),'/works/'+works[i].slug+'.html');
+  assert.equal(Number(card.querySelector('img').getAttribute('height')),works[i].h);
+ }
 });
-
-test('unequal images pack into the shortest column instead of aligned rows',()=>{
-  const result=masonryPositions([100,200,150,80,120],3,200,16);
-  assert.deepEqual(result.positions,[{left:0,top:0},{left:216,top:0},{left:432,top:0},{left:0,top:116},{left:432,top:166}]);
-  assert.equal(result.height,286);
-});
-test('appending cards keeps existing positions and never overlaps at phone or desktop widths',()=>{
-  const heights=[120,400,230,95,300,180,210,100];
-  for(const columns of [2,4,6]){
-    const before=masonryPositions(heights.slice(0,4),columns,160,12);
-    const after=masonryPositions(heights,columns,160,12);
-    assert.deepEqual(after.positions.slice(0,4),before.positions);
-    after.positions.forEach((a,i)=>after.positions.slice(i+1).forEach((b,j)=>{
-      if(a.left===b.left)assert.ok(b.top>=a.top+heights[i]+12);
-    }));
-    assert.equal(masonryPositions([],columns,160,12).height,0);
-  }
+test('paged image feeds preserve deferred and no-script items in native columns',()=>{
+ const cards=works.map(work=>createWorkCards().card(work));
+ const {document}=parseHTML(renderPagedFeed(cards,{kind:'images',gridClass:'work-grid'}));
+ assert.ok(document.querySelector('[data-feed-grid].masonry'));
+ const rest=parseHTML(document.querySelector('template').innerHTML).document;
+ assert.equal(document.querySelectorAll('[data-feed-grid] .work-card').length+rest.querySelectorAll('.work-card').length,works.length);
+ assert.equal(document.querySelector('script,[style]'),null);
+ assert.ok(document.querySelector('noscript .masonry'));
 });

@@ -21,6 +21,6 @@ export function renderWorkCard(work, {url = value => value, translate = (_key,va
     <button class="quick-view card-preview" type="button" ${workPreviewAttributes(work.slug)} aria-label="${preview}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="m15 15 6 6"/></svg></button>
     ${renderSaveButton('works',work.slug,{translate,className:'card-save'})}
     ${renderShareButton('/works/' + work.slug + '.html', {translate, compact:true})}
-    <div class="work-text"><a class="work-title" ${workPreviewAttributes(work.slug)} aria-label="${preview}" href="${href}">${esc(names(work.n))}</a>${owners?`<div class="work-owner">${owners}</div>`:''}<div class="work-meta card-meta"><span class="card-roles">${roleLinks}</span> · <span>${kinds}</span><time title="${esc(work.dt)}"> · ${esc(work.dt?.slice(5))}</time></div></div>
+    <a class="work-title" ${workPreviewAttributes(work.slug)} aria-label="${preview}" href="${href}">${esc(names(work.n))}</a>${owners?`<div class="work-owner">${owners}</div>`:''}<div class="work-meta card-meta"><span class="card-roles">${roleLinks}</span> · <span>${kinds}</span><time title="${esc(work.dt)}"> · ${esc(work.dt)}</time></div>
   </article>`;
 }

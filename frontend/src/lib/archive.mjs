@@ -1,3 +1,4 @@
+import {submissionCopy} from '../components/submissions/submission-copy.mjs';
 import {homeCopy} from '../components/home/home-copy.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -50,7 +51,7 @@ const galleryWorks = works.filter(work=>!serialWorkIds.has(work.id));
 const chars = snapshot.characters.filter(c=>c.status==='active').map(c=>{
   const allList=works.filter(w=>w.cids.includes(c.id));
   return {...c,allList,list:allList.filter(w=>!serialWorkIds.has(w.id))};
-}).filter(c=>c.allList.length).sort((a,b)=>b.list.length-a.list.length);
+});
 const tagCounts=new Map();for(const w of works)for(const tag of w.tg)tagCounts.set(tag,(tagCounts.get(tag)||0)+1);
 const translations={en:{'d.navigationToggle':'Toggle navigation','d.saveWork':'Save work','d.saveCreator':'Save creator','d.saved':'Saved','d.unsave':'Remove from saved','d.savedTitle':'Saved works','d.storageUnavailable':'Your browser could not save this item.'},ja:{'d.navigationToggle':'ナビゲーションを切り替え','d.saveWork':'作品を保存','d.saveCreator':'作者を保存','d.saved':'保存済み','d.unsave':'お気に入りから削除','d.savedTitle':'お気に入り','d.storageUnavailable':'ブラウザーに保存できませんでした。'}};
 for (const [key, row] of Object.entries(videoCopy)) { translations.en['d.' + key] = row[1]; translations.ja['d.' + key] = row[2]; }
@@ -65,6 +66,7 @@ for (const [i, row] of aboutQuestions.entries()) {
   }
 }
 registerCommunityContacts(translations);
+for(const [key,row] of Object.entries(submissionCopy)){translations.en['d.submission.'+key]=row[1];translations.ja['d.submission.'+key]=row[2];}
 translations.en['d.openApi']='Open API';translations.ja['d.openApi']='公開API';
 for(const [key, en, ja] of [
   ['allRoles','All characters','すべてのキャラクター'],['allTypes','All types','すべての種類'],
@@ -76,6 +78,7 @@ for(const [key, en, ja] of [
   ['navHome','Home','ホーム'],['navImageHall','Image gallery','画像館'],['navCreators','Creators','クリエイター'],
   ['navCommunityProjects','Community projects','コミュニティプロジェクト'],['navFriendWall','Friend links','リンク集'],['navAbout','About','サイト情報'],
   ['weeklyNav','AI Girl Weekly','AI娘ウィークリー'],
+  ['closeNavigation','Close navigation','ナビゲーションを閉じる'],
   ['explore','EXPLORE','ブラウズ'],['sideText','A home for every delightful image.','楽しい一枚を、大切に。'],['nonOfficial','Unofficial fan archive','非公式ファンアーカイブ'],
   ['footerText','AI-girl fan art archive · Images belong to their creators','AI娘の二次創作アーカイブ · 画像の権利は原作者に帰属します'],['rights','Sources & permissions','出典と利用許諾'],
   ['curated','Curated order','掲載順'],['selectRole','Select a character','キャラクターを選択'],['quickView','Quick preview','プレビュー'],['copyFail','Could not copy. Please copy manually.','コピーできませんでした。手動でコピーしてください。'],

@@ -1,40 +1,31 @@
-// 社群联系卡：社群页与关于页共用同一份结构与文案。
-// 中文写在卡片里，en / ja 由 archive.mjs 注册进 ArchiveLabels（各页都加载 archive-labels.js），
-// 繁体沿用 lang.js 的 OpenCC 转换，不再单独维护第四份。
+// 社群页与关于页共用真实联系入口。QQ 群仅提供邀请按钮和二维码。
 import { SITE } from '../../lib/v2.mjs';
 
 const esc = value => String(value ?? '').replace(/[&<>"']/g, s => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[s]);
 const span = (key, zh) => `<span data-i18n="d.community.${key}">${esc(zh)}</span>`;
 
-// key：数组下标 0 = 中文，1 = English，2 = 日本語。
+// 繁体由站内 OpenCC 转换；英、日词典在 archive.mjs 初始化时统一注册。
 export const COMMUNITY_CONTACT_COPY = {
+  live: ['即时交流', 'Live chat', 'リアルタイムの交流'],
   discordText: [
-    '服务器里聊新图、二创和站点反馈，随时来坐坐。',
-    'Talk about new works, fan art and site feedback in the server — drop by any time.',
-    '新しい作品や二次創作、サイトへの意見をサーバーで話せます。いつでも気軽にどうぞ。'
+    '聊新图、分享二创、参与站点建议，和国内外同好一起讨论 AI 娘的设定与作品。',
+    'Share new works, fan art and site suggestions, and discuss AI girl designs with fans around the world.',
+    '新しい作品や二次創作、サイトへの意見を共有し、世界のファンとAI娘の設定や作品について話しましょう。'
   ],
   discordJoin: ['加入 Discord', 'Join Discord', 'Discord に参加'],
+  qqTitle: ['QQ 群', 'QQ group', 'QQグループ'],
   qqText: [
-    'QQ 群同样聊图、催更和反馈；扫码、复制群号或在 QQ 里搜索都能加入。',
-    'The QQ group is another place to chat about art, ask for updates and report issues. Scan the code, copy the group number, or search for it in QQ.',
-    'QQグループでも作品の話や更新のお願い、不具合の報告ができます。QRコードを読み取るか、グループ番号をコピーするか、QQで検索して参加できます。'
+    '蓝色大肥鱼 · 点击按钮或扫描二维码加入，一起聊图、分享二创。',
+    'Blue Dafeiyu · Use the invite button or scan the QR code to join and share fan art.',
+    '藍色大肥魚 · 招待ボタンまたはQRコードから参加して、作品や二次創作について話しましょう。'
   ],
-  qqName: ['蓝色大肥鱼.com', 'Blue Dafeiyu.com', 'Blue Dafeiyu.com'],
-  qqNumberLabel: ['群号', 'Group number', 'グループ番号'],
-  qqCopy: ['复制群号', 'Copy group number', 'グループ番号をコピー'],
-  qqJoin: ['打开 QQ 加群', 'Join the QQ group', 'QQグループに参加'],
-  qqScan: ['扫码进群', 'Scan to join', 'QRコードで参加'],
-  qqQrAlt: [
-    'QQ 群「蓝色大肥鱼.com」（群号 1134100615）的加入二维码',
-    'QR code to join the QQ group “Blue Dafeiyu.com” (group number 1134100615)',
-    'QQグループ「Blue Dafeiyu.com」（グループ番号 1134100615）に参加するためのQRコード'
-  ],
+  qqJoin: ['加入 QQ 群', 'Join the QQ group', 'QQグループに参加'],
+  qqQrAlt: ['QQ 群「蓝色大肥鱼」的加入二维码', 'QR code to join the Blue Dafeiyu QQ group', 'QQグループ「藍色大肥魚」に参加するためのQRコード'],
   wechatTitle: ['微信公众号', 'WeChat Official Account', 'WeChat公式アカウント'],
-  wechatScan: ['微信扫码关注', 'Scan with WeChat to follow', 'WeChatでQRコードを読み取ってフォロー'],
+  wechatScan: ['微信扫码关注，获取更新与精选二创。', 'Scan with WeChat for updates and selected fan art.', 'WeChatでQRコードを読み取ると、更新情報や二次創作の紹介を受け取れます。'],
   wechatQrAlt: ['微信公众号关注二维码', 'WeChat Official Account follow QR code', 'WeChat公式アカウントのフォロー用QRコード']
 };
 
-// 在 archive.mjs 建立翻译表时调用一次，确保 archive-labels.js 带上全部按键。
 export function registerCommunityContacts(translations) {
   for (const [key, row] of Object.entries(COMMUNITY_CONTACT_COPY)) {
     translations.en['d.community.' + key] = row[1];
@@ -42,33 +33,24 @@ export function registerCommunityContacts(translations) {
   }
 }
 
+const discordIcon = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.6 5.6A16 16 0 0 0 15.7 4.4l-.3.6a12 12 0 0 1 3.4 1.2 11.4 11.4 0 0 0-9.6 0 12 12 0 0 1 3.4-1.2l-.3-.6A16 16 0 0 0 4.4 5.6C1.9 9.4 1.2 13.2 1.5 17a16 16 0 0 0 4.8 2.4l.6-1a10 10 0 0 1-1.7-.8l.4-.3a11.5 11.5 0 0 0 9.8 0l.4.3c-.5.3-1.1.6-1.7.8l.6 1a16 16 0 0 0 4.8-2.4c.4-4.4-.7-8.2-2.9-11.4ZM8.6 14.8c-.9 0-1.7-.8-1.7-1.9s.7-1.9 1.7-1.9 1.7.9 1.7 1.9-.8 1.9-1.7 1.9Zm6.8 0c-.9 0-1.7-.8-1.7-1.9s.7-1.9 1.7-1.9 1.7.9 1.7 1.9-.8 1.9-1.7 1.9Z"/></svg>';
+
 export function communityContacts({ compact = false } = {}) {
   const { discord, qq, wechat } = SITE.community;
-  const className = 'community-contacts' + (compact ? ' community-contacts--compact' : '');
-  const discordCard = `<article class="community-contact community-contact--discord" data-community-channel="discord">
-      <p class="community-contact-kicker">DISCORD</p>
-      <h3 class="community-contact-title">${esc(discord.name)}</h3>
-      <p class="community-contact-text">${span('discordText', COMMUNITY_CONTACT_COPY.discordText[0])}</p>
-      <p class="community-contact-acts"><a class="button primary" href="${esc(discord.url)}" target="_blank" rel="noopener noreferrer">${span('discordJoin', COMMUNITY_CONTACT_COPY.discordJoin[0])}</a></p>
-    </article>`;
-  const qqCard = `<article class="community-contact community-contact--qq" data-community-channel="qq">
-      <p class="community-contact-kicker">QQ</p>
-      <h3 class="community-contact-title">${span('qqName', qq.name)}</h3>
-      <p class="community-contact-text">${span('qqText', COMMUNITY_CONTACT_COPY.qqText[0])}</p>
-      <p class="community-contact-number"><span class="community-contact-label">${span('qqNumberLabel', COMMUNITY_CONTACT_COPY.qqNumberLabel[0])}</span><strong class="community-contact-digits">${esc(qq.number)}</strong></p>
-      <figure class="community-contact-qr">
-        <a href="${esc(qq.url)}" target="_blank" rel="noopener noreferrer"><img src="${esc(qq.qr)}" width="${qq.qrWidth}" height="${qq.qrHeight}" alt="${esc(COMMUNITY_CONTACT_COPY.qqQrAlt[0])}" data-i18n-attr="alt:d.community.qqQrAlt" loading="lazy" decoding="async" /></a>
-        <figcaption>${span('qqScan', COMMUNITY_CONTACT_COPY.qqScan[0])}</figcaption>
-      </figure>
-      <p class="community-contact-acts"><button class="button" type="button" data-copy="${esc(qq.number)}">${span('qqCopy', COMMUNITY_CONTACT_COPY.qqCopy[0])}</button><a class="button primary" href="${esc(qq.url)}" target="_blank" rel="noopener noreferrer">${span('qqJoin', COMMUNITY_CONTACT_COPY.qqJoin[0])}</a></p>
-    </article>`;
-  const wechatCard = wechat ? `<article class="community-contact community-contact--wechat" data-community-channel="wechat">
-      <p class="community-contact-kicker">WECHAT</p>
-      <h3 class="community-contact-title">${span('wechatTitle', COMMUNITY_CONTACT_COPY.wechatTitle[0])}</h3>
-      <figure class="community-contact-qr">
-        <img src="${esc(wechat.qr)}" width="${wechat.qrWidth}" height="${wechat.qrHeight}" alt="${esc(COMMUNITY_CONTACT_COPY.wechatQrAlt[0])}" data-i18n-attr="alt:d.community.wechatQrAlt" loading="lazy" decoding="async" />
-        <figcaption>${span('wechatScan', COMMUNITY_CONTACT_COPY.wechatScan[0])}</figcaption>
-      </figure>
-    </article>` : '';
-  return `<div class="${className}" data-community-contacts>${discordCard}${qqCard}${wechatCard}</div>`;
+  return `<div class="join-layout${compact ? ' join-layout--compact' : ''}" data-community-contacts>
+    <article class="join-main" data-community-channel="discord">
+      <span class="join-logo">${discordIcon}</span>
+      <span class="join-pill">${span('live', COMMUNITY_CONTACT_COPY.live[0])}</span>
+      <h3>${esc(discord.name)}</h3>
+      <p>${span('discordText', COMMUNITY_CONTACT_COPY.discordText[0])}</p>
+      <div class="join-main-foot"><a class="button join-main-btn" href="${esc(discord.url)}" target="_blank" rel="noopener noreferrer">${span('discordJoin', COMMUNITY_CONTACT_COPY.discordJoin[0])}<span aria-hidden="true">↗</span></a></div>
+    </article>
+    <div class="join-side">
+      <article class="join-row" data-community-channel="qq">
+        <div class="join-row-copy"><h3>${span('qqTitle', COMMUNITY_CONTACT_COPY.qqTitle[0])}</h3><p>${span('qqText', COMMUNITY_CONTACT_COPY.qqText[0])}</p><div class="join-acts"><a class="button join-button" href="${esc(qq.url)}" target="_blank" rel="noopener noreferrer">${span('qqJoin', COMMUNITY_CONTACT_COPY.qqJoin[0])}<span aria-hidden="true">↗</span></a></div></div>
+        <a class="join-qr-link" href="${esc(qq.url)}" target="_blank" rel="noopener noreferrer"><img class="join-qr" src="${esc(qq.qr)}" width="${qq.qrWidth}" height="${qq.qrHeight}" alt="${esc(COMMUNITY_CONTACT_COPY.qqQrAlt[0])}" data-i18n-attr="alt:d.community.qqQrAlt" loading="lazy" decoding="async" /></a>
+      </article>
+      ${wechat ? `<article class="join-row" data-community-channel="wechat"><div class="join-row-copy"><h3>${span('wechatTitle', COMMUNITY_CONTACT_COPY.wechatTitle[0])}</h3><p>${span('wechatScan', COMMUNITY_CONTACT_COPY.wechatScan[0])}</p></div><img class="join-qr" src="${esc(wechat.qr)}" width="${wechat.qrWidth}" height="${wechat.qrHeight}" alt="${esc(COMMUNITY_CONTACT_COPY.wechatQrAlt[0])}" data-i18n-attr="alt:d.community.wechatQrAlt" loading="lazy" decoding="async" /></article>` : ''}
+    </div>
+  </div>`;
 }

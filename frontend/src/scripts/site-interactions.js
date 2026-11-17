@@ -1,15 +1,23 @@
+import {installCatalogFilters} from '../../public/components/catalog-controls.js';
+import {installSubmissionUpload} from '../../public/components/submission-upload.js';
+import {installComicReader} from '../../public/components/comic-reader.js';
+import {installVideoSort} from '../../public/components/video-archive.js';
 import {installSubmissionTabs} from '../../public/components/submission-tabs.js';
+import {installSidebar} from '../../public/components/sidebar-state.js';
 import {installCommunityProjects} from '../../public/components/community-projects.js';
 import {installCreatorDirectory,installCreatorRails} from '../../public/components/creator-directory.js';
-import {installMasonry} from './masonry.mjs';
 import {installPagedFeeds} from '../../public/components/paged-feed.js';
 import {installHomeRankings} from '../../public/components/home-rankings.js';
 import './saved-ui.js';
-installMasonry();
 installPagedFeeds();
+installVideoSort();
+installCatalogFilters();
+installComicReader();
+installSidebar();
 installHomeRankings();
 
 installSubmissionTabs();
+installSubmissionUpload();
 
 const friendFilters=[...document.querySelectorAll('[data-friend-filter]')];
 if(friendFilters.length){

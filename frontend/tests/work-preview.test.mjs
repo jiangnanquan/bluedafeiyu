@@ -271,8 +271,8 @@ test('creator overview rails use the same preview attributes for images while vi
   const ctx={esc:String,tr:(_key,zh)=>zh,icon:()=>'',card:()=>'',videoCard:()=>'',pageHead:()=>'',write(){},breadcrumbs:()=>'',button:()=>''};
   const {creatorCard}=createCreatorViews(ctx,[creator]);
   const {document}=parseHTML(creatorCard(creator));
-  assert.equal(document.querySelector('.creator-work-preview[data-preview]').dataset.preview,'a');
-  const video=document.querySelector('.creator-work-preview[data-video-bvid]');
+  assert.equal(document.querySelector('.work-item .work-cover[data-preview]').dataset.preview,'a');
+  const video=document.querySelector('.work-item[data-video-bvid] .work-cover');
   assert.equal(video.hasAttribute('data-preview'),false);assert.equal(video.target,'_blank');
 });
 

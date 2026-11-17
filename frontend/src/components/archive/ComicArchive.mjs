@@ -1,18 +1,7 @@
-import {renderArchiveTabs} from './ArchiveTabs.mjs';
 import {comicPageURL} from './ComicSeries.mjs';
-
 export function createComicArchive(ctx) {
-  const {topics, esc, tr, icon, pageHead, write} = ctx;
-  const series = topics.filter(topic => topic.reader);
-  const card = topic => {
-    const cover = topic.cover
-      ? `<img src="${esc(topic.cover.i)}" width="${topic.cover.w}" height="${topic.cover.h}" alt="" loading="lazy">`
-      : `<span>${tr('comic.coverUnavailable','封面暂未收录','Cover not yet available','表紙は未収録です')}</span>`;
-    const author = topic.author?.name ? `<p class="comic-card-author">${tr('comic.by','作者','Creator','作者')} · <b>${esc(topic.author.name)}</b></p>` : '';
-    return `<article class="comic-card" data-comic-series="${esc(topic.id)}"><a href="${comicPageURL(topic.id)}"><div class="comic-card-cover">${cover}</div><div class="comic-card-copy"><h2>${esc(topic.name)}</h2>${author}<p class="comic-card-summary">${esc(topic.summary)}</p><p class="comic-card-pages">${tr('comic.available','已收录','Available','収録済み')} ${topic.reader.pages.length} / ${topic.reader.totalPages} ${tr('comic.pageUnit','页','pages','ページ')}</p><span class="comic-card-link">${tr('comic.open','阅读漫画','Read comic','漫画を読む')}${icon('arrow',16)}</span></div></a></article>`;
-  };
-  const content = series.length
-    ? `<div class="comic-catalog">${series.map(card).join('')}</div>`
-    : `<div class="empty-state"><h2>${tr('comic.empty','暂时还没有连载漫画','No comic series yet','連載漫画はまだありません')}</h2><p>${tr('comic.emptyHint','有新连载时会在这里展示。','New series will appear here.','新しい連載はここに表示されます。')}</p></div>`;
-  write('/serials.html','连载漫画','browse',`${pageHead(tr('comic.archiveLabel','漫画专区 / COMIC SERIES','COMIC SERIES','漫画の連載 / COMIC SERIES'),tr('comic.archiveTitle','连载漫画','Comic series','連載漫画'),tr('comic.archiveLead','从封面进入连载，按原稿页码阅读故事。','Open a cover and read the story in its original page order.','表紙から連載に入り、原稿のページ順に読み進めます。'))}${renderArchiveTabs('serials',ctx)}${content}`);
+  const {topics,esc:e,tr,icon,button,pageHead,write}=ctx;
+  const series=topics.filter(topic=>topic.reader);
+  const card=topic=>`<article class="serial-item" data-comic-series="${e(topic.id)}"><a class="serial-cover" href="${comicPageURL(topic.id)}" aria-label="${e(topic.name)}">${topic.cover?`<img src="${e(topic.cover.i)}" width="${topic.cover.w}" height="${topic.cover.h}" alt="${e(topic.name)}" loading="lazy">`:`<span>${tr('comic.coverUnavailable','封面暂未收录','Cover not yet available','表紙は未収録です')}</span>`}</a><div class="serial-info"><div class="serial-tags"><b>COMIC SERIES</b></div><h3 class="serial-title"><a href="${comicPageURL(topic.id)}">${e(topic.name)}</a></h3><p class="serial-desc">${e(topic.summary)}</p><p class="serial-credits serial-index-credits">${e(topic.reader.credits||topic.author?.name||'')}</p></div><div class="serial-side"><div class="serial-count"><b>${topic.reader.pages.length}</b><span>${tr('comic.available','已收录','Available','収録済み')} / ${topic.reader.totalPages}</span></div>${button(comicPageURL(topic.id,1),tr('comic.start','开始阅读','Start reading','読み始める'),'primary')}${button(comicPageURL(topic.id),tr('comic.cover','封面与目录','Cover & contents','表紙と目次'))}</div></article>`;
+  write('/serials.html','连载漫画','serials',`${pageHead('SERIAL COMICS',tr('comic.archiveTitle','连载漫画','Comic series','連載漫画'),tr('comic.archiveLead','按原稿顺序阅读 AI 娘连载漫画，支持目录跳转、键盘左右翻页与原图详情查看。','Read AI girl comic series in their original page order, with a contents page, arrow-key navigation and links to original images.','原稿の順番でAI娘の連載漫画を読めます。目次、矢印キーでの移動、元画像の詳細に対応しています。'))}<section class="serial-list"><div class="serial-head"><h2>${tr('comic.allSeries','全部连载','All series','すべての連載')}</h2><span>${series.length}</span></div>${series.length?series.map(card).join(''):`<div class="empty-state"><h2>${tr('comic.empty','暂时还没有连载漫画','No comic series yet','連載漫画はまだありません')}</h2></div>`}</section><aside class="note">${icon('book',20)}<p>${tr('comic.readingNote','阅读时保留原稿页码。正文图还可以进入对应作品详情页，查看来源、制作说明与原图。','Original page numbers are preserved. Open a page’s work details for its source, production notes and original image.','原稿のページ番号を保持しています。各ページの作品詳細から、出典、制作の説明、元画像をご確認いただけます。')}</p></aside>`);
 }

@@ -1,12 +1,4 @@
 ---
-import {archiveContext} from '../../lib/archive.mjs';
-import PageHeading from '../archive/PageHeading.astro';
-const {chars,roleCard}=archiveContext;
+import {archivePages} from '../../lib/archive.mjs';
 ---
-<PageHeading title="角色百科" titleKey="d.home.characters" description="名字、别名和二创作品，为每位 AI 娘留一份档案。" descriptionKey="d.charactersLead" />
-<div class="role-grid"><Fragment set:html={chars.map(roleCard).join('')} /></div>
-<section class="character-index-about">
-  <h2 data-i18n="d.home.characterIndexAbout">关于这些角色</h2>
-  <p data-i18n="d.home.characterIndexNotes">本站整理社区中的 AI 产品拟人化二创。不同作品可能采用不同设计；角色别名来自现有档案，作品来源与署名请查看各自详情。</p>
-  <a class="button primary" href="/submit.html" data-i18n="d.home.characterIndexSubmit">为喜欢的角色投张图</a>
-</section>
+<Fragment set:html={archivePages.get('/characters.html').content} />

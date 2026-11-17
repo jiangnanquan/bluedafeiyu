@@ -120,6 +120,8 @@
   document.addEventListener('click', event => { if (event.target.closest('[data-reset]')) queueMicrotask(() => controls.forEach(sync)); });
   document.addEventListener('site:langchange', () => { close(); controls.forEach(sync); });
   document.addEventListener('archive:filter-sync', () => controls.forEach(sync));
+  document.addEventListener('site:drawerchange', () => close());
+  document.addEventListener('preview:render', () => close());
   window.addEventListener('resize', () => close());
   window.addEventListener('scroll', event => { if (opened && !opened.panel.contains(event.target)) close(); }, true);
 })();

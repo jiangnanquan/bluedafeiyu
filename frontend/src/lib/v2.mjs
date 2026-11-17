@@ -13,7 +13,7 @@ export const COMMUNITY_JOIN = '/community.html#community-join';
 
 // 站点信息（沿用原站 about / WorkInfo 的内容）
 // 社群：Discord、新 QQ 群与微信公众号同时开放。二维码随内容仓库的 dist/community/
-// 发布，由 tools/sync_content.mjs 同步进 dist/；QQ 群号在页面内用既有 data-copy 逻辑复制。
+// 发布，由 tools/sync_content.mjs 同步进 dist/。QQ 群已关闭搜索，只提供邀请链接与二维码。
 export const SITE = {
   community: {
     discord: {
@@ -21,12 +21,11 @@ export const SITE = {
       url: 'https://discord.gg/pmECYDChY'
     },
     qq: {
-      name: '蓝色大肥鱼.com',
-      number: '1134100615',
-      url: 'https://qm.qq.com/q/mFL9GUZkWc',
-      qr: '/community/qq-1134100615-bc8e49b662df6b84.png',
-      qrWidth: 322,
-      qrHeight: 322
+      name: '蓝色大肥鱼',
+      url: 'https://qm.qq.com/q/pLsmlo1J0Q',
+      qr: '/community/qq-join-6d07ffd364068fdf.png',
+      qrWidth: 296,
+      qrHeight: 296
     },
     // 微信公众号只有关注二维码，没有可公开展示的名称 / 微信号；卡片只提供扫码关注。
     wechat: {
