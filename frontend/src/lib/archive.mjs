@@ -25,7 +25,7 @@ import {createGuidePages} from "../components/archive/GuidePages.mjs";
 import { aboutCopy, aboutQuestions } from './about-copy.mjs';
 import { videoCopy } from './video-copy.mjs';
 import { createVideoPages } from '../components/archive/VideoPages.mjs';
-import {createSitePages} from '../components/archive/PageComposition.mjs';
+import {createDemoPages} from './demo-design.mjs';
 import {registerCommunityContacts} from '../components/library/CommunityContacts.mjs';
 import {createPageModel} from '../components/library/page-model.mjs';
 import {videoArchive} from './video-archive.mjs';
@@ -65,7 +65,6 @@ for (const [i, row] of aboutQuestions.entries()) {
   }
 }
 registerCommunityContacts(translations);
-translations.en['d.openApi']='Open API';translations.ja['d.openApi']='公開API';
 for(const [key, en, ja] of [
   ['allRoles','All characters','すべてのキャラクター'],['allTypes','All types','すべての種類'],
   ['galleryTabs','Image archive views','画像の表示方法'],
@@ -144,7 +143,7 @@ createUtilityPages(ctx);
 createFriendWall(ctx);
 createIndependentFriendPages(ctx);
 Object.assign(ctx,createVideoPages(ctx));
-createSitePages(ctx,pages);
+createDemoPages(ctx,pages);
 ctx.seo.generatePages(ctx.write,ctx.browsePage,ctx.breadcrumbs);
 export const archivePages=pages;
 export const archiveContext=ctx;

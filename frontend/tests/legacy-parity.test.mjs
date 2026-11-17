@@ -20,7 +20,7 @@ test('each active category has a static landing page and canonical',()=>{
  for(const cat of categories){const doc=html(`categories/${cat.id}.html`);assert.ok(doc.includes(`categories/${cat.id}.html`));assert.ok(doc.includes('href="/works/'));}
 });
 test('public snapshot, assets and robots are present; private intake assets excluded',()=>{
- for(const rel of ['avatar.png','site-data.js','site-data.json','lang.js','robots.txt','page-scripts/submit-0.js'])assert.ok(fs.existsSync(path.join(out,rel)),rel);
+ for(const rel of ['avatar.png','site-data.js','site-data.json','lang.js','robots.txt','page-styles/index.css','page-scripts/submit-0.js'])assert.ok(fs.existsSync(path.join(out,rel)),rel);
  assert.equal(fs.existsSync(path.join(out,'.github')),false);
  assert.equal(fs.existsSync(path.join(out,'submissions/originals')),false);
  // Local preview may mount blue-fish shared previews; deployment output omits them.

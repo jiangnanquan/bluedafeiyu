@@ -24,7 +24,7 @@ test('redesigned homepage keeps crawlable navigation, live cards and production 
     assert.ok(document.querySelector('#menu[aria-expanded="false"]'));
     assert.ok(document.querySelector('#collapse[aria-expanded="true"]'));
     assert.ok(document.querySelector('.sidebar .cta[href$="/submit.html"]'));
-    assert.equal(document.querySelectorAll('.home-section .work-card').length,36);
+    assert.equal(document.querySelectorAll('[data-feed-grid] .work-card').length,30);
     assert.ok(document.querySelector('#preview-dialog'));
     assert.ok(document.querySelector('#share-card-dialog'));
     assert.ok(document.querySelector('script[src="/analytics.js"]'));

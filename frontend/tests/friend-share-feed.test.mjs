@@ -11,6 +11,7 @@ import {renderWorkActions} from '../public/components/work-actions.js';
 import {videoCoverURL} from '../src/components/archive/video-cover.mjs';
 import {validateFriendLinks,friendLinks} from '../src/lib/friend-links.mjs';
 import {createFriendWall} from '../src/components/archive/FriendWall.mjs';
+import {decorateDocument} from '../src/components/archive/PageComposition.mjs';
 import {localizeHtml,LOCALES,ORIGIN} from '../scripts/localize-pages.mjs';
 import {videoArchive} from '../src/lib/video-archive.mjs';
 import {renderArchiveTabs} from '../src/components/archive/ArchiveTabs.mjs';
@@ -80,6 +81,8 @@ test('friend wall preserves existing destinations, classifies links, and rejects
   assert.equal(page[0],'/projects.html');
   const {document}=parseHTML(page[3]);
   assert.equal(document.querySelectorAll('.friend-wall-card').length,friendLinks.length);
+  const decorated=parseHTML(decorateDocument(page[3],'projects')).document;
+  assert.equal(decorated.querySelectorAll('.friend-wall-card').length,friendLinks.length);
   for(const category of ['project','website'])assert.equal(document.querySelectorAll(`[data-friend-section="${category}"] .friend-wall-card`).length,friendLinks.filter(row=>row.category===category).length);
   assert.deepEqual([...document.querySelectorAll('.friend-wall-card')].map(a=>a.href),['project','website'].flatMap(category=>friendLinks.filter(row=>row.category===category).map(row=>row.url)));
   for(const link of document.querySelectorAll('.friend-wall-card')){

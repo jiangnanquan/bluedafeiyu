@@ -6,7 +6,6 @@ import {parseHTML} from 'linkedom';
 // This is a deliberately narrow, reviewed allowlist. New empty-alt patterns
 // fail closed instead of silently being counted as decorative.
 export const CONTENT_IMAGE_SELECTOR = '.work-card img,.detail-image img,.comic-sheet img,.video-cover img,[data-video-cover-alt],.preview-photo img,.preview-zoom img,.role-card img,.character-portrait img,.live-character-portrait img,.topic-mosaic img';
-const structuralContentSelector=CONTENT_IMAGE_SELECTOR.split(',').filter(selector=>selector!=='[data-video-cover-alt]').join(',');
 function visibleText(node) {
   if (!node || node.hasAttribute('hidden') || node.getAttribute('aria-hidden')==='true') return '';
   const copy=node.cloneNode(true);
@@ -60,11 +59,7 @@ export function auditImages(html) {
     } else if (!img.getAttribute('alt').trim()) {
       result.empty++;
       const reason=decorativeReason(img);
-      // Translation metadata also appears on thumbnails sharing one link with
-      // their visible title. Keep that reviewed decoration distinct from an
-      // independent cover, preview image or other structural content image.
-      const namedPreview=reason==='named-creator-preview'&&!img.matches(structuralContentSelector);
-      if(reason && (!img.matches(CONTENT_IMAGE_SELECTOR) || reason==='character-brand-placeholder' || namedPreview))result.decorations[reason]=(result.decorations[reason]||0)+1;
+      if(reason && (!img.matches(CONTENT_IMAGE_SELECTOR) || reason==='character-brand-placeholder'))result.decorations[reason]=(result.decorations[reason]||0)+1;
       else {
         const kind=img.matches(CONTENT_IMAGE_SELECTOR)?'empty-content':img.closest('a,button')&&!linkName(img.closest('a,button'))?'empty-image-control':'unreviewed-empty';
         result.issues.push({kind,src:img.getAttribute('src')});

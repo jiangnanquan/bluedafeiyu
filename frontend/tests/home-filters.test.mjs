@@ -19,7 +19,7 @@ async function fixture(hash='',{stats,awaitReady=true,loading=false}={}){
 }
 test('inline homepage loads full catalog, excludes serial works, pages beyond first30 and keeps stable URLs',async()=>{
  const f=await fixture();assert.equal(f.slugs().length,30);assert.equal(f.slugs()[0],'frozen-73');f.click('[data-home-more]');assert.equal(f.slugs().length,60);f.click('[data-home-more]');assert.equal(f.slugs().length,74);assert.ok(f.document.querySelector('[data-home-more]').hidden);
- for(const link of f.document.querySelectorAll('a[data-preview]'))assert.equal(link.getAttribute('href'),'/works/'+link.dataset.preview+'.html');assert.equal(f.location.pathname,'/ja/index.html');
+ for(const link of f.document.querySelectorAll('[data-preview]'))assert.equal(link.getAttribute('href'),'/works/'+link.dataset.preview+'.html');assert.equal(f.location.pathname,'/ja/index.html');
 });
 test('role multi-select intersects, combines GIF/search/sort, resets and handles empty results inline',async()=>{
  const f=await fixture();f.choose('[data-character-id="a"]');f.choose('[data-character-id="b"]');assert.ok(f.slugs().every(slug=>Number(slug.split('-')[1])%2===0));assert.equal(f.document.querySelectorAll('[data-filter-picker="character"] [aria-selected="true"]').length,2);

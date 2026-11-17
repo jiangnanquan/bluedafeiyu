@@ -1,7 +1,6 @@
-const zipModuleURL='/vendor/fflate/fflate-0.8.2.js';
 import { topicMembers, archiveName, downloadMembers, zipMembers, DownloadLimitError } from './topic-zip.js?v=1';
 
-export function installTopicDownloads({ load, tx, toast, loadZip = () => import(/* @vite-ignore */ zipModuleURL) }) {
+export function installTopicDownloads({ load, tx, toast, loadZip = () => import(/* @vite-ignore */ '/vendor/fflate/fflate-0.8.2.js') }) {
   const dialog = document.querySelector('#topic-download-dialog');
   const status = dialog.querySelector('[data-topic-status]');
   const progress = dialog.querySelector('[data-topic-progress]');

@@ -40,8 +40,7 @@ test('all image tabs link to GIFs, and the static GIF archive contains exactly t
     assert.deepEqual(slugs,gifs.map(w=>w.slug));
     assert.equal(page.querySelector('body').dataset.type,undefined);
     assert.ok(page.querySelector('select[name="type"] option[value="meme"]'));
-    assert.ok(read('/browse.html').querySelector(`.gallery-tabs a[href="${localizedPath('/gifs.html',locale)}"]`));
-    for(const route of ['/characters.html','/topics.html'])assert.ok(read(route).querySelector(`.sidebar a[href="${localizedPath('/',locale)}"]`));
+    for(const route of ['/browse.html','/characters.html','/topics.html'])assert.ok(read(route).querySelector(`.gallery-tabs a[href="${localizedPath('/gifs.html',locale)}"]`));
     const schema=[...page.querySelectorAll('script[type="application/ld+json"]')].map(s=>JSON.parse(s.textContent)).find(s=>s['@type']==='CollectionPage');
     assert.equal(schema.mainEntity.itemListElement.length,Math.min(24,gifs.length));
   }

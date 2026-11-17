@@ -4,11 +4,9 @@ import { SITE } from '../../lib/v2.mjs';
 import DocumentPage from '../archive/DocumentPage.astro';
 import SubmissionForm from '../SubmissionForm.astro';
 import CreatorRegistration from '../CreatorRegistration.astro';
-const {mode='image'}=Astro.props;
-const path=mode==='video'?'/submit-video.html':'/submit.html';
 import PageHeading from '../archive/PageHeading.astro';
 ---
-<V2 title="AI娘表情包投稿 - 站内快速投稿与 GitHub 表单 | 蓝色大肥鱼" desc="提交 AI 娘表情包，上传图片、填写名称、角色和作品类型并选择是否署名；署名时填写名字，个人主页链接和说明可选。站内快速投稿与 GitHub 表单均可，作品类型会在审核时核对，来源与授权由维护者补齐。" {path} active="submit" bodyAttrs={{'data-submission-mode':mode}} bodyPage="submit" robots="noindex,follow">
+<V2 title="AI娘表情包投稿 - 站内快速投稿与 GitHub 表单 | 蓝色大肥鱼" desc="提交 AI 娘表情包，上传图片、填写名称、角色和作品类型并选择是否署名；署名时填写名字，个人主页链接和说明可选。站内快速投稿与 GitHub 表单均可，作品类型会在审核时核对，来源与授权由维护者补齐。" path="/submit.html" active="submit" bodyPage="submit" pageStyles={["/page-styles/submit.css?v=2"]} robots="noindex,follow">
 <DocumentPage>
 
     <PageHeading title="投稿" titleKey="submit.h1" description="把你的 AI 娘二创表情包交给我们归档。本页支持单张图片或 ZIP 图片集，也可以走 GitHub 表单；填写图片或图集名称、角色和作品类型，并选择是否署名，说明可选。图片逐张审核，通过后批量发布。" descriptionKey="submit.lede" />

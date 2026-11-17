@@ -43,8 +43,8 @@ test('HTML 在执行 JS 前已翻译，导航与分页留在当前语言且资�
   for (const [i, locale] of LOCALES.entries()) {
     const document = read(localizedPath('/about.html', locale));
     assert.equal(document.querySelector('main h1').textContent, labels[i]);
-    assert.equal(document.querySelector('.topbar form[role=search]').getAttribute('action'), locale.prefix + '/search.html');
-    assert.equal(document.querySelector('.topbar a.button.primary').getAttribute('href'), locale.prefix + '/submit.html');
+    assert.equal(document.querySelector('.feed-search').getAttribute('action'), locale.prefix + '/search.html');
+    assert.equal(document.querySelector('.top-submit').getAttribute('href'), locale.prefix + '/submit.html');
     assert.match(document.querySelector('script[src*="lang.js"]').getAttribute('src'), /^\/lang\.js\?v=\d+$/);
     assert.ok(document.querySelector('noscript details a[href="/ja/about.html"]'));
     const pagination = read(localizedPath('/page/2.html', locale));
@@ -121,8 +121,8 @@ test('英文首页和所有角色页的站点名称、导航与角色名称在�
   for (const base of ['/index.html', '/characters.html', ...snapshot.characters.filter(c => c.status === 'active' && snapshot.works.some(w => w.characterId === c.id)).map(c => '/characters/' + c.id + '.html')]) {
     const doc = read('/en' + base);
     assert.equal(doc.querySelector('meta[property="og:site_name"]').getAttribute('content'), 'DeepSeek Chan', base);
-    const nav = '.sidebar .nav-item';
-    assert.equal(doc.querySelector(nav + '[href="/en/"] span').textContent, 'All images', base);
+    const nav = base === '/index.html' ? '.sidebar .nav-item' : '.main-nav a';
+    assert.equal(doc.querySelector(nav + '[href="/en/"] span').textContent, base === '/index.html' ? 'All images' : 'Home', base);
     assert.equal(doc.querySelector(nav + '[href="/en/creators.html"] span').textContent, 'Creators', base);
     assert.doesNotMatch(doc.querySelector('.sidebar').textContent, /蓝色大肥鱼|Blue Fish/, base);
     assert.doesNotMatch(doc.querySelector('main h1').textContent, /(?:DeepSeek|Claude|GPT|GLM|Kimi|Gemini|Grok|MiMo|Stepfun|通义千问|豆包)娘/, base);

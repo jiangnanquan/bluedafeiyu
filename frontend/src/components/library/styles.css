@@ -1,15 +1,45 @@
-/* Public components: one design system and one owner per rule. */
-@import 'DesignSystem.css';
-@import 'ArchiveContent.css';
-@import 'Overlays.css';
+/* Preserve the published cascade while bundling/minifying it through Astro. */
+@import '../../../public/tokens.css';
+@import '../../../public/components/runtime.css';
+@import '../archive/CreatorAvatar.css';
+@import '../archive/ShareCard.css';
+@import '../archive/FriendWall.css';
+@import '../archive/SidebarTooltip.css';
+@import '../archive/WorkActions.css';
+@import '../../../public/archive/original-tools.css';
+@import '../../../public/archive/layout.css';
+@import '../../../public/archive/seo-content.css';
+@import '../../../public/archive/preview.css';
+@import '../../../public/archive/image-actions.css';
+@import '../../../public/archive/filter-select.css';
+@import '../../../public/archive/group.css';
+@import '../../../public/archive/document.css';
+
+@import '../../../public/archive/demo-design.css';
+@import '../../../public/archive/demo-production.css';
+@import '../archive/CardDensity.css';
+@import '../archive/WorkViewport.css';
+/* One theme and shared controls for every public route, including legacy widgets. */
+@import './ArchiveTheme.css';
+@import './ArchivePrimitives.css';
+@import '../archive/CreationMethod.css';
+@import '../archive/WorkPreview.css';
+@import '../archive/Listing.css';
+@import '../archive/HomeDownloads.css';
+@import '../archive/EventArchive.css';
+@import '../archive/ComicSeries.css';
+@import '../archive/ComicArchive.css';
+@import '../archive/NavHeading.css';
 @import '../archive/CharacterBrandTokens.css';
 @import '../archive/CharacterPage.css';
+@import '../archive/Header.css';
+@import '../archive/SidebarRail.css';
+
+/* Reviewed blue-and-white notebook presentation. */
+@import './Notebook.css';
+@import '../archive/HomeImageWalls.css';
+@import '../archive/CommunityContactsRows.css';
+@import '../archive/IndependentSections.css';
+@import '../archive/PreviewMetadata.css';
 @import '../archive/VideoArchive.css';
 @import '../archive/CreatorDirectory.css';
-@import '../archive/LinkDirectories.css';
-@import '../archive/ComicSeries.css';
-@import '../archive/EventArchive.css';
-@import '../characters/CharacterIndex.css';
-@import '../collections/CollectionIndex.css';
-@import '../archive/OpenApiDocumentation.css';
-@import '../../../public/components/runtime.css';

@@ -1,29 +1,101 @@
-import {orderWorks} from '../../../public/components/work-order.js';
+import {homeRankingSections} from './HomeRankings.mjs';
+import { parseHTML } from 'linkedom';
 import {archiveCreators,creatorDirectoryEntries} from '../../lib/creators.mjs';
 import {createCreatorViews} from './CreatorViews.mjs';
+import {renderPageHeading} from './PageHeading.mjs';
 
-// Production data and one shared renderer for static and browser-generated cards.
-export function createSitePages(ctx) {
-  const {galleryWorks,chars,topics,tr,esc,grid,roleCard,collectionCard,sectionHead,write}=ctx;
-  const t=(key,zh,en,ja)=>tr('homeUpdate.'+key,zh,en,ja);
-  const latest=orderWorks(galleryWorks).slice(0,12);
-  const seen=new Set(latest.map(work=>work.id));
-  const illustrations=orderWorks(galleryWorks).filter(work=>work.k.includes('illustration')&&!seen.has(work.id)).slice(0,12);
-  illustrations.forEach(work=>seen.add(work.id));
-  const memes=orderWorks(galleryWorks).filter(work=>work.k.includes('meme')&&!seen.has(work.id)).slice(0,12);
-  const all=t('all','全部图片','All images','すべての画像');
-  const section=(id,title,note,list,href,label)=>`<section class="home-section" aria-labelledby="${id}"><div class="section-head"><div><h2 id="${id}">${title}</h2><p>${note}</p></div><a class="text-link" href="${href}">${label} →</a></div>${grid(list,'',id==='latest-title'?4:0)}</section>`;
-  const normalTopics=topics.filter(topic=>!topic.reader);
-  const content=`<header class="hero"><div class="hero-main"><p class="eyebrow">AI GIRL ARCHIVE</p><h1>${tr('design.welcome','蓝色大肥鱼 · DeepSeek娘（大肥鱼）表情包与二创档案','Blue Dafeiyu · DeepSeek Chan Memes & AI Girl Fan Art','藍色大肥魚 · DeepSeekちゃんのスタンプと二次創作アーカイブ')}</h1><p class="hero-sub">${t('lead','收好 AI 娘的表情包、插画、设定图、连载漫画与视频档案；按角色、类型、主题合集与创作者慢慢逛。','Collect AI girl memes, illustrations, design sheets, comics and videos. Explore by character, type, collection or creator.','AI娘のスタンプ、イラスト、設定資料、漫画、動画を集めています。キャラクター、種類、特集、作者からお楽しみください。')}</p></div><aside class="stats"><div class="stats-kicker">${t('scale','公开归档','Public archive','公開アーカイブ')}</div><div class="stats-row">${[[galleryWorks.length,all],[chars.length,tr('home.characters','角色百科','Characters','キャラクター')],[normalTopics.length,tr('home.topics','主题合集','Collections','コレクション')]].map(([n,label])=>`<div class="stat"><b>${n}</b><span>${label}</span></div>`).join('')}</div><p class="stats-note">${t('rights','作品版权归原作者所有','Works belong to their creators','作品の権利は原作者に帰属します')}</p></aside></header>
-  ${section('latest-title',t('latest','最新作品','Latest works','最新の作品'),t('recent','最近收录的作品','Recently archived works','最近収録した作品'),latest,'/browse.html',all)}
-  ${section('illustration-title',t('illustrations','插画精选','Illustrations','イラスト'),t('illustrationNote','同人插画与日常场景','Fan art and everyday scenes','二次創作イラストと日常の風景'),illustrations,'/categories/illustration.html',t('illustrationLink','查看插画库','All illustrations','すべてのイラスト'))}
-  ${section('meme-title',t('memes','表情与梗图','Memes & reactions','ミームとリアクション'),t('memeNote','随手保存的聊天反应图','Reactions for your next conversation','会話で使いたいリアクション画像'),memes,'/categories/meme.html',t('memeLink','查看梗图库','All memes','すべてのミーム'))}
-  <section class="home-section">${sectionHead(tr('home.characters','角色百科','Characters','キャラクター'),String(chars.length),'/characters.html')}<div class="role-grid">${chars.slice(0,5).map(roleCard).join('')}</div></section>
-  <section class="home-section">${sectionHead(tr('home.topics','主题合集','Collections','コレクション'),String(normalTopics.length),'/topics.html')}<div class="collection-grid">${normalTopics.slice(0,4).map(topic=>collectionCard(topic)).join('')}</div></section>
-  <section class="home-section"><h2>${t('community','活动、视频与社区共创','Videos, events and community','動画・イベント・コミュニティ')}</h2><div class="detail-actions"><a class="button" href="/videos.html">${tr('videoNav','视频','Videos','動画')}</a><a class="button" href="/creators.html">${tr('navCreators','创作者','Creators','クリエイター')}</a><a class="button" href="/community.html">${tr('home.join','加入社群','Join the community','コミュニティに参加')}</a><a class="button" href="/events.html">${tr('home.events','站点活动','Events','イベント')}</a></div></section>
-  <section class="guide"><div class="guide-grid"><div><h3>${t('find','按角色和类型找','Find a character or type','キャラクターと種類から探す')}</h3><p>${t('findNote','本站收录社区创作的 AI 娘表情包、插画、立绘设定与漫画。先选择角色，再按作品类型浏览；也可以搜索台词、情绪或作者。','Explore community-created AI girl memes, illustrations, design sheets and comics. Choose a character or search by dialogue, mood or creator.','AI娘のスタンプ、イラスト、設定資料、漫画を収録。キャラクターを選ぶか、セリフ、気分、作者で検索できます。')}</p><div class="tags">${chars.slice(0,5).map(c=>`<a class="tag" href="/characters/${esc(c.id)}.html">${esc(c.name)}</a>`).join('')}</div></div><div><h3>${t('follow','按主题连着看','Follow a collection','テーマに沿って見る')}</h3><p>${t('followNote','作者作品集保留创作者的作品线索，人工合集把一组作品串起来。作品来源与授权保留在每张作品详情中。','Follow creator portfolios and curated collections. Each work retains its source, attribution and permission notes.','作者の作品集や手作業でまとめた特集から探せます。出典と利用許諾は各作品の詳細に掲載しています。')}</p><a class="text-link" href="/topics.html">${tr('home.topics','主题合集','Collections','コレクション')} →</a></div></div><details class="faq" open><summary>${t('relationship','蓝色大肥鱼与 DeepSeek娘是什么关系？','How is Blue Dafeiyu related to DeepSeek Chan?','藍色大肥魚とDeepSeekちゃんの関係は？')}</summary><p>${t('relationshipAnswer','本站角色记录将“蓝色大肥鱼”和“鲸鱼娘”列为 DeepSeek娘的别名。本网站是非官方同人整理项目，各作品来源请查看详情。','Blue Dafeiyu and whale girl are community aliases for DeepSeek Chan. This is an unofficial fan archive; see each work for its source.','藍色大肥魚とクジラの少女はDeepSeekちゃんの別名です。非公式アーカイブとして、出典は各作品に掲載しています。')}</p></details><details class="faq" open><summary>${t('download','怎样下载原图并确认使用范围？','How do I download originals and check permissions?','元画像の保存と利用許諾の確認方法は？')}</summary><p>${t('downloadAnswer','打开预览或作品详情，使用“下载原图”，同时核对来源、署名和授权备注。可下载不代表可以任意转载或商用。','Open a preview or work detail, download the original and check the source, attribution and license notes. Download availability does not grant unrestricted reuse.','プレビューや詳細から元画像を保存し、出典、クレジット、利用許諾をご確認ください。ダウンロード可能でも自由な転載や商用利用が認められるとは限りません。')}</p><a href="/about.html#license" class="text-link">${t('license','阅读授权说明','Read permission notes','利用許諾について')}</a></details></section>`;
-  write('/index.html','蓝色大肥鱼','home',content);
+// The reviewed Demo's composition, populated exclusively from the production archive.
+export function createDemoPages(ctx, pages) {
+  const {works,galleryWorks,chars,topics,esc:e,tr,icon,button,pageHead,write,card,grid}=ctx;
+  const t=(key,zh,en,ja)=>tr('design.'+key,zh,en,ja);
+  const img=(w,priority=false)=>`<img src="${e(w.i)}" width="${w.w}" height="${w.h}" alt="" ${priority?'loading="eager" fetchpriority="high"':'loading="lazy"'}>`;
+  const labels={pictures:t('pictures','图片图库','Image archive','画像アーカイブ'),videos:t('videos','视频作品','Videos','動画'),characters:t('characters','角色图鉴','Characters','キャラクター図鑑'),topics:t('topics','主题合集','Collections','コレクション'),creators:t('creators','创作者合集','Creators','クリエイター')};
+  const entry=(href,title,desc,ic,meta,art,cls)=>`<a href="${href}" class="portal-entry ${cls}"><div class="portal-entry-top"><span class="portal-entry-icon">${icon(ic,23)}</span><span class="portal-entry-meta">${meta}</span>${icon('arrow',19)}</div><h2>${title}</h2><p>${desc}</p>${art}</a>`;
   const ordered=archiveCreators(topics);
   const {creatorDirectory}=createCreatorViews(ctx,ordered);
-  write('/creators.html','创作者','creators',creatorDirectory(creatorDirectoryEntries(ordered,topics)),{attrs:'data-creator-directory-page'});
+  const featured=topics.slice(0,3);
+  const latestStrip=`<section class="home-latest"><div class="home-latest-head"><h2>${t('latestWorks','最新作品','Latest works','最新の作品')}</h2><a class="home-latest-more" href="/browse.html">${t('latestAll','全部图片','Browse all pictures','すべての画像')}${icon('arrow',14)}</a></div>${grid(galleryWorks.slice(0,12),'',2)}</section>`;
+  write('/index.html','蓝色大肥鱼','home',`<header class="portal-heading"><div><p class="eyebrow">AI GIRL ARCHIVE</p><h1>${t('welcome','蓝色大肥鱼 · DeepSeek娘（大肥鱼）表情包与二创档案','Blue Dafeiyu · DeepSeek Chan Memes & AI Girl Fan Art','藍色大肥魚 · DeepSeekちゃんのスタンプと二次創作アーカイブ')}</h1><p>${t('lead','蓝色大肥鱼 · AI 娘的图片、影像与角色档案。','Blue Dafeiyu · Images, videos and character archives of AI girls.','藍色大肥魚 · AI娘の画像、映像、キャラクターアーカイブ。')}</p></div><div class="portal-edition"><span>${t('collect','一起收好有趣的创作','Keep delightful creations together','楽しい作品を、一緒に集めよう')}</span><dl>${[[labels.pictures,works.length],[labels.characters,chars.length],[labels.topics,topics.length]].map(([l,n])=>`<div><dt>${l}</dt><dd>${n}</dd></div>`).join('')}</dl><small>${t('copyright','作品版权归原作者所有','Works belong to their creators','作品の権利は原作者に帰属します')}</small></div></header><nav class="portal-primary">${entry('/browse.html',labels.pictures,t('pictureLead','表情包、插画、立绘与漫画。','Memes, illustrations, character art and comics.','ミーム、イラスト、立ち絵、漫画。'),'image',String(works.length),`<div class="portal-image-strip">${galleryWorks.slice(0,3).map((w,i)=>img(w,i===0)).join('')}</div>`,'portal-images')}</nav>${latestStrip}${homeRankingSections(ctx)}<nav class="portal-secondary">${[['/characters.html',labels.characters,'roles',chars.length],['/topics.html',labels.topics,'book',topics.length],['/creators.html',labels.creators,'roles',ordered.length]].map(([href,l,ic,n])=>`<a href="${href}">${icon(ic,24)}<span><h2>${l}</h2></span><small>${n}</small>${icon('arrow',16)}</a>`).join('')}</nav><section class="portal-curated"><div class="live-topic-slider portal-topic-slider" data-design-slider>${featured.map((topic,i)=>`<article class="live-topic-slide" data-design-slide ${i?'hidden':''}><a class="paper-feature" href="/topics/${e(topic.id)}.html"><div class="feature-copy"><p class="eyebrow">COLLECTION</p><h2>${e(topic.name)}</h2><p>${e(topic.summary)}</p><span class="portal-topic-link">${labels.topics} ${icon('arrow',15)}</span></div><div class="feature-prints">${topic.art.map((w,j)=>`<figure class="photo-print photo-${j}">${img(w)}</figure>`).join('')}</div></a></article>`).join('')}<div class="live-topic-controls">${featured.map((topic,i)=>`<button type="button" class="live-topic-dot ${i?'':'is-active'}" data-design-dot="${i}" aria-label="${e(topic.name)}" aria-pressed="${i===0}">${String(i+1).padStart(2,'0')}</button>`).join('')}</div></div></section><nav class="portal-participate">${[['/events.html',t('events','活动与共创','Events & collaboration','イベントと共同制作'),'spark'],['/community.html',t('community','加入社群','Join the community','コミュニティに参加'),'roles'],['/submit.html',t('submit','分享作品','Share your work','作品を投稿'),'upload']].map(([href,l,ic])=>`<a href="${href}">${icon(ic,20)}<span><b>${l}</b></span>${icon('arrow',16)}</a>`).join('')}</nav>`);
+  write('/creators.html','创作者合集','creators',creatorDirectory(creatorDirectoryEntries(ordered,topics)),{attrs:'data-creator-directory-page'});
+  for(const [url,p] of pages){
+    if(url==='/community.html'||url==='/projects.html')p.content=decorateDocument(p.content,url.includes('community')?'community':url.includes('projects')?'projects':'events',ctx);
+    if(url==='/characters.html')p.content=p.content.replace('class="role-grid"','class="role-grid character-grid character-index-grid"').replaceAll('class="role-card"','class="role-card character-card"').replaceAll('class="role-art"','class="role-art character-art"').replaceAll('class="role-body"','class="role-body character-copy"');
+    if(url.startsWith('/characters/'))p.content=p.content.replace('class="character-hero"','class="character-hero live-character-header"').replace('class="character-portrait"','class="character-portrait live-character-portrait"');
+    if(url.startsWith('/works/'))p.transformContent(content=>content.replace('class="detail-info"','class="detail-info work-information"').replace('class="detail-image"','class="detail-image work-stage"'));
+    if(url.startsWith('/creators/'))p.content=p.content.replace('class="page-head"','class="page-head author-header"');
+  }
+}
+
+export function decorateDocument(html,key,ctx) {
+  const {document}=parseHTML('<html><body>'+html+'</body></html>');
+  const body=document.body;
+  const tr=(k,z,en,ja)=>ctx?.tr('design.'+k,z,en,ja)||z;
+  const icon=name=>ctx?.icon(name,17)||'';
+  const element=(tag,cls)=>{const node=document.createElement(tag);node.className=cls;return node;};
+  for(const node of body.querySelectorAll('[class]')){if(node.closest('[data-community-contacts]'))continue;for(const cls of [...node.classList])if(!cls.startsWith('live-')&&!cls.startsWith('friend-wall-'))node.classList.add('live-'+cls);}
+
+  if(key==='community'){
+    const joinSection=body.querySelector('#community-join');
+    const introduction=body.querySelector('.live-community-hero');
+    if(joinSection&&introduction)introduction.before(joinSection);
+    const grid=body.querySelector('.live-info-grid');
+    if(grid?.children.length===3){
+      const [submission,activity,feedback]=[...grid.children];
+      submission.insertAdjacentHTML('afterbegin','<span class="participation-number" aria-hidden="true">01</span>');
+      submission.insertAdjacentHTML('beforeend',`<a class="community-entry-link" href="/submit.html">${tr('imageSubmitLink','图片作品投稿 →','Submit an image →','画像作品を投稿 →')}</a>`);
+      const video=element('section','live-info-card');
+      video.innerHTML=`<span class="participation-number" aria-hidden="true">02</span><h2>${tr('register','视频作者登记','Register as a video creator','動画クリエイター登録')}</h2><p>${tr('registrationLead','填写 UID 或主页链接和一句话说明，通过审核的 AI 娘二创视频自动收录。','Add your UID or profile URL and a short introduction. Approved AI-girl fan videos are published automatically.','UIDまたはプロフィールURLと紹介文を登録。審査を通過したAI娘の二次創作動画が自動公開されます。')}</p><a class="community-entry-link" href="/submit.html?media=video#creator-registration">${tr('start','开始登记 →','Register →','登録する →')}</a>`;
+      feedback.insertAdjacentHTML('afterbegin','<span class="participation-number" aria-hidden="true">03</span>');
+      const join=body.querySelector('[data-community-join]')?.getAttribute('href') || body.querySelector('.live-community-hero a')?.getAttribute('href');
+      if(join)feedback.insertAdjacentHTML('beforeend',`<a class="community-entry-link" href="${ctx?.esc(join)||join}"${/^https?:/i.test(join)?' target="_blank" rel="noopener noreferrer"':''}>${tr('joinCommunityCard','加入社群 →','Join the community →','コミュニティに参加 →')}</a>`);
+      const heading=element('h2','community-section-title');heading.innerHTML=tr('participationTitle','一起参与，让档案更完整。','Help the archive grow.','一緒にアーカイブを育てよう。');grid.before(heading);
+      grid.replaceChildren(submission,video,feedback);activity.className='community-activity';grid.after(activity);
+    }
+  }
+  if(key==='about'){
+    const columns=body.querySelector('.live-about-columns');
+    const main=body.querySelector('.live-about-main');
+    const heading=body.querySelector('#what-is-blue-dafeiyu');
+    if(heading)heading.innerHTML=tr('originName','名字的由来','Where the name comes from','名前の由来');
+    if(columns&&main){
+      let section,index=0;
+      for(const node of [...main.children]){
+        if(node.tagName==='H2'){
+          if(!node.id)node.id='about-section-'+(++index);
+          section=element('section','reading-section');main.insertBefore(section,node);section.append(node);
+        }else if(section&&node.tagName!=='SECTION')section.append(node);
+        else section=null;
+      }
+      const community=element('section','about-community');
+      for(const node of [...columns.children])if(node!==main)community.append(node);
+      columns.replaceWith(main);main.after(community);
+    }
+  }
+  if(key==='events'){
+    const hero=body.querySelector('.event-hero');
+    if(hero){hero.className='designed-event-hero';const figure=hero.querySelector('figure');if(figure)hero.append(figure);}
+  }
+
+  const originalHeading=body.querySelector('.page-head');
+  const title=originalHeading?.querySelector('h1') || body.querySelector('h1');
+  const description=originalHeading?.querySelector('.lede,.live-lede') ||
+    (title?.nextElementSibling?.matches('.lede,.live-lede') ? title.nextElementSibling : null);
+  // Preserve translation and anchor attributes when moving the introductory copy.
+  const inlineCopy=node=>{
+    if(!node)return '';
+    const span=document.createElement('span');
+    for(const attr of node.attributes)if(attr.name!=='class')span.setAttribute(attr.name,attr.value);
+    span.innerHTML=node.innerHTML;
+    node.remove();
+    return span.outerHTML;
+  };
+  const heading=renderPageHeading({
+    eyebrow:tr('siteCommunity','站点与社区','SITE & COMMUNITY','サイトとコミュニティ'),
+    title:inlineCopy(title),
+    description:inlineCopy(description)
+  });
+  originalHeading?.remove();
+  for(const node of body.querySelectorAll('[class]'))for(const cls of [...node.classList])if(!cls.startsWith('live-')&&node.classList.contains('live-'+cls))node.classList.remove(cls);
+  const nav=[['community','社群','Community','コミュニティ','roles'],['about','关于与版权','About & copyright','このサイトについて','book'],['events','活动','Events','イベント','spark'],['projects','友情链接','Friend links','リンク集','link'],['changelog','更新日志','Changelog','更新履歴','pin']];
+  return `${heading}<nav class="document-sections section-tabs" aria-label="站点与社区" data-i18n-attr="aria-label:d.design.siteCommunity">${nav.map(([id,z,en,ja,ic])=>`<a href="/${id==='projects'?'friend-links':id}.html" ${id.startsWith(key)?'aria-current="page" class="is-active"':''}>${icon(ic)}${tr('doc.'+id,z,en,ja)}</a>`).join('')}</nav><div class="document-layout"><div class="document-reader"><article class="synced-prose" data-live-document="${key}">${body.innerHTML}</article></div></div>`;
 }

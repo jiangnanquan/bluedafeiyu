@@ -4,6 +4,7 @@ import {parseHTML} from 'linkedom';
 import {archiveCreators} from '../src/lib/creators.mjs';
 import {readSaved,toggleSaved} from '../public/archive/saved-items.js';
 import {renderWorkCard} from '../public/archive/work-card.js';
+import {decorateDocument} from '../src/lib/demo-design.mjs';
 
 test('saved items preserve other entries, remove duplicates and recover from malformed browser storage',()=>{
   const values=new Map();const storage={getItem:key=>values.get(key),setItem:(key,value)=>values.set(key,value)};
@@ -31,6 +32,14 @@ test('the shared image card retains detail, preview, source credit, license and 
   const {document}=parseHTML('<html><body>'+html+'</body></html>');
   assert.equal(document.querySelector('[data-save]').getAttribute('data-id'),'slug');
   assert.equal(document.querySelector('[data-preview]').getAttribute('data-preview'),'slug');
-  assert.equal(document.querySelector('.work-owner a').getAttribute('href'),'/creators/artist.html');
-  assert.equal(document.querySelectorAll('a button').length,0);assert.ok(document.querySelector('.work-license'));
+  assert.equal(document.querySelector('.art-owner a').getAttribute('href'),'/creators/artist.html');
+  assert.equal(document.querySelectorAll('a button').length,0);assert.ok(document.querySelector('.art-license'));
+});
+
+test('information-page migration removes competing layout classes while retaining copyright anchors and source text',()=>{
+  const html=decorateDocument('<h1>About</h1><div class="about-columns"><div class="about-main"><h2 id="license">License</h2><div class="panel about-card"><p>Credit must remain.</p></div></div><aside>Community</aside></div>','about');
+  const {document}=parseHTML('<html><body>'+html+'</body></html>');
+  assert.equal(document.querySelectorAll('h1').length,1);assert.ok(document.querySelector('.reading-section #license'));
+  assert.ok(document.querySelector('.about-community'));assert.equal(document.querySelector('.panel'),null);
+  assert.ok(document.body.textContent.includes('Credit must remain.'));
 });

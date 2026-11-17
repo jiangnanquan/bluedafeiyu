@@ -1,6 +1,6 @@
 // Bake the custom homepage controls with the same locale as the page URL.
 export function localizeHome(document,api) {
-  if(!document.querySelector('.unified-site,.home-page'))return;
+  if(!document.querySelector('.home-page'))return;
   const current=api.current;
   for(const card of document.querySelectorAll('.character-index-card')){
     const label=card.querySelector('[data-character-name]');

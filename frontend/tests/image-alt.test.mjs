@@ -66,7 +66,6 @@ test('reviewed decorations require their actual adjacent title or author; unknow
   const cases=[
     '<a class="collection-card"><div class="collection-art"><img alt=""></div><div class="collection-copy"><h2>Collection</h2></div></a>',
     '<a class="creator-work-preview"><div class="creator-preview-cover"><img alt=""></div><b class="creator-preview-title">Work</b></a>',
-    '<a class="creator-work-preview"><div class="creator-preview-cover"><img data-video-cover-alt alt=""></div><b class="creator-preview-title" data-video-title>Video title</b></a>',
     '<a class="video-author"><img class="creator-avatar" alt=""><span data-creator-name>Artist</span></a>',
     '<a class="avatar-link" aria-label="Artist"><span class="avatar" aria-hidden="true"><img alt=""></span></a>',
     '<div class="character-portrait"><img src="/avatar.png" alt=""></div>'
@@ -76,8 +75,4 @@ test('reviewed decorations require their actual adjacent title or author; unknow
   assert.equal(auditImages('<a class="collection-card"><div class="collection-art"><img alt=""></div><div class="collection-copy" hidden><h2>Invisible title</h2></div><span>Open</span></a>').issues[0].kind,'unreviewed-empty');
   assert.equal(auditImages('<a class="collection-card"><div class="collection-art"><img alt=""></div><div class="collection-copy"><h2 hidden>Invisible title</h2></div><span>Open</span></a>').issues[0].kind,'unreviewed-empty');
   assert.equal(auditImages('<a class="collection-card"><div class="collection-art"><img alt=""></div><span>Generic action</span></a>').issues[0].kind,'unreviewed-empty');
-  for(const html of [
-    '<a class="creator-work-preview"><div class="creator-preview-cover"><img data-video-cover-alt alt=""></div><b class="creator-preview-title" hidden>Hidden title</b></a>',
-    '<a class="creator-work-preview"><div class="creator-preview-cover preview-photo"><img data-video-cover-alt alt=""></div><b class="creator-preview-title">Video title</b></a>'
-  ])assert.equal(auditImages(html).issues[0].kind,'empty-content');
 });

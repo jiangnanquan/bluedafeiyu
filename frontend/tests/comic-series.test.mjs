@@ -110,7 +110,7 @@ test('built gallery separates serial members while retaining the reader, search 
     const home=read(prefix+'index.html');
     assert.equal(home.querySelector('.portal-welcome-actions'),null);
     assert.ok(gallery.querySelector(`a[href="/${prefix}serials.html"]`));
-    for(const card of home.querySelectorAll('.home-section .work-card'))assert.ok(!serialIds.has(data.works.find(work=>work.slug===card.getAttribute('data-slug')).id));
+    for(const card of home.querySelectorAll('.home-latest .work-card'))assert.ok(!serialIds.has(data.works.find(work=>work.slug===card.getAttribute('data-slug')).id));
     for(const character of data.characters){
       const expected=regular.filter(work=>work.cids.includes(character.id));
       const page=read(prefix+'characters/'+character.id+'.html');
@@ -144,7 +144,7 @@ test('built gallery separates serial members while retaining the reader, search 
     for(const card of cards){
       const topic=data.topics.find(topic=>topic.id===card.getAttribute('data-collection-id'));
       assert.equal(card.getAttribute('href'),'/'+prefix+'topics/'+topic.id+'.html');
-      assert.equal(Number(card.querySelector('.collection-count').textContent.trim().match(/^\d+/)[0]),topic.workIds.length);
+      assert.equal(Number(JSON.parse(card.querySelector('[data-i18n-vars]').getAttribute('data-i18n-vars')).count),topic.workIds.length);
     }
     assert.equal(directory.querySelectorAll('.comic-card').length,serials.length);
     for(const topic of serials){

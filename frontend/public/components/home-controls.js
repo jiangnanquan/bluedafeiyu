@@ -1,19 +1,16 @@
 
 (function(){
   var app=document.getElementById('app');
-  if(!app)return;
   var collapse=document.getElementById('collapse');
-  try{if(localStorage.getItem('bluedafeiyu-sidebar')==='collapsed')app.classList.add('is-collapsed');}catch{}
   var menu=document.getElementById('menu');
   var theme=document.getElementById('theme');
   var lang=document.getElementById('lang');
-  lang.hidden=false;
   function syncCollapse(){
     var c=app.classList.contains('is-collapsed');
     collapse.setAttribute('aria-expanded',String(!c));
     collapse.setAttribute('aria-label',window.SiteLang?SiteLang.fmt(c?'d.home.expand':'d.home.collapse',c?'展开侧栏':'收起侧栏'):(c?'展开侧栏':'收起侧栏'));
   }
-  collapse.addEventListener('click',function(){if(window.matchMedia('(max-width:1024px)').matches){app.classList.remove('menu-open');menu.setAttribute('aria-expanded','false');document.querySelector('.main').inert=false;menu.focus({preventScroll:true});return;}app.classList.toggle('is-collapsed');syncCollapse();try{localStorage.setItem('bluedafeiyu-sidebar',app.classList.contains('is-collapsed')?'collapsed':'open');}catch{}});
+  collapse.addEventListener('click',function(){if(window.matchMedia('(max-width:1024px)').matches){app.classList.remove('menu-open');menu.setAttribute('aria-expanded','false');document.querySelector('.main').inert=false;menu.focus({preventScroll:true});return;}app.classList.toggle('is-collapsed');syncCollapse();});
   menu.addEventListener('click',function(){app.classList.toggle('menu-open');menu.setAttribute('aria-expanded',String(app.classList.contains('menu-open')));});
   app.addEventListener('click',function(e){
     if(app.classList.contains('menu-open')&&!e.target.closest('.sidebar')&&!e.target.closest('#menu')){app.classList.remove('menu-open');menu.setAttribute('aria-expanded','false');}
@@ -26,8 +23,7 @@
   lang.addEventListener('click',function(){if(panel.hidden)openLanguage(0);else closeLanguage(true);});
   lang.addEventListener('keydown',function(e){if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();openLanguage(e.key==='ArrowUp'?options.length-1:0);}});
   function chooseLanguage(option){
-    var prefix={'zh-CN':'','zh-TW':'/zh-hant','en':'/en','ja':'/ja'}[option.dataset.value];
-    var path=prefix+location.pathname.replace(/^\/(?:en|ja|zh-hant)(?=\/)/,'')+location.search+location.hash;
+    var path={'zh-CN':'/index.html','zh-TW':'/zh-hant/index.html','en':'/en/index.html','ja':'/ja/index.html'}[option.dataset.value];
     closeLanguage(true);if(path)location.href=path;
   }
   options.forEach(function(option,index){

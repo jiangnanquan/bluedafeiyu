@@ -32,9 +32,7 @@ test('localized catalogs retain search, preview and original download data for e
     // Bound the actual catalog transfer. Editorial text length can grow without
     // changing the number of works, so a fixed per-work average is misleading.
     const compressedBytes=zlib.gzipSync(Buffer.from(JSON.stringify(wire))).length;
-    // The 1,990-work production catalogs are byte-identical to this release.
-    // Keep a bounded transfer budget above that published content baseline.
-    const transferBudget=locale==='zh'?640*1024:1280*1024;
+    const transferBudget=locale==='zh'?512*1024:1024*1024;
     assert.ok(compressedBytes<=transferBudget,`${locale} catalog: ${compressedBytes} compressed bytes exceeds ${transferBudget}`);
   }
   assert.ok(publicData.works.every(w=>w.rights?.license),'Public rights metadata retained');
@@ -73,10 +71,9 @@ test('homepage bundles styles and keeps lower galleries lazy in all four languag
     assert.match(styles[0].getAttribute('href'),/^\/_astro\/.+\.css$/);
     const images=[...document.querySelectorAll('img')];
     assert.equal(images.filter(img=>img.getAttribute('fetchpriority')==='high').length,1);
-    const cards=document.querySelectorAll('.home-section .work-card img');
-    assert.equal(cards.length,36);
-    assert.equal([...cards].filter(img=>img.getAttribute('loading')==='eager').length,4);
-    assert.equal([...cards].filter(img=>img.getAttribute('loading')==='lazy').length,32);
+    const recent=document.querySelector('[data-feed-grid]');
+    assert.equal(recent.querySelectorAll('img[loading=eager]').length,5);
+    assert.equal(recent.querySelectorAll('img[loading=lazy]').length,25);
     assert.ok(document.querySelector('script[type=module][src^="/_astro/"]'));
     for(const name of ['archive-copy','archive-labels'])assert.equal(!!document.querySelector(`script[src^="/${name}.js"]`),['en/','ja/'].includes(prefix),prefix+' runtime dictionaries');
   }

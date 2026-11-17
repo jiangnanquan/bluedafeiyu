@@ -38,7 +38,7 @@ test('about facts and visible FAQs match structured data in all languages', () =
     assert.deepEqual(count,[snapshot.works.length,snapshot.works.filter(w=>workCharacterIds(w).includes('deepseek')).length]);
     assert.ok(doc.querySelector('#what-is-blue-dafeiyu'));
     const schema = JSON.parse(doc.querySelector('script[type="application/ld+json"]').textContent);
-    const details = [...doc.querySelectorAll('.reading-faq details')];
+    const details = [...doc.querySelectorAll('.live-reading-faq details')];
     assert.ok(details.length>=4);
     assert.deepEqual(schema.mainEntity.map(x=>[x.name,x.acceptedAnswer.text]),details.map(x=>[x.querySelector('summary').textContent,x.querySelector('p').textContent]));
     for (const anchor of ['license','licensing','analytics','special-thanks']) assert.ok(doc.getElementById(anchor));
@@ -61,8 +61,7 @@ test('role landing introductions are distinct and link to related character arch
 
 test('new guides are indexable, discoverable and retain existing curated topic membership', () => {
   const sourceTopics = JSON.parse(fs.readFileSync(path.join(root,'data/topics.json'),'utf8'));
-  const published=new Set(snapshot.works.map(work=>work.id));
-  for (const topic of sourceTopics) assert.deepEqual(snapshot.topics.find(t=>t.id===topic.id).workIds,topic.workIds.filter(id=>published.has(id)));
+  for (const topic of sourceTopics) assert.deepEqual(snapshot.topics.find(t=>t.id===topic.id).workIds,topic.workIds);
   for (const locale of LOCALES) for (const guide of guides) {
     const route = localizedPath(guidePath(guide),locale), doc = read(route);
     assert.equal(doc.querySelector('meta[name="robots"]').getAttribute('content'),'index,follow');
