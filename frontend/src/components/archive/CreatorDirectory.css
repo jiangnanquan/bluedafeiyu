@@ -9,7 +9,7 @@
 .creator-card{display:flex;flex-direction:column;gap:14px;padding:18px 20px;border:1px solid var(--card-line);border-radius:12px;background:var(--card)}
 .creator-head{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
 .avatar{width:56px;height:56px;border-radius:50%;object-fit:cover;background:var(--pale);flex:none;display:grid;place-items:center;overflow:hidden}
-.avatar-fallback{display:grid;place-items:center;font-size:18px;font-weight:800;color:var(--blue);width:100%;height:100%}
+.avatar[data-creator-initial]::before{content:attr(data-creator-initial);display:grid;place-items:center;font-size:18px;font-weight:800;color:var(--blue);width:100%;height:100%}
 .creator-id-text{flex:1;min-width:180px;display:flex;flex-direction:column;gap:2px}
 .creator-id-text h2{margin:0;font-size:18px;font-weight:800}
 .creator-id-text h2 a:hover{color:var(--blue)}

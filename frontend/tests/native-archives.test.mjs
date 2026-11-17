@@ -13,6 +13,25 @@ const api=language=>({current:language,characterName:id=>id==='doubao'?(language
 const snapshot={characters:[{id:'doubao',name:'豆包娘',aliases:['豆包']}],categories:[{id:'meme'},{id:'illustration'}],works:[{slug:'frozen',name:'新的围巾',characterId:'doubao',categoryIds:['meme','illustration'],tags:['新标签'],i18n:{en:{name:'New Scarf',tags:['a new theme']},ja:{name:'新しいマフラー',tags:['新しいテーマ']}}}]};
 const role='<main><header class="character-info"><h1>豆包娘<small>表情包档案</small></h1><p class="alias">也叫 豆包</p><div class="tags"><a href="/search.html?q=新标签">新标签</a></div></header><section class="role-reading"><h2>中文标题</h2><p>包含旧作品的旧介绍</p><div class="role-type-links"><a href="/characters/doubao/meme.html">中文类型<small>1</small></a></div><div class="reading-faq"><details><summary>怎样找图</summary><div>旧内容</div></details></div></section></main>';
 
+test('serial credits, creator-series previews and GIF pagination retain native copy in redesigned markup',async()=>{
+ const topic={id:'story',name:'测试连载',summary:'连载说明',workIds:['fixture'],reader:{totalPages:1,credits:'编：ADK · 绘：GPT image',creditsI18n:{en:'Story: ADK · Art: GPT image',ja:'構成：ADK · 作画：GPT image'},pages:[]},i18n:{en:{name:'Test series',summary:'A test series.'},ja:{name:'テスト連載',summary:'テストの連載です。'}}};
+ const fixture={...snapshot,topics:[topic],works:[{...snapshot.works[0],id:'fixture'}]};
+ const cases=[
+  ['/topics/story.html','<h1>测试连载</h1><p class="serial-index-credits">'+topic.reader.credits+'</p>'],
+  ['/topics/story/page/1.html','<div class="rd-head"><h1>测试连载</h1><span>'+topic.reader.credits+'</span></div>'],
+  ['/creators/artist.html','<h1>Artist</h1><div class="work-card"><div data-creator-series="story"><a class="work-title" href="/topics/story.html">测试连载</a><img alt="测试连载"></div></div>'],
+  ['/gifs/page/2.html','<nav class="breadcrumbs"><a href="/gifs.html">AI 娘 GIF 动图</a><span>第 2 页</span></nav><nav class="breadcrumbs"><a href="/browse.html">All images</a><span aria-current="page">AI 娘 GIF 动图</span></nav><header class="page-head"><h1>AI 娘 GIF 动图</h1><p class="lede">中文说明</p></header><aside class="note"><p>按原图 GIF 格式自动归集作品。</p></aside>']
+ ];
+ for(const language of ['en','ja'])for(const [route,body]of cases){
+  const html='<html><head><title>Archive</title><link rel="canonical" href="'+ORIGIN+route+'"><meta name="description"></head><body data-archive><main>'+body+'</main></body></html>';
+  const {document}=parseHTML(await localizeHtml(html,route,LOCALES.find(l=>l.id===language),fixture));
+  if(route.startsWith('/topics/'))assert.equal(document.querySelector('.serial-index-credits,.rd-head > span').textContent,topic.reader.creditsI18n[language]);
+  if(route.startsWith('/creators/')){assert.equal(document.querySelector('.work-title').textContent,topic.i18n[language].name);assert.equal(document.querySelector('img').getAttribute('alt'),topic.i18n[language].name);}
+  if(route.startsWith('/gifs/')){assert.equal(document.querySelector('.breadcrumbs a').textContent,language==='en'?'GIFs':'GIFアニメ');assert.equal(document.querySelector('.note p').textContent,document.querySelector('.lede').textContent);}
+  if(language==='en')assert.doesNotMatch(document.querySelector('main').textContent,/[\u3400-\u9fff]/u);
+ }
+});
+
 test('English character SEO preserves the site brand through final localization',async()=>{
   for(const base of ['/characters/doubao.html','/characters/doubao/meme.html','/characters/doubao/page/2.html']){
     const html='<html><head><title>豆包娘 — 蓝色大肥鱼</title><link rel="canonical" href="'+ORIGIN+base+'"><meta name="description" content="角色档案"><meta property="og:title"><meta name="twitter:title"></head><body data-archive data-i18n-page="characterDetail">'+role+'</body></html>';

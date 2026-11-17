@@ -49,6 +49,12 @@ export function applyNativeContent(document,api,base,snapshot) {
     const credits=card.querySelector('.serial-index-credits');
     if(credits&&topic?.reader?.creditsI18n?.[api.current])credits.textContent=topic.reader.creditsI18n[api.current];
   }
+  for(const card of document.querySelectorAll('[data-creator-series]')){
+    const topic=snapshot.topics?.find(topic=>topic.id===card.getAttribute('data-creator-series'));
+    const title=topic?.i18n?.[api.current]?.name;if(!title)continue;
+    for(const label of card.querySelectorAll('.work-title'))label.textContent=title;
+    card.querySelector('img')?.setAttribute('alt',title);
+  }
   const nativeText=text=>textMap.get(String(text).trim())||api.contentText(text);
   for(const card of document.querySelectorAll('.work-card[data-slug]')) {
     const w=bySlug.get(card.getAttribute('data-slug')),value=localized(w);if(!value)continue;

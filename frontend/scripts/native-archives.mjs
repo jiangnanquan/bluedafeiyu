@@ -63,11 +63,16 @@ export function applyNativeArchives(document,api,base,snapshot){
   const c=context(base,api,snapshot);if(!c)return null;
   if(c.format==='gif'){
     const page=base.match(/\/page\/(\d+)\.html$/)?.[1];
-    for(const link of document.querySelectorAll('.breadcrumbs a[href="/gifs.html"]'))link.textContent=c.name;
-    const crumb=document.querySelector('.breadcrumbs > span:last-child');if(crumb)crumb.textContent=page?(en?'Page '+page:page+'ページ目'):c.name;
+    for(const link of document.querySelectorAll('.breadcrumbs a'))if(/(?:^|\/)gifs\.html(?:[?#]|$)/.test(link.getAttribute('href')))link.textContent=c.name;
+    for(const trail of document.querySelectorAll('.breadcrumbs')){
+      const crumb=trail.querySelector('[aria-current="page"]')||trail.querySelector('span:last-child');
+      const returnsToArchive=[...trail.querySelectorAll('a')].some(link=>/(?:^|\/)gifs\.html(?:[?#]|$)/.test(link.getAttribute('href')));
+      if(crumb)crumb.textContent=page&&returnsToArchive?(en?'Page '+page:page+'ページ目'):c.name;
+    }
     const description=en?`Explore ${c.works.length} AI girl works with GIF originals. Filter by character and work type, check sources and permissions, and download originals for the full animation.`:`GIF形式の元画像を持つAI娘の二次創作を${c.works.length}件収録。キャラクターや作品の種類で絞り込み、出典と利用許諾を確認して元画像をダウンロードできます。`;
     const heading=document.querySelector('main h1');if(heading)heading.textContent=c.name;
     const lead=document.querySelector('.page-head .lede');if(lead)lead.textContent=description;
+    const note=document.querySelector('.note p');if(note)note.textContent=description;
     return {title:c.title+(page?(en?' · Page ':' · ')+page+(en?'':'ページ目'):'')+' | DeepSeek Chan',description};
   }
   if(c.topic){
@@ -83,8 +88,7 @@ export function applyNativeArchives(document,api,base,snapshot){
     if(c.topic.reader){
       for(const nav of document.querySelectorAll('.comic-pages,.comic-navigation'))nav.setAttribute('aria-label',c.name);
       if(crumb)crumb.textContent=page?(en?'Original page '+page:'原稿 '+page+' ページ'):c.name;
-      const credits=document.querySelector('.comic-credits');
-      if(credits)credits.textContent=c.topic.reader.creditsI18n?.[language]||c.topic.reader.credits;
+      for(const credits of document.querySelectorAll('.comic-credits,.serial-index-credits,.rd-head > span'))credits.textContent=c.topic.reader.creditsI18n?.[language]||c.topic.reader.credits;
       for(const image of document.querySelectorAll('[data-comic-work] img')){
         const work=snapshot.works.find(work=>work.id===image.closest('[data-comic-work]').getAttribute('data-comic-work'));
         if(work)image.setAttribute('alt',work.i18n?.[language]?.name||c.name);
