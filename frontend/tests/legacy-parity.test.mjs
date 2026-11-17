@@ -28,7 +28,7 @@ test('public snapshot, assets and robots are present; private intake assets excl
 test('work detail metadata, commentary and conversation id remain tied to published slug',()=>{
  for(const work of data.works){const doc=html(`works/${work.slug}.html`);assert.ok(doc.includes(`/works/${work.slug}.html`));assert.ok(doc.includes(`sticker-${work.id}`));assert.ok(doc.includes('application/ld+json'));assert.ok(doc.includes(work.name));}
 });
-test('active topics produce static pages with a shared collection layout and original authors',()=>{
+test('active topics preserve collection or reader entry points and original authors',()=>{
  const topics=data.topics||[];
  const topicDir=path.join(out,'topics');
  const pages=fs.existsSync(topicDir) ? fs.readdirSync(topicDir).filter(p=>p.endsWith('.html')).sort() : [];
@@ -37,7 +37,16 @@ test('active topics produce static pages with a shared collection layout and ori
  if(!topics.length)return;
  for(const topic of topics){
   const doc=html(`topics/${topic.id}.html`);
-  assert.ok(doc.includes('href="/works/'),`${topic.id} 应有作品入口`);
+  if(topic.reader){
+   assert.ok(doc.includes(`href="/topics/${topic.id}/page/1.html"`),`${topic.id} 应有阅读入口`);
+   for(const page of topic.reader.pages){
+    const work=data.works.find(item=>item.id===page.workId);
+    assert.ok(work,`${topic.id} 原稿第 ${page.number} 页应关联公开作品`);
+    const reader=html(`topics/${topic.id}/page/${page.number}.html`);
+    assert.ok(doc.includes(`href="/topics/${topic.id}/page/${page.number}.html"`),`${topic.id} 目录应可进入原稿第 ${page.number} 页`);
+    assert.ok(reader.includes(`href="/works/${work.slug}.html"`),`${topic.id} 原稿第 ${page.number} 页应可进入原作品`);
+   }
+  }else assert.ok(doc.includes('href="/works/'),`${topic.id} 应有作品入口`);
   assert.ok(doc.includes(topic.reader?'data-comic-reader':'work-grid'),`${topic.id} 应展示作品流或连载阅读页`);
   if(topic.author){
    // 作者型专题：作者名、首选渠道 URL 与独立版式标记都要出现在页面上。
@@ -45,8 +54,8 @@ test('active topics produce static pages with a shared collection layout and ori
    const seen=text=>doc.includes(text)||doc.includes(text.replace(/&/g,'&amp;'));
    assert.ok(seen(topic.author.name),`${topic.id} 应显示作者名`);
    assert.ok(seen(topic.author.channels[0].url),`${topic.id} 应显示首选渠道链接`);
-   assert.ok(doc.includes('topic-author'),`${topic.id} 应使用作者版式`);
-  }else{
+   assert.ok(doc.includes(topic.reader?'class="cd-hero"':'data-topic-author'),`${topic.id} 应使用作者合集或连载封面版式`);
+  }else if(!topic.reader){
    assert.ok(doc.includes('data-curated-topic'),`${topic.id} 应使用共用合集页面`);
    assert.ok(doc.includes('work-grid'),`${topic.id} 应使用共用作品卡片`);
    assert.ok(!doc.includes('topic-author'),`${topic.id} 不应出现作者版式标记`);
