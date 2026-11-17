@@ -107,7 +107,9 @@ test('real Astro builds: no-op, edits, additions, removals, cold-cache fallback 
  sameArtifacts(componentBaseline.out,initial.out,'component cache baseline',[path.basename(extra)]);
  const about=path.join(fixture,'frontend/src/components/pages/AboutPage.astro');
  // Exercise a rendered component change, rather than a compiler-optional comment.
- fs.writeFileSync(about,fs.readFileSync(about,'utf8').replace('<DocumentPage>','<DocumentPage><span hidden data-component-cache-verification></span>'));
+ const aboutSource=fs.readFileSync(about,'utf8'),documentMarker='data-document-content>';
+ assert.ok(aboutSource.includes(documentMarker),'component mutation must target the current document wrapper');
+ fs.writeFileSync(about,aboutSource.replace(documentMarker,documentMarker+'<span hidden data-component-cache-verification></span>'));
  const component=build('component','component-baseline');assert.equal(component.report.mode,'incremental');assert.ok(component.report.rendered<initial.report.rendered);
  assert.ok(fs.readFileSync(path.join(component.out,'about.html'),'utf8').includes('data-component-cache-verification'));
  assert.equal(fs.existsSync(path.join(component.out,'works/orphan-from-failed-build.html')),false);
