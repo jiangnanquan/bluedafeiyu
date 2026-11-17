@@ -41,7 +41,7 @@
 
 本地机器人通道使用独立 `owner` 身份，与站长共用全部业务权限，可通过原生 REST API 关联专题作品、封面和排序。上述 `topics/upsert` 白名单和 `bot` 限制仍适用于旧服务机器人。上传、人工收录、内容编辑和发布统一从任务中心查询；人工收录在同一任务中完成缺失文案与英日翻译。接入方法见 `docs/本地机器人操作通道.md`。
 
-可选字段 `author` 表示「来源作者专题」，结构 `{ name, url?, bio?, channels: [{ platform, label?, url }] }`：`channels` 第一项即首选联系方式，每行 `platform` 与 `url` 必填，`url`（含 `author.url`）只接受 http/https；没有 `author` 时专题维持普通版式（`SubHead` + `Feed`），有 `author` 时前台改用独立作者版式并展示作者名（不做头像），缺作者名或首选渠道会直接构建失败。作者型专题记录按需创建，本仓库不预置。
+可选字段 `author` 表示「来源作者专题」，结构 `{ name, url?, bio?, channels: [{ platform, label?, url }] }`：`channels` 第一项即首选联系方式，每行 `platform` 与 `url` 必填，`url`（含 `author.url`）只接受 http/https；没有 `author` 时专题维持共享合集版式，有 `author` 时前台改用独立作者版式并展示作者名（不做头像），缺作者名或首选渠道会直接构建失败。作者型专题记录按需创建，本仓库不预置。
 
 `dist/data/blue-fish/previews/` 不在这张表里：它是 `tools/sync_content.mjs` 从内容仓 `dist/data/blue-fish/previews/` **同步进来的首批预览图**；上表两张 blue-fish JSON 则是**站点仓 `data/` 的清单暂存副本**。三者都落在 `dist/data/`，而 Astro 发布步骤不复制 `dist/data/`，所以这批预览图与两张 JSON 都**不进发布包**；线上的首批预览图由 `DEPLOY_ROOT/shared/data` 持久副本硬链接提供（见「更新与发布」）。
 
@@ -58,11 +58,11 @@
 
 ## 前端维护原则
 
-前端页面后续只做渐进式维护和优化，禁止一次性大改版或大范围重做页面。保留现有页面的主要布局、视觉风格和交互习惯，按实际问题逐步调整。
+2026-11-17 用户已授权按本地新版本整体更新公开前端，清理全部历史样式和重复组件，并建立统一规范。该次更新完成后，所有页面继续使用同一套组件库维护。不得恢复旧样式叠加或另建一套页面外壳。
 
-每次聚焦少量页面、组件或一个具体问题，完成检查和浏览器验收后再推进下一步。复杂需求拆成可独立验证、可单独回退的小步骤，避免将多个步骤集中为一次大范围更新。
+每次本地更新前，先核对线上 `build-info.json`、远端 `main` 和本地主目录，保存未提交改动后安全同步。发布完成后再次同步本地主目录和图片仓，核对本地、远端和线上版本。功能开发使用独立工作树。
 
-修改共享组件前，先确认受影响的页面和功能，控制改动范围，避免局部调整造成全站外观或交互的突然变化。
+修改共享组件前确认影响范围。页面只组合组件，样式归属明确，并完成相关测试、构建和浏览器验收。规范入口见 `docs/前端组件库与增量构建.md`。
 
 ## 本地构建
 
@@ -80,7 +80,7 @@ python -m http.server 5173 -d .build/site
 
 搜索专题导览的文案在 `frontend/src/lib/landing-copy.mjs`，页面由 `GuidePages.mjs` 生成。导览链接到现有角色、类型和作品，不修改后台人工精选专题的成员。`gemini-memes`、`deepseek-whale` 和 `deepseek-girl` 是导览保留 ID，后台专题不要使用这三个 ID。
 
-界面支持简体中文（`zh`，默认）、繁体中文（`zh-Hant`）、英语（`en`）和日语（`ja`）。简体保留原 URL，其他语言使用 `/zh-hant/`、`/en/` 和 `/ja/` 前缀。`frontend/scripts/localize-pages.mjs` 在 Astro 构建后复用 `frontend/public/lang.js` 生成各语言静态 HTML、canonical、hreflang 和 sitemap。语言菜单跳转到当前页面的对应版本，地址固定页面语言，不受浏览器偏好影响。动态链接用 `SiteLang.url()` 保持当前语言；图片、脚本和数据共用根目录资源。繁体动态文案按需加载站内 OpenCC，特殊用词在 `traditionalOverrides` 中维护。动态文案改动后要检查繁体转换和英、日词典。`frontend/public/page-styles/`、`page-scripts/` 管页内特有代码；公共布局与可复用结构在 `frontend/src/layouts/`、`components/`。后台 `admin/` 独立运行，不参与公开前端。
+界面支持简体中文（`zh`，默认）、繁体中文（`zh-Hant`）、英语（`en`）和日语（`ja`）。简体保留原 URL，其他语言使用 `/zh-hant/`、`/en/` 和 `/ja/` 前缀。`frontend/scripts/localize-pages.mjs` 在 Astro 构建后复用 `frontend/public/lang.js` 生成各语言静态 HTML、canonical、hreflang 和 sitemap。语言菜单跳转到当前页面的对应版本，地址固定页面语言，不受浏览器偏好影响。动态链接用 `SiteLang.url()` 保持当前语言；图片、脚本和数据共用根目录资源。繁体动态文案按需加载站内 OpenCC，特殊用词在 `traditionalOverrides` 中维护。动态文案改动后要检查繁体转换和英、日词典。`frontend/public/page-scripts/` 管页内特有脚本，组件样式统一由 `frontend/src/components/library/styles.css` 引入；公共布局与可复用结构在 `frontend/src/layouts/`、`components/`。后台 `admin/` 独立运行，不参与公开前端。
 
 英日详情页必须有真实译文。存量译文在 `data/work-localizations.json`，新内容从后台的 `i18n` 导出；中文修改后必须重新生成译文。公共文案由 Astro 直接读取 `data/site-copy-localizations.json`，命名与维护规则见 `docs/多语言内容维护.md`。发布前运行 `node tools/localization/audit-pages.mjs <构建目录>` 检查正文及结构化数据。
 

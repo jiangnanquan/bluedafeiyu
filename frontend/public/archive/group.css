@@ -1,7 +1,0 @@
-.top-group-brand { display: none; }
-@media (max-width: 760px) {
-  .top-group { padding: 6px 9px; min-height: 36px; font-size: 12px; }
-  .top-group svg { display: none; }
-  .top-group-label { display: none; }
-  .top-group-brand { display: inline; }
-}

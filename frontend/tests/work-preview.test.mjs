@@ -45,7 +45,7 @@ test('both card entry links announce the shared preview and retain localized, cr
     assert.equal(link.dataset.preview,'a');assert.equal(link.getAttribute('href'),'/en/works/a.html');
     assert.equal(link.getAttribute('aria-haspopup'),'dialog');assert.equal(link.getAttribute('aria-controls'),'preview-dialog');
   }
-  assert.equal(document.querySelector('.art-owner a').hasAttribute('data-preview'),false);
+  assert.equal(document.querySelector('.work-owner a').hasAttribute('data-preview'),false);
   assert.equal(document.querySelector('[data-save]').hasAttribute('data-preview'),false);
   assert.equal(document.querySelector('[data-share-card]').hasAttribute('data-preview'),false);
   assert.equal(document.querySelector('a button'),null);
@@ -110,7 +110,7 @@ test('native card localization updates every labeled preview trigger rather than
     const snapshot={works:[{slug:'a',name:'中文作品',characterId:'deepseek',tags:[],i18n:{[language]:{name,description:name}}}],characters:[],categories:[],topics:[]};
     applyNativeContent(document,{current:language,fmt:()=>language==='en'?'Preview':'プレビュー',contentText:value=>value,characterName:()=> 'DeepSeek'},'/fixture.html',snapshot);
     const labels=[...document.querySelectorAll('[data-preview][aria-label]')];
-    assert.equal(labels.length,2);
+    assert.equal(labels.length,3);
     for(const label of labels)assert.equal(label.getAttribute('aria-label'),(language==='en'?'Preview ':'プレビュー ')+name);
   }
 });
@@ -133,7 +133,7 @@ test('ordinary image and title clicks open the preview; only its detail link fol
 test('modified clicks and independent save, share, author and role actions keep their browser behavior',async()=>{
   const f=fixture(), link=f.document.querySelector('.work-art');
   for(const props of [{ctrlKey:true},{metaKey:true},{shiftKey:true},{altKey:true},{button:1}])assert.equal(f.click(link,props).defaultPrevented,false);
-  for(const selector of ['[data-save]','[data-share-card]','.art-owner a','.card-roles a'])assert.equal(f.click(f.document.querySelector(selector)).defaultPrevented,false);
+  for(const selector of ['[data-save]','[data-share-card]','.work-owner a','.card-roles a'])assert.equal(f.click(f.document.querySelector(selector)).defaultPrevented,false);
   const prevented=new f.window.Event('click',{bubbles:true,cancelable:true});prevented.preventDefault();link.dispatchEvent(prevented);
   await flush();assert.ok(!f.dialog.open);assert.deepEqual(f.views,[]);
 });

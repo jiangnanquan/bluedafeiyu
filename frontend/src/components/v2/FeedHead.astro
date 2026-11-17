@@ -1,9 +1,0 @@
----
-// 列表页标题 + 排序
-import WorkSort from './WorkSort.astro';
-const { title, titleKey, sub, subKey, subVars, sort = true } = Astro.props;
----
-<header class="feed-head">
-  <div><h1 data-i18n={titleKey}>{title}</h1><p data-i18n-tpl={subKey} data-i18n-vars={subVars ? JSON.stringify(subVars) : undefined}>{sub}</p></div>
-  {sort ? <WorkSort /> : null}
-</header>

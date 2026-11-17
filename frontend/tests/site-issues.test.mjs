@@ -95,15 +95,15 @@ test('character descriptions merge search aliases into a single non-repeating li
   }
 });
 
-test('redesigned home retains thirty real preview destinations in every language',()=>{
+test('redesigned home retains thirty-six distinct real preview destinations in every language',()=>{
   const archive=JSON.parse(fs.readFileSync(path.join(out,'archive-data.json'),'utf8'));
   const bySlug=new Map(archive.works.map(work=>[work.slug,work]));
   for(const locale of LOCALES){
-    const section=read(localizedPath('/',locale)).querySelector('[data-feed-grid]');
+    const section=read(localizedPath('/',locale)).querySelector('main');
     assert.ok(section,locale.id);
-    const picks=[...section.querySelectorAll('.work-card')];
-    assert.equal(picks.length,30,locale.id+' complete wall');
-    assert.equal(new Set(picks.map(pick=>pick.dataset.slug)).size,30);
+    const picks=[...section.querySelectorAll('.home-section .work-card')];
+    assert.equal(picks.length,36,locale.id+' complete wall');
+    assert.equal(new Set(picks.map(pick=>pick.dataset.slug)).size,36);
     for(const pick of picks){
       const work=bySlug.get(pick.dataset.slug),image=pick.querySelector('.work-art');
       assert.ok(work);assert.equal(image.dataset.preview,work.slug);
@@ -148,14 +148,14 @@ test('image navigation exposes all five archive views and original-download trac
     const routes=['/browse.html','/serials.html','/characters.html','/topics.html','/gifs.html'];
     for(const route of routes){
       const page=read(localizedPath(route,locale));
-      const tabs=[...page.querySelectorAll('.gallery-tabs a')];
-      assert.deepEqual(tabs.map(a=>a.getAttribute('href')),routes.map(r=>localizedPath(r,locale)));
-      assert.equal(tabs.filter(a=>a.getAttribute('aria-current')==='page').length,1);
-      assert.equal(tabs.find(a=>a.getAttribute('aria-current')==='page').getAttribute('href'),localizedPath(route,locale));
+      for(const href of ['/characters.html','/topics.html','/serials.html'])assert.ok(page.querySelector(`.sidebar a[href="${localizedPath(href,locale)}"]`));
+      if(['/browse.html','/gifs.html'].includes(route)){
+        const tabs=[...page.querySelectorAll('.gallery-tabs a')];
+        assert.deepEqual(tabs.map(a=>a.getAttribute('href')),routes.map(r=>localizedPath(r,locale)));
+        assert.equal(tabs.filter(a=>a.getAttribute('aria-current')==='page').length,1);
+        assert.equal(tabs.find(a=>a.getAttribute('aria-current')==='page').getAttribute('href'),localizedPath(route,locale));
+      }
       assert.equal(page.querySelector('[data-archive-view],[data-archive-sort],[data-weekly-slugs],[data-weekly-period]'),null);
-      const sidebar=[...page.querySelectorAll('.main-nav a')].map(a=>a.getAttribute('href'));
-      assert.ok(!sidebar.includes(localizedPath('/characters.html',locale)));
-      assert.ok(!sidebar.includes(localizedPath('/topics.html',locale)));
     }
     const detail=read(localizedPath('/works/deepseek202609300025.html',locale));
     const download=detail.querySelector('[data-download-work]');
@@ -165,6 +165,6 @@ test('image navigation exposes all five archive views and original-download trac
   }
   const gallery=read('/browse.html');
   assert.equal(gallery.querySelector('main h1').textContent,'全部图片');
-  assert.equal(gallery.querySelector('.main-nav a[href="/browse.html"] span').textContent,'图像馆');
-  assert.equal(gallery.querySelector('.main-nav a[href="/videos.html"] span').textContent,'视频');
+  assert.equal(gallery.querySelector('.sidebar a[href="/"] span').textContent,'全部图片');
+  assert.equal(gallery.querySelector('.sidebar a[href="/videos.html"] span').textContent,'视频');
 });
