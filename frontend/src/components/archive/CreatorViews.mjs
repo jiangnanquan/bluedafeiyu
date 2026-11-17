@@ -8,7 +8,7 @@ const dateText=value=>String(value||'').replaceAll('.','-').slice(0,10);
 export function createCreatorViews(ctx,creators) {
   const {esc:e,tr,icon,card,videoCard,pageHead,write,breadcrumbs,button}=ctx;
   const t=(key,zh,en,ja)=>tr('design.'+key,zh,en,ja);
-  const avatar=(creator,size='')=>`<span class="avatar ${size}" aria-hidden="true">${creator.avatar?`<img src="${e(creator.avatar)}" width="72" height="72" alt="" loading="lazy" referrerpolicy="no-referrer">`:`<span class="avatar-fallback">${e(Array.from(creator.name.replace(/^@/,''))[0]||'')}</span>`}</span>`;
+  const avatar=(creator,size='')=>`<span class="avatar ${size}" aria-hidden="true">${creator.avatar?`<img src="${e(creator.avatar)}" width="72" height="72" alt="" loading="lazy" referrerpolicy="no-referrer">`:`<span class="avatar-fallback">${icon('roles',24)}</span>`}</span>`;
   const preview=media=>{
     const video=media.kind==='video',serial=media.kind==='serial',item=media.item;
     if(!item)return '';

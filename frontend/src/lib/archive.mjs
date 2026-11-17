@@ -70,6 +70,9 @@ for(const [key,row] of Object.entries(submissionCopy)){translations.en['d.submis
 translations.en['d.openApi']='Open API';translations.ja['d.openApi']='公開API';
 for(const [key, en, ja] of [
   ['allRoles','All characters','すべてのキャラクター'],['allTypes','All types','すべての種類'],
+  ['creationFilter','Creation method filter','制作方法の絞り込み'],['sortDirection','Sort direction','並び順'],
+  ['serialOnlyRoleHint','This character currently appears in comic series. Explore them in the series archive.','このキャラクターの作品は現在連載のみです。連載コーナーからお読みください。'],
+  ['noPublicRoleWorks','There are no public works for this character yet. Submissions are welcome.','このキャラクターの公開作品はまだありません。投稿をお待ちしています。'],
   ['galleryTabs','Image archive views','画像の表示方法'],
   ['siteSearch','Search works, characters, creators or tags','作品・キャラクター・作者・タグを検索'],
   ['viewLarge','View image','画像を見る'],['longImage','Long image · view full','長い画像・全体を見る'],

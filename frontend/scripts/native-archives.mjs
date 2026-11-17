@@ -48,10 +48,12 @@ export function applyNativeArchives(document,api,base,snapshot){
   // Aliases are character identifiers; use the canonical localized identity for names in non-Latin scripts.
   const aliases=c=>[...new Set((c.aliases||[]).map(a=>/[\u3400-\u9fff]/u.test(a)?roleName(c.id):a))].filter(a=>a!==roleName(c.id));
   for(const card of document.querySelectorAll('.role-card')){
-    const id=card.getAttribute('href')?.match(/\/characters\/([^/]+)\.html/)?.[1],c=snapshot.characters.find(c=>c.id===id);
+    const id=(card.getAttribute('href')||card.querySelector('h3 a')?.getAttribute('href'))?.match(/\/characters\/([^/]+)\.html/)?.[1],c=snapshot.characters.find(c=>c.id===id);
     if(!c)continue;
-    card.querySelector('h3').textContent=roleName(c.id);
-    card.querySelector('p').textContent=aliases(c).join(' / ')||roleName(c.id);
+    (card.querySelector('h3 a')||card.querySelector('h3')).textContent=roleName(c.id);
+    const alias=card.querySelector('[data-character-aliases]'),names=aliases(c).join(' / ');
+    if(alias)alias.textContent=names?' · '+names:'';
+    else if(card.querySelector('p'))card.querySelector('p').textContent=names||roleName(c.id);
     card.querySelector('img')?.setAttribute('alt',roleName(c.id));
   }
   for(const link of document.querySelectorAll('.role-entry-links a')){

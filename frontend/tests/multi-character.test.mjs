@@ -60,7 +60,7 @@ test('submission uses touch-friendly checkboxes and serializes every selected ch
  const script=fs.readFileSync(new URL('../public/page-scripts/submit-0.js',import.meta.url),'utf8');
  assert.match(form,/<fieldset[^>]*id="f-character"/);
  assert.match(form,/type="checkbox" name="characterIds"/);
- assert.match(form,/characters\.filter\(c => c\.status === 'active' && c\.inSubmissionForm\)/);
+ assert.ok(form.replace(/\s/g,'').includes("characters.filter(c=>c.status==='active'&&c.inSubmissionForm)"));
  assert.match(script,/data\.append\("characterIds", JSON\.stringify\(selectedCharacters\(\)\)\)/);
  assert.doesNotMatch(script,/DEMO|SITE_DATA|characterSelect/);
 });

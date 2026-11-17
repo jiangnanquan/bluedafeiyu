@@ -103,7 +103,7 @@ test('community projects and friend links have separate localized pages and unch
     if(category==='project')expected.splice(2,0,expected[0]);
     for(const locale of LOCALES){
       const doc=parseHTML(await localizeHtml(`<html><head><title>Page</title><link rel="canonical" href="https://xn--pssy23gqgbz2d718b.com${route}"><meta name="description"></head><body data-archive data-i18n-page="${active}" ${options.attrs}><main>${content}</main></body></html>`,route,locale,{works:[],characters:[],topics:[]})).document;
-      assert.deepEqual([...doc.querySelectorAll(category==='project'?'.project-directory-copy h2 a':'.friend-wall-card')].map(a=>a.href),expected);
+      assert.deepEqual([...doc.querySelectorAll(category==='project'?'[data-project-kind] h2 a':'.friend-wall-card')].map(a=>a.href),expected);
       assert.equal(doc.querySelectorAll('[data-friend-section]').length,1);
       assert.equal(doc.querySelector('.friend-wall-tabs'),null);
       assert.ok(doc.title.length>10);
