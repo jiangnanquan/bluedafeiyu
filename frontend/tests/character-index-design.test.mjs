@@ -7,18 +7,18 @@ const root=path.resolve(import.meta.dirname,'../..');
 const out=process.env.SITE_OUT_DIR||path.join(root,'.build/site');
 const data=JSON.parse(fs.readFileSync(path.join(out,'archive-data.json'),'utf8'));
 const serialIds=new Set(data.topics.filter(topic=>topic.reader).flatMap(topic=>topic.workIds));
-const expected=data.characters.filter(c=>data.works.some(w=>w.cids.includes(c.id))).map(c=>({...c,count:data.works.filter(w=>w.cids.includes(c.id)&&!serialIds.has(w.id)).length})).sort((a,b)=>b.count-a.count);
+const expected=data.characters.map(c=>({...c,count:data.works.filter(w=>w.cids.includes(c.id)&&!serialIds.has(w.id)).length}));
 for(const prefix of ['','zh-hant/','en/','ja/'])test('shared character cards preserve real routes and ordinary-work counts: '+(prefix||'zh'),()=>{
  const {document}=parseHTML(fs.readFileSync(path.join(out,prefix+'characters.html'),'utf8'));
- const cards=[...document.querySelectorAll('a.role-card')];
+ const cards=[...document.querySelectorAll('article.role-card')];
  assert.equal(cards.length,expected.length);assert.equal(document.querySelectorAll('h1').length,1);
  for(const [i,card] of cards.entries()){
-  assert.equal(card.getAttribute('href'),'/'+prefix+'characters/'+expected[i].id+'.html');
-  assert.equal(Number(card.querySelector('.role-body > span').textContent.trim().match(/^\d+/)[0]),expected[i].count);
+  assert.equal(card.querySelector('.role-art').getAttribute('href'),'/'+prefix+'characters/'+expected[i].id+'.html');
+  assert.equal(Number(card.querySelector('.role-count').textContent.trim().match(/^\d+/)[0]),expected[i].count);
   const img=card.querySelector('img');assert.ok(img.getAttribute('alt'));
   const src=img.getAttribute('src');assert.ok(fs.existsSync(path.join(src.startsWith('/data/blue-fish/')?path.join(root,'dist'):out,src)));
  }
  assert.equal(document.querySelector('.sidebar [aria-current=page]').getAttribute('href'),'/'+prefix+'characters.html');
  assert.equal(document.querySelectorAll('#language-options [role=option]').length,4);
- assert.equal(document.querySelector('.brand-mark img').getAttribute('src'),'/avatar.png');
+ assert.ok(document.querySelector('.brand-mark svg[aria-hidden="true"]'));
 });

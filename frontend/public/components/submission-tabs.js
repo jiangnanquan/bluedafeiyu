@@ -5,7 +5,12 @@ export function installSubmissionTabs({document=globalThis.document,window=globa
   if(!tabs.length||!image||!video)return;
   const select=mode=>{
     image.hidden=mode!=='image';video.hidden=mode!=='video';
-    document.querySelectorAll('[data-submission-heading]').forEach(heading=>heading.hidden=heading.dataset.submissionHeading!==mode);
+    const heading=document.querySelector('[data-submission-heading]');
+    if(heading){
+      const title=heading.querySelector('h1'),lead=heading.querySelector('.lede'),eyebrow=heading.querySelector('.eyebrow span');
+      for(const [node,field]of [[title,'Title'],[lead,'Lead']])if(node&&heading.dataset[mode+field]){node.textContent=heading.dataset[mode+field];node.setAttribute('data-i18n','d.submission.'+mode+field);}
+      if(eyebrow)eyebrow.textContent=mode==='video'?'CREATOR REGISTRATION':'SUBMIT';
+    }
     tabs.forEach(tab=>{const active=tab.dataset.submissionMode===mode;tab.setAttribute('aria-selected',String(active));tab.tabIndex=active?0:-1;});
   };
   tabs.forEach((tab,i)=>{

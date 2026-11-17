@@ -49,7 +49,7 @@ test('the published topic, work links and source/permission notes are present in
   for(const prefix of ['','en/','ja/','zh-hant/']){
     const {document}=parseHTML(fs.readFileSync(path.join(out,prefix+'topics/hooded-gemini.html'),'utf8'));
     assert.equal(document.querySelector('[data-download-topic]').dataset.downloadTopic,'hooded-gemini');
-    assert.equal(document.querySelectorAll('#results .work-card').length,18);
+    assert.equal(document.querySelectorAll('#collection-works .work-card').length,18);
     for(const work of works){
       assert.ok(document.querySelector(`a[href="/${prefix}works/${work.slug}.html"]`));
       const page=parseHTML(fs.readFileSync(path.join(out,prefix+'works/'+work.slug+'.html'),'utf8')).document;

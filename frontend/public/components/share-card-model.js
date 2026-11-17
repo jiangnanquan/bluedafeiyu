@@ -1,5 +1,5 @@
 const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
-export const SHARE_CARD_VERSION = '20261117-visual-2';
+export const SHARE_CARD_VERSION = '20261117-visual-3';
 
 export function shareCardId(href) {
   const path = new URL(href, 'https://xn--pssy23gqgbz2d718b.com').pathname.replace(/^\/(?:en|ja|zh-hant)(?=\/)/, '');

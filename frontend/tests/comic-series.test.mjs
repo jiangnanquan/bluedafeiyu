@@ -151,9 +151,9 @@ test('built gallery separates serial members while retaining the reader, search 
     for(const card of cards){
       const topic=data.topics.find(topic=>topic.id===card.getAttribute('data-collection-id'));
       assert.equal(card.getAttribute('href'),'/'+prefix+'topics/'+topic.id+'.html');
-      assert.equal(Number(card.querySelector('.collection-count').textContent.trim().match(/^\d+/)[0]),topic.workIds.length);
+      assert.equal(Number(card.closest('.coll-row').querySelector('.coll-count').textContent.trim().match(/^\d+/)[0]),topic.workIds.length);
     }
-    assert.equal(directory.querySelectorAll('.comic-card').length,serials.length);
+    assert.equal(directory.querySelectorAll('.serial-item').length,serials.length);
     for(const topic of serials){
       const card=directory.querySelector(`[data-comic-series="${topic.id}"]`);
       assert.equal(card.querySelector('a').getAttribute('href'),'/'+prefix+'topics/'+topic.id+'.html');
@@ -195,9 +195,9 @@ test('built serial pages preserve localized navigation, attribution, canonical U
     const {document}=parseHTML(fs.readFileSync(path.join(out,prefix+route.slice(1)),'utf8'));
     assert.equal(document.querySelector('link[rel="canonical"]').getAttribute('href'),'https://xn--pssy23gqgbz2d718b.com/'+prefix+route.slice(1));
     assert.ok(document.querySelector('a[href="https://space.bilibili.com/2988768"]'));
-    assert.equal(document.querySelector('.author-avatar').getAttribute('src'),'/author-avatars/eden-sins-bloom.webp');
-    const current=document.querySelector('.comic-pages [aria-current="page"]');
-    assert.equal(current.getAttribute('href'),'/'+prefix+route.slice(1));
+    assert.equal(document.querySelector('.author-name').textContent,'ADK');
+    if(number){const current=document.querySelector('.comic-pages [aria-current="page"]');assert.equal(current.getAttribute('href'),'/'+prefix+route.slice(1));}
+    else assert.equal(document.querySelectorAll('.page-grid .page-cell').length,28);
     for(const link of document.querySelectorAll('.comic-navigation a,.comic-pages a')){
       const href=link.getAttribute('href');
       assert.ok(href.startsWith('/'+prefix+'topics/'),href);

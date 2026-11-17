@@ -28,10 +28,12 @@ export function decorativeReason(img) {
     return hidden && scope.contains(hidden) ? '' : visibleText(label);
   };
   if(img.matches('.event-archive-cover[aria-hidden="true"][tabindex="-1"] img'))return 'hidden-repeated-event-cover';
+  if(img.matches('.archive-event .event-cover[aria-hidden="true"][tabindex="-1"] img')&&named('.archive-event','.event-summary h2'))return 'hidden-repeated-event-cover';
   // An otherwise decorative image must not leave its own control unnamed.
   if(link && !linkName(link))return null;
   if(img.matches('.character-portrait img[src="/avatar.png"]') && !img.closest('[data-cutout]') && !img.parentElement.querySelector('.character-cover-credit'))return 'character-brand-placeholder';
   if(img.matches('.collection-art img') && named('a.collection-card','.collection-copy h2'))return 'named-collection-mosaic';
+  if(img.matches('.coll-covers .coll-cover-side img') && named('.coll-row','.coll-info h2'))return 'named-collection-mosaic';
   if(img.matches('.creator-preview-cover img') && named('a.creator-work-preview','.creator-preview-title'))return 'named-creator-preview';
   if(img.matches('.portal-image-strip img,.portal-video-art img') && named('a.portal-entry','h2'))return 'named-portal-entry';
   if(img.matches('.photo-print img') && named('a.paper-feature','.feature-copy h2'))return 'named-feature-mosaic';
@@ -40,7 +42,8 @@ export function decorativeReason(img) {
   if(img.matches('img.author-avatar') && named('.topic-author','b'))return 'adjacent-topic-author';
   if(img.matches('.avatar[aria-hidden="true"] img')) {
     if(img.closest('a.avatar-link,a.creator-recommendation') && linkName(link))return 'named-author-link';
-    if(named('.author-masthead','h1'))return 'adjacent-profile-author';
+    if(img.closest('.creator-head > a') && linkName(link) && named('.creator-head','[data-creator-name]'))return 'named-author-link';
+    if(named('.author-masthead,.cp-head','h1'))return 'adjacent-profile-author';
   }
   return null;
 }

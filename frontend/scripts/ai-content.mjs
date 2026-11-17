@@ -64,7 +64,6 @@ export function createAiDocuments(snapshot) {
   const roleFiles = [];
   for (const c of characters) {
     const list = works.filter(w => workCharacterIds(w).includes(c.id));
-    if (!list.length) continue;
     const route = `/characters/${c.id}.html`;
     documents.set(route + '.md', page(c.name, route, `角色别名：${(c.aliases || []).map(label).join('、') || '未标注'}。\n\n当前公开作品：${list.length} 件。\n\n## 作品索引\n\n${workList(list)}`));
     roleFiles.push(fileLink(c.name, route, `${list.length} 件公开作品，含别名和作品链接。`));

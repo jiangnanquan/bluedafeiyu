@@ -81,3 +81,15 @@ test('reviewed decorations require their actual adjacent title or author; unknow
     '<a class="creator-work-preview"><div class="creator-preview-cover preview-photo"><img data-video-cover-alt alt=""></div><b class="creator-preview-title">Video title</b></a>'
   ])assert.equal(auditImages(html).issues[0].kind,'empty-content');
 });
+
+test('current collection, creator and event decorations require a specific adjacent accessible name',()=>{
+ for(const html of [
+  '<article class="coll-row"><a class="coll-covers" aria-label="Named collection"><div class="coll-cover-side"><img alt=""></div></a><div class="coll-info"><h2>Named collection</h2></div></article>',
+  '<header class="cp-head"><span class="avatar" aria-hidden="true"><img alt=""></span><h1>Named creator</h1></header>',
+  '<article class="archive-event"><a class="event-cover" aria-hidden="true" tabindex="-1"><img alt=""></a><div class="event-summary"><h2>Named event</h2></div></article>'
+ ])assert.deepEqual(auditImages(html).issues,[]);
+ for(const html of [
+  '<article class="coll-row"><a class="coll-covers" aria-label="Open"><div class="coll-cover-side"><img alt=""></div></a></article>',
+  '<header class="cp-head"><span class="avatar" aria-hidden="true"><img alt=""></span><h1 hidden>Hidden creator</h1></header>'
+ ])assert.equal(auditImages(html).issues.length,1);
+});

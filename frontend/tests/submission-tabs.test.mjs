@@ -32,3 +32,15 @@ test('existing query and anchor video links remain usable and keyboard selection
     assert.equal(f.tabs[0].getAttribute('tabindex'),'0');assert.equal(f.tabs[1].getAttribute('tabindex'),'-1');
   }
 });
+
+test('switching forms updates one heading using copy already baked for the page language',()=>{
+ const {document,window}=parseHTML('<html><body><div data-submission-heading data-image-title="Image submission" data-image-lead="An image or ZIP" data-video-title="Video registration" data-video-lead="Your public profile"><header><div class="eyebrow"><span>SUBMIT</span></div><h1>Image submission</h1><p class="lede">An image or ZIP</p></header></div><button role="tab" data-submission-mode="image"></button><button role="tab" data-submission-mode="video"></button><section id="image-submission-panel"></section><section id="creator-registration"></section></body></html>');
+ Object.defineProperty(window,'location',{value:new URL('https://example.test/submit.html'),configurable:true});
+ installSubmissionTabs({document,window});
+ document.querySelector('[data-submission-mode="video"]').dispatchEvent(new window.Event('click'));
+ assert.equal(document.querySelectorAll('h1').length,1);assert.equal(document.querySelector('h1').textContent,'Video registration');
+ assert.equal(document.querySelector('h1').getAttribute('data-i18n'),'d.submission.videoTitle');
+ assert.equal(document.querySelector('.lede').textContent,'Your public profile');
+ document.querySelector('[data-submission-mode="image"]').dispatchEvent(new window.Event('click'));
+ assert.equal(document.querySelector('h1').textContent,'Image submission');
+});

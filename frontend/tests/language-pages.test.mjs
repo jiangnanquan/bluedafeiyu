@@ -39,13 +39,13 @@ test('每个公开 HTML 的四种语言版本、canonical 和相互 hreflang 都
 });
 
 test('HTML 在执行 JS 前已翻译，导航与分页留在当前语言且资产共用根路径', () => {
-  const labels = ['蓝色大肥鱼是什么？', '藍色大肥魚是什麼？', 'About', 'このサイトについて'];
+  const labels = ['关于与版权', '關於與版權', 'About & copyright', 'サイト情報と著作権'];
   for (const [i, locale] of LOCALES.entries()) {
     const document = read(localizedPath('/about.html', locale));
     assert.equal(document.querySelector('main h1').textContent, labels[i]);
     assert.equal(document.querySelector('.topbar form[role=search]').getAttribute('action'), locale.prefix + '/search.html');
     assert.equal(document.querySelector('.topbar a.button.primary').getAttribute('href'), locale.prefix + '/submit.html');
-    assert.match(document.querySelector('script[src*="lang.js"]').getAttribute('src'), /^\/lang\.js\?v=\d+$/);
+    assert.match(document.querySelector('script[src*="lang.js"]').getAttribute('src'), /^\/lang\.js\?v=[\w-]+$/);
     assert.ok(document.querySelector('noscript details a[href="/ja/about.html"]'));
     const pagination = read(localizedPath('/page/2.html', locale));
     assert.ok(pagination.querySelector('[data-next]').getAttribute('data-next').startsWith(locale.prefix + '/page/'));

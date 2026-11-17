@@ -18,8 +18,8 @@ test('homepage sections contain distinct real works and the ordinary collection 
  const home=doc('index.html');
  const slugs=[...home.querySelectorAll('.home-section .work-card')].map(card=>card.dataset.slug);
  assert.equal(slugs.length,36);assert.equal(new Set(slugs).size,slugs.length);
- assert.equal(home.querySelectorAll('.guide summary').length,2,'one FAQ component');
+ assert.equal(home.querySelectorAll('.guide-card details.faq summary').length,2,'one FAQ component');
  const topics=doc('topics.html');
- assert.equal(topics.querySelectorAll('.collection-card').length,6);
- assert.equal(topics.querySelector('main a.collection-card[href="/topics/eden-sins-bloom.html"]'),null);
+ assert.equal(topics.querySelectorAll('.coll-row').length,6);
+ assert.equal(topics.querySelector('main a[data-collection-id="eden-sins-bloom"]'),null);
 });

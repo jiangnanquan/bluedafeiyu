@@ -35,12 +35,12 @@ test('all image tabs link to GIFs, and the static GIF archive contains exactly t
   for(const locale of LOCALES){
     const read=route=>parseHTML(fs.readFileSync(path.join(out,localizedPath(route,locale).slice(1)),'utf8')).document;
     const page=read('/gifs.html');
-    assert.equal(page.querySelector('.gallery-tabs [aria-current="page"]').getAttribute('href'),localizedPath('/gifs.html',locale));
+    assert.ok(page.querySelector(`.breadcrumbs a[href="${localizedPath('/browse.html',locale)}"]`));
     const slugs=JSON.parse(page.querySelector('#results').dataset.list);
     assert.deepEqual(slugs,gifs.map(w=>w.slug));
     assert.equal(page.querySelector('body').dataset.type,undefined);
     assert.ok(page.querySelector('select[name="type"] option[value="meme"]'));
-    assert.ok(read('/browse.html').querySelector(`.gallery-tabs a[href="${localizedPath('/gifs.html',locale)}"]`));
+    assert.ok(read('/browse.html').querySelector(`main a[href="${localizedPath('/gifs.html',locale)}"]`));
     for(const route of ['/characters.html','/topics.html'])assert.ok(read(route).querySelector(`.sidebar a[href="${localizedPath('/',locale)}"]`));
     const schema=[...page.querySelectorAll('script[type="application/ld+json"]')].map(s=>JSON.parse(s.textContent)).find(s=>s['@type']==='CollectionPage');
     assert.equal(schema.mainEntity.itemListElement.length,Math.min(24,gifs.length));

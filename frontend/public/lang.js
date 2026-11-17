@@ -1139,6 +1139,7 @@
   Object.assign(DICT.ja, window.ArchiveLabels && window.ArchiveLabels.ja || {});
   var traditionalOverrides = {
     'd.specialThanks': '特別致謝',
+    'd.links.project.ai-chan-sheets.description': '角色三視圖、表情、服裝與道具素材。',
     'about.license.p1b': '程式碼',
     'v2.nav.gallery': '圖庫',
     'v2.tagline': 'AI 娘二創圖庫'

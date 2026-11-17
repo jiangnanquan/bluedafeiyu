@@ -17,13 +17,13 @@ test('selected topic covers lead collection artwork without changing member orde
   const coverId=memberIds.includes(topic.coverWorkId)?topic.coverWorkId:memberIds[0];
   const cover=data.works.find(work=>work.id===coverId);
   const doc=read('topics/'+topic.id+'.html');
-  assert.equal(doc.querySelector(topic.reader?'.comic-sheet img':'.topic-mosaic img').getAttribute('src'),topic.reader?cover.l:cover.i,topic.id+' hero cover');
+  if(topic.reader)assert.equal(doc.querySelector('.comic-sheet img').getAttribute('src'),cover.l,topic.id+' reader cover');
   const directory=topic.reader?read('serials.html'):index;
   assert.equal(directory.querySelector(`a[href="/topics/${topic.id}.html"] img`).getAttribute('src'),cover.i,topic.id+' collection card cover');
-  const homeCard=home.querySelector(`.collection-grid a[href="/topics/${topic.id}.html"] .collection-art img`);
+  const homeCard=home.querySelector(`.coll-list a[data-collection-id="${topic.id}"] img`);
   if(homeCard)assert.equal(homeCard.getAttribute('src'),cover.i,topic.id+' homepage card cover');
   if(topic.reader)assert.deepEqual(data.topics.find(t=>t.id===topic.id).reader.pages,topic.reader.pages,topic.id+' original page order');
-  else assert.deepEqual([...doc.querySelectorAll('#results .work-card')].map(card=>card.getAttribute('data-slug')),memberIds.slice(0,24).map(id=>data.works.find(work=>work.id===id).slug),topic.id+' curated order');
+  else assert.deepEqual([...doc.querySelectorAll('#collection-works [data-feed-grid] .work-card')].map(card=>card.getAttribute('data-slug')),memberIds.slice(0,24).map(id=>data.works.find(work=>work.id===id).slug),topic.id+' curated order');
   const sharePath=new URL(doc.querySelector('meta[property="og:image"]').getAttribute('content')).pathname;
   const shareJob=jobs.find(job=>job.id===path.basename(sharePath,'.jpg'));
   assert.ok(shareJob,topic.id+' share card job');
@@ -43,7 +43,7 @@ test('submission renders role checkboxes before JavaScript without loading the w
   assert.deepEqual([...choices.querySelectorAll('input[name=characterIds]')].map(input=>input.getAttribute('value')),expected);
   assert.ok([...choices.querySelectorAll('label span')].every(label=>label.textContent.trim()));
   assert.equal(doc.querySelector('script[src="/site-data.js"]'),null,file+' no work catalog dependency');
-  assert.ok(doc.querySelector('script[src^="/page-scripts/submit-0.js"]').hasAttribute('async'),file+' form initializes independently');
+  assert.ok(doc.querySelector('script[src^="/page-scripts/submit-0.js"]').hasAttribute('defer'),file+' form initializes after its controls exist');
   if(prefix==='en/')assert.match(choices.textContent,/DeepSeek Chan/);
   if(prefix==='ja/')assert.match(choices.textContent,/DeepSeekちゃん/);
   if(prefix==='zh-hant/')assert.match(choices.textContent,/通義千問娘/);
@@ -93,18 +93,17 @@ test('lists share one filter bar and a crawlable load-more chain',()=>{
  assert.match(vendor.querySelector('a').getAttribute('href'),/^https:/);
 });
 
-test('collection filter counts only include its own full member list',()=>{
+test('curated collection feeds contain only their complete member list in its original order',()=>{
  const data=JSON.parse(fs.readFileSync(path.join(out,'archive-data.json'),'utf8'));
  for(const topic of data.topics){
   if(topic.reader){assert.equal(read('topics/'+topic.id+'.html').querySelector('#filter-form'),null,'serial reading order cannot be filtered or shuffled');continue;}
-  const members=topic.slugs.map(slug=>data.works.find(w=>w.slug===slug));
-  const counts=new Map();for(const work of members)for(const id of work.cids)counts.set(id,(counts.get(id)||0)+1);
   for(const prefix of ['','en/','ja/','zh-hant/']){
    const doc=read(prefix+'topics/'+topic.id+'.html');
-   const options=[...doc.querySelectorAll('select[name=character] option')].filter(option=>option.getAttribute('value'));
-   assert.deepEqual(new Set(options.map(option=>option.getAttribute('value'))),new Set(counts.keys()),prefix+topic.id);
-   for(const option of options)assert.equal(Number(option.textContent.match(/\((\d+)\)$/)?.[1]),counts.get(option.getAttribute('value')));
-   assert.ok(doc.querySelector('select[name=character]').hasAttribute('multiple'));
+   const section=doc.querySelector('#collection-works');
+   const first=[...section.querySelectorAll('[data-feed-grid] .work-card')].map(card=>card.dataset.slug);
+   const rest=section.querySelector('template[data-feed-rest]');
+   const remaining=rest?[...parseHTML('<div>'+rest.innerHTML+'</div>').document.querySelectorAll('.work-card')].map(card=>card.dataset.slug):[];
+   assert.deepEqual([...first,...remaining],topic.slugs,prefix+topic.id);
   }
  }
 });

@@ -47,7 +47,7 @@ test('active topics produce static pages with a shared collection layout and ori
    assert.ok(seen(topic.author.channels[0].url),`${topic.id} 应显示首选渠道链接`);
    assert.ok(doc.includes('topic-author'),`${topic.id} 应使用作者版式`);
   }else{
-   assert.ok(doc.includes('topic-hero'),`${topic.id} 应使用共用合集头部`);
+   assert.ok(doc.includes('data-curated-topic'),`${topic.id} 应使用共用合集页面`);
    assert.ok(doc.includes('work-grid'),`${topic.id} 应使用共用作品卡片`);
    assert.ok(!doc.includes('topic-author'),`${topic.id} 不应出现作者版式标记`);
   }

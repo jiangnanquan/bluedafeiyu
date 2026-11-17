@@ -24,8 +24,8 @@ test('Traditional navigation and DeepSeek archive breadcrumbs link to the Tradit
 });
 
 test('about headings answer the brand question in Simplified and Traditional Chinese',()=>{
-  assert.equal(read('/about.html').querySelector('main h1').textContent,'蓝色大肥鱼是什么？');
-  assert.equal(read('/zh-hant/about.html').querySelector('main h1').textContent,'藍色大肥魚是什麼？');
+  assert.equal(read('/about.html').querySelector('#what-is-blue-dafeiyu').textContent,'蓝色大肥鱼是什么？');
+  assert.equal(read('/zh-hant/about.html').querySelector('#what-is-blue-dafeiyu').textContent,'藍色大肥魚是什麼？');
 });
 
 test('the DeepSeek character page exposes its introduction and whale-girl guide in the hero',()=>{
@@ -149,18 +149,16 @@ test('image navigation exposes all five archive views and original-download trac
     for(const route of routes){
       const page=read(localizedPath(route,locale));
       for(const href of ['/characters.html','/topics.html','/serials.html'])assert.ok(page.querySelector(`.sidebar a[href="${localizedPath(href,locale)}"]`));
-      if(['/browse.html','/gifs.html'].includes(route)){
-        const tabs=[...page.querySelectorAll('.gallery-tabs a')];
-        assert.deepEqual(tabs.map(a=>a.getAttribute('href')),routes.map(r=>localizedPath(r,locale)));
-        assert.equal(tabs.filter(a=>a.getAttribute('aria-current')==='page').length,1);
-        assert.equal(tabs.find(a=>a.getAttribute('aria-current')==='page').getAttribute('href'),localizedPath(route,locale));
-      }
+      assert.ok(page.querySelector(`.sidebar a[href="${localizedPath('/',locale)}"]`));
+      if(route==='/browse.html')assert.ok(page.querySelector(`main a[href="${localizedPath('/gifs.html',locale)}"]`));
+      if(route==='/gifs.html')assert.ok(page.querySelector(`.breadcrumbs a[href="${localizedPath('/browse.html',locale)}"]`));
       assert.equal(page.querySelector('[data-archive-view],[data-archive-sort],[data-weekly-slugs],[data-weekly-period]'),null);
     }
     const detail=read(localizedPath('/works/deepseek202609300025.html',locale));
     const download=detail.querySelector('[data-download-work]');
     assert.ok(download.dataset.downloadWork);assert.ok(download.getAttribute('href'));
-    assert.equal(detail.querySelector('meta[property="og:image"]').getAttribute('content'),'https://xn--pssy23gqgbz2d718b.com/og/archive--works-deepseek202609300025-html.jpg?v=20261023-4');
+    const shareImage=new URL(detail.querySelector('meta[property="og:image"]').getAttribute('content'));
+    assert.equal(shareImage.origin+shareImage.pathname,'https://xn--pssy23gqgbz2d718b.com/og/archive--works-deepseek202609300025-html.jpg');assert.ok(shareImage.searchParams.get('v'));
     assert.ok(detail.querySelector('meta[property="og:image:alt"]').getAttribute('content'));
   }
   const gallery=read('/browse.html');

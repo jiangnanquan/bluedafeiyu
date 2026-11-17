@@ -11,6 +11,7 @@ import {renderWorkActions} from '../public/components/work-actions.js';
 import {videoCoverURL} from '../src/components/archive/video-cover.mjs';
 import {validateFriendLinks,friendLinks} from '../src/lib/friend-links.mjs';
 import {createFriendWall} from '../src/components/archive/FriendWall.mjs';
+import {communityProjects} from '../src/components/archive/LinkDirectories.mjs';
 import {localizeHtml,LOCALES,ORIGIN} from '../scripts/localize-pages.mjs';
 import {videoArchive} from '../src/lib/video-archive.mjs';
 import {renderArchiveTabs} from '../src/components/archive/ArchiveTabs.mjs';
@@ -76,13 +77,13 @@ test('the first-screen toolbar retains all five independent actions and uses the
 test('friend wall preserves existing destinations, classifies links, and rejects unsafe or incomplete records',()=>{
   let page;
   const escape=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-  createFriendWall({esc:escape,tr:(_key,zh)=>zh,pageHead:()=>'',icon:()=>'',write:(...args)=>{page=args;}});
+  createFriendWall({esc:escape,tr:(_key,zh)=>zh,pageHead:()=>'',sectionHead:()=>'',icon:()=>'',write:(...args)=>{page=args;}});
   assert.equal(page[0],'/projects.html');
   const {document}=parseHTML(page[3]);
-  assert.equal(document.querySelectorAll('.friend-wall-card').length,friendLinks.length);
-  for(const category of ['project','website'])assert.equal(document.querySelectorAll(`[data-friend-section="${category}"] .friend-wall-card`).length,friendLinks.filter(row=>row.category===category).length);
-  assert.deepEqual([...document.querySelectorAll('.friend-wall-card')].map(a=>a.href),['project','website'].flatMap(category=>friendLinks.filter(row=>row.category===category).map(row=>row.url)));
-  for(const link of document.querySelectorAll('.friend-wall-card')){
+  const expectedProjects=friendLinks.filter(row=>row.category==='project').map(row=>row.url);expectedProjects.splice(2,0,expectedProjects[0]);
+  assert.deepEqual([...document.querySelectorAll('[data-friend-section="project"] h2 a')].map(a=>a.href),expectedProjects);
+  assert.deepEqual([...document.querySelectorAll('.friend-wall-card')].map(a=>a.href),friendLinks.filter(row=>row.category==='website').map(row=>row.url));
+  for(const link of document.querySelectorAll('[data-friend-section="project"] h2 a,.friend-wall-card')){
     assert.equal(link.target,'_blank');
     assert.ok(link.rel.split(' ').includes('noopener'));
     assert.ok(link.rel.split(' ').includes('noreferrer'));
@@ -107,19 +108,20 @@ test('selected friend links appear in their categories with native copy in all f
   const escape=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   for(const locale of LOCALES){
     let page;
-    createFriendWall({esc:escape,icon:()=>'',pageHead:()=>'<h1>Friends</h1>',write:(...args)=>{page=args;},
+    createFriendWall({esc:escape,icon:()=>'',pageHead:()=>'<h1>Friends</h1>',sectionHead:()=>'',write:(...args)=>{page=args;},
       tr:(key,zh,en,ja)=>`<span data-i18n="d.${key}">${escape(({en,ja})[locale.id]||zh)}</span>`});
     const html=`<html><head><title>Friends</title><link rel="canonical" href="${ORIGIN}/projects.html"><meta name="description"></head><body data-archive><main>${page[3]}</main></body></html>`;
     const {document}=parseHTML(await localizeHtml(html,'/projects.html',locale,{works:[],characters:[],topics:[]}));
-    assert.equal(document.querySelectorAll('.friend-wall-card').length,friendLinks.length);
+    assert.equal(document.querySelectorAll('[data-project-kind]').length,communityProjects.length);
     for(const row of [coco,blog,sheets,game]){
-      const link=[...document.querySelectorAll(`[data-friend-section="${row.category}"] .friend-wall-card`)].find(a=>a.href===row.url);
+      const link=row.category==='project'?[...document.querySelectorAll('[data-project-kind]')].find(card=>card.querySelector('h2 a').href===row.url):[...document.querySelectorAll('.friend-wall-card')].find(a=>a.href===row.url);
       assert.ok(link);
       if(['en','ja'].includes(locale.id)){
-        assert.equal(link.querySelector('h3').textContent,row.i18n[locale.id].name);
-        assert.equal(link.querySelector('p').textContent,row.i18n[locale.id].description);
+        assert.equal(link.querySelector('h2').textContent,row.i18n[locale.id].name);
+        const expected=row.category==='project'?communityProjects.find(project=>project.id===row.id).description[locale.id==='en'?1:2]:row.i18n[locale.id].description;
+        assert.equal(link.querySelector('p').textContent,expected);
       }else if(locale.id==='zh-Hant'){
-        assert.match(link.querySelector('p').textContent,({[coco.id]:/桌寵/,[blog.id]:/個人部落格/,[sheets.id]:/正面、側面、背面/,[game.id]:/抽卡遊戲/})[row.id]);
+        assert.match(link.querySelector('p').textContent,({[coco.id]:/桌寵/,[blog.id]:/個人部落格/,[sheets.id]:/三視圖/,[game.id]:/抽卡遊戲/})[row.id]);
       }
     }
   }

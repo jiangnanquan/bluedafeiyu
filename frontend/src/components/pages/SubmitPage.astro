@@ -10,8 +10,7 @@ const path=mode==='video'?'/submit-video.html':'/submit.html';
 ---
 <Archive title="AI娘二创投稿与视频作者登记 | 蓝色大肥鱼" desc="提交 AI 娘原图或 ZIP 图片集，或登记自己的 Bilibili 主页。图片与视频逐条审核，通过后收录到对应档案。" {path} active="submit" bodyAttrs={{'data-submission-mode':mode}} bodyPage="submit" robots="noindex,follow">
   <div class="submission-page" data-document-content>
-    <div data-submission-heading="image" hidden={mode!=='image'}><PageHeading eyebrow="SUBMIT" title={submissionCopy.imageTitle[0]} titleKey="d.submission.imageTitle" description={submissionCopy.imageLead[0]} descriptionKey="d.submission.imageLead" /></div>
-    <div data-submission-heading="video" hidden={mode!=='video'}><PageHeading eyebrow="CREATOR REGISTRATION" title={submissionCopy.videoTitle[0]} titleKey="d.submission.videoTitle" description={submissionCopy.videoLead[0]} descriptionKey="d.submission.videoLead" /></div>
+    <div data-submission-heading data-image-title={submissionCopy.imageTitle[0]} data-image-lead={submissionCopy.imageLead[0]} data-video-title={submissionCopy.videoTitle[0]} data-video-lead={submissionCopy.videoLead[0]} data-i18n-attr="data-image-title:d.submission.imageTitle,data-image-lead:d.submission.imageLead,data-video-title:d.submission.videoTitle,data-video-lead:d.submission.videoLead"><PageHeading eyebrow={mode==='video'?'CREATOR REGISTRATION':'SUBMIT'} title={submissionCopy[mode+'Title'][0]} titleKey={'d.submission.'+mode+'Title'} description={submissionCopy[mode+'Lead'][0]} descriptionKey={'d.submission.'+mode+'Lead'} /></div>
     <nav class="submission-media-tabs section-tabs" role="tablist" aria-label="投稿方式" data-i18n-attr="aria-label:d.design.submissionMode">
       <button class="tab" type="button" role="tab" id="image-submission-tab" data-submission-mode="image" aria-controls="image-submission-panel" aria-selected={mode==='image'} data-i18n="d.design.imageSubmit">图片作品投稿</button>
       <button class="tab" type="button" role="tab" id="video-submission-tab" data-submission-mode="video" aria-controls="creator-registration" aria-selected={mode==='video'} data-i18n="d.creatorTitle">视频创作者登记</button>
@@ -22,5 +21,5 @@ const path=mode==='video'?'/submit-video.html':'/submit.html';
     </section>
     <CreatorRegistration hidden={mode!=='video'} />
   </div>
-  <Fragment slot="scripts"><script is:inline src="/page-scripts/submit-0.js?v=20261117-visual-2" defer></script><script is:inline src="/page-scripts/creator-registration.js?v=20261117-visual-2" defer></script></Fragment>
+  <Fragment slot="scripts"><script is:inline src="/page-scripts/submit-0.js?v=20261117-visual-3" defer></script><script is:inline src="/page-scripts/creator-registration.js?v=20261117-visual-3" defer></script></Fragment>
 </Archive>

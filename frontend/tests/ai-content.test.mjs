@@ -36,6 +36,13 @@ test('不把投稿者署名当成作者，不扩大作品授权', () => {
   const bad = fixture(); bad.works[0].slug = '../escape';
   assert.throws(() => createAiDocuments(bad), /路径非法/);
 });
+
+test('active characters with no public works still receive their advertised Markdown archive',()=>{
+ const input=fixture();input.characters.push({id:'empty',name:'Empty',aliases:[],status:'active'});
+ const {documents,llms,counts}=createAiDocuments(input);
+ assert.match(documents.get('/characters/empty.html.md'),/当前公开作品：0 件/);
+ assert.match(llms,/characters\/empty\.html\.md/);assert.equal(counts.characters,2);
+});
 test('说明正文取自公开页面，去除表单和导航，保留真实政策与链接', () => {
   const md = documentMarkdown('<html><body><nav>导航</nav><main><div data-document-content><h1>许可</h1><nav>页内导航</nav><p>图片授权未明，<a href="/about.html#licensing">申请许可</a>。</p><ul><li>仅记录许可。</li></ul><form>内部表单</form><p hidden>内部提示</p></div></main></body></html>', '/about.html');
   assert.ok(md.includes('# 许可'));
