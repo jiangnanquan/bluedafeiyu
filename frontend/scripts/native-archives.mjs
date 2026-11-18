@@ -1,54 +1,50 @@
-import {workCharacterIds} from '../../tools/work-characters.mjs';
-import {characterSearchAliases} from '../src/lib/landing-copy.mjs';
-import {isGifWork} from '../public/archive/work-format.js';
+import {createNativeLookup} from './localization-inputs.mjs';
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const kind=(api,id)=>api.fmt('v2.type.'+id,id);
-function context(base,api,snapshot){
-  const galleryWorks=()=>{
-    const serialIds=new Set((snapshot.topics||[]).filter(topic=>topic.reader).flatMap(topic=>topic.workIds));
-    return snapshot.works.filter(work=>!serialIds.has(work.id));
-  };
-  if(/^\/gifs(?:\/page\/\d+)?\.html$/.test(base))return {format:'gif',works:galleryWorks().filter(isGifWork),name:api.current==='en'?'GIFs':'GIFアニメ',title:api.current==='en'?'AI Girl GIF Archive':'AI娘のGIFアニメ'};
+function lazyValue(fn){let ready=false,value;return()=>{if(!ready){value=fn();ready=true;}return value;};}
+function context(base,api,lookup){
+  const language=api.current;
+  if(/^\/gifs(?:\/page\/\d+)?\.html$/.test(base))return {format:'gif',get works(){return lookup.galleryWorks(base,language);},name:language==='en'?'GIFs':'GIFアニメ',title:language==='en'?'AI Girl GIF Archive':'AI娘のGIFアニメ'};
   const topicId=base.match(/^\/topics\/([^/]+)(?:\/page\/\d+)?\.html$/)?.[1];
-  const topic=topicId&&(snapshot.topics||[]).find(t=>t.id===topicId);
+  const topic=topicId&&lookup.topicById(topicId);
   if(topic){
-    const value=topic.i18n?.[api.current];
+    const value=topic.i18n?.[language];
     const name=value?.name||api.contentText(topic.name);
-    const works=topic.workIds.map(id=>snapshot.works.find(w=>w.id===id)).filter(Boolean);
-    return {topic,works,name,title:api.current==='en'?name+' · AI girl art collection':name+'・AI娘作品集',summary:value?.summary||api.contentText(topic.summary)};
+    const works=lazyValue(()=>topic.workIds.map(id=>lookup.workById(id)).filter(Boolean));
+    return {topic,get works(){return works();},name,title:language==='en'?name+' · AI girl art collection':name+'・AI娘作品集',summary:value?.summary||api.contentText(topic.summary)};
   }
   const role=base.match(/^\/characters\/([^/]+)(?:\/(meme|illustration|setting|comic|standing|other))?(?:\/page\/\d+)?\.html$/);
   const category=base.match(/^\/categories\/([^/]+)(?:\/page\/\d+)?\.html$/);
-  const character=role&&snapshot.characters.find(c=>c.id===role[1]);
+  const character=role&&lookup.characterById(role[1]);
   const type=category?.[1]||(role?.[2]&&role[2]!=='page'?role[2]:null);
   if(!character&&!category)return null;
-  const works=galleryWorks().filter(w=>(!character||workCharacterIds(w).includes(character.id))&&(!type||w.categoryIds?.includes(type)));
-  const name=character?api.characterName(character.id,character.name):api.current==='en'?'AI characters':'AIキャラクター';
-  const alias=character&&characterSearchAliases[character.id]?.[api.current==='en'?1:2];
-  const displayName=name+(alias?(api.current==='en'?' ('+alias+')':'（'+alias+'）'):'');
-  const title=type?(api.current==='en'?displayName+' · '+kind(api,type):displayName+'の'+kind(api,type)):(api.current==='en'?displayName+' fan art archive':displayName+'の二次創作アーカイブ');
-  return {character,type,works,name,title};
+  const works=lazyValue(()=>lookup.galleryWorks(base,language));
+  const name=character?api.characterName(character.id,character.name):language==='en'?'AI characters':'AIキャラクター';
+  const alias=character&&lookup.searchAlias(character.id)?.[language==='en'?1:2];
+  const displayName=name+(alias?(language==='en'?' ('+alias+')':'（'+alias+'）'):'');
+  const title=type?(language==='en'?displayName+' · '+kind(api,type):displayName+'の'+kind(api,type)):(language==='en'?displayName+' fan art archive':displayName+'の二次創作アーカイブ');
+  return {character,type,get works(){return works();},name,title};
 }
-export function nativeArchiveName(base,api,snapshot){
+export function nativeArchiveName(base,api,snapshot,lookup=createNativeLookup(snapshot)){
   if(base==='/serials.html')return api.current==='en'?'Comic series':'連載漫画';
-  const c=context(base,api,snapshot),page=base.match(/\/page\/(\d+)\.html$/)?.[1];
+  const c=context(base,api,lookup),page=base.match(/\/page\/(\d+)\.html$/)?.[1];
   if(c?.topic?.reader)return c.name+(page?(api.current==='en'?' · Original page '+page:'・原稿 '+page+' ページ'):(api.current==='en'?' · Cover & contents':'・表紙と目次'));
   return c?c.title+(page?(api.current==='en'?' · Page '+page:' · '+page+'ページ目'):''):undefined;
 }
-export function applyNativeArchives(document,api,base,snapshot){
+export function applyNativeArchives(document,api,base,snapshot,lookup=createNativeLookup(snapshot)){
   const language=api.current;
   if(!['en','ja'].includes(language))return null;
   const en=language==='en';
   if(base==='/serials.html')return {title:en?'AI Girl Comic Series | DeepSeek Chan':'AI娘の連載漫画 | 藍色大肥魚',description:en?'Explore AI girl comic series and read each story in its original page order.':'AI娘の連載漫画を表紙から開き、原稿のページ順に読み進めます。'};
   for(const section of document.querySelectorAll('[data-comic-topic]')){
-    const topic=(snapshot.topics||[]).find(topic=>topic.id===section.getAttribute('data-comic-topic'));
+    const topic=lookup.topicById(section.getAttribute('data-comic-topic'));
     if(topic)section.querySelector('h2').textContent=topic.i18n?.[language]?.name||api.contentText(topic.name);
   }
-  const roleName=id=>api.characterName(id,snapshot.characters.find(c=>c.id===id)?.name||id);
+  const roleName=id=>api.characterName(id,lookup.characterById(id)?.name||id);
   // Aliases are character identifiers; use the canonical localized identity for names in non-Latin scripts.
   const aliases=c=>[...new Set((c.aliases||[]).map(a=>/[\u3400-\u9fff]/u.test(a)?roleName(c.id):a))].filter(a=>a!==roleName(c.id));
   for(const card of document.querySelectorAll('.role-card')){
-    const id=(card.getAttribute('href')||card.querySelector('h3 a')?.getAttribute('href'))?.match(/\/characters\/([^/]+)\.html/)?.[1],c=snapshot.characters.find(c=>c.id===id);
+    const id=(card.getAttribute('href')||card.querySelector('h3 a')?.getAttribute('href'))?.match(/\/characters\/([^/]+)\.html/)?.[1],c=lookup.characterById(id);
     if(!c)continue;
     (card.querySelector('h3 a')||card.querySelector('h3')).textContent=roleName(c.id);
     const alias=card.querySelector('[data-character-aliases]'),names=aliases(c).join(' / ');
@@ -60,7 +56,7 @@ export function applyNativeArchives(document,api,base,snapshot){
     const id=link.getAttribute('href')?.match(/\/characters\/([^/]+)\.html/)?.[1];
     if(id)link.textContent=en?roleName(id)+' stickers and fan art':roleName(id)+'のネタ画像・二次創作';
   }
-  const c=context(base,api,snapshot);if(!c)return null;
+  const c=context(base,api,lookup);if(!c)return null;
   if(c.format==='gif'){
     const page=base.match(/\/page\/(\d+)\.html$/)?.[1];
     for(const link of document.querySelectorAll('.breadcrumbs a'))if(/(?:^|\/)gifs\.html(?:[?#]|$)/.test(link.getAttribute('href')))link.textContent=c.name;
@@ -90,10 +86,10 @@ export function applyNativeArchives(document,api,base,snapshot){
       if(crumb)crumb.textContent=page?(en?'Original page '+page:'原稿 '+page+' ページ'):c.name;
       for(const credits of document.querySelectorAll('.comic-credits,.serial-index-credits,.rd-head > span'))credits.textContent=c.topic.reader.creditsI18n?.[language]||c.topic.reader.credits;
       for(const image of document.querySelectorAll('[data-comic-work] img')){
-        const work=snapshot.works.find(work=>work.id===image.closest('[data-comic-work]').getAttribute('data-comic-work'));
+        const work=lookup.workById(image.closest('[data-comic-work]').getAttribute('data-comic-work'));
         if(work)image.setAttribute('alt',work.i18n?.[language]?.name||c.name);
       }
-      return {title:nativeArchiveName(base,api,snapshot)+' | DeepSeek Chan',description:c.summary+(page?(en?` Original page ${page} of ${c.topic.reader.totalPages}.`:` 原稿 ${page} / ${c.topic.reader.totalPages} ページ。`):'')};
+      return {title:nativeArchiveName(base,api,snapshot,lookup)+' | DeepSeek Chan',description:c.summary+(page?(en?` Original page ${page} of ${c.topic.reader.totalPages}.`:` 原稿 ${page} / ${c.topic.reader.totalPages} ページ。`):'')};
     }
     const description=en?`${c.summary} This collection includes ${c.works.length} works. Each work retains its description, source, attribution and license information.`:`${c.summary} ${c.works.length}件の作品を収録し、各作品の説明、出典、クレジット、ライセンス情報を保持しています。`;
     return {title:c.title+(page?(en?' · Page ':' · ')+page+(en?'':'ページ目'):'')+' | DeepSeek Chan',description};
@@ -112,7 +108,7 @@ export function applyNativeArchives(document,api,base,snapshot){
     if(id)link.textContent=roleName(id);
     else{
       // Pagination links back to a type archive, not only a character's main page.
-      const archive=context(href||'',api,snapshot);
+      const archive=context(href||'',api,lookup);
       if(archive?.type)link.textContent=archive.title;
     }
   }
@@ -129,7 +125,7 @@ export function applyNativeArchives(document,api,base,snapshot){
       const link=section.querySelector('a');if(link)link.textContent=c.character?(en?'Back to '+c.name+'’s archive':c.name+'のアーカイブへ'):(en?'Browse by character':'キャラクターから探す');
     }
   }else{
-    const available=snapshot.categories.filter(t=>c.works.some(w=>w.categoryIds.includes(t.id))).map(t=>kind(api,t.id));
+    const available=lookup.categories().filter(t=>c.works.some(w=>w.categoryIds.includes(t.id))).map(t=>kind(api,t.id));
     description=en?`Explore ${c.works.length} archived ${c.works.length===1?'work':'works'} featuring ${c.name}. Browse ${available.join(', ').toLowerCase()}, view each image and check its source and attribution.`:`${c.name}の二次創作を${c.works.length}件収録。${available.join('・')}を探し、各作品の出典とクレジットをご確認いただけます。`;
     const alias=document.querySelector('.character-info .alias'),names=aliases(c.character);if(alias)alias.textContent=names.length?(en?'Also known as: ':'別名：')+names.join(' / '):(en?'Fan art archive':'二次創作アーカイブ');
     for(const link of document.querySelectorAll('.character-info .tags a')){
@@ -138,7 +134,7 @@ export function applyNativeArchives(document,api,base,snapshot){
     }
     const cover=document.querySelector('.character-cover-credit');
     if(cover){
-      const slug=cover.getAttribute('href')?.match(/\/works\/([^/]+)\.html$/)?.[1],work=snapshot.works.find(w=>w.slug===slug);
+      const slug=cover.getAttribute('href')?.match(/\/works\/([^/]+)\.html$/)?.[1],work=lookup.workBySlugFirst(slug);
       if(work?.i18n?.[language]){cover.querySelector('strong').textContent=work.i18n[language].name;document.querySelector('.live-character-portrait img')?.setAttribute('alt',work.i18n[language].name);}
     }
     for(const option of document.querySelectorAll('[data-character-scene] option[value]')){
@@ -147,7 +143,7 @@ export function applyNativeArchives(document,api,base,snapshot){
     }
     const section=document.querySelector('.role-reading');
     if(section && c.works.length){
-      const counts=snapshot.categories.map(t=>[t,c.works.filter(w=>w.categoryIds.includes(t.id)).length]).filter(([,n])=>n);
+      const counts=lookup.categories().map(t=>[t,c.works.filter(w=>w.categoryIds.includes(t.id)).length]).filter(([,n])=>n);
       const frequencies=new Map();for(const w of c.works)w.tags.forEach((tag,i)=>{const prev=frequencies.get(tag);frequencies.set(tag,{count:(prev?.count||0)+1,text:prev?.text||native(w).tags[i]});});
       const tags=[...frequencies.values()].sort((a,b)=>b.count-a.count).slice(0,4).map(t=>t.text).join(en?', ':'、');
       section.querySelector('h2').textContent=en?'Inside '+c.name+'’s archive':c.name+'の収録作品';
@@ -165,7 +161,7 @@ export function applyNativeArchives(document,api,base,snapshot){
     }
   }
   const lead=document.querySelector('.page-head .lede');if(lead)lead.textContent=description;
-  const searchAlias=c.character&&characterSearchAliases[c.character.id]?.[en?1:2];
+  const searchAlias=c.character&&lookup.searchAlias(c.character.id)?.[en?1:2];
   if(searchAlias)description+=(en?' Search this character as '+searchAlias+'.':'「'+searchAlias+'」の名前でも探せます。');
   return {title:c.title+(page?(en?' · Page ':' · ')+page+(en?'':'ページ目'):'')+' | '+(en&&c.character?'Blue Dafeiyu':'DeepSeek Chan'),description};
 }

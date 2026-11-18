@@ -14,7 +14,7 @@
 .coll-info p{margin:0;font-size:13px;line-height:1.65;color:var(--muted)}
 .coll-foot{display:flex;align-items:center;gap:12px;margin-top:4px;flex-wrap:wrap}
 .coll-count{font-size:12px;font-weight:700;color:var(--blue)}
-.coll-zip{height:36px;padding:0 14px;font-size:12px}
+body.archive .coll-zip{height:36px;padding:0 14px;font-size:12px}
 .topic-actions{display:flex;gap:12px;margin-top:4px;flex-wrap:wrap}
 .topic-mini-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:14px}
 .topic-mini{display:flex;flex-direction:column;gap:6px;padding:10px;border:1px solid var(--card-line);border-radius:10px;background:var(--card)}

@@ -1,6 +1,6 @@
 ---
-import ArchivePage from "../components/archive/ArchivePage.astro";
+import NotFoundPage from "../components/archive/NotFoundPage.astro";
 import { archivePages } from "../lib/archive.mjs";
 const page = archivePages.get("/404.html");
 ---
-<ArchivePage page={page} />
+<NotFoundPage page={page} />

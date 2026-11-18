@@ -1,22 +1,9 @@
-/* Public components: one design system and one owner per rule. */
+/* Public shell and shared primitives only. Business pages import their own CSS. */
 @import 'DesignSystem.css';
 @import 'ArchiveContent.css';
 @import 'Headings.css';
 @import 'Controls.css';
 @import 'CatalogFilters.css';
-@import 'Forms.css';
-@import 'Information.css';
 @import 'Catalog.css';
-@import 'WorkDetail.css';
-@import 'Home.css';
-@import 'Guides.css';
-@import 'Collections.css';
-@import 'Community.css';
 @import 'Overlays.css';
-@import '../archive/VideoArchive.css';
-@import '../archive/CreatorDirectory.css';
-@import '../archive/LinkDirectories.css';
-@import '../archive/ComicSeries.css';
-@import '../archive/EventArchive.css';
-@import '../characters/CharacterIndex.css';
 @import '../../../public/components/runtime.css';

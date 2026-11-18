@@ -20,7 +20,6 @@ import {createCommunityPage} from "../components/archive/CommunityPage.mjs";
 import {createEventPage} from "../components/archive/EventPage.mjs";
 import {createUtilityPages} from "../components/archive/UtilityPages.mjs";
 import {createFriendWall, createIndependentFriendPages} from '../components/archive/FriendWall.mjs';
-import {friendLinks} from './friend-links.mjs';
 import {shareCopy} from './share-copy.mjs';
 import {createGuidePages} from "../components/archive/GuidePages.mjs";
 import { aboutCopy, aboutQuestions } from './about-copy.mjs';
@@ -28,9 +27,7 @@ import { videoCopy } from './video-copy.mjs';
 import { createVideoPages } from '../components/archive/VideoPages.mjs';
 import {createSitePages} from '../components/archive/PageComposition.mjs';
 import {registerCommunityContacts} from '../components/library/CommunityContacts.mjs';
-import {createPageModel} from '../components/library/page-model.mjs';
-import {videoArchive} from './video-archive.mjs';
-import {events} from './events.mjs';
+import {createPageModel,digest} from '../components/library/page-model.mjs';
 const root = process.env.SITE_SOURCE || path.resolve(process.cwd(), '..');
 const read = name => JSON.parse(fs.readFileSync(path.join(root, 'frontend/src/data', name), 'utf8'));
 const works = Object.entries(overlayData()).map(([slug,w])=>({...w,slug}));
@@ -104,7 +101,7 @@ for (const [key,en,ja] of [
   ['zipCancel','Cancel','キャンセル'],
   ['zipRetry','Retry failed images','失敗した画像を再試行'],
   ['zipSave','Save ZIP','ZIPを保存'],
-  ['zipTitle','Collection originals ZIP','コレクションの元画像ZIP'],
+  ['zipTitle','Package original images','元画像をまとめる'],
   ['zipLoading','Loading collection…','コレクションを読み込み中…'],
   ['zipProgress','Fetching originals {done} / {total}','元画像を取得中 {done} / {total}'],
   ['zipPacking','Packing originals…','元画像をZIPにまとめています…'],
@@ -131,8 +128,12 @@ for(const [key,en,ja] of [
  ['releaseFlow','Creator registration, RSSHub discovery, AI review and automatic publishing are connected, with release notifications sent to the Feishu group.','作者登録、RSSHubによる検出、AI審査、自動公開を接続。公開結果はFeishuグループに通知します。']
 ]){translations.en['d.design.'+key]=en;translations.ja['d.design.'+key]=ja;}
 for(const work of works)work.owners=topics.filter(t=>t.author&&t.list.some(w=>w.id===work.id)).map(t=>{const uid=t.author.channels.map(c=>c.url.match(/space\.bilibili\.com\/(\d+)/)?.[1]).find(Boolean);return {name:t.author.name,href:'/creators/'+(uid?'bilibili-'+uid:t.id)+'.html'};});
-const ctx={works,galleryWorks,serialWorkIds,bySlug,chars,topics,types,snapshot,localizationInputs:{videoArchive,friendLinks,events},translations,editorial:read('discovery.json'),modelVendors:read('model-vendors.json').vendors,commonTags:[...tagCounts].sort((a,b)=>b[1]-a[1]).slice(0,16)};
+const ctx={works,galleryWorks,serialWorkIds,bySlug,chars,topics,types,snapshot,translations,editorial:read('discovery.json'),modelVendors:read('model-vendors.json').vendors,commonTags:[...tagCounts].sort((a,b)=>b[1]-a[1]).slice(0,16)};
 Object.assign(ctx,createPrimitives(ctx));
+// Shared templates (dialogs, icon buttons, menus) render model markup outside any
+// page body. Their route keys need these sources, otherwise an icon or label edit
+// would leave every reused page on stale shared markup.
+ctx.sharedKey=digest([ctx.icon,ctx.tr,ctx.esc].map(fn=>fn.toString()));
 for(const factory of [createWorkCards,createCollectionCards,createCharacterCards,createListing]) Object.assign(ctx,factory(ctx));
 ctx.seo=createSEO(ctx);
 const pages=new Map();

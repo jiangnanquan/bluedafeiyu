@@ -13,7 +13,9 @@
 #      origin/<CONTENT_BRANCH> 到 CONTENT_DIR（只动这两份工作树，不碰 current）；
 #   4. staging 临时目录里跑 tools/build_site.mjs（内部顺序：同步内容 → 快照 →
 #      详情页 → sitemap → tools/build.mjs）；
-#   4b. 预压缩（默认开启）：对产物跑 tools/compress_static.mjs --precompress 生成 .gz
+#   4b. 预压缩（默认开启）：对产物跑 tools/compress_static.mjs --precompress 生成 .gz。
+#      上一 release 的私有 state 与目录一起传进去，按 sha256 摘要直接复用未变化文件的旧 .gz，
+#      只压新增/变化的产物；本次写出的摘要记录进 stage 的 .build-state.json，随后随它移出产物。
 #      （PRECOMPRESS=0/false/no/off 可关闭；必须在 chmod / 删 .build-output / cp -al 之前）；
 #   5. 先 chmod 构建产物；把内容仓首批预览图以临时副本 + rename 同步进
 #      shared/data（保留其它文件），再 cp -al 硬链接 shared/data（顺序不能反）；
@@ -174,6 +176,15 @@ STAGING_DIR="${STAGING_ROOT}/${STAMP}-$$"
 mkdir -p "${STAGING_DIR}"
 log "创建 staging 目录：${STAGING_DIR}"
 
+# release 目录名必须在这里就定下来：本次产物的 .build-state.json 会以同一个名字移进
+# build-state/，下一次发布靠 `basename "$(readlink -f current)"` 找回这份私有基线
+# （增量构建与 .gz 复用都读它），两者不一致就会静默退化成全量重建。
+RELEASE_NAME="${STAMP}"
+if [ -e "${RELEASES_DIR}/${RELEASE_NAME}" ]; then
+  RELEASE_NAME="${STAMP}-$$"
+fi
+RELEASE_PATH="${RELEASES_DIR}/${RELEASE_NAME}"
+
 cleanup_staging() {
   if [ -d "${STAGING_DIR}" ]; then
     log "清理 staging 目录：${STAGING_DIR}"
@@ -204,11 +215,25 @@ guarded_build() {
     node "${SOURCE_DIR}/ops/build-resource-runner.mjs" "${label}" "$@"
 }
 
+# 阶段耗时：直接用 shell 自带的 SECONDS（整数秒）与现有 log()，不再引入第二套计时/日志；
+# 细到子进程的内存/耗时明细仍由 build-resource-runner 的 [build-memory] 行提供。
+PHASE_NAME=""
+PHASE_STARTED=0
+phase_start() {
+  PHASE_NAME="$1"
+  PHASE_STARTED="${SECONDS}"
+}
+phase_done() {
+  log "阶段耗时：${PHASE_NAME} $((SECONDS - PHASE_STARTED)) 秒"
+}
+
 # Verify the lock file, Node runtime and installed direct dependencies before reuse.
 log "校验前端构建依赖（锁文件或运行环境变化时执行 npm ci）"
+phase_start "依赖安装"
 if ! guarded_build dependencies node "${SOURCE_DIR}/tools/install_frontend.mjs"; then
   die "Astro 构建依赖安装失败，未改动 current"
 fi
+phase_done
 
 log "运行构建：node ${SOURCE_DIR}/tools/build_site.mjs --content-dir ${CONTENT_DIR} --out ${STAGING_DIR}/site"
 BUILD_STATE_DIR="${DEPLOY_ROOT}/build-state"
@@ -221,9 +246,11 @@ case "${BUILD_FULL:-0}" in
   0|false|FALSE) ;;
   *) die "BUILD_FULL 必须为 0/1/true/false" ;;
 esac
+phase_start "站点构建"
 if ! SITE_PREVIOUS_DIR="${CURRENT_LINK}" SITE_PREVIOUS_STATE="${PREVIOUS_STATE}" SITE_REUSE_ASSETS=1 guarded_build site node "${SOURCE_DIR}/tools/build_site.mjs" --content-dir "${CONTENT_DIR}" --out "${STAGING_DIR}/site" "${BUILD_FLAGS[@]}"; then
   die "构建失败，未改动 current"
 fi
+phase_done
 log "构建完成：${STAGING_DIR}/site"
 
 # Cached HTML can still reference the preceding release's fingerprinted bundles.
@@ -239,12 +266,18 @@ fi
 # 省掉每个请求的实时压缩 CPU。显式设 PRECOMPRESS=0/false/no/off 可关闭（见上方 PRECOMPRESS 归一化）。
 # 位置很关键：必须在 chmod（否则新写的 .gz 权限不对）、删 .build-output、cp -al data 之前。
 # 预压缩失败要保持 current 不变，所以这里直接 die，此时还没动过 release / 软链。
+# 复用：把上一次 release 目录（旧 .gz 在里面）与它的私有 state 一起传进去。工具先比对
+# 原文 sha256、旧 .gz 的 sha256 与压缩设置指纹，全中就把旧 .gz 硬链接进新产物（不解压、
+# 不重压、不重写）；任何一项对不上就回落到解压校验 / 真实压缩。本次写出的摘要记进 stage
+# 的 .build-state.json，紧接着随它一起移出产物（build-state/<release>.json，600）。
 # 提醒：脚本只生成 .gz，不会自动改服务器 nginx 配置；必须人工启用 `gzip_static on` 才会用到。
 if [ "${PRECOMPRESS_ENABLED}" = "1" ]; then
   log "预压缩产物文本资源：node ${SOURCE_DIR}/tools/compress_static.mjs --dir ${STAGING_DIR}/site --precompress"
-  if ! SITE_PREVIOUS_DIR="${CURRENT_LINK}" guarded_build compress node "${SOURCE_DIR}/tools/compress_static.mjs" --dir "${STAGING_DIR}/site" --precompress; then
+  phase_start "预压缩"
+  if ! SITE_PREVIOUS_DIR="${PREVIOUS_RELEASE}" SITE_PREVIOUS_STATE="${PREVIOUS_STATE}" guarded_build compress node "${SOURCE_DIR}/tools/compress_static.mjs" --dir "${STAGING_DIR}/site" --precompress; then
     die "预压缩失败，未改动 current"
   fi
+  phase_done
   PRECOMPRESSED_COUNT="$(find "${STAGING_DIR}/site" -type f -name '*.gz' | wc -l | tr -d ' ')" || PRECOMPRESSED_COUNT="unknown"
   log "预压缩完成：生成 ${PRECOMPRESSED_COUNT} 个 .gz（nginx 还需开 gzip_static on 才会用到）"
 fi
@@ -258,9 +291,12 @@ find "${STAGING_DIR}/site" -type f ! -perm 644 -exec chmod 644 {} +
 # 产物根上的 .build-output 是 tools/build.mjs 的内部标记（只给本地构建识别用），
 # 不随发布产物上线。必须放在 cp -al 之前删，之后就不能再 chmod / 改动产物了。
 rm -f "${STAGING_DIR}/site/.build-output"
-mv "${STAGING_DIR}/site/.build-state.json" "${BUILD_STATE_DIR}/${STAMP}.json"
+# .build-state.json 里除了构建的 outputs，还有本次预压缩写下的 .gz 摘要记录。它属于发布
+# 私有机密（不对外、不进 release），随 release 同名落到 build-state/ 并收紧到 600，供下一次
+# 发布的增量构建与 .gz 复用读取。
+mv "${STAGING_DIR}/site/.build-state.json" "${BUILD_STATE_DIR}/${RELEASE_NAME}.json"
 mv "${STAGING_DIR}/site/.build-plan.json" "${LOG_DIR}/build-plan-${STAMP}.json"
-chmod 600 "${BUILD_STATE_DIR}/${STAMP}.json" "${LOG_DIR}/build-plan-${STAMP}.json"
+chmod 600 "${BUILD_STATE_DIR}/${RELEASE_NAME}.json" "${LOG_DIR}/build-plan-${STAMP}.json"
 
 # 站点要托管的首批图片（dist/data/）不在发布产物里：build.mjs 会跳过 data/，
 # 线上统一由 DEPLOY_ROOT/shared/data 这份持久副本硬链接进每个 release。
@@ -339,12 +375,7 @@ if ! nginx -t; then
 fi
 
 # ---------------------------------------------------------------- 落 release
-
-RELEASE_NAME="${STAMP}"
-if [ -e "${RELEASES_DIR}/${RELEASE_NAME}" ]; then
-  RELEASE_NAME="${STAMP}-$$"
-fi
-RELEASE_PATH="${RELEASES_DIR}/${RELEASE_NAME}"
+# RELEASE_NAME / RELEASE_PATH 在 staging 阶段就已定好（状态文件名要和 release 目录名一致）。
 
 OLD_TARGET=""
 if [ -L "${CURRENT_LINK}" ]; then

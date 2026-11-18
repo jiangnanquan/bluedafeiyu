@@ -92,18 +92,25 @@ function runStep(scriptRel, extraArgs, contentDir) {
     const detail = scriptRel === 'frontend/scripts/build.mjs' ? summarizeAuditFailure(path.join(REPO_ROOT, '.build/native-localization-audit.json'), startedAt) : '';
     fail(`${scriptRel} 退出码 ${result.status === null ? "null" : result.status}，构建中止${detail ? '：' + detail : ''}`);
   }
+  const seconds = Number(((Date.now() - startedAt) / 1000).toFixed(2));
+  log(`${scriptRel} 完成，耗时 ${seconds} 秒`);
+  return seconds;
 }
 
 function main() {
   const { contentDir, passthrough, forceClean } = parseArgs(process.argv.slice(2));
   log(`代码仓库：${REPO_ROOT}`);
   log(`内容仓库：${contentDir}`);
-  runStep("frontend/scripts/check-components.mjs", [], contentDir);
-  runStep("tools/stage_data.mjs", [], contentDir);
-  runStep("tools/sync_content.mjs", ["--content-dir", contentDir], contentDir);
-  runStep("tools/prepare_preview_assets.py", ["dist/submissions/previews", "dist/owner-picks/previews", "dist/data/blue-fish/previews"], contentDir);
-  runStep("tools/build_site_snapshot.mjs", [], contentDir);
-  runStep("frontend/scripts/build.mjs", [...passthrough, ...(forceClean ? ["--force-clean"] : [])], contentDir);
+  fs.mkdirSync(path.join(REPO_ROOT, 'dist'), {recursive: true});
+  const preparation = {
+    components: runStep('frontend/scripts/check-components.mjs', [], contentDir),
+    stageData: runStep('tools/stage_data.mjs', [], contentDir),
+    syncImages: runStep('tools/sync_content.mjs', ['--content-dir', contentDir], contentDir),
+    previews: runStep('tools/prepare_preview_assets.py', ['dist/submissions/previews', 'dist/owner-picks/previews', 'dist/data/blue-fish/previews'], contentDir),
+    snapshot: runStep('tools/build_site_snapshot.mjs', [], contentDir),
+  };
+  process.env.SITE_PREPARATION_TIMINGS = JSON.stringify(preparation);
+  runStep('frontend/scripts/build.mjs', [...passthrough, ...(forceClean ? ['--force-clean'] : [])], contentDir);
   log("站点构建完成");
 }
 

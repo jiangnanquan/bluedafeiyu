@@ -941,7 +941,12 @@ export function runDeploy(cfg, exec, log) {
     args = [runner];
   }
   log(`运行部署：${command} ${args.join(' ')}`);
-  runCmd(exec, command, args, { env: {...process.env,...(cfg.prebuiltDir?{PUBLISH_PREBUILT_DIR:cfg.prebuiltDir}:{})} });
+  const env = { ...process.env };
+  if (cfg.prebuiltDir) {
+    env.PUBLISH_PREBUILT_DIR = cfg.prebuiltDir;
+    if (!cfg.deployCmd) env.SITE_HANDOFF_PREBUILT = '1';
+  }
+  runCmd(exec, command, args, { env });
   clearPrebuilt(cfg);
 }
 

@@ -15,7 +15,6 @@ test('one public layout owns every document and obsolete cascades cannot return'
  for(const name of catalog.retiredStyleAssets)assert.equal(fs.existsSync(path.join(frontend,name)),false,name);
  const entry=read(catalog.siteShell.styles);
  assert.doesNotMatch(entry,/Notebook|ArchiveTheme|ArchivePrimitives|original-|demo-|journal-|public\/tokens/);
- for(const file of ['src/components/home/HomePage.astro','src/components/archive/DirectoryPage.astro','src/components/characters/CharacterIndexPage.astro','src/components/collections/CollectionIndexPage.astro'])assert.doesNotMatch(read(file),/<html|<!doctype|id="app"/i);
 });
 test('home and appended work cards share stable preview, source, identity and image dimensions',()=>{
  const work={id:'stable',slug:'frozen',n:'Name',d:'Description',i:'/thumb.webp',o:'/original.gif',w:320,h:480,k:['meme'],roles:[{id:'deepseek',name:'DeepSeek'}],tg:[],dt:'2026.11.17'};

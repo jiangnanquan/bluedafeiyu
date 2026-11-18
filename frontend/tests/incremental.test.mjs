@@ -8,7 +8,6 @@ import {spawnSync} from 'node:child_process';
 import {hash,makePlan,verifyPrevious,safeFile,readState,copyImmutableAsset,STATE_VERSION,filesIn,outputHashes} from '../scripts/incremental.mjs';
 import {createPageModel} from '../src/components/library/page-model.mjs';
 import {createWorkPages} from '../src/components/archive/WorkPages.mjs';
-import {finalizeNavigationCount} from '../src/components/library/navigation-count.mjs';
 
 const inputs={code:'code',build:'build',content:'content',runtime:'runtime'};
 test('transfer temporary files never enter artifact inventories or release hashes',()=>{
@@ -50,11 +49,34 @@ test('gzip reuse verifies source bytes and regenerates corrupt compressed artifa
   assert.equal(fs.readFileSync(path.join(previous,'site.css.gz'),'utf8'),'corrupted');
  }finally{assert.equal(path.dirname(dir),path.resolve(os.tmpdir()));fs.rmSync(dir,{recursive:true,force:true});}
 });
-test('shared navigation counts update reused pages without changing their main content',()=>{
- const source='<aside><small data-library-work-total="">25</small></aside><main>Unchanged detail</main>';
- assert.equal(finalizeNavigationCount(source,24),'<aside><small data-library-work-total="">24</small></aside><main>Unchanged detail</main>');
- assert.equal(finalizeNavigationCount('<main>24</main>',25),'<main>24</main>');
- assert.throws(()=>finalizeNavigationCount(source,-1));
+test('release gzip digests reuse verified bytes and reject changed or corrupt entries',()=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'bluefish-gzip-'));
+ try {
+  const previous=path.join(dir,'previous'),next=path.join(dir,'next');
+  fs.mkdirSync(previous);fs.mkdirSync(next);
+  const old='body{color:blue}\n'.repeat(200),updated='body{color:red}\n'.repeat(200);
+  const paths=['unchanged.css','changed.css','damaged.css'];
+  for(const relative of paths){
+   fs.writeFileSync(path.join(previous,relative),old);
+   fs.writeFileSync(path.join(next,relative),relative==='changed.css'?updated:old);
+  }
+  const tool=path.resolve(import.meta.dirname,'../../tools/compress_static.mjs');
+  const state={outputs:{'unchanged.css':hash(old)},pages:{},sitemap:{}};
+  for(const root of [previous,next])fs.writeFileSync(path.join(root,'.build-state.json'),JSON.stringify(state));
+  const run=(root,flags=[])=>spawnSync(process.execPath,[tool,'--dir',root,'--precompress',...flags],{encoding:'utf8'});
+  const first=run(previous);assert.equal(first.status,0,first.stderr);
+  fs.writeFileSync(path.join(previous,'damaged.css.gz'),'corrupted');
+  const second=run(next,['--previous-dir',previous,'--previous-state',path.join(previous,'.build-state.json')]);
+  assert.equal(second.status,0,second.stderr);
+  assert.match(second.stdout,/摘要匹配 1、解压校验 0.*重新压缩 2/);
+  const nextState=JSON.parse(fs.readFileSync(path.join(next,'.build-state.json'),'utf8'));
+  assert.deepEqual(nextState.outputs,state.outputs);
+  for(const relative of paths){
+   const gz=fs.readFileSync(path.join(next,relative+'.gz'));
+   assert.equal(zlib.gunzipSync(gz).toString(),relative==='changed.css'?updated:old);
+   assert.equal(nextState.gzip.files[relative].gz,hash(gz));
+  }
+ }finally{fs.rmSync(dir,{recursive:true,force:true});}
 });
 test('plans cold starts, edits, additions, deletions and unchanged inputs',()=>{
  const previous={inputs,routes:{'/a.html':'a','/b.html':'b'}};
@@ -65,7 +87,7 @@ test('plans cold starts, edits, additions, deletions and unchanged inputs',()=>{
  assert.equal(makePlan({...inputs,code:'new'},previous.routes,previous,{ok:true}).mode,'incremental');
  assert.equal(makePlan({...inputs,build:'new'},previous.routes,previous,{ok:true}).mode,'full');
  assert.equal(makePlan({...inputs,runtime:'new'},previous.routes,previous,{ok:true}).mode,'full');
- assert.equal(makePlan({...inputs,code:'new',styles:'new'},previous.routes,previous,{ok:true}).mode,'full');
+ assert.equal(makePlan({...inputs,code:'new'},previous.routes,previous,{ok:true}).changed.length,0);
  assert.equal(makePlan(inputs,previous.routes,previous,{ok:true},true).mode,'full');
 });
 test('missing or corrupted release artifacts invalidate reuse; artifact paths stay inside the output',()=>{
@@ -85,22 +107,26 @@ test('missing or corrupted release artifacts invalidate reuse; artifact paths st
   fs.rmSync(base,{recursive:true,force:true});
  }
 });
-test('dependency analysis never renders a lazy detail; transforms execute once on demand',()=>{
- let renders=0,enriches=0;
- const ctx={snapshot:{},seo:{metadata:()=>({title:'a'}),enrich:(_url,value)=>{enriches++;return value;}}};
- const model=createPageModel(ctx,'/works/a.html','a','browse',()=>{renders++;return 'body';},{dependencies:{work:'a'}});
+test('route fingerprint includes transformed output without rerendering a memoized body',()=>{
+ let renders=0;
+ const ctx={seo:{metadata:()=>({title:'a'}),enrich:(_url,value)=>value}};
+ const model=createPageModel(ctx,'/works/a.html','a','browse',()=>{renders++;return 'body';});
+ const original=model.cacheKey;
  model.transformContent(value=>value+' transformed');
- assert.equal(model.cacheKey,model.cacheKey);assert.equal(renders,0);assert.equal(enriches,0);
- assert.equal(model.content,'body transformed');assert.equal(model.content,'body transformed');assert.equal(renders,1);
+ assert.notEqual(model.cacheKey,original);
+ assert.equal(model.content,'body transformed');
+ assert.equal(renders,1);
 });
 function keys(works,topics=[]) {
  const pages=new Map();
- const ctx={works,types:[],topics,tr:(_key,value)=>value,snapshot:{works},workHref:w=>'/works/'+w.slug+'.html',seo:{metadata:()=>({}),enrich:(_url,value)=>value}};
+ const ctx={works,types:[],topics,tr:(_key,value)=>value,snapshot:{works},workHref:w=>'/works/'+w.slug+'.html',seo:{metadata:()=>({}),enrich:(_url,value)=>value},
+  esc:value=>String(value??''),icon:()=>'',old:(_key,value)=>value,tagLink:tag=>tag,breadcrumbs:()=>'',sectionHead:()=>'',
+  grid:related=>related.map(row=>`${row.slug}:${row.d}`).join(';')};
  ctx.write=(url,title,active,body,options)=>pages.set(url,createPageModel(ctx,url,title,active,body,options));
  createWorkPages(ctx);
  return Object.fromEntries([...pages].map(([url,p])=>[url,p.cacheKey]));
 }
-const work=(slug,tags=[])=>({id:slug,slug,cid:'one',cids:['one'],tg:tags,n:slug,d:'text'});
+const work=(slug,tags=[])=>({id:slug,slug,cid:'one',cids:['one'],tg:tags,n:slug,d:'text',k:[],roles:[],rights:{}});
 test('recommendation dependencies include new candidates, selected edits and removed works',()=>{
  const works=[work('target',['match']),...Array.from({length:10},(_,i)=>work('other-'+i))];
  const before=keys(works);

@@ -4,14 +4,22 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {spawnSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
-import {buildLanguagePages,languageSitemap,localizedPath,LOCALES,ORIGIN,sitemapWorkImage} from './localize-pages.mjs';
+import {prepareLocalization,languageSitemap,localizedPath,LOCALES,ORIGIN,sitemapWorkImage} from './localize-pages.mjs';
 import {readSitemapHistory,updateSitemapHistory} from './sitemap-history.mjs';
 import {writeAiContent} from './ai-content.mjs';
 import {writeOpenApi} from './open-api.mjs';
-import {STATE_VERSION,STATE_FILE,readState,verifyPrevious,hash,makePlan,outputHashes,copyArtifact,copyImmutableAsset,filesIn} from './incremental.mjs';
-import {finalizeNavigationCount} from '../src/components/library/navigation-count.mjs';
+import {STATE_VERSION,STATE_FILE,readState,hash,outputHashes,copyArtifact,copyImmutableAsset,filesIn} from './incremental.mjs';
+import {auditLanguagePages} from '../../tools/localization/audit-pages.mjs';
 
 const started=performance.now();
+let phaseStart=started;
+const timings=JSON.parse(process.env.SITE_PREPARATION_TIMINGS || '{}');
+const endPhase=name=>{
+ const now=performance.now();
+ timings[name]=Number(((now-phaseStart)/1000).toFixed(2));
+ console.log(`[build-phase] ${name} ${timings[name]}s`);
+ phaseStart=now;
+};
 const frontend=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const root=path.resolve(frontend,'..'),dist=process.env.SITE_SNAPSHOT?path.dirname(path.resolve(process.env.SITE_SNAPSHOT)):path.join(root,'dist');
 const buildTime=process.env.SOURCE_DATE_EPOCH?new Date(Number(process.env.SOURCE_DATE_EPOCH)*1000):new Date();
@@ -39,8 +47,8 @@ let previous=fs.existsSync(previousPath)?fs.realpathSync(previousPath):previousP
 const publishedPrevious=previous;
 const previousStateFile=process.env.SITE_PREVIOUS_STATE||path.join(previous,STATE_FILE);
 let previousState=readState(previousStateFile);
-const run=(script,argv=[],cwd=root)=>{
- const result=spawnSync(process.execPath,[script,...argv],{cwd,env:process.env,stdio:'inherit'});
+const run=(script,argv=[],cwd=root,env={})=>{
+ const result=spawnSync(process.execPath,[script,...argv],{cwd,env:{...process.env,...env},stdio:'inherit'});
  if(result.error||result.status!==0)throw Error(script+' failed: '+(result.error?.message||result.status));
 };
 const astro=path.join(frontend,'node_modules/astro/bin/astro.mjs');
@@ -50,56 +58,72 @@ const planFile=path.join(root,'.build','build-plan-'+process.pid+'.json');
 const ogJobsFile=path.join(frontend,'.astro/og-jobs.jsonl');
 fs.mkdirSync(path.dirname(ogJobsFile),{recursive:true});fs.writeFileSync(ogJobsFile,'');
 process.env.OG_JOBS_FILE=ogJobsFile;
-run(path.join(frontend,'scripts/plan-build.mjs'),[root,previous,previousStateFile,planFile,String(full)],frontend);
+const candidate=!planOnly && process.env.PUBLISH_PREBUILT_DIR ? path.resolve(process.env.PUBLISH_PREBUILT_DIR) : '';
+const previousSitemapFile=path.join(publishedPrevious,'sitemap.xml');
+const baselineSitemap=fs.existsSync(previousSitemapFile) ? hash(fs.readFileSync(previousSitemapFile)) : null;
+run(path.join(frontend,'scripts/plan-build.mjs'),[root,previous,previousStateFile,planFile,String(full),candidate,baselineSitemap||''],frontend);
 let plan=JSON.parse(fs.readFileSync(planFile,'utf8'));
-let preflight=null;
-const candidate=process.env.PUBLISH_PREBUILT_DIR;
-if(!full && !planOnly && candidate && fs.existsSync(path.join(candidate,'.build-output'))) {
- const state=readState(path.join(candidate,STATE_FILE));
- const sorted=value=>Object.entries(value).sort(([a],[b])=>a.localeCompare(b));
- if(state && hash(sorted(state.inputs))===hash(sorted(plan.inputs)) && hash(sorted(state.routes))===hash(sorted(plan.routes)) && verifyPrevious(candidate,state).ok) {
-   previous=fs.realpathSync(candidate);previousState=state;
-   plan=makePlan(plan.inputs,plan.routes,state,{ok:true});
-   const built=JSON.parse(fs.readFileSync(path.join(candidate,'build-info.json'),'utf8'));
-   preflight={mode:built.mode,rendered:built.rendered,localized:built.localized,seconds:built.seconds,planned:built.planned};
-   plan.prebuilt='validated-inputs-and-artifacts';
-   console.log('[build-plan] reuse validated preflight artifact');
- }
+const preflight=plan.preflight;
+if(preflight){
+ previous=fs.realpathSync(candidate);
+ previousState=readState(path.join(previous,STATE_FILE));
 }
 fs.copyFileSync(planFile,path.join(root,'.build/build-plan.json'));
-if(planOnly){console.log('[build-plan] analysis complete; no pages rendered');process.exit(0);}
+endPhase('plan');
+if(planOnly){fs.rmSync(planFile,{force:true});console.log('[build-plan] analysis complete; no pages rendered');process.exit(0);}
 fs.mkdirSync(path.dirname(out),{recursive:true});
 const stage=fs.mkdtempSync(path.join(path.dirname(out),'.build-pending-'));
 let completed=false;
 try {
- let history=previousState?.sitemap||{},ai={},openApi={},localized=0,reusedAssets=0,navigationUpdates=0;
+ const reusableState=plan.mode==='full' ? null : previousState;
+ const knownOutputs=new Map();
+ const reuseArtifact=name=>{
+  copyArtifact(previous,stage,name);
+  knownOutputs.set(name,reusableState.outputs[name]);
+ };
+ let history=reusableState?.sitemap||{},pages=reusableState?.pages||{},audit=reusableState?.audit;
+ let localeInputHash=reusableState?.localeInputHash;
+ let ai={},openApi={},localized=0,reusedLanguagePages=0,reusedAssets=0;
  if(plan.mode==='noop') {
-  for(const name of Object.keys(previousState.outputs)) {
+  for(const [name,digest] of Object.entries(reusableState.outputs)) {
     const source=path.join(previous,name),target=path.join(stage,name);
-    if(copyImmutableAsset(source,target,path.join(publishedPrevious,name)))reusedAssets++;
+    let handedOff=false;
+    if(preflight && process.env.SITE_HANDOFF_PREBUILT==='1' && fs.lstatSync(source).isFile()) {
+     fs.mkdirSync(path.dirname(target),{recursive:true});
+     try { fs.linkSync(source,target); handedOff=true; }
+     catch(error) { if(error.code!=='EXDEV' && error.code!=='EPERM' && error.code!=='ENOTSUP')throw error; }
+    }
+    if(!handedOff && copyImmutableAsset(source,target,path.join(publishedPrevious,name),previous===publishedPrevious ? digest : undefined))reusedAssets++;
+    knownOutputs.set(name,digest);
   }
   plan.rendered=[];
+  reusedLanguagePages=Object.keys(pages).length*LOCALES.length;
+  endPhase('reuse');
  } else {
   run(path.join(frontend,'scripts/prepare-language-assets.mjs'));
-  process.env.SITE_BUILD_PLAN_FILE=planFile;
-  // Astro's incremental cache restores current routes into a fresh output. Old
-  // output can retain deleted routes, including files from an unsuccessful build.
-  // Keep .build/astro-cache intact; only discard this generated working directory.
-  fs.rmSync(astroOut,{recursive:true,force:true});
-  run(astro,['build',...(plan.mode==='full'?['--force']:[])],frontend);
+  // Astro can restore cached pages directly into the fresh release directory.
+  run(astro,['build',...(plan.mode==='full'?['--force']:[])],frontend,{SITE_BUILD_PLAN_FILE:planFile,ASTRO_OUT_DIR:stage});
   plan=JSON.parse(fs.readFileSync(planFile,'utf8'));
-  fs.cpSync(astroOut,stage,{recursive:true,mode:fs.constants.COPYFILE_FICLONE,filter:source=>!source.split(path.sep).includes('.rsync-tmp')});
+  endPhase('astro');
   // Astro can restore a cached removed page before pruning its cache. The
   // current route plan, plus explicitly public HTML files, defines the release.
-  for(const file of filesIn(stage).filter(name=>name.endsWith('.html'))) {
-    if(!Object.hasOwn(plan.routes,'/'+file)&&!fs.existsSync(path.join(frontend,'public',file)))fs.rmSync(path.join(stage,file));
-  }
+  const bases=filesIn(stage).filter(name=>name.endsWith('.html')).filter(file=>{
+   if(Object.hasOwn(plan.routes,'/'+file)||fs.existsSync(path.join(frontend,'public',file)))return true;
+   fs.rmSync(path.join(stage,file));
+   return false;
+  });
   const copy=(relative)=>{
    const source=path.join(dist,relative);
    if(!fs.existsSync(source))throw Error('Missing staged asset '+relative);
    const names=fs.statSync(source).isDirectory()?filesIn(source).map(name=>relative+'/'+name):[relative];
    fs.mkdirSync(path.join(stage,fs.statSync(source).isDirectory()?relative:path.dirname(relative)),{recursive:true});
-   for(const name of names)if(copyImmutableAsset(path.join(dist,name),path.join(stage,name),path.join(previous,name)))reusedAssets++;
+   for(const name of names){
+    const digest=reusableState?.outputs[name];
+    if(copyImmutableAsset(path.join(dist,name),path.join(stage,name),path.join(previous,name),digest)){
+     if(digest)knownOutputs.set(name,digest);
+     reusedAssets++;
+    }
+   }
   };
   for(const file of ['avatar.png','favicon.ico','credits/shuangshuang.jpg','events/national-day-2026.webp','characters.json','categories.json','blue-fish-ids.json','topics.json','site-data.json','site-data.js','submissions/works.json','owner-picks/works.json'])copy(file);
   for(const dir of ['submissions/previews','submissions/large','owner-picks/previews','author-avatars','character-portraits','community'])copy(dir);
@@ -112,46 +136,70 @@ try {
    const result=spawnSync(process.env.PYTHON||'python3',[path.join(root,'tools/og_cards.py'),jobsJson,cache,dist,path.join(dist,'avatar.png')],{cwd:root,stdio:'inherit'});
    if(result.error||result.status!==0)throw Error('Share card generation failed: '+(result.error?.message||result.status));
    fs.mkdirSync(path.join(stage,'og'),{recursive:true});
-   for(const job of jobs)if(copyImmutableAsset(path.join(cache,job.id+'.jpg'),path.join(stage,'og',job.id+'.jpg'),path.join(previous,'og',job.id+'.jpg')))reusedAssets++;
+   for(const job of jobs){
+    const name='og/'+job.id+'.jpg',digest=reusableState?.outputs[name];
+    if(copyImmutableAsset(path.join(cache,job.id+'.jpg'),path.join(stage,name),path.join(previous,name),digest)){
+     if(digest)knownOutputs.set(name,digest);
+     reusedAssets++;
+    }
+   }
    console.log('[og] '+jobs.length+' share cards');
   }
+  endPhase('assets');
   const snapshot=JSON.parse(fs.readFileSync(path.join(dist,'site-data.json'),'utf8'));
-  const bases=filesIn(stage).filter(name=>name.endsWith('.html'));
-  const rendered=new Set(plan.rendered||[]);
-  const changed=new Set(plan.changed);
-  const reuse=[];
-  const toLocalize=[];
+  const localizer=prepareLocalization(stage,snapshot);
+  const canReuseLocale=reusableState?.inputs.localization===plan.inputs.localization;
+  localeInputHash=hash([
+   plan.inputs.content,
+   ...['archive-copy.js','archive-labels.js'].map(file=>hash(fs.readFileSync(path.join(stage,file)))),
+  ]);
+  const sameLocaleInputs=localeInputHash===reusableState?.localeInputHash;
+  const reusable=new Set();
+  const urls=[];
+  pages={};
   for(const file of bases) {
-   const sourceHtml=fs.readFileSync(path.join(stage,file),'utf8');
-   if(!sourceHtml.includes('data-archive')&&!sourceHtml.includes('class="v2"'))continue;
-   const route='/'+file;
-   if(plan.mode!=='full'&&!rendered.has(route)&&!changed.has(route)&&previousState?.outputs[file]) {
-    for(const locale of LOCALES)copyArtifact(previous,stage,locale.prefix.slice(1)+(locale.prefix?'/':'')+file);
-    reuse.push(route);
-   }else toLocalize.push(file);
+   const source=fs.readFileSync(path.join(stage,file));
+   const raw=hash(source);
+   const prior=canReuseLocale ? reusableState.pages[file] : undefined;
+   const base=file==='index.html' ? '/' : '/'+file;
+   const outputs=LOCALES.map(({prefix})=>prefix ? prefix.slice(1)+'/'+file : file);
+   if(prior?.raw===raw && outputs.every(name=>Object.hasOwn(reusableState.outputs,name)) && (sameLocaleInputs || localizer.matches(prior.dependencies))){
+    for(const name of outputs)reuseArtifact(name);
+    pages[file]=prior;
+    reusable.add(file);
+   } else {
+    const html=source.toString('utf8');
+    const archive=html.includes('data-archive');
+    if(!archive&&!html.includes('class="v2"'))continue;
+    const result=await localizer.render(html,'/'+file);
+    pages[file]={raw,dependencies:result.record,indexable:archive&&/<meta name="robots" content="index,follow"\s*\/?>/.test(html)};
+    for(const {locale,html} of result.pages){
+     const name=locale.prefix ? locale.prefix.slice(1)+'/'+file : file;
+     const target=path.join(stage,name);
+     fs.mkdirSync(path.dirname(target),{recursive:true});
+     fs.writeFileSync(target,html);
+     knownOutputs.set(name,hash(html));
+     localized++;
+    }
+   }
+   if(pages[file].indexable)urls.push(base);
   }
-  await buildLanguagePages(stage,snapshot,toLocalize);
-  localized=toLocalize.length*LOCALES.length;
-  const workTotal=snapshot.works.filter(work=>work.status==='published').length;
-  for(const file of filesIn(stage).filter(name=>name.endsWith('.html'))) {
-    const target=path.join(stage,file),html=fs.readFileSync(target,'utf8');
-    const updated=finalizeNavigationCount(html,workTotal);
-    if(updated!==html){fs.writeFileSync(target,updated);navigationUpdates++;}
-  }
-  ai=writeAiContent(stage,snapshot,{previousDir:plan.mode==='full'?null:previous,previousState});
+  if(!urls.includes('/'))throw Error('The indexable home page is missing from the sitemap');
+  reusedLanguagePages=reusable.size*LOCALES.length;
+  endPhase('localize');
+  console.log(`[i18n] ${localized} localized, ${reusedLanguagePages} reused`);
+  ai=writeAiContent(stage,snapshot,{previousDir:reusableState ? previous : null,previousState:reusableState});
   console.log('[ai-content] '+JSON.stringify(ai));
-  openApi=writeOpenApi(stage,snapshot,{previousDir:plan.mode==='full'?null:previous,previousState});
+  openApi=writeOpenApi(stage,snapshot,{previousDir:reusableState ? previous : null,previousState:reusableState});
   console.log('[open-api] '+JSON.stringify(openApi));
-  // Retain complete audits; the expensive page render/localization steps are incremental.
-  run(path.join(root,'tools/localization/audit-pages.mjs'),[stage,path.join(root,'.build/native-localization-audit.json')]);
-  const urls=bases.filter(file=>{
-   const html=fs.readFileSync(path.join(stage,file),'utf8');
-   return html.includes('data-archive')&&/<meta name="robots" content="index,follow"/.test(html);
-  }).map(file=>file==='index.html'?'/':'/'+file);
+  endPhase('exports');
+  audit=auditLanguagePages(stage,{snapshot,previous:reusableState?.audit,reusable,digests:knownOutputs,reportFile:path.join(root,'.build/native-localization-audit.json')});
+  endPhase('audit');
   let previousSitemap={records:new Map(),seeded:0};
-  try {previousSitemap=readSitemapHistory(previous,{origin:ORIGIN,now:buildTime,known:plan.mode==='full'?new Map():new Map(Object.entries(previousState?.sitemap||{}))});}
-  catch(error){console.warn('[sitemap] previous history unavailable: '+error.message);}
-  const unchangedPaths=new Set(reuse.flatMap(base=>LOCALES.map(locale=>localizedPath(base,locale))));
+  try {
+   previousSitemap=reusableState ? {records:new Map(Object.entries(reusableState.sitemap)),seeded:0} : readSitemapHistory(previous,{origin:ORIGIN,now:buildTime});
+  } catch(error){console.warn('[sitemap] previous history unavailable: '+error.message);}
+  const unchangedPaths=new Set([...reusable].flatMap(file=>LOCALES.map(locale=>localizedPath('/'+file,locale))));
   const sitemap=updateSitemapHistory(urls.flatMap(base=>LOCALES.map(locale=>localizedPath(base,locale))),stage,previousSitemap,{unchangedPaths,now:buildTime});
   const sitemapImages=new Map();
   for(const work of snapshot.works||[]){
@@ -167,6 +215,7 @@ try {
    const route=localizedPath(base,locale),file=route.endsWith('/')?route+'index.html':route;
    if(!fs.existsSync(path.join(stage,file.slice(1))))throw Error('Language page missing: '+route);
   }
+  endPhase('sitemap');
  }
  // A missing placeholder turns every fallback into a broken image (issue #33).
  // Check the finished stage so noop and validated-prebuilt releases are covered too.
@@ -174,8 +223,16 @@ try {
  let placeholderStat=null;try{placeholderStat=fs.statSync(placeholder);}catch{}
  if(!placeholderStat?.isFile()||placeholderStat.size===0)throw Error('components/image-placeholder.svg is missing or empty from the release');
  const git=(dir)=>spawnSync('git',['-C',dir,'rev-parse','HEAD'],{encoding:'utf8'}).stdout?.trim()||null;
- const report={version:STATE_VERSION,mode:preflight?'prebuilt':plan.mode,reasons:preflight?['validated-prebuilt-artifact']:plan.reasons,preflight,sourceCommit:git(root),contentCommit:process.env.CONTENT_DIR?git(process.env.CONTENT_DIR):null,planned:preflight?.planned||{changed:plan.changed.length,reused:plan.reused.length,removed:plan.removed.length,sharedChanges:plan.sharedChanges},rendered:(plan.rendered||[]).length,localized,reusedAssets,navigationUpdates,markdown:ai,openApi,seconds:Number(((performance.now()-started)/1000).toFixed(2))};
- const state={version:STATE_VERSION,inputs:plan.inputs,routes:plan.routes,outputs:outputHashes(stage),sitemap:history};
+ const state={version:STATE_VERSION,inputs:plan.inputs,routes:plan.routes,pages,audit,outputs:outputHashes(stage,knownOutputs),sitemap:history,baselineSitemap,localeInputHash};
+ endPhase('inventory');
+ const report={
+  version:STATE_VERSION,mode:preflight?'prebuilt':plan.mode,
+  reasons:preflight?['validated-prebuilt-artifact']:plan.reasons,preflight:preflight||null,
+  sourceCommit:git(root),contentCommit:process.env.CONTENT_DIR?git(process.env.CONTENT_DIR):null,
+  planned:preflight?.planned||{changed:plan.changed.length,reused:plan.reused.length,removed:plan.removed.length},
+  rendered:(plan.rendered||[]).length,localized,reusedLanguagePages,reusedAssets,markdown:ai,openApi,timings,
+  seconds:Number(((performance.now()-started)/1000).toFixed(2)),
+ };
  fs.writeFileSync(path.join(stage,STATE_FILE),JSON.stringify(state));
  fs.writeFileSync(path.join(stage,'.build-plan.json'),JSON.stringify(plan,null,2));
  fs.writeFileSync(path.join(stage,'build-info.json'),JSON.stringify(report,null,2)+'\n');

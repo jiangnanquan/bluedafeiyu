@@ -15,7 +15,7 @@
 .hint{margin:0;font-size:12px;color:var(--text-soft)}
 .check-line,.confirm-line{display:flex;flex-direction:row!important;align-items:flex-start;gap:8px;font-size:13px!important;font-weight:400!important;color:var(--muted)!important;cursor:pointer}
 .check-line input,.confirm-line input{width:16px;height:16px;margin-top:2px;flex:none}
-.sub-actions{display:flex;gap:12px;flex-wrap:wrap}
+body.archive[data-submission-mode] .sub-actions{display:flex;gap:12px;flex-wrap:wrap}
 .sub-guide{margin-top:28px;padding-top:20px;border-top:1px solid var(--line);max-width:860px;display:flex;flex-direction:column;gap:16px}
 .sub-guide h2{font-size:20px;font-weight:800;margin:0}
 .guide-item{display:flex;flex-direction:column;gap:4px;padding:14px;border:1px solid var(--card-line);border-radius:10px;background:var(--card)}
@@ -25,7 +25,7 @@
 .sub-form,.reg-form,.registration-content,.sub-guide{max-width:860px;min-width:0}
 .sub-block>legend{font-weight:700;padding:0 4px}
 .sub-block :is(input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=hidden]),select,textarea),.reg-form :is(input:not([type=checkbox]):not([type=radio]),select,textarea){width:100%;max-width:100%;min-width:0;padding:11px 14px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font-size:14px;line-height:1.5}
-.form-row{display:grid;gap:8px;min-width:0;margin:0 0 16px}
+body.archive[data-submission-mode] .form-row{display:grid;gap:8px;min-width:0;margin:0 0 16px}
 .reg-form .form-row:last-child{margin-bottom:0}
 .form-row>label{font-weight:650}
 .form-row :is(input:not([type=checkbox]):not([type=radio]),textarea,select){min-width:0;max-width:100%}
@@ -37,7 +37,7 @@
 .check-line input{appearance:auto;width:16px;height:16px;flex:none;margin:2px 0 0;accent-color:var(--blue)}
 .check-line span{min-width:0;overflow-wrap:anywhere}
 .req-mark{color:#b13535}
-.form-status{flex-basis:100%;margin:0;font-size:13px;overflow-wrap:anywhere}
+body.archive[data-submission-mode] .form-status{flex-basis:100%;margin:0;font-size:13px;overflow-wrap:anywhere}
 .form-status.is-error{color:#b13535}
 .form-status.is-ok{color:var(--ink)}
 [aria-invalid=true]{outline:2px solid #b13535;outline-offset:2px}

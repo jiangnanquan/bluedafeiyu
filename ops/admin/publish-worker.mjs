@@ -311,7 +311,7 @@ export function resolveWorkerConfig(env = process.env) {
     siteBranch: baseBranch,
     contentBranch: env.CONTENT_BRANCH || baseBranch,
     remote: env.PUBLISH_REMOTE || 'origin',
-    buildCheck: true, // 发布前构建并审计；默认部署重新构建，预检产物在部署前释放。
+    buildCheck: true,
     deployRoot: env.PUBLISH_DEPLOY_ROOT || env.DEPLOY_ROOT || '',
     deployCmd: env.PUBLISH_DEPLOY_CMD || '',
     deployRunner: env.PUBLISH_DEPLOY_RUNNER || '',
@@ -900,13 +900,6 @@ export async function processPublishRequest({ request, env = process.env, deps =
 
     step = 'deploy';
     journal.step = step;
-    // The deployment runner rebuilds the site and does not consume PUBLISH_PREBUILT_DIR.
-    // Release the preflight artifact before that second build to keep the disk guard effective.
-    if (!siteCfg.deployCmd) {
-      clearPrebuilt(siteCfg);
-      delete siteCfg.prebuiltDir;
-      delete siteCfg.prebuiltRoot;
-    }
     await runDeploy(siteCfg, exec, log);
     result.releasePath = currentReleasePath(cfg);
     result.healthCheck = { ok: true, url: cfg.healthUrl || null };

@@ -1,11 +1,9 @@
 import fs from 'node:fs';
-import { homeMeta, guides, guidePath, localizedCopy } from '../src/lib/landing-copy.mjs';
-import { aboutSEO, aboutDescription, aboutQuestions } from '../src/lib/about-copy.mjs';
+import { homeMeta, localizedCopy } from '../src/lib/landing-copy.mjs';
+import { aboutSEO, aboutDescription } from '../src/lib/about-copy.mjs';
 import {applyNativeContent} from './native-content.mjs';
 import {nativeArchiveName} from './native-archives.mjs';
-import {videoArchive} from '../src/lib/video-archive.mjs';
-import {videoCopy} from '../src/lib/video-copy.mjs';
-import {eventPageMetadata} from '../src/lib/events.mjs';
+import {createDependencyChecker,createNativeLookup,createTrace,createTrackedTranslations,finishRecord,matchesRecord} from './localization-inputs.mjs';
 import path from 'node:path';
 import vm from 'node:vm';
 import { parseHTML } from 'linkedom';
@@ -52,10 +50,10 @@ function setMeta(document, selector, value) {
   if (value != null) document.querySelector(selector)?.setAttribute('content', value);
 }
 
-function pageMeta(document, api, base, snapshot, archive) {
+function pageMeta(document, api, base, snapshot, archive, lookup) {
   const page = document.body.getAttribute('data-i18n-page');
   const slug = base.match(/^\/works\/([^/]+)\.html$/)?.[1];
-  const work = slug && snapshot.works.find(w => w.slug === slug);
+  const work = slug && lookup.workBySlugFirst(slug);
   const name = document.querySelector('main h1')?.textContent || '';
   const count = document.body.getAttribute('data-archive-count') || document.querySelector('[data-feed]')?.getAttribute('data-total') || 0;
   const n = base.match(/\/page\/(\d+)\.html$/)?.[1];
@@ -63,7 +61,7 @@ function pageMeta(document, api, base, snapshot, archive) {
   if (locale === 'en' || locale === 'ja') {
     let title, desc;
     if (work) {
-      const character = snapshot.characters.find(c => c.id === work.characterId)?.name || work.characterId;
+      const character = lookup.characterById(work.characterId)?.name || work.characterId;
       const kindId = work.categoryIds?.[0] || 'meme';
       const native=work.i18n?.[locale];
       title = native ? native.seoTitle+' | DeepSeek Chan' : api.fmt('page.work.title', '', { name: work.name, character, kindId });
@@ -84,9 +82,9 @@ function pageMeta(document, api, base, snapshot, archive) {
     setMeta(document, 'meta[name="description"]', converter(document.querySelector('meta[name="description"]')?.getAttribute('content') || ''));
   }
   let landing;
-  const eventMeta = eventPageMetadata(base, locale);
+  const eventMeta = lookup.eventMeta(base, locale);
   if (eventMeta) landing = eventMeta;
-  if (base === '/index.html') landing = homeMeta(snapshot.works.filter(w=>w.status === 'published').length, locale);
+  if (base === '/index.html') landing = homeMeta(lookup.publishedCount(), locale);
   if (base === '/about.html') landing = { title: localizedCopy(aboutSEO,locale), description: localizedCopy(aboutDescription,locale) };
   if (base === '/projects.html') landing = {
     title: ({zh:'友情链接墙 — 蓝色大肥鱼','zh-Hant':'友情連結牆 — 藍色大肥魚',en:'Friend Link Wall | DeepSeek Chan',ja:'リンクウォール | 藍色大肥魚'})[locale],
@@ -100,7 +98,7 @@ function pageMeta(document, api, base, snapshot, archive) {
     title: ({zh:'友链墙 — 蓝色大肥鱼','zh-Hant':'友鏈牆 — 藍色大肥魚',en:'Friend links | DeepSeek Chan',ja:'リンク集 | 藍色大肥魚'})[locale],
     description: ({zh:'从友链继续探索有趣的网站与创作者。','zh-Hant':'從友鏈繼續探索有趣的網站與創作者。',en:'Discover more websites and creators through our friend links.',ja:'リンク先のウェブサイトやクリエイターを見つけましょう。'})[locale]
   };
-  const guide = guides.find(g => guidePath(g) === base);
+  const guide = lookup.guide(base);
   if (guide) landing = { title: localizedCopy(guide.name,locale) + (locale === 'en' ? ' | DeepSeek Chan' : locale === 'ja' ? ' | 藍色大肥魚' : ' — 蓝色大肥鱼'), description: localizedCopy(guide.summary,locale) };
   if (base === '/category.html' && ['en','ja'].includes(locale)) landing = {
     title: locale === 'en' ? 'AI Girl Character Guide: DeepSeek, GPT, Claude & More | DeepSeek Chan' : 'AI娘キャラクター図鑑：DeepSeek・GPT・Claudeほか | 藍色大肥魚',
@@ -116,8 +114,8 @@ function pageMeta(document, api, base, snapshot, archive) {
   const videoList = isVideoList(base);
   if (videoList || base.startsWith('/creators/')) {
     const index = locale === 'en' ? 1 : locale === 'ja' ? 2 : 0;
-    const copy = key => locale === 'zh-Hant' ? converter(videoCopy[key][index]) : videoCopy[key][index];
-    const creator = videoArchive.creators.find(c => base === `/creators/bilibili-${c.uid}.html`);
+    const copy = key => { const row = lookup.videoCopy(key); return locale === 'zh-Hant' ? converter(row[index]) : row[index]; };
+    const creator = lookup.creatorByPath(base);
     if (locale !== 'zh') {
       const videoPage = document.body.dataset.videoPage;
       const oldest = document.body.dataset.videoOrder === 'oldest';
@@ -127,7 +125,7 @@ function pageMeta(document, api, base, snapshot, archive) {
       setMeta(document, 'meta[name="description"]', copy('videoLead'));
     }
     if (creator && document.querySelector('main h1')) (document.querySelector('main h1 [data-creator-name]') || document.querySelector('main h1')).textContent = creator.name;
-    for (const c of videoArchive.creators) {
+    for (const c of lookup.creatorList()) {
       for (const link of document.querySelectorAll(`a[href="/creators/bilibili-${c.uid}.html"]`)) (link.querySelector('[data-creator-name]') || link).textContent = c.name;
     }
     for (const selector of ['meta[property="og:image:alt"]', 'meta[name="twitter:image:alt"]']) setMeta(document, selector, document.title);
@@ -148,7 +146,8 @@ function pageMeta(document, api, base, snapshot, archive) {
   return { work, desc };
 }
 
-export async function localizeHtml(html, base, locale, snapshot, translations = baseTranslations) {
+export async function localizeHtml(html, base, locale, snapshot, translations = baseTranslations, context = null) {
+  const lookup = context?.lookup || createNativeLookup(snapshot);
   const parsed = parseHTML(html);
   const document = parsed.document;
   // Templates stay inert in browsers. Expose their contents only while baking
@@ -187,8 +186,8 @@ export async function localizeHtml(html, base, locale, snapshot, translations = 
     }
   }
   for (const label of document.querySelectorAll('[data-character-name]')) label.textContent = api.characterName(label.getAttribute('data-character-name'), label.getAttribute('data-character-label'));
-  const native=applyNativeContent(document,api,base,snapshot);
-  const { work, desc } = pageMeta(document, api, base, snapshot,native?.archive);
+  const native=applyNativeContent(document,api,base,snapshot,lookup);
+  const { work, desc } = pageMeta(document, api, base, snapshot,native?.archive,lookup);
   const toPage = value => {
     if (!value || value.startsWith('#')) return value;
     const url = new URL(value, ORIGIN + base);
@@ -219,18 +218,18 @@ export async function localizeHtml(html, base, locale, snapshot, translations = 
     function localizeSchema(value) {
       if (!value || typeof value !== 'object') return;
       const entitySlug=String(value.url||value.item||'').match(/\/works\/([^/]+)\.html/)?.[1];
-      const entity=entitySlug && snapshot.works.find(w=>w.slug===entitySlug)?.i18n?.[locale.id];
+      const entity=entitySlug && lookup.workBySlugFirst(entitySlug)?.i18n?.[locale.id];
       if(entity && value.name) value.name=entity.name;
       const archivePath=String(value.url||value.item||'');
       if (archivePath) {
-        const eventMeta = eventPageMetadata(new URL(archivePath, ORIGIN).pathname.replace(/^\/(en|ja)(?=\/)/, ''), locale.id);
+        const eventMeta = lookup.eventMeta(new URL(archivePath, ORIGIN).pathname.replace(/^\/(en|ja)(?=\/)/, ''), locale.id);
         if (eventMeta) {
           if (value.name) value.name = eventMeta.name;
           if (value.description) value.description = eventMeta.description;
         }
       }
       if(value.name&&['en','ja'].includes(locale.id)&&archivePath){
-        const name=nativeArchiveName(new URL(archivePath,ORIGIN).pathname.replace(/^\/(en|ja)/,''),api,snapshot);if(name)value.name=name;
+        const name=nativeArchiveName(new URL(archivePath,ORIGIN).pathname.replace(/^\/(en|ja)/,''),api,snapshot,lookup);if(name)value.name=name;
       }
       for (const [key, child] of Object.entries(value)) {
         if (typeof child === 'string' && ['url','@id','item','urlTemplate'].includes(key)) {
@@ -243,7 +242,7 @@ export async function localizeHtml(html, base, locale, snapshot, translations = 
       if (value.inLanguage) value.inLanguage = locale.html;
       if (archivePath && value.name && ['en','ja'].includes(locale.id)) {
         const route = new URL(archivePath,ORIGIN).pathname.replace(/^\/(en|ja)(?=\/)/,'');
-        const guide = guides.find(g=>guidePath(g)===route);
+        const guide = lookup.guide(route);
         if (guide) value.name = localizedCopy(guide.name,locale.id);
         else if (['/category.html','/projects.html','/community-projects.html','/friend-links.html'].includes(route)) value.name = document.title;
         else if (route === '/saved.html' || isVideoList(route) || route === '/creators.html' || route.startsWith('/creators/')) value.name = document.title;
@@ -256,7 +255,7 @@ export async function localizeHtml(html, base, locale, snapshot, translations = 
     if (!(data['@type']==='FAQPage' && work?.i18n?.[locale.id])) localizeSchema(data);
     if (base === '/about.html' && data['@type'] === 'FAQPage') {
       const index = locale.id === 'en' ? 1 : locale.id === 'ja' ? 2 : 0;
-      data.mainEntity = aboutQuestions.map(row=>({ '@type':'Question', name: index === 0 && locale.id === 'zh-Hant' ? converter(row[0]) : row[index], acceptedAnswer:{ '@type':'Answer', text: index === 0 && locale.id === 'zh-Hant' ? converter(row[3]) : row[index+3] } }));
+      data.mainEntity = lookup.aboutQuestions().map(row=>({ '@type':'Question', name: index === 0 && locale.id === 'zh-Hant' ? converter(row[0]) : row[index], acceptedAnswer:{ '@type':'Answer', text: index === 0 && locale.id === 'zh-Hant' ? converter(row[3]) : row[index+3] } }));
     }
     if (locale.id !== 'zh' && ['WebSite','WebPage','CollectionPage','ComicStory'].includes(data['@type'])) {
       data.name=document.title;
@@ -290,13 +289,35 @@ export async function localizeHtml(html, base, locale, snapshot, translations = 
   return document.toString();
 }
 
-export async function buildLanguagePages(out, snapshot, baseFiles = null) {
+function createLocalizationInputs(out, snapshot) {
   const missing=snapshot.works.filter(w=>!w.i18n?.en||!w.i18n?.ja);
   if(missing.length) throw new Error('Native English/Japanese work content missing or stale: '+missing.map(w=>w.id).join(', '));
   const translations={...baseTranslations};
   for (const file of ['archive-copy.js','archive-labels.js']) {
     vm.runInNewContext(fs.readFileSync(path.join(out,file),'utf8'),{window:translations},{filename:file});
   }
+  return {translations,checker:createDependencyChecker(translations,snapshot),lookup:createNativeLookup(snapshot)};
+}
+
+// Localize one source page into every locale while tracing exactly which copy
+// and native-data keys the render used. `matches` rehashes only those deps.
+export function prepareLocalization(out, snapshot) {
+  const inputs=createLocalizationInputs(out,snapshot);
+  return {
+    matches(record) { return matchesRecord(record,inputs.checker); },
+    async render(html, base) {
+      const trace=createTrace();
+      const lookup=createNativeLookup(snapshot,trace);
+      const translations=createTrackedTranslations(inputs.translations,trace);
+      const pages=[];
+      for (const locale of LOCALES) pages.push({locale,html:await localizeHtml(html,base,locale,snapshot,translations,{lookup})});
+      return {pages,record:finishRecord(trace,inputs.checker,base)};
+    }
+  };
+}
+
+export async function buildLanguagePages(out, snapshot, baseFiles = null) {
+  const inputs=createLocalizationInputs(out, snapshot);
   const files = [];
   function walk(dir) {
     for (const item of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -317,7 +338,7 @@ export async function buildLanguagePages(out, snapshot, baseFiles = null) {
     for (const locale of LOCALES) {
       const target = path.join(out, locale.prefix.slice(1), relative);
       fs.mkdirSync(path.dirname(target), { recursive: true });
-      fs.writeFileSync(target, await localizeHtml(html, base, locale, snapshot, translations));
+      fs.writeFileSync(target, await localizeHtml(html, base, locale, snapshot, inputs.translations, {lookup: inputs.lookup}));
       count++;
     }
   }

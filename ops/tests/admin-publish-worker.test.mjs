@@ -201,7 +201,9 @@ function makeFakeExec(state = {}) {
       return ok();
     }
     if (cmd === 'bash' || cmd === 'sh') {
-      state.prebuiltAtDeploy = fs.existsSync(path.join(state.workDir || '', 'build-check'));
+      state.prebuiltAtDeploy = !!options.env.PUBLISH_PREBUILT_DIR && fs.existsSync(options.env.PUBLISH_PREBUILT_DIR);
+      state.prebuiltDir = options.env.PUBLISH_PREBUILT_DIR;
+      state.handoff = options.env.SITE_HANDOFF_PREBUILT;
       state.deployRuns = (state.deployRuns || 0) + 1;
       if (state.failDeploy) return fail('deploy failed');
       return ok();
@@ -589,7 +591,9 @@ test('新增一张图：下载、派生、构建校验、提交白名单、推�
   assert.ok(output.commits.site);
   assert.ok(output.commits.content);
   assert.equal(state.deployRuns, 1);
-  assert.equal(state.prebuiltAtDeploy, false, '部署前应释放未使用的预检产物');
+  assert.equal(state.prebuiltAtDeploy, true, '默认部署应接收预检产物');
+  assert.equal(state.handoff, '1');
+  assert.equal(fs.existsSync(state.prebuiltDir), false, '部署结束后应释放预检目录');
   assert.equal(state.submissionCalls, 1);
   assert.deepEqual(state.submissionPaths, ['/api/v1/items/sub_one/raw']);
   assert.equal(state.submissionAuth, 'Bearer submission-token');

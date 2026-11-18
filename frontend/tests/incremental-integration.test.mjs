@@ -21,7 +21,10 @@ test('real Astro builds: no-op, edits, additions, removals, cold-cache fallback 
  for(const name of ['frontend/src','frontend/public','frontend/scripts','frontend/package.json','frontend/package-lock.json','frontend/astro.config.mjs','frontend/component-library.json','tools','admin/src/lib','data','package.json','dist'])copy(name);
  fs.symlinkSync(path.join(root,'frontend/node_modules'),path.join(fixture,'frontend/node_modules'),process.platform==='win32'?'junction':'dir');
  const videos=path.join(fixture,'data/video-archive.json');
- const videoData=JSON.parse(fs.readFileSync(videos,'utf8'));videoData.videos=[];videoData.creators=[{uid:'396353160',name:'风纪委员小电视',homepage:'https://space.bilibili.com/396353160',intro:''}];fs.writeFileSync(videos,JSON.stringify(videoData));
+ const videoData=JSON.parse(fs.readFileSync(videos,'utf8'));
+ videoData.videos=videoData.videos.filter(video=>video.i18n?.en && video.i18n?.ja).slice(0,25);
+ assert.equal(videoData.videos.length,25,'fixture needs native translations and real video pagination');
+ fs.writeFileSync(videos,JSON.stringify(videoData));
  const original=JSON.parse(fs.readFileSync(path.join(root,'dist/site-data.json'),'utf8'));
  const candidates=original.works.filter(work=>{
    const image=work.displayUrl||work.fullPath||work.thumbUrl||work.thumbnailPath||'';
@@ -54,8 +57,9 @@ test('real Astro builds: no-op, edits, additions, removals, cold-cache fallback 
    const report=JSON.parse(fs.readFileSync(path.join(out,'build-info.json'),'utf8'));
    results.push({name,...report,wallSeconds:Number(((performance.now()-started)/1000).toFixed(2))});
    console.log('[integration] '+name+': '+JSON.stringify(report));
-   return {out,report};
+   return {out,report,plan:JSON.parse(fs.readFileSync(path.join(out,'.build-plan.json'),'utf8'))};
  }
+ const htmlRendered=build=>build.plan.rendered.filter(route=>route.endsWith('.html')).sort();
  write(sample);
  const initial=build('initial',null,['--full']);assert.equal(initial.report.mode,'full');
  for(const name of ['apple-touch-icon.png','apple-touch-icon-precomposed.png']) {
@@ -64,6 +68,11 @@ test('real Astro builds: no-op, edits, additions, removals, cold-cache fallback 
    assert.equal(png.readUInt32BE(16),180);assert.equal(png.readUInt32BE(20),180);
  }
  for(const prefix of ['','en/','ja/','zh-hant/'])assert.ok(fs.readFileSync(path.join(initial.out,prefix,'index.html'),'utf8').includes('href="/apple-touch-icon.png"'));
+ const sitemap=fs.readFileSync(path.join(initial.out,'sitemap.xml'),'utf8');
+ const origin='https://xn--pssy23gqgbz2d718b.com';
+ const workPath='/works/'+sample.works[0].slug+'.html';
+ for(const prefix of ['','/en','/ja','/zh-hant'])assert.ok(sitemap.includes('<loc>'+origin+prefix+workPath+'</loc>'));
+ assert.ok(!sitemap.includes('<loc>'+origin+'/search.html</loc>'));
  const apiRoot='open-api/v1/';
  const readApi=(release,file)=>JSON.parse(fs.readFileSync(path.join(release.out,apiRoot,file),'utf8'));
  assert.equal(readApi(initial,'works.json').total,sample.works.length);
@@ -96,8 +105,9 @@ test('real Astro builds: no-op, edits, additions, removals, cold-cache fallback 
  const serialFull=build('serial-added-full','noop',['--full']);sameArtifacts(serialIncremental.out,serialFull.out,'serial membership incremental artifacts');
  write(sample);
  const orphan=path.join(fixture,'frontend/out/works/orphan-from-failed-build.html');
+ fs.mkdirSync(path.dirname(orphan),{recursive:true});
  fs.writeFileSync(orphan,'<html><body>未发布的临时作品</body></html>');
- const prebuilt=build('prebuilt','missing-baseline',[],{PUBLISH_PREBUILT_DIR:initial.out});
+ const prebuilt=build('prebuilt','missing-baseline',[],{PUBLISH_PREBUILT_DIR:initial.out,SITE_HANDOFF_PREBUILT:'1'});
  assert.equal(prebuilt.report.mode,'prebuilt');assert.equal(prebuilt.report.rendered,0);
  assert.equal(fs.existsSync(path.join(prebuilt.out,path.basename(extra))),false);
  sameArtifacts(prebuilt.out,initial.out,'validated preflight reuse',[path.basename(extra)]);
@@ -110,17 +120,41 @@ test('real Astro builds: no-op, edits, additions, removals, cold-cache fallback 
  const aboutSource=fs.readFileSync(about,'utf8'),documentMarker='data-document-content>';
  assert.ok(aboutSource.includes(documentMarker),'component mutation must target the current document wrapper');
  fs.writeFileSync(about,aboutSource.replace(documentMarker,documentMarker+'<span hidden data-component-cache-verification></span>'));
- const component=build('component','component-baseline');assert.equal(component.report.mode,'incremental');assert.ok(component.report.rendered<initial.report.rendered);
+ const component=build('component','component-baseline');
+ assert.equal(component.report.mode,'incremental');
+ assert.deepEqual(htmlRendered(component),['/about.html']);
+ assert.equal(component.report.localized,4);
  assert.ok(fs.readFileSync(path.join(component.out,'about.html'),'utf8').includes('data-component-cache-verification'));
  assert.equal(fs.existsSync(path.join(component.out,'works/orphan-from-failed-build.html')),false);
  const componentFull=build('component-full','noop',['--full']);sameArtifacts(component.out,componentFull.out,'component artifacts');
+ const homepageCSS=path.join(fixture,'frontend/src/components/library/Home.css');
+ const homeCSS=fs.readFileSync(homepageCSS,'utf8');
+ fs.writeFileSync(homepageCSS,homeCSS+'\n.hero{--integration-build-scope:1}\n');
+ const styles=build('home-styles','component-full');
+ assert.equal(styles.report.mode,'incremental');
+ assert.ok(htmlRendered(styles).includes('/index.html'));
+ assert.ok(!htmlRendered(styles).includes('/about.html'));
+ assert.ok(!htmlRendered(styles).some(route=>route.startsWith('/works/')));
+ const stylesFull=build('home-styles-full','component-full',['--full']);
+ sameArtifacts(styles.out,stylesFull.out,'private stylesheet incremental artifacts');
+
+ const translatedVideo=videoData.videos.toSorted((a,b)=>Date.parse(b.publishedAt)-Date.parse(a.publishedAt)||a.bvid.localeCompare(b.bvid))[0];
+ translatedVideo.i18n.en.description+=' Video translation dependency check.';
+ fs.writeFileSync(videos,JSON.stringify(videoData));
+ const translated=build('video-translation','home-styles-full');
+ assert.match(fs.readFileSync(path.join(translated.out,'en/videos.html'),'utf8'),/Video translation dependency check\./);
+ assert.ok(fs.existsSync(path.join(translated.out,'en/videos/oldest/page/2.html')));
+ assert.ok(!htmlRendered(translated).includes('/videos.html'),'a translation-only edit need not render the base route');
+ assert.ok(translated.report.reusedLanguagePages>translated.report.localized);
+ const translatedFull=build('video-translation-full','home-styles-full',['--full']);
+ sameArtifacts(translated.out,translatedFull.out,'translation and nested routes equal full build');
  const edited=structuredClone(sample),work=edited.works.at(-1);
  work.description+=' 增量构建验证。';work.i18n.en.description+=' Incremental build verification.';work.i18n.ja.description+=' 増分ビルドの検証。';
  write(edited);
- const increment=build('edited','component',[],{PUBLISH_PREBUILT_DIR:initial.out});assert.equal(increment.report.mode,'incremental');assert.ok(increment.report.rendered<initial.report.rendered,'unaffected pages must be restored');
+ const increment=build('edited','video-translation-full',[],{PUBLISH_PREBUILT_DIR:initial.out});assert.equal(increment.report.mode,'incremental');assert.ok(increment.report.rendered<initial.report.rendered,'unaffected pages must be restored');
  assert.notEqual(readApi(increment,'works/'+work.id+'.json').work.revision,readApi(component,'works/'+work.id+'.json').work.revision);
  assert.ok(increment.report.openApi.reused>0,'unchanged API files must be reused');
- const reference=build('edited-full','component',['--full']);sameArtifacts(increment.out,reference.out,'incremental edits equal a clean full build');
+ const reference=build('edited-full','video-translation-full',['--full']);sameArtifacts(increment.out,reference.out,'incremental edits equal a clean full build');
  const added=structuredClone(edited);added.works.push(fixtureTags(structuredClone(ordered[24])));write(added);
  const addition=build('added','edited');assert.equal(addition.report.mode,'incremental');assert.ok(fs.existsSync(path.join(addition.out,'works',ordered[24].slug+'.html')));
  assert.ok(readApi(addition,'manifest.json').items.some(w=>w.id===ordered[24].id));

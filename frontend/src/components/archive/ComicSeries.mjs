@@ -65,6 +65,6 @@ export function createComicSeries(ctx,topic) {
       const nav=`<nav class="rd-nav comic-navigation" aria-label="${e(topic.name)}">${number>0?button(comicPageURL(topic.id,number-1),icon('back',16)+t('previous')):`<button class="button" type="button" disabled>${t('beginning')}</button>`}<span class="rd-end">${number} / ${reader.totalPages}</span>${number<reader.totalPages?button(comicPageURL(topic.id,number+1),t('next')+icon('arrow',16),'primary'):button(comicPageURL(topic.id),t('end'),'primary')}</nav>`;
       content=`${trail}<section data-comic-reader="${e(topic.id)}" data-comic-page="${number}"><div class="rd-top">${button(comicPageURL(topic.id),icon('back',16)+t('contents'))}${work?button('/works/'+work.slug+'.html',t('details')):''}<span class="rd-progress">${pageLabel(number)} / ${reader.totalPages}</span></div><div class="rd-head"><h1>${e(work?.n||topic.name)}${work?'':' · '+pageLabel(number)}</h1><span>${e(reader.credits||author?.name||'')}</span>${author?`<a class="author-name" href="${e(authorSource)}" target="_blank" rel="noopener noreferrer">${e(author.name)}</a>`:''}</div>${image('rd-stage')}${nav}<details class="comic-contents" id="comic-contents"><summary>${t('contents')}</summary>${contents(number)}</details></section>`;
     }
-    write(comicPageURL(topic.id,number),topic.name,'serials',content,{comic:{topicId:topic.id,number},desc:topic.summary,dependencies:[topic,number,work]});
+    write(comicPageURL(topic.id,number),topic.name,'serials',content,{comic:{topicId:topic.id,number},desc:topic.summary});
   }
 }

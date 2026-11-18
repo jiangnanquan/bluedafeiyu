@@ -1,9 +1,9 @@
 ---
-import ArchivePage from '../../components/archive/ArchivePage.astro';
+import CreatorProfilePage from '../../components/archive/CreatorProfilePage.astro';
 import { archivePages } from '../../lib/archive.mjs';
 export function getStaticPaths() {
   return [...archivePages].flatMap(([url,page]) => { const match = url.match(/^\/creators\/([a-z0-9][a-z0-9-]*)\.html$/); return match ? [{ params: { id: match[1] }, props: { page } }] : []; });
 }
 const { page } = Astro.props;
 ---
-<ArchivePage {page} />
+<CreatorProfilePage {page} />

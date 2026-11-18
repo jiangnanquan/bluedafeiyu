@@ -19,12 +19,24 @@
 //      一律不碰。**绝不从内容仓库同步任何 JSON 清单**（见下）。
 //   3. 不复制 submissions/originals/，也不复制 owner-picks/ 根目录下的原图——
 //      原图只留在内容仓库，线上走 GitHub Raw。
-//   4. 覆盖语义：同步前先删除本仓库 dist/ 下**同名目标**（仅限清单内），再复制。
-//      清理范围写死在清单里，不做任何通配/递归删除，且每一步都断言目标仍在
-//      <本仓库>/dist 之内。
-//   5. 缺文件即报错并非零退出：内容仓库必需的图片 / 模板先校验存在。
-//   6. 确定性复制：目录条目按名字排序后再复制，同一输入两次同步结果一致。
-//   7. Windows / POSIX 路径都可以（统一走 node:path 解析）。
+//   4. 增量覆盖语义：不再先整目录删除再全量复制。逐文件比较源与目标的**字节**
+//      （先比尺寸），只复制内容确实不同的文件，删掉内容仓库里已经没有的同名条目。
+//      清理范围写死在清单里，不做通配删除，每一步都断言目标仍在 <本仓库>/dist 之内。
+//   5. 源校验：内容仓库必需的图片 / 模板先校验存在且非空；同步时逐文件确认源仍是
+//      普通文件；内容仓库里的符号链接（含目录目标本身）只有解析后仍留在内容仓库内
+//      时才跟随，指向仓库外直接报错。
+//   6. 不原地改写 inode：每个文件先写同目录临时文件再 rename 覆盖。dist/ 里的文件
+//      可能与已发布的 release 共享同一个 inode（发布端 cp -al），原地改写会把旧
+//      release 一起改掉；rename 只替换目录项。
+//   7. 不跟随目标侧符号链接：目标父目录若是符号链接就报错；目标树里的符号链接一律
+//      删掉重写，绝不顺着它写到白名单以外。
+//   8. 以源字节为准：tools/prepare_preview_assets.py 压过的预览与源不同，下一轮会被
+//      恢复成原图，再由它按内容指纹装回已验证的压缩产物（不重复编码）。目标被外部
+//      改坏时同理自动修复；压缩规则 / 编码器运行时变化也会在下一轮真正生效。
+//   9. 不维护任何增量状态文件：判断依据就是磁盘上的真实字节。代价是每轮读一遍源与
+//      目标文件，但不会出现状态与实际不一致、或缓存过期还继续跳过的情况。
+//  10. 确定性：目录条目按名字排序后处理，同一输入两次同步结果一致。
+//  11. Windows / POSIX 路径都可以（统一走 node:path 解析）。
 //
 // 清单类 JSON（characters / categories / works / blue-fish-ids / blue-fish 叠加层）
 // **不从内容仓库同步**：它们的权威副本在本仓库 data/，由 tools/stage_data.mjs
@@ -137,7 +149,10 @@ function resolveInsideDist(relTarget) {
   return abs;
 }
 
-function requireDir(absPath, label) {
+// ---------------------------------------------------------------- 源侧
+
+// 目录必须存在且是目录，解析后还必须留在内容仓库内（允许仓库内部的符号链接）。
+function requireSourceDirectory(absPath, label, boundary) {
   let stat;
   try {
     stat = fs.statSync(absPath);
@@ -147,9 +162,14 @@ function requireDir(absPath, label) {
   if (!stat.isDirectory()) {
     fail(`${label} 不是目录：${absPath}`);
   }
+  const real = fs.realpathSync(absPath);
+  if (!isInside(boundary, real)) {
+    fail(`${label} 指向内容仓库之外，拒绝同步：${absPath} -> ${real}`);
+  }
 }
 
-function requireFile(absPath, label) {
+// 必需的源文件必须是非空普通文件，缺一个就整体失败（与旧行为一致）。
+function requireSourceFile(absPath, label, boundary) {
   let stat;
   try {
     stat = fs.statSync(absPath);
@@ -159,115 +179,259 @@ function requireFile(absPath, label) {
   if (!stat.isFile() || stat.size <= 0) {
     fail(`${label} 不是非空文件：${absPath}`);
   }
+  const real = fs.realpathSync(absPath);
+  if (!isInside(boundary, real)) {
+    fail(`${label} 指向内容仓库之外，拒绝同步：${absPath} -> ${real}`);
+  }
 }
 
-// 确定性递归复制：条目按名字排序；只复制文件与目录，遇到符号链接等按目标类型处理。
-function copyTree(srcDir, destDir) {
-  fs.mkdirSync(destDir, { recursive: true });
+function realDirectory(absPath, label) {
+  let stat;
+  try {
+    stat = fs.statSync(absPath);
+  } catch {
+    fail(`${label} 不存在：${absPath}`);
+  }
+  if (!stat.isDirectory()) {
+    fail(`${label} 不是目录：${absPath}`);
+  }
+  return fs.realpathSync(absPath);
+}
+
+function isInside(parent, child) {
+  const rel = path.relative(parent, child);
+  return rel === "" || (!rel.startsWith("..") && !path.isAbsolute(rel));
+}
+
+// 源条目必须是普通文件或目录。符号链接只在解析后仍留在内容仓库（boundary）内时跟随，
+// 并且对目录链接做成环检查；其它类型（fifo / socket / 设备）一律报错。
+function classifySource(absPath, dirent, boundary, visitedDirs) {
+  if (dirent.isDirectory()) return "dir";
+  if (dirent.isFile()) return "file";
+  if (dirent.isSymbolicLink()) {
+    const real = fs.realpathSync(absPath);
+    if (!isInside(boundary, real)) {
+      fail(`内容仓库里的符号链接指向仓库外，拒绝同步：${absPath} -> ${real}`);
+    }
+    const stat = fs.statSync(absPath);
+    if (stat.isFile()) return "file";
+    if (stat.isDirectory()) {
+      if (visitedDirs.has(real)) fail(`内容仓库里出现成环的目录符号链接：${absPath} -> ${real}`);
+      visitedDirs.add(real);
+      return "dir";
+    }
+  }
+  return fail(`内容仓库里出现不支持的条目类型（不是普通文件 / 目录 / 符号链接）：${absPath}`);
+}
+
+// ---------------------------------------------------------------- 目标侧
+//
+// 所有写入都限制在 <本仓库>/dist 之内：路径先做词法断言，父目录必须是真目录，
+// 目标树里的符号链接一律删掉重写，绝不跟随。
+
+function lstatOrNull(absPath) {
+  try {
+    return fs.lstatSync(absPath);
+  } catch (error) {
+    if (error && error.code === "ENOENT") return null;
+    throw error;
+  }
+}
+
+// 删除目标侧条目（文件 / 符号链接 / 目录）。只用 lstat + unlink / rmdir，
+// 不会跟随符号链接，因此碰不到白名单以外的东西。返回删除的文件数。
+function removeEntry(absPath) {
+  const stat = fs.lstatSync(absPath);
+  if (stat.isDirectory() && !stat.isSymbolicLink()) {
+    let removed = 0;
+    for (const name of fs.readdirSync(absPath)) removed += removeEntry(path.join(absPath, name));
+    fs.rmdirSync(absPath);
+    return removed;
+  }
+  // 文件 / 符号链接 / junction：只删目录项，不碰它指向的东西。
+  fs.rmSync(absPath, { force: true });
+  return 1;
+}
+
+// dist/ 下、目标上方的父目录必须是真目录；遇到符号链接就停下，避免顺着写到别处。
+function ensureDistParent(absDir) {
+  const rel = path.relative(DIST_DIR, absDir);
+  if (rel === "" || rel === ".") return;
+  if (rel.startsWith("..") || path.isAbsolute(rel)) {
+    fail(`拒绝写入 dist/ 之外的目录：${absDir}`);
+  }
+  let current = DIST_DIR;
+  for (const part of rel.split(path.sep)) {
+    current = path.join(current, part);
+    const stat = lstatOrNull(current);
+    if (stat === null) {
+      fs.mkdirSync(current);
+      continue;
+    }
+    if (stat.isSymbolicLink()) {
+      fail(`dist/ 里的父目录是指向别处的符号链接，拒绝跟随：${current}`);
+    }
+    if (!stat.isDirectory()) {
+      fail(`dist/ 里的父路径不是目录：${current}`);
+    }
+  }
+}
+
+// 目标树内部的目录：已存在但不是真目录（文件 / 符号链接）就先删掉再建。
+function ensureTreeDirectory(absDir) {
+  const stat = lstatOrNull(absDir);
+  if (stat !== null && stat.isDirectory() && !stat.isSymbolicLink()) return 0;
+  const removed = stat === null ? 0 : removeEntry(absDir);
+  fs.mkdirSync(absDir);
+  return removed;
+}
+
+// 先写同目录临时文件再 rename：dist/ 里的文件可能与已发布的 release 共享同一个
+// inode（发布端用 cp -al 硬链接），原地改写会把旧 release 一起改掉。
+function writeFileReplacing(destAbs, data, mode) {
+  const temporary = path.join(path.dirname(destAbs), `.${path.basename(destAbs)}.sync-tmp`);
+  try {
+    if (lstatOrNull(temporary) !== null) removeEntry(temporary);
+    fs.writeFileSync(temporary, data, { mode: mode & 0o777 });
+    try {
+      fs.chmodSync(temporary, mode & 0o777);
+    } catch {
+      // Windows 只支持只读位，权限尽量对齐即可。
+    }
+    try {
+      fs.renameSync(temporary, destAbs);
+    } catch (error) {
+      // Windows 上覆盖只读文件会 EPERM：先去掉只读位再重试。
+      if (error && (error.code === "EPERM" || error.code === "EACCES")) {
+        try {
+          fs.chmodSync(destAbs, 0o666);
+        } catch {
+          // 目标不存在或本来就改不动：交给下一次 rename 报错。
+        }
+        fs.renameSync(temporary, destAbs);
+        return;
+      }
+      throw error;
+    }
+  } finally {
+    try {
+      if (lstatOrNull(temporary) !== null) removeEntry(temporary);
+    } catch {
+      // 临时文件清理失败不影响同步结果。
+    }
+  }
+}
+
+// ---------------------------------------------------------------- 同步
+
+function syncFile(srcAbs, destAbs, ctx) {
+  const srcStat = fs.statSync(srcAbs);
+  if (!srcStat.isFile()) fail(`源条目不是普通文件：${srcAbs}`);
+  ctx.stats.total += 1;
+
+  const data = fs.readFileSync(srcAbs);
+  const destStat = lstatOrNull(destAbs);
+  if (destStat !== null && destStat.isFile() && destStat.size === data.length) {
+    if (fs.readFileSync(destAbs).equals(data)) {
+      ctx.stats.skipped += 1;
+      return;
+    }
+  }
+
+  ensureDistParent(path.dirname(destAbs));
+  const removed = destStat !== null && !destStat.isFile() ? removeEntry(destAbs) : 0;
+  writeFileReplacing(destAbs, data, srcStat.mode);
+  ctx.stats.copied += 1;
+  ctx.stats.removed += removed;
+}
+
+function syncDirectory(srcDirAbs, destDirAbs, ctx) {
+  const removed = ensureTreeDirectory(destDirAbs);
+  ctx.stats.removed += removed;
   const entries = fs
-    .readdirSync(srcDir, { withFileTypes: true })
+    .readdirSync(srcDirAbs, { withFileTypes: true })
     .sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
+  const names = new Set(entries.map((entry) => entry.name));
+
   for (const entry of entries) {
-    const srcPath = path.join(srcDir, entry.name);
-    const destPath = path.join(destDir, entry.name);
-    if (entry.isDirectory()) {
-      copyTree(srcPath, destPath);
+    const srcPath = path.join(srcDirAbs, entry.name);
+    const destPath = path.join(destDirAbs, entry.name);
+    if (classifySource(srcPath, entry, ctx.boundary, ctx.visitedDirs) === "dir") {
+      syncDirectory(srcPath, destPath, ctx);
       continue;
     }
-    if (entry.isFile()) {
-      fs.copyFileSync(srcPath, destPath);
-      continue;
-    }
-    const target = fs.statSync(srcPath);
-    if (target.isDirectory()) copyTree(srcPath, destPath);
-    else if (target.isFile()) fs.copyFileSync(srcPath, destPath);
-    else fail(`不支持的源条目类型：${srcPath}`);
+    syncFile(srcPath, destPath, ctx);
   }
-}
 
-// 删除本仓库 dist/ 下同名目标（文件或目录）。只接受清单里的相对目标。
-function cleanTarget(relTarget) {
-  const abs = resolveInsideDist(relTarget);
-  if (!fs.existsSync(abs)) return;
-  fs.rmSync(abs, { recursive: true, force: true });
-}
-
-function countTreeFiles(absDir) {
-  let total = 0;
-  const stack = [absDir];
-  while (stack.length > 0) {
-    const dir = stack.pop();
-    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-      const full = path.join(dir, entry.name);
-      if (entry.isDirectory()) stack.push(full);
-      else total += 1;
-    }
+  // 内容仓库里已经没有的条目：从 dist/ 删掉。
+  for (const name of fs.readdirSync(destDirAbs)) {
+    if (names.has(name)) continue;
+    ctx.stats.removed += removeEntry(path.join(destDirAbs, name));
   }
-  return total;
 }
 
 function main() {
   const { contentDir } = parseArgs(process.argv.slice(2));
 
-  if (!fs.existsSync(contentDir) || !fs.statSync(contentDir).isDirectory()) {
-    fail(`内容仓库目录不存在或不是目录：${contentDir}`);
-  }
+  const contentReal = realDirectory(contentDir, "内容仓库根目录");
   if (path.resolve(contentDir) === REPO_ROOT) {
     fail("内容仓库目录不能是本代码仓库根目录");
   }
+  const contentDist = realDirectory(
+    path.join(contentReal, "dist"),
+    "内容仓库 dist/（--content-dir 应指向内容仓库根目录）",
+  );
 
-  const contentDist = path.join(contentDir, "dist");
-  if (!fs.existsSync(contentDist) || !fs.statSync(contentDist).isDirectory()) {
-    fail(`内容仓库里找不到 dist/：${contentDist}（--content-dir 应指向内容仓库根目录）`);
-  }
-  if (!fs.existsSync(DIST_DIR) || !fs.statSync(DIST_DIR).isDirectory()) {
-    fail(`本仓库里找不到 dist/：${DIST_DIR}`);
-  }
+  // dist/ 必须是真目录：如果它是指向别处的符号链接，增量写入就会跑到 dist 之外。
+  const distStat = lstatOrNull(DIST_DIR);
+  if (distStat === null) fail(`本仓库里找不到 dist/：${DIST_DIR}`);
+  if (distStat.isSymbolicLink()) fail(`本仓库 dist/ 是指向别处的符号链接，拒绝写入：${DIST_DIR}`);
+  if (!distStat.isDirectory()) fail(`本仓库 dist/ 不是目录：${DIST_DIR}`);
 
-  // 1. 校验内容仓库必需图片 / 模板存在。
+  // 1. 校验内容仓库必需图片 / 模板存在（缺一个或指向仓库外就整体失败，不先动 dist/）。
   for (const rel of REQUIRED_CONTENT_ROOT_FILES) {
-    requireFile(path.resolve(contentDir, ...rel.split("/")), `内容仓库 ${rel}`);
+    requireSourceFile(path.resolve(contentReal, ...rel.split("/")), `内容仓库 ${rel}`, contentReal);
   }
   for (const rel of REQUIRED_CONTENT_DIST_FILES) {
-    requireFile(path.resolve(contentDist, ...rel.split("/")), `内容仓库 dist/${rel}`);
+    requireSourceFile(path.resolve(contentDist, ...rel.split("/")), `内容仓库 dist/${rel}`, contentReal);
   }
   for (const rel of SYNC_DIR_TARGETS) {
-    requireDir(path.resolve(contentDist, ...rel.split("/")), `内容仓库 dist/${rel}`);
+    requireSourceDirectory(path.resolve(contentDist, ...rel.split("/")), `内容仓库 dist/${rel}`, contentReal);
   }
 
-  log(`内容仓库：${contentDir}`);
+  log(`内容仓库：${contentReal}`);
   log(`本仓库 dist：${DIST_DIR}`);
   log(`同步目标：${SYNC_TARGETS.join(", ")}`);
 
-  // 2. 只清理清单内的同名目标。
-  for (const rel of SYNC_TARGETS) cleanTarget(rel);
+  const ctx = {
+    boundary: contentReal,
+    visitedDirs: new Set(),
+    stats: { copied: 0, skipped: 0, removed: 0, total: 0 },
+  };
 
-  // 3. 复制：图片来自内容仓库 dist/，投稿模板来自内容仓库根。
+  // 2. 单文件目标：图片来自内容仓库 dist/，投稿模板来自内容仓库根。
   for (const rel of SYNC_FILE_TARGETS) {
-    const srcPath = path.resolve(contentDist, ...rel.split("/"));
     const destPath = resolveInsideDist(rel);
-    fs.mkdirSync(path.dirname(destPath), { recursive: true });
-    fs.copyFileSync(srcPath, destPath);
+    ensureDistParent(path.dirname(destPath));
+    syncFile(path.resolve(contentDist, ...rel.split("/")), destPath, ctx);
   }
   for (const rel of ROOT_SYNC_FILE_TARGETS) {
-    const srcPath = path.resolve(contentDir, ...rel.split("/"));
     const destPath = resolveInsideDist(rel);
-    fs.mkdirSync(path.dirname(destPath), { recursive: true });
-    fs.copyFileSync(srcPath, destPath);
+    ensureDistParent(path.dirname(destPath));
+    syncFile(path.resolve(contentReal, ...rel.split("/")), destPath, ctx);
   }
+
+  // 3. 目录目标：逐文件对齐（新增 / 变化 / 删除），字节相同的不重写。
   for (const rel of SYNC_DIR_TARGETS) {
     const srcPath = path.resolve(contentDist, ...rel.split("/"));
     const destPath = resolveInsideDist(rel);
-    copyTree(srcPath, destPath);
+    ensureDistParent(path.dirname(destPath));
+    ctx.visitedDirs = new Set();
+    syncDirectory(srcPath, destPath, ctx);
   }
 
-  let dirFiles = 0;
-  for (const rel of SYNC_DIR_TARGETS) {
-    dirFiles += countTreeFiles(resolveInsideDist(rel));
-  }
-  log(
-    `同步完成：单文件 ${SYNC_FILE_TARGETS.length + ROOT_SYNC_FILE_TARGETS.length} 个（含投稿模板 1 个），目录内文件 ${dirFiles} 个`,
-  );
+  const { copied, skipped, removed, total } = ctx.stats;
+  log(`同步完成：复制 ${copied} 个，跳过字节相同 ${skipped} 个，删除 ${removed} 个（源侧共 ${total} 个文件）`);
   log(`已跳过（不入本仓库 dist）：submissions/originals、owner-picks 根原图、内容仓库的任何 JSON 清单`);
   log(`同步目录清单：${SYNC_DIR_TARGETS.map((rel) => toPosix(rel)).join(", ")}`);
 }
