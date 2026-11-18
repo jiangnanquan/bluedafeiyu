@@ -8,9 +8,9 @@ import { seoContext, seoTitle } from '../../lib/seo.mjs';
 import { homeMeta, guides, guidePath, characterSearchAliases } from '../../lib/landing-copy.mjs';
 import {isGifWork} from '../../../public/archive/work-format.js';
 import {events, eventPaths, eventsByStatus, defaultEventStatus, eventPageMetadata} from '../../lib/events.mjs';
+import {pageURL} from './Listing.mjs';
 
-export const pageURL = (base, n) => n === 1 ? base :
-  (base === '/browse.html' ? '/page/' : base.replace(/\.html$/, '/page/')) + n + '.html';
+export {pageURL};
 const kindNames = { meme: '表情包与梗图', illustration: '二创插画', setting: '设定图', comic: '漫画', standing: '立绘', other: '其他作品' };
 
 export function createSEO(ctx) {

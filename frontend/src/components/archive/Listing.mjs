@@ -1,5 +1,7 @@
 import {renderSectionHeading} from './PageHeading.mjs';
-import {pageURL} from './SEO.mjs';
+
+export const pageURL = (base, n) => n === 1 ? base :
+  (base === '/browse.html' ? '/page/' : base.replace(/\.html$/, '/page/')) + n + '.html';
 
 export function createListing(ctx) {
   const { works, chars, types, esc, tr, old, icon, grid, pageHead } = ctx;
