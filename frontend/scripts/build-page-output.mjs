@@ -50,44 +50,56 @@ const localeInputHash=hash([
 const sameLocaleInputs=localeInputHash===reusableState?.localeInputHash;
 const reusable=new Set();
 const urls=[];
-const pages={};
-let localized=0,reusedLanguagePages=0;
-for(const file of bases) {
- const source=fs.readFileSync(path.join(stage,file));
- const raw=hash(source);
- const prior=canReuseLocale ? reusableState.pages[file] : undefined;
- const base=file==='index.html' ? '/' : '/'+file;
- const outputs=LOCALES.map(({prefix})=>prefix ? prefix.slice(1)+'/'+file : file);
- if(prior?.raw===raw && outputs.every(name=>Object.hasOwn(reusableState.outputs,name)) && (sameLocaleInputs || localizer.matches(prior.dependencies))){
-  for(const name of outputs)reuseArtifact(name);
-  pages[file]=prior;
-  reusable.add(file);
- } else {
-  const html=source.toString('utf8');
-  const archive=html.includes('data-archive');
-  if(!archive&&!html.includes('class="v2"'))continue;
-  const result=await localizer.render(html,'/'+file);
-  pages[file]={raw,dependencies:result.record,indexable:archive&&/<meta name="robots" content="index,follow"\s*\/?>/.test(html)};
-  for(const {locale,html} of result.pages){
-   const name=locale.prefix ? locale.prefix.slice(1)+'/'+file : file;
-   const target=path.join(stage,name);
-   fs.mkdirSync(path.dirname(target),{recursive:true});
-   fs.writeFileSync(target,html);
-   knownOutputs.set(name,hash(html));
-   localized++;
+let localized = 0;
+const output = fs.openSync(resultFile, 'wx');
+try {
+  // Write one record at a time so dependency data does not accumulate in the
+  // localization heap. The parent reads this file only after the child exits successfully.
+  fs.writeFileSync(output, '{"pages":{');
+  let separator = '';
+  for (const file of bases) {
+    const source = fs.readFileSync(path.join(stage, file));
+    const raw = hash(source);
+    const prior = canReuseLocale ? reusableState.pages[file] : undefined;
+    const base = file === 'index.html' ? '/' : '/' + file;
+    const outputs = LOCALES.map(({prefix}) => prefix ? prefix.slice(1) + '/' + file : file);
+    let page;
+    if (prior?.raw === raw && outputs.every(name => Object.hasOwn(reusableState.outputs, name)) && (sameLocaleInputs || localizer.matches(prior.dependencies))) {
+      for (const name of outputs) reuseArtifact(name);
+      page = prior;
+      reusable.add(file);
+    } else {
+      const html = source.toString('utf8');
+      const archive = html.includes('data-archive');
+      if (!archive && !html.includes('class="v2"')) continue;
+      const result = await localizer.render(html, '/' + file);
+      page = {raw, dependencies: result.record, indexable: archive && /<meta name="robots" content="index,follow"\s*\/?>/.test(html)};
+      for (const {locale, html} of result.pages) {
+        const name = locale.prefix ? locale.prefix.slice(1) + '/' + file : file;
+        const target = path.join(stage, name);
+        fs.mkdirSync(path.dirname(target), {recursive: true});
+        fs.writeFileSync(target, html);
+        knownOutputs.set(name, hash(html));
+        localized++;
+      }
+    }
+    fs.writeFileSync(output, separator + JSON.stringify(file) + ':' + JSON.stringify(page));
+    separator = ',';
+    if (page.indexable) urls.push(base);
   }
- }
- if(pages[file].indexable)urls.push(base);
+  if (!urls.includes('/')) throw Error('The indexable home page is missing from the sitemap');
+  const reusedLanguagePages = reusable.size * LOCALES.length;
+  endPhase('localize');
+  console.log(`[i18n] ${localized} localized, ${reusedLanguagePages} reused`);
+  const ai = writeAiContent(stage, snapshot, {previousDir: reusableState ? previous : null, previousState: reusableState});
+  console.log('[ai-content] ' + JSON.stringify(ai));
+  const openApi = writeOpenApi(stage, snapshot, {previousDir: reusableState ? previous : null, previousState: reusableState});
+  console.log('[open-api] ' + JSON.stringify(openApi));
+  endPhase('exports');
+  const audit = auditLanguagePages(stage, {snapshot, previous: reusableState?.audit, reusable, digests: knownOutputs, reportFile});
+  endPhase('audit');
+  const rest = JSON.stringify({localeInputHash, urls, reusable: [...reusable], knownOutputs: [...knownOutputs], localized, reusedLanguagePages, ai, openApi, audit, timings});
+  fs.writeFileSync(output, '},' + rest.slice(1));
+} finally {
+  fs.closeSync(output);
 }
-if(!urls.includes('/'))throw Error('The indexable home page is missing from the sitemap');
-reusedLanguagePages=reusable.size*LOCALES.length;
-endPhase('localize');
-console.log(`[i18n] ${localized} localized, ${reusedLanguagePages} reused`);
-const ai=writeAiContent(stage,snapshot,{previousDir:reusableState ? previous : null,previousState:reusableState});
-console.log('[ai-content] '+JSON.stringify(ai));
-const openApi=writeOpenApi(stage,snapshot,{previousDir:reusableState ? previous : null,previousState:reusableState});
-console.log('[open-api] '+JSON.stringify(openApi));
-endPhase('exports');
-const audit=auditLanguagePages(stage,{snapshot,previous:reusableState?.audit,reusable,digests:knownOutputs,reportFile});
-endPhase('audit');
-fs.writeFileSync(resultFile,JSON.stringify({pages,localeInputHash,urls,reusable:[...reusable],knownOutputs:[...knownOutputs],localized,reusedLanguagePages,ai,openApi,audit,timings}));
