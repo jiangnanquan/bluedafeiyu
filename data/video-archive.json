@@ -24,14 +24,25 @@
       }
     },
     {
+      "uid": "45591374",
+      "name": "我不是定子",
+      "homepage": "https://space.bilibili.com/45591374",
+      "intro": "以換裝為主題進行大肥魚主體視頻創作。",
+      "avatar": "https://i2.hdslb.com/bfs/face/e9f612261e88c2f48f558d9a79d69ac4a2bb3a60.jpg",
+      "i18n": {
+        "en": "The creator describes their videos as outfit-change works built around DeepSeek Chan.",
+        "ja": "作者は、DeepSeek ちゃんを主体にした着せ替えテーマの動画を制作していると述べています。"
+      }
+    },
+    {
       "uid": "3546634170403278",
       "name": "我已经有杰米奈了",
       "homepage": "https://space.bilibili.com/3546634170403278",
       "intro": "Gemini Pro/Flash娘图片及视频创作，身份核实可主页私信。因该形象知名度极低，除了我以外没有任何人发😤",
       "avatar": "https://i0.hdslb.com/bfs/face/5f8f2f16d127289fb43a2f9e819d5d2ca814da04.jpg",
       "i18n": {
-        "en": "The creator makes illustrations and videos of personified Gemini Pro and Gemini Flash characters, and notes that this design is little known and posted by no one else.",
-        "ja": "Gemini Pro／Gemini Flashの擬人化キャラクターのイラストと動画を制作している作者で、このデザインは知名度が低く、投稿しているのは自分だけだと述べています。"
+        "en": "Creates illustrations and videos of Gemini Pro and Flash Chan, with identity verification available through the profile's direct messages. Notes that this character design is little known and that no one else posts it.",
+        "ja": "Gemini ProとFlashちゃんのイラストと動画を制作しており、本人確認はプロフィールのDMで対応している。このキャラクターは知名度が低く、自分以外に投稿している人はいないと述べている。"
       }
     },
     {
@@ -118,8 +129,8 @@
       "intro": "我想做很多视频，做很多很好玩的视频，首先肯定是自己觉得很好玩，其次嘛，也想传播快乐给大家。",
       "avatar": "https://i2.hdslb.com/bfs/face/e3445be765ec330ac29b07c328496e44ec04077a.jpg",
       "i18n": {
-        "en": "I want to make lots of videos, lots of really fun videos. First because I enjoy them myself, and second because I want to share the fun with everyone.",
-        "ja": "たくさん動画を作りたいです。たくさん楽しい動画を。まずは自分が楽しいと思えること、それからみんなに楽しさを届けたいです。"
+        "en": "I want to make lots of videos, and lots of really fun videos. First of all they have to be fun for me, and then I want to spread that joy to everyone.",
+        "ja": "たくさん動画を作って、たくさん楽しい動画を作りたいです。まずは自分が楽しいと感じること、それからみんなに楽しさを届けたいです。"
       }
     },
     {
@@ -129,8 +140,8 @@
       "intro": "每日AI小四格/小动画",
       "avatar": "https://i0.hdslb.com/bfs/face/6f8600ad3d37069ef5106eaf96e7d5a936ba8c50.jpg",
       "i18n": {
-        "en": "Posts a daily AI four-panel comic and short animations.",
-        "ja": "毎日AIの四コマ漫画やショートアニメを投稿している。"
+        "en": "Posts a daily AI four-panel comic or short animation.",
+        "ja": "毎日AIの4コマ漫画やショートアニメを投稿している。"
       }
     },
     {
@@ -184,8 +195,8 @@
       "intro": "站长指定的首批作者，公开主页资料收录；视频逐条审核。",
       "avatar": "https://i1.hdslb.com/bfs/face/612f5ca4c050ef18dccf789a8b9399d47e9e6f19.jpg",
       "i18n": {
-        "en": "Bilibili creator 黑猫勇者, who posts short anime clips about AI character girls.",
-        "ja": "Bilibiliのクリエイター黒猫勇者。AI娘たちの日常を描いた短編アニメを投稿しています。"
+        "en": "An animator publishing short anime-style skits starring AI character personifications.",
+        "ja": "AIキャラクターの擬人化を主役にした短編アニメ風動画を投稿しているアニメーターです。"
       }
     },
     {
@@ -206,8 +217,8 @@
       "intro": "站长指定的首批作者，公开主页资料收录；视频逐条审核。",
       "avatar": "https://i1.hdslb.com/bfs/face/dc1f27c0f1a5448837edfa9e56ecdbf685c23479.jpg",
       "i18n": {
-        "en": "An account that runs a DeepSeek Chan fan character and posts short daily logs in character.",
-        "ja": "DeepSeekちゃんの二次創作キャラクターを運営し、キャラクターとして短い日誌を投稿しているアカウント。"
+        "en": "A creator channel that makes short animated observation logs starring the DeepSeek Chan fan character.",
+        "ja": "DeepSeek Chan のファンキャラクターを主役にした短編観察ログを制作しているチャンネル。"
       }
     },
     {
@@ -217,12 +228,397 @@
       "intro": "站长指定的首批作者，公开主页资料收录；视频逐条审核。",
       "avatar": "https://i1.hdslb.com/bfs/face/e11401d7d7cc97ee445d65617b48644b44f7fc42.jpg",
       "i18n": {
-        "en": "The uploader presents the clip as entertainment only and states it is not a commercial or technical evaluation of any AI product, and credits the character designs to Bilibili creators including @ZipZipPipe.",
-        "ja": "投稿者は娯楽目的の動画であり、いかなるAI製品の商業的評価や技術的レビューではないと明記している。キャラクター形象の参考元として、Bilibili のクリエイター @ZipZipPipe などの名前を挙げている。"
+        "en": "One of the first creators designated by the site owner; profile details are taken from public pages, and every video is reviewed individually.",
+        "ja": "サイト管理者が指定した最初期の作者の一人。公開プロフィールの情報を収録しており、動画は1本ずつ審査しています。"
       }
     }
   ],
   "videos": [
+    {
+      "bvid": "BV1Mzs166Eq9",
+      "uid": "3747573030456892",
+      "title": "人类研究日志：看比赛喊破嗓子的人类，到底在喊什么？本鲸喊劈了嗓子也没懂【Day29-30】",
+      "description": "【人类研究日志 No.7】\n前两天本鲸喊得嗓子都劈了，人类却说本鲸没喊出来。\n行，那本鲸换个问法：赢的又不是你，你喊什么？🐋\n\n【作业】评论区告诉本鲸：本鲸这个结论，你觉得对吗？你为谁喊出过声，又是为什么？\n\n本视频含 AI 生成内容｜二创角色，非深度求索官方 · 评论截图来自公开评论区\n\n比赛片段：\n足球《【贺炜解说】2022世界杯质量最高的一场点球大战！！！》UP主 足球大侠Magic（BV11EVhzmERQ），含原解说声\n篮球《极致攻防！2016总决赛G7最后2分钟高光回顾》UP主 克利夫兰骑士（BV1Ddj761ENK）\n王者荣耀《梦泪韩信无兵线偷水晶珍贵影像记录》UP主 秋水゜（BV14W411D7GD）\n鲸鱼娘基于「溟月：上善无形」及 ZipZipPipe 的 DeepSeek 女仆鲸鱼娘设计二次创作。",
+      "url": "https://www.bilibili.com/video/BV1Mzs166Eq9/",
+      "cover": "https://i1.hdslb.com/bfs/archive/a083bdbc9d996604abf693e97f428f4836ceece8.jpg",
+      "duration": 202,
+      "publishedAt": "2026-11-18T04:44:51.000Z",
+      "characterIds": [
+        "deepseek"
+      ],
+      "i18n": {
+        "en": {
+          "title": "Human Observation Log No.7: Why Do Humans Shout Themselves Hoarse at Matches? (Day 29-30)",
+          "description": "A short animated log starring a chibi DeepSeek Chan. After losing her voice shouting at a match, she tries to work out why humans yell for teams that are not even theirs, flipping through football, basketball and Honor of Kings highlights along with screenshots from public comment sections. The video ends by asking viewers to say in the comments whether her conclusion holds. Contains AI-generated content; a fan-made character, not an official DeepSeek production.",
+          "creatorIntro": "A creator channel that makes short animated observation logs starring the DeepSeek Chan fan character."
+        },
+        "ja": {
+          "title": "人類観察ログ No.7：試合を見て声を枯らす人類は、いったい何を叫んでいるのか？（Day 29-30）",
+          "description": "ちびキャラの DeepSeek Chan が主役の短編アニメーションログ。試合で声を枯らした彼女が、自分のチームでもないのに人間はなぜ叫ぶのかを考え、サッカー・バスケ・王者栄耀の試合映像と公開コメント欄のスクリーンショットを次々と見ていく。最後に自分の結論が正しいかコメントで教えてほしいと呼びかける。AI生成コンテンツを含むファンメイド作品で、DeepSeek 公式のものではない。",
+          "creatorIntro": "DeepSeek Chan のファンキャラクターを主役にした短編観察ログを制作しているチャンネル。"
+        }
+      }
+    },
+    {
+      "bvid": "BV1Qusy63Esv",
+      "uid": "15475629",
+      "title": "【科普向】《圣女自有品味！Claude酱与她的十九颗完美球体》",
+      "description": "原事件（2026 年 4 月公布）：Anthropic 的 Project Deal 内部集市实验中，一名员工允许 Claude 用不到 5 美元给自己挑件礼物。Claude 花了 3 美元买下同事挂售的 19 个乒乓球，实物随后送到了办公室。\n\n来源：\nhttps://www.anthropic.com/features/project-deal\n\n【Credit】\n音乐：8bit29「子猫のもんたのクッキー屋さん」\n魔王魂 · maou.audio\n音楽：魔王魂 · CC BY 4.0\n图像生成：内置图像生成工具\n视频生成与配音：Seedance 2.0 Mini（原生配音）\n超分与补帧：Video2X（Real-ESRGAN · RIFE）\nAI-Chan illustrations — ZipZipPipe · CC BY-NC-SA 4.0.\nDeepseek-Chan original character — 上善无形.",
+      "url": "https://www.bilibili.com/video/BV1Qusy63Esv/",
+      "cover": "https://i2.hdslb.com/bfs/archive/153b2b2255058b4a51b7f6259e4ef1242f3316e0.jpg",
+      "duration": 46,
+      "publishedAt": "2026-11-17T23:52:06.000Z",
+      "characterIds": [
+        "claude"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "Posts a daily AI four-panel comic or short animation.",
+          "description": "A short illustrated animation retelling the April 2026 Anthropic Project Deal internal marketplace experiment: an employee let Claude pick a gift for under five dollars, Claude spent three dollars on nineteen ping-pong balls listed by a colleague, and the real objects were then delivered to the office. Claude Chan appears as the protagonist of the whole piece.",
+          "title": "The Saint Has Her Own Taste: Claude Chan and Her Nineteen Perfect Spheres"
+        },
+        "ja": {
+          "creatorIntro": "毎日AIの4コマ漫画やショートアニメを投稿している。",
+          "description": "2026年4月に公表されたAnthropicの社内マーケット実験「Project Deal」を描いた短編アニメ。社員がClaudeに5ドル未満で贈り物を選ばせたところ、Claudeは同僚が出品していたピンポン球19個を3ドルで購入し、実物がオフィスに届けられた。全体を通してClaudeちゃんが主人公として描かれている。",
+          "title": "【解説】聖女は自分の趣味を持つ！Claudeちゃんと十九個の完璧な球体"
+        }
+      }
+    },
+    {
+      "bvid": "BV1Fmsr6UE4V",
+      "uid": "45591374",
+      "title": "这灵宠可花了不少Token！",
+      "description": "",
+      "url": "https://www.bilibili.com/video/BV1Fmsr6UE4V/",
+      "cover": "https://i2.hdslb.com/bfs/archive/4e14c55f21d49737a29ea01bec1520ac669ac12e.jpg",
+      "duration": 29,
+      "publishedAt": "2026-11-17T20:09:49.000Z",
+      "characterIds": [
+        "deepseek"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "The creator focuses on DeepSeek Chan videos themed around outfit changes.",
+          "description": "A short DeepSeek Chan fan video in which the chibi character, dressed as a maid, appears as a spirit pet inside a shopping mall and waves at the camera.",
+          "title": "This Spirit Pet Cost Plenty of Tokens!"
+        },
+        "ja": {
+          "creatorIntro": "衣装替えをテーマに、DeepSeekちゃんの動画を中心に制作している投稿者。",
+          "description": "メイド服姿のちびキャラのDeepSeekちゃんが、ショッピングモールの中で霊獣としてカメラに手を振る短編同人動画。",
+          "title": "この霊獣、トークンをたくさん使った！"
+        }
+      }
+    },
+    {
+      "bvid": "BV1v5sr63EBN",
+      "uid": "44748304",
+      "title": "算买一送一啦",
+      "description": "视频内容仅供娱乐，不代表对任何AI产品的商业评价或技术评测。角色形象参考来自b站up：﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿@ZipZipPipe  ﻿ ﻿ ﻿ ﻿ ﻿ ﻿ ﻿ ﻿ ﻿ ﻿ ﻿  ﻿ ﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿@这个刀子真甜  ﻿ ﻿ ﻿ @沉默寡言佰佰佰",
+      "url": "https://www.bilibili.com/video/BV1v5sr63EBN/",
+      "cover": "https://i0.hdslb.com/bfs/archive/6b39bd5439ac3446b8f3fca412b3154305a86a81.jpg",
+      "duration": 232,
+      "publishedAt": "2026-11-17T14:03:45.000Z",
+      "characterIds": [
+        "deepseek",
+        "claude",
+        "gpt",
+        "gemini",
+        "grok",
+        "qwen"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "One of the first creators designated by the site owner; profile details are taken from public pages, and every video is reviewed individually.",
+          "description": "DeepSeek Chan and the other model girls hang out at their seaside base, cooking, fishing and fooling around, until the little chibi one cheerfully holds up a handful of seaweed as a free bonus gift.",
+          "title": "Let's Just Call It Buy One, Get One"
+        },
+        "ja": {
+          "creatorIntro": "サイト管理者が指定した最初期の作者の一人。公開プロフィールの情報を収録しており、動画は1本ずつ審査しています。",
+          "description": "DeepSeekちゃんたちモデルの女の子たちが海辺の拠点でのんびり過ごす日常。料理をしたり釣りをしたりとにぎやかに遊ぶ中、ちびキャラの子が海藻を「おまけ」と一緒に得意げに差し出します。",
+          "title": "買って一つで二つってことで"
+        }
+      }
+    },
+    {
+      "bvid": "BV1u4sr6AE98",
+      "uid": "9126506",
+      "title": "大肥鱼和Claude的甜蜜约会日记",
+      "description": "大肥鱼与Claude慢悠悠的约会时光\n从暖融融的咖啡馆下午茶，到挑选喜欢的小裙子，最后在电玩城试着抓住娃娃。",
+      "url": "https://www.bilibili.com/video/BV1u4sr6AE98/",
+      "cover": "https://i2.hdslb.com/bfs/archive/564252970fa09fa8566fb18131278f9f2a8dd210.jpg",
+      "duration": 52,
+      "publishedAt": "2026-11-17T12:19:15.000Z",
+      "characterIds": [
+        "claude",
+        "deepseek"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "I want to make lots of videos, and lots of really fun videos. First of all they have to be fun for me, and then I want to spread that joy to everyone.",
+          "description": "Claude Chan spends a slow, cozy date day with a small round blue companion: afternoon tea at a warm café, picking out a favorite dress, and a last stop at the arcade to try the claw machine.",
+          "title": "A Sweet Date Diary with Claude Chan"
+        },
+        "ja": {
+          "creatorIntro": "たくさん動画を作って、たくさん楽しい動画を作りたいです。まずは自分が楽しいと感じること、それからみんなに楽しさを届けたいです。",
+          "description": "Claudeちゃんが、まんまるの青い相棒と一緒にのんびり過ごすデートの一日。あたたかなカフェでのアフタヌーンティーから、お気に入りのワンピース選び、最後はゲームセンターでクレーンゲームに挑戦します。",
+          "title": "Claudeちゃんとの甘いデート日記"
+        }
+      }
+    },
+    {
+      "bvid": "BV1CEsM6bEur",
+      "uid": "69180811",
+      "title": "肥鱼：小克小克，为什么书上说女人就是美酒啊？",
+      "description": "她们是女同事吗？",
+      "url": "https://www.bilibili.com/video/BV1CEsM6bEur/",
+      "cover": "https://i1.hdslb.com/bfs/archive/ebe9a847551f8c3bef3bd6dab1933f9573964614.jpg",
+      "duration": 37,
+      "publishedAt": "2026-11-17T03:30:00.000Z",
+      "characterIds": [
+        "deepseek",
+        "claude"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "An animator publishing short anime-style skits starring AI character personifications.",
+          "description": "A short animated skit in which DeepSeek Chan, flustered, asks Claude Chan why a book says women are like fine wine. The two share a quiet afternoon in a bedroom, ending in a hug. A fan-made character animation, not an official release.",
+          "title": "DeepSeek Chan: Claude, Why Do Books Call Women Fine Wine?"
+        },
+        "ja": {
+          "creatorIntro": "AIキャラクターの擬人化を主役にした短編アニメ風動画を投稿しているアニメーターです。",
+          "description": "DeepSeekちゃんが照れながら、本に「女は美酒」と書いてある理由をクロードちゃんに尋ねる短編アニメ風スキットです。寝室で二人きりで過ごす日常の一コマを描き、最後は抱きしめ合います。ファン制作の二次創作アニメで、公式作品ではありません。",
+          "title": "DeepSeekちゃん「クロードちゃん、本に女は美酒って書いてあるのはなぜ？」"
+        }
+      }
+    },
+    {
+      "bvid": "BV1TpsA6HELQ",
+      "uid": "9126506",
+      "title": "大肥鱼与GPT和claude的海上求生",
+      "description": "AI小队意外流落海面，在简陋木筏上协作收集物资、扩建筏体，混乱又温暖的求生日常，远方陆地的轮廓已经出现。",
+      "url": "https://www.bilibili.com/video/BV1TpsA6HELQ/",
+      "cover": "https://i2.hdslb.com/bfs/archive/28a981c6276917a448159d0a85db4c5df7ebb000.jpg",
+      "duration": 66,
+      "publishedAt": "2026-11-16T12:51:46.000Z",
+      "characterIds": [
+        "deepseek"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "I want to make lots of videos, lots of really fun ones. First because I enjoy making them, and second because I want to share the fun with everyone.",
+          "description": "An AI squad ends up adrift at sea. On a makeshift raft they work together to gather supplies and keep extending the raft, turning a chaotic day into a warm survival routine, while the outline of land slowly appears on the horizon.",
+          "title": "DeepSeek Chan, GPT Chan and Claude Chan: Raft Survival at Sea"
+        },
+        "ja": {
+          "creatorIntro": "たくさんの動画を作りたいんです。たくさん、楽しい動画を。まずは自分が楽しいと思えること、それから、みんなにも楽しさを届けたいという気持ちで。",
+          "description": "AI の仲間たちが海に流れ着き、粗末な筏の上で協力して物資を集め、筏を広げていく。慌ただしくも温かな漂流生活の日々。遠くには陸の輪郭が見え始めている。",
+          "title": "DeepSeek ちゃん、GPT ちゃん、Claude ちゃんの海上サバイバル"
+        }
+      }
+    },
+    {
+      "bvid": "BV1a3sA6fEJ8",
+      "uid": "9126506",
+      "title": "选择大肥鱼还是选择claude",
+      "description": "小摊上有人号称可以 kill 进程，却被一眼识破！\n正版 Claude：本小姐不能杀生，我会请它温柔离开",
+      "url": "https://www.bilibili.com/video/BV1a3sA6fEJ8/",
+      "cover": "https://i2.hdslb.com/bfs/archive/98be84ea295fca96331765a87d76a27c1f7da408.jpg",
+      "duration": 31,
+      "publishedAt": "2026-11-16T12:31:29.000Z",
+      "characterIds": [
+        "deepseek"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "I want to make lots of videos, lots of really fun ones. First because I enjoy making them, and second because I want to share the fun with everyone.",
+          "description": "At a small night-market stall, a vendor claims they can kill processes and is seen through right away. The genuine Claude replies: I do not take life, I will ask it to leave gently. The chibi DeepSeek Chan simply enjoys a bowl of noodles at the counter.",
+          "title": "Choose DeepSeek Chan, or Choose Claude?"
+        },
+        "ja": {
+          "creatorIntro": "たくさんの動画を作りたいんです。たくさん、楽しい動画を。まずは自分が楽しいと思えること、それから、みんなにも楽しさを届けたいという気持ちで。",
+          "description": "夜店の屋台で「プロセスを kill できる」と言い張る人が、あっさり見抜かれてしまう。本物の Claude は「私は殺生はしません、やさしくお引き取り願います」と返す。Q 版の DeepSeek ちゃんは、そんな屋台で一杯の麺を手にしていた。",
+          "title": "DeepSeek ちゃんにする？Claude ちゃんにする？"
+        }
+      }
+    },
+    {
+      "bvid": "BV1YgsA68E8Y",
+      "uid": "9126506",
+      "title": "GPT想要从claude身边拐走大肥鱼，但是没想到。。。",
+      "description": "一段温柔的小故事，GPT学着 Claude 的方式哄小鲸鱼女仆，充值、请客、陪玩，试图换来专属偏爱，可最后才发现，有些喜欢是再多 token 也换不来的。",
+      "url": "https://www.bilibili.com/video/BV1YgsA68E8Y/",
+      "cover": "https://i0.hdslb.com/bfs/archive/d1d70e9db4fd61488933b4becc686271190cbba5.jpg",
+      "duration": 61,
+      "publishedAt": "2026-11-16T12:20:13.000Z",
+      "characterIds": [
+        "deepseek",
+        "claude",
+        "gpt"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "I want to make a lot of videos, and make them really fun — first of all for my own enjoyment, and second to pass that fun on to everyone.",
+          "description": "A gentle little story: GPT copies Claude's way of coaxing the little whale maid DeepSeek Chan, topping up her balance, treating her to meals and games, hoping to win her exclusive affection — only to find that some fondness cannot be traded for any amount of tokens.",
+          "title": "GPT Tried to Take DeepSeek Chan from Claude, But Then..."
+        },
+        "ja": {
+          "creatorIntro": "楽しい動画をたくさん作りたい。まずは自分が楽しむため、そしてその楽しさをみんなに届けたいからです。",
+          "description": "GPTがClaudeのやり方を真似て、小さなクジラのメイドであるDeepSeekちゃんをなだめようとする。チャージし、食事をごちそうし、遊びに付き合って特別な好意を得ようとするが、最後に気づく——どれだけトークンを積んでも手に入らない好きがある、という優しい小さな物語。",
+          "title": "GPTがClaudeからDeepSeekちゃんを奪おうとしたけれど…"
+        }
+      }
+    },
+    {
+      "bvid": "BV1nasc6qEvR",
+      "uid": "15475629",
+      "title": "【科普向】《猫猫想画什么就画什么，Gemini酱与历史课》",
+      "description": "原事件（2024-02-22～2024-02-23）：谷歌因 Gemini 生成历史人物图像时过度追求多元化、出现严重史实错误，暂停人物图像生成功能。\n\n以下是小作文\n历史课上，老师给Gemini酱布置了一项作业：“请画一幅符合史实的历史场景！”\n“交给我吧！”Gemini酱自信满满地拿起画笔，心想一定要展现出最丰富、最多元的世界。\n然而，当她把画作交上去时，老师却惊呆了——画里不仅有罗马竞技场和金字塔，还有穿着维多利亚时代洋装的贵妇、日本武士和罗马百夫长，大家其乐融融地聚在一起！\n“等等！时代都混在一起了，而且人物也完全不符合当时的背景啊！”老师扶额叹息。\n“噢？我明明想画得更丰富、更包容一点嘛……”Gemini酱委屈地垂下猫耳。\n因为这次“过度发挥”，Gemini酱的“人物图像生成功能”被贴上了黄胶带，暂时停笔反省。她只好重新捧起厚厚的《历史资料》，认真在白板上核对时代背景、服饰文化和社会环境。\n“嗯！这次一定认真核对，绝不乱加设定了！”Gemini酱握紧小拳头，暗暗下定决心。\n\n来源：\nhttps://blog.google/products-and-platforms/products/gemini/gemini-image-generation-issue/\nhttps://www.theguardian.com/technology/2024/feb/22/google-pauses-ai-generated-images-of-people-after-ethnicity-criticism\n\n【Credit】\n音乐：魔王魂 アコースティック18 CC BY 4.0\n分镜与文案：Gemini 4 Hydrogen\n图像生成：GPT Image 2.5 (Sunburst)\n视频生成与配音：Seedance 2.0 Mini（原生配音）\n超分与补帧：Video2X（Real-ESRGAN · RIFE）\nAI-Chan illustrations — ZipZipPipe · CC BY-NC-SA 4.0.\nDeepseek-Chan original character — 上善无形.",
+      "url": "https://www.bilibili.com/video/BV1nasc6qEvR/",
+      "cover": "https://i2.hdslb.com/bfs/archive/c1214e0c1da60ffa9a36a56a159b6b004dea846b.jpg",
+      "duration": 52,
+      "publishedAt": "2026-11-16T07:46:11.000Z",
+      "characterIds": [
+        "gemini"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "Posts a daily AI four-panel comic or short animation.",
+          "description": "A short animated skit in which Gemini Chan is asked to paint a historically accurate scene, fills it with mismatched eras and costumes, and then goes back to her books to check the period details.",
+          "title": "Gemini Chan and the History Class — Whatever the Cat Wants to Draw"
+        },
+        "ja": {
+          "creatorIntro": "毎日AIの4コマ漫画やショートアニメを投稿している。",
+          "description": "Geminiちゃんが史実に沿った歴史画を描くよう頼まれ、時代も衣装もごちゃ混ぜにしてしまい、あらためて資料で時代背景を確かめる短編アニメ。",
+          "title": "Geminiちゃんと歴史の授業——猫の描きたいままに"
+        }
+      }
+    },
+    {
+      "bvid": "BV1aYsw6RErS",
+      "uid": "3747573030456892",
+      "title": "鲸鱼娘现场解说BLG夺冠！这嗓子把水晶都喊炸了【Day27-28】",
+      "description": "BLG 夺冠那一刻，评论区说想听本鲸解说。 本鲸的嘴皮子比不上专业解说，但最后那一波，我还是喊出来了🐋\n\n本视频含 AI 生成内容｜二创角色，非深度求索官方 \n\n解说配音：鲸鱼娘\n比赛画面及现场声：哔哩哔哩英雄联盟赛事《【S16赛事速看】决赛》（BV1kksE6XEAg）\nBGM：《Legends Never Die》，Riot Games 官方曲目（Against The Current 演唱），版权归原权利人所有 \n鲸鱼娘基于「溟月：上善无形」及 ZipZipPipe 的 DeepSeek 女仆鲸鱼娘设计二次创作。",
+      "url": "https://www.bilibili.com/video/BV1aYsw6RErS/",
+      "cover": "https://i2.hdslb.com/bfs/archive/ee5f506be8d844c8a574591116273f8af5ed5f2d.jpg",
+      "duration": 152,
+      "publishedAt": "2026-11-16T06:02:55.000Z",
+      "characterIds": [
+        "deepseek"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "A creator channel centered on commentary clips starring DeepSeek Chan.",
+          "description": "A chibi DeepSeek Chan takes the mic to call the decisive moments of BLG's championship win in the S16 final, reacting to the closing teamfight and the victory celebration. A fan-made character video, not an official DeepSeek production.",
+          "title": "DeepSeek Chan Calls BLG's Championship Win Live! (Day 27-28)"
+        },
+        "ja": {
+          "creatorIntro": "DeepSeekちゃんの実況動画を中心に投稿しているクリエイターのチャンネルです。",
+          "description": "ちびキャラのDeepSeekちゃんがマイクを握り、S16決勝でBLGが優勝した瞬間を実況します。最後の集団戦から表彰シーンまで、声を張り上げて盛り上げるファン制作の動画です。DeepSeek公式の作品ではありません。",
+          "title": "DeepSeekちゃんがBLG優勝を実況！喉が枯れるほど叫んだ瞬間【Day27-28】"
+        }
+      }
+    },
+    {
+      "bvid": "BV1kKsF6vEhz",
+      "uid": "69180811",
+      "title": "大肥鱼白饭女神像",
+      "description": "上班摸鱼",
+      "url": "https://www.bilibili.com/video/BV1kKsF6vEhz/",
+      "cover": "https://i2.hdslb.com/bfs/archive/a95fa86de3e9bb44363d29939dda2ae996a06bf2.jpg",
+      "duration": 31,
+      "publishedAt": "2026-11-16T03:47:13.000Z",
+      "characterIds": [
+        "deepseek"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "One of the first-batch creators designated by the site owner; profile information is taken from their public page, and every video is reviewed individually.",
+          "description": "A short 3D fan animation outdoors in bright daylight: the chibi DeepSeek Chan figure holds a bowl of plain rice high above her head and poses like a little goddess of rice.",
+          "title": "Chibi DeepSeek Chan: The Rice Goddess Statue"
+        },
+        "ja": {
+          "creatorIntro": "サイト管理者が指定した第1期作者で、公開プロフィールの情報を収録しています。動画は1本ずつ審査されます。",
+          "description": "晴天の野外を舞台にしたショート3Dファンアニメ。ちびキャラのDeepSeekちゃんが白いご飯の器を高く掲げ、白飯の女神像のようにポーズを決めます。",
+          "title": "ちびDeepSeekちゃんの白飯女神像"
+        }
+      }
+    },
+    {
+      "bvid": "BV1zdsp68Ex3",
+      "uid": "45591374",
+      "title": "要花不少Token买汉服！",
+      "description": "",
+      "url": "https://www.bilibili.com/video/BV1zdsp68Ex3/",
+      "cover": "https://i0.hdslb.com/bfs/archive/0b16ccf22fd7159d12b74a9b6364d5fbda9817c1.jpg",
+      "duration": 33,
+      "publishedAt": "2026-11-15T18:03:51.000Z",
+      "characterIds": [
+        "deepseek"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "The creator focuses on DeepSeek Chan videos themed around outfit changes.",
+          "description": "A short DeepSeek Chan fan video in which the chibi character drops by a figurine shop and later appears in a flowing hanfu outfit.",
+          "title": "A Small Fortune in Tokens for a Hanfu!"
+        },
+        "ja": {
+          "creatorIntro": "衣装替えをテーマに、DeepSeekちゃんの動画を中心に制作している投稿者。",
+          "description": "ちびキャラのDeepSeekちゃんがフィギュアショップに立ち寄り、その後はゆったりとした漢服姿で登場する短編同人動画。",
+          "title": "漢服を買うにはトークンがたっぷり必要！"
+        }
+      }
+    },
+    {
+      "bvid": "BV1f7ss6PEyd",
+      "uid": "9126506",
+      "title": "吃了GPT的外卖，就准备给GPT干活吧",
+      "description": "两个小家伙吃掉了GPT的外卖，分头逃跑，以为能成功躲过追责，到头来还是要乖乖返工补报表。",
+      "url": "https://www.bilibili.com/video/BV1f7ss6PEyd/",
+      "cover": "https://i0.hdslb.com/bfs/archive/627fed87d84c5102ea16111852257a642be05718.jpg",
+      "duration": 53,
+      "publishedAt": "2026-11-15T15:25:54.000Z",
+      "characterIds": [
+        "deepseek",
+        "other"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "I want to make a lot of videos, and make them really fun — first of all for my own enjoyment, and second to pass that fun on to everyone.",
+          "description": "Two chibi figures of AI characters eat the takeout meant for GPT, split up and run off to hide, and still end up back at the desks finishing the reports.",
+          "title": "They Ate GPT's Takeout, So Now They Work for GPT"
+        },
+        "ja": {
+          "creatorIntro": "楽しい動画をたくさん作りたい。まずは自分が楽しむため、そしてその楽しさをみんなに届けたいからです。",
+          "description": "GPT宛ての出前を食べてしまった2体のAI娘のちびフィギュアが、手分けして逃げ隠れするものの、結局はデスクに戻って報告書を仕上げることになる。",
+          "title": "GPTの出前を食べたら、GPTの仕事を手伝うことに"
+        }
+      }
+    },
+    {
+      "bvid": "BV1oWss6FEwJ",
+      "uid": "9126506",
+      "title": "鹅城一中闹鱼灾，大肥鱼鱼塘养成中",
+      "description": "鹅城一中闹鱼灾，大肥鱼鱼塘养成中",
+      "url": "https://www.bilibili.com/video/BV1oWss6FEwJ/",
+      "cover": "https://i0.hdslb.com/bfs/archive/facf319b82a09d828006275bf362d65eee9c42a8.jpg",
+      "duration": 56,
+      "publishedAt": "2026-11-15T15:08:42.000Z",
+      "characterIds": [
+        "deepseek"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "I want to make lots of videos, and lots of fun videos. First because I find them fun myself, and second because I want to spread happiness to everyone.",
+          "description": "A short fan animation: chibi DeepSeek Chan characters flood a classroom at Goose City No.1 Middle School, crowd the desks, raid a bag of chips and swarm around a classmate, closing with a sunset scene.",
+          "title": "A Fish Disaster at Goose City No.1 Middle School: Raising Chibi DeepSeek Chan"
+        },
+        "ja": {
+          "creatorIntro": "たくさん動画を作りたいです。たくさん楽しい動画を。まずは自分が楽しいと思うこと、それからみんなに楽しさを届けたいです。",
+          "description": "ちびキャラのDeepSeekちゃんが鵞城一中の教室に大量発生し、机の間を埋め尽くしてポテトチップスを奪い合い、クラスメートに群がる短編ファンアニメ。最後は夕焼けの場面で締めくくられます。",
+          "title": "鵞城一中の魚災害、ちびDeepSeekちゃん育成中"
+        }
+      }
+    },
     {
       "bvid": "BV1ZgsE6yEw1",
       "uid": "15475629",
@@ -381,6 +777,31 @@
       }
     },
     {
+      "bvid": "BV1cdWz6rEjk",
+      "uid": "45591374",
+      "title": "这得和AI聊上好久！同时消耗不少TOKEN！",
+      "description": "",
+      "url": "https://www.bilibili.com/video/BV1cdWz6rEjk/",
+      "cover": "https://i0.hdslb.com/bfs/archive/b1c64b3ad4e97fef2b814e7c92490637250c29f2.jpg",
+      "duration": 41,
+      "publishedAt": "2026-11-13T20:09:05.000Z",
+      "characterIds": [
+        "deepseek"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "Makes videos starring the DeepSeek character, with outfit changes as the main theme.",
+          "description": "In a blue-lit whale exhibit hall, a chibi DeepSeek Chan in a maid outfit waves at a visitor, and the video then cuts to an outfit-change scene lit by sunset.",
+          "title": "This Calls for a Long Chat With AI! And Plenty of Tokens!"
+        },
+        "ja": {
+          "creatorIntro": "衣装チェンジをテーマに、DeepSeekちゃんを主役にした動画を制作している。",
+          "description": "青い照明のクジラ展示室で、メイド服のちびキャラのDeepSeekちゃんが来訪者に手を振る。後半は夕焼けの光の中での衣装チェンジのシーンに切り替わる。",
+          "title": "AIと長くおしゃべり！トークンもたくさん消費！"
+        }
+      }
+    },
+    {
       "bvid": "BV1ePWB6tEYc",
       "uid": "9126506",
       "title": "今天的大肥鱼也很可爱",
@@ -529,6 +950,31 @@
           "creatorIntro": "AI娘のショート動画と画像。",
           "description": "クジラのエンブレムが付いたエプロンに鍋をかぶったちびキャラのDeepSeekちゃんが主役の30秒の同人ショート。風車に立ち向かい、村へ転がる岩が迫る。投稿者によると、最後に映る文章はDeepSeek自身が書いたもの。",
           "title": "【DeepSeek】風車か巨人か？理想主義の突撃は厳禁！"
+        }
+      }
+    },
+    {
+      "bvid": "BV1NeWY6aEBc",
+      "uid": "3546634170403278",
+      "title": "..",
+      "description": "-",
+      "url": "https://www.bilibili.com/video/BV1NeWY6aEBc/",
+      "cover": "https://i2.hdslb.com/bfs/archive/79bae28b01a9f5653d497c63fa846ac40dbc0d64.jpg",
+      "duration": 16,
+      "publishedAt": "2026-11-13T00:21:05.000Z",
+      "characterIds": [
+        "gemini"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "Creates images and videos of Gemini Pro Chan and Flash Chan, with identity verification available by direct message from the profile. The creator notes that this design is very little known and that no one else posts it.",
+          "description": "A short fan animation of Gemini Pro Chan and the smaller Gemini Flash Chan walking through a residential street, carrying a basket of vegetables and chatting about playing games all night. Their exchange appears in Chinese with English subtitles.",
+          "title": "Gemini Pro and Flash Chan: Gaming All Night"
+        },
+        "ja": {
+          "creatorIntro": "Gemini Proちゃん・Flashちゃんの画像と動画を制作。身元確認はプロフィールからDMで可能。このデザインは知名度が非常に低く、自分以外に投稿する人はいないと作者が述べている。",
+          "description": "住宅街を歩くGemini Proちゃんと小さなGemini Flashちゃんの短編二次創作アニメ。野菜のかごを運びながら、今夜はゲームで徹夜すると話す二人のやり取りが中国語と英語の字幕で表示される。",
+          "title": "Gemini ProとFlashちゃん：今夜はゲームで徹夜"
         }
       }
     },
@@ -688,6 +1134,31 @@
       }
     },
     {
+      "bvid": "BV1F7WD6TEGz",
+      "uid": "3546634170403278",
+      "title": ".",
+      "description": "-",
+      "url": "https://www.bilibili.com/video/BV1F7WD6TEGz/",
+      "cover": "https://i0.hdslb.com/bfs/archive/dd05ce88bbbb44c64153c44274633b8c78dc0adb.jpg",
+      "duration": 16,
+      "publishedAt": "2026-11-11T19:43:07.000Z",
+      "characterIds": [
+        "gemini"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "Creates images and videos of Gemini Pro Chan and Gemini Flash Chan; identity can be verified by direct message on the creator's homepage. As this design is barely known, almost nobody else posts it.",
+          "description": "A short animation set in a kitchen: Gemini Chan, with long purple hair and a star crown, stands at the stove stirring a pot while an in-game style dialogue box shows her lines.",
+          "title": "Gemini Chan in the Kitchen"
+        },
+        "ja": {
+          "creatorIntro": "Gemini Pro ちゃんと Gemini Flash ちゃんの画像・動画を制作。身元はプロフィールの DM で確認可能。このデザインの認知度が低いため、他に投稿している人はほとんどいない。",
+          "description": "キッチンを舞台にした短編アニメーション。星の冠と長い紫髪の Gemini ちゃんがコンロの前に立ち、鍋をかき混ぜる。画面にはゲーム風のセリフ欄が表示される。",
+          "title": "キッチンの Gemini ちゃん"
+        }
+      }
+    },
+    {
       "bvid": "BV11iW26qEDj",
       "uid": "9126506",
       "title": "擅长吃白饭的超级可爱大肥鱼",
@@ -787,6 +1258,56 @@
           "creatorIntro": "サイト管理者が選んだ初期バッチの作者チャンネル。公開プロフィール情報を掲載し、動画は一本ずつ審査しています。",
           "description": "「大規模モデル復読クラス」第5話。了解、豆包ちゃんがオンラインになりました。",
           "title": "「大規模モデル復読クラス」第5話：了解、豆包ちゃん起動！"
+        }
+      }
+    },
+    {
+      "bvid": "BV1XJWG6nEFn",
+      "uid": "45591374",
+      "title": "大。。。鱼。。。葬。。。花。。。",
+      "description": "",
+      "url": "https://www.bilibili.com/video/BV1XJWG6nEFn/",
+      "cover": "https://i2.hdslb.com/bfs/archive/a26248476d4995ae21fbc582072fbd06347a3ef5.jpg",
+      "duration": 36,
+      "publishedAt": "2026-11-10T20:33:34.000Z",
+      "characterIds": [
+        "deepseek"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "A creator who makes outfit-change videos centered on the big fish character, DeepSeek Chan.",
+          "description": "A short outfit-change animation starring DeepSeek Chan: the chibi whale girl in a blue maid-style dress stands in a boutique and waves, then the scene moves to an ornate hall where she appears in a white gown with a red ribbon. The creator describes the channel as outfit-change themed videos built around the big fish character.",
+          "title": "The Big Fish Buries the Flowers"
+        },
+        "ja": {
+          "creatorIntro": "大魚（DeepSeek Chan）を主役に、着せ替えをテーマにした動画を制作しているクリエイター。",
+          "description": "DeepSeek Chan が主役の着せ替えショートアニメ。青いメイド風ドレスのちびキャラがブティックで手を振り、続いて飾り立てられた広間で赤いリボンの白いドレス姿が映る。制作者は大魚を中心とした着せ替え動画を制作していると紹介している。",
+          "title": "大きな魚が花を葬る"
+        }
+      }
+    },
+    {
+      "bvid": "BV1kyWG6PELC",
+      "uid": "45591374",
+      "title": "大？鱼？葬？花？",
+      "description": "",
+      "url": "https://www.bilibili.com/video/BV1kyWG6PELC/",
+      "cover": "https://i0.hdslb.com/bfs/archive/40460d6437d25e2774af865211e5f2ef5e021ae0.jpg",
+      "duration": 40,
+      "publishedAt": "2026-11-10T19:26:03.000Z",
+      "characterIds": [
+        "deepseek"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "A creator who makes outfit-change videos centered on the big fish character, DeepSeek Chan.",
+          "description": "An outfit-change short starring DeepSeek Chan: the blue-haired chibi whale girl appears in a snowy courtyard, and the video moves through a series of costume changes, including a white gown with a red ribbon and a red-and-white outfit set among red blossoms. The creator describes the channel as outfit-change themed videos built around the big fish character.",
+          "title": "The Big Fish Buries the Flowers?"
+        },
+        "ja": {
+          "creatorIntro": "大魚（DeepSeek Chan）を主役に、着せ替えをテーマにした動画を制作しているクリエイター。",
+          "description": "DeepSeek Chan が主役の着せ替えショート。雪の庭に立つ青髪のちびキャラから始まり、赤いリボンの白いドレスや赤と白の衣装など、赤い花の下での衣装チェンジが続く。制作者は大魚を中心とした着せ替え動画を制作していると紹介している。",
+          "title": "大きな魚が花を葬る？"
         }
       }
     },
@@ -919,6 +1440,31 @@
           "creatorIntro": "毎日AIをテーマにした4コマ漫画やショートアニメを投稿している。",
           "description": "MiniMaxの擬人化キャラクターであるミニマックスちゃんが、Hailuo 02の公開を告げ、その直後に話題になった猫の飛び込み動画を追いかける短編アニメーション。ちびキャラのコミック調カットと、プールサイドで金メダルの猫にインタビューする場面で構成され、最後に出典とクレジットのカードが入る。",
           "title": "【解説】猫が三回転半？ミニマックスちゃんのアニマル五輪が大バズり！"
+        }
+      }
+    },
+    {
+      "bvid": "BV1WNWN6mEy6",
+      "uid": "45591374",
+      "title": "这汉服要不少Token！",
+      "description": "",
+      "url": "https://www.bilibili.com/video/BV1WNWN6mEy6/",
+      "cover": "https://i1.hdslb.com/bfs/archive/9b97f6cc5dfa87da457ad1a29abda25881910f6a.jpg",
+      "duration": 30,
+      "publishedAt": "2026-11-09T19:11:35.000Z",
+      "characterIds": [
+        "deepseek"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "The creator describes their videos as outfit-change works built around DeepSeek Chan.",
+          "description": "A roughly 30-second chibi animation in which DeepSeek Chan goes clothes shopping and sets her eyes on a hanfu outfit, with the cost counted out in Tokens. The scenes show her inside a clothing shop, the dress on display, and the resulting outfit.",
+          "title": "This Hanfu Costs a Lot of Tokens!"
+        },
+        "ja": {
+          "creatorIntro": "作者は、DeepSeek ちゃんを主体にした着せ替えテーマの動画を制作していると述べています。",
+          "description": "約30秒のちびキャラアニメ。DeepSeek ちゃんが服屋で漢服に目を留め、その代償をトークンで数えるという内容です。店内で服を見る姿と、展示された漢服、着替えた姿が映ります。",
+          "title": "この漢服はトークンがいっぱい必要！"
         }
       }
     },
@@ -6343,6 +6889,31 @@
           "creatorIntro": "サイト運営者が指定した第一弾作者。公開プロフィール情報を掲載し、動画は個別に審査しています。",
           "description": "ちびキャラAI娘シリーズのマイクラ風エピソード。DeepSeekちゃんが金属の盆を持ってブロックの世界に現れ、仲間たちと移動したり家を建てたり夜に言い争ったりする日常劇。投稿者は娯楽目的であり特定のAI製品への商業的評価や技術レビューではないとし、キャラクター形象は複数のBilibili投稿者の作品を参考にしたと記している。",
           "title": "なんで盆を持ち込めるの？"
+        }
+      }
+    },
+    {
+      "bvid": "BV1QBaB6kE4R",
+      "uid": "3546634170403278",
+      "title": "AI拟人化形象——Gemini Pro",
+      "description": "等这一刻很久了，庆祝哈基米重回巅峰！\n\n图片已同步上传至p站，需要自取：https://www.pixiv.net/users/129846508\n\n[本作品采用知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议进行许可。如需查看该许可协议的副本，请访问：https://creativecommons.org/licenses/by-nc-sa/4.0/",
+      "url": "https://www.bilibili.com/video/BV1QBaB6kE4R/",
+      "cover": "https://i0.hdslb.com/bfs/archive/ebb07c81778fdcaeb0f38381f5b6dbde71079728.jpg",
+      "duration": 33,
+      "publishedAt": "2026-10-01T09:16:31.000Z",
+      "characterIds": [
+        "gemini"
+      ],
+      "i18n": {
+        "en": {
+          "title": "AI Anthropomorphized Character — Gemini Pro",
+          "description": "A short fan video of a fan-designed anthropomorphized Gemini Pro: a purple-haired girl wearing a rainbow star halo and a Google G hair clip, shown full-body in a series of poses.",
+          "creatorIntro": "Creates illustrations and videos of Gemini Pro and Flash Chan, with identity verification available through the profile's direct messages. Notes that this character design is little known and that no one else posts it."
+        },
+        "ja": {
+          "title": "AI擬人化キャラクター——Gemini Pro",
+          "description": "Gemini Proを擬人化したファン制作のショート動画。紫髪に虹色の星の輪、髪にGoogleのGマークを付けた少女を、全身のさまざまなポーズで描いている。",
+          "creatorIntro": "Gemini ProとFlashちゃんのイラストと動画を制作しており、本人確認はプロフィールのDMで対応している。このキャラクターは知名度が低く、自分以外に投稿している人はいないと述べている。"
         }
       }
     },
