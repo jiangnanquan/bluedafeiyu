@@ -4,12 +4,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {spawnSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
-import {prepareLocalization,languageSitemap,localizedPath,LOCALES,ORIGIN,sitemapWorkImage} from './localize-pages.mjs';
 import {readSitemapHistory,updateSitemapHistory} from './sitemap-history.mjs';
-import {writeAiContent} from './ai-content.mjs';
-import {writeOpenApi} from './open-api.mjs';
-import {STATE_VERSION,STATE_FILE,readState,hash,outputHashes,copyArtifact,copyImmutableAsset,filesIn} from './incremental.mjs';
-import {auditLanguagePages} from '../../tools/localization/audit-pages.mjs';
+import {STATE_VERSION,STATE_FILE,readState,hash,outputHashes,copyImmutableAsset,filesIn} from './incremental.mjs';
 
 const started=performance.now();
 let phaseStart=started;
@@ -46,7 +42,6 @@ const previousPath=path.resolve(root,requestedPrevious||process.env.SITE_PREVIOU
 let previous=fs.existsSync(previousPath)?fs.realpathSync(previousPath):previousPath;
 const publishedPrevious=previous;
 const previousStateFile=process.env.SITE_PREVIOUS_STATE||path.join(previous,STATE_FILE);
-let previousState=readState(previousStateFile);
 const run=(script,argv=[],cwd=root,env={})=>{
  const result=spawnSync(process.execPath,[script,...argv],{cwd,env:{...process.env,...env},stdio:'inherit'});
  if(result.error||result.status!==0)throw Error(script+' failed: '+(result.error?.message||result.status));
@@ -55,6 +50,7 @@ const astro=path.join(frontend,'node_modules/astro/bin/astro.mjs');
 if(!fs.existsSync(astro))throw Error('Astro is not installed: run npm ci in frontend/');
 fs.mkdirSync(path.join(root,'.build'),{recursive:true});
 const planFile=path.join(root,'.build','build-plan-'+process.pid+'.json');
+const pageResultFile=path.join(root,'.build','build-pages-'+process.pid+'.json');
 const ogJobsFile=path.join(frontend,'.astro/og-jobs.jsonl');
 fs.mkdirSync(path.dirname(ogJobsFile),{recursive:true});fs.writeFileSync(ogJobsFile,'');
 process.env.OG_JOBS_FILE=ogJobsFile;
@@ -64,10 +60,7 @@ const baselineSitemap=fs.existsSync(previousSitemapFile) ? hash(fs.readFileSync(
 run(path.join(frontend,'scripts/plan-build.mjs'),[root,previous,previousStateFile,planFile,String(full),candidate,baselineSitemap||''],frontend);
 let plan=JSON.parse(fs.readFileSync(planFile,'utf8'));
 const preflight=plan.preflight;
-if(preflight){
- previous=fs.realpathSync(candidate);
- previousState=readState(path.join(previous,STATE_FILE));
-}
+if(preflight)previous=fs.realpathSync(candidate);
 fs.copyFileSync(planFile,path.join(root,'.build/build-plan.json'));
 endPhase('plan');
 if(planOnly){fs.rmSync(planFile,{force:true});console.log('[build-plan] analysis complete; no pages rendered');process.exit(0);}
@@ -75,12 +68,10 @@ fs.mkdirSync(path.dirname(out),{recursive:true});
 const stage=fs.mkdtempSync(path.join(path.dirname(out),'.build-pending-'));
 let completed=false;
 try {
- const reusableState=plan.mode==='full' ? null : previousState;
+ const reusedStateFile=preflight ? path.join(previous,STATE_FILE) : previousStateFile;
+ const reusableState=plan.mode==='full' ? null : readState(reusedStateFile);
+ if(plan.mode!=='full'&&!reusableState)throw Error('Build baseline changed after planning');
  const knownOutputs=new Map();
- const reuseArtifact=name=>{
-  copyArtifact(previous,stage,name);
-  knownOutputs.set(name,reusableState.outputs[name]);
- };
  let history=reusableState?.sitemap||{},pages=reusableState?.pages||{},audit=reusableState?.audit;
  let localeInputHash=reusableState?.localeInputHash;
  let ai={},openApi={},localized=0,reusedLanguagePages=0,reusedAssets=0;
@@ -97,6 +88,7 @@ try {
     knownOutputs.set(name,digest);
   }
   plan.rendered=[];
+  const {LOCALES}=await import('./localize-pages.mjs');
   reusedLanguagePages=Object.keys(pages).length*LOCALES.length;
   endPhase('reuse');
  } else {
@@ -105,13 +97,6 @@ try {
   run(astro,['build',...(plan.mode==='full'?['--force']:[])],frontend,{SITE_BUILD_PLAN_FILE:planFile,ASTRO_OUT_DIR:stage});
   plan=JSON.parse(fs.readFileSync(planFile,'utf8'));
   endPhase('astro');
-  // Astro can restore a cached removed page before pruning its cache. The
-  // current route plan, plus explicitly public HTML files, defines the release.
-  const bases=filesIn(stage).filter(name=>name.endsWith('.html')).filter(file=>{
-   if(Object.hasOwn(plan.routes,'/'+file)||fs.existsSync(path.join(frontend,'public',file)))return true;
-   fs.rmSync(path.join(stage,file));
-   return false;
-  });
   const copy=(relative)=>{
    const source=path.join(dist,relative);
    if(!fs.existsSync(source))throw Error('Missing staged asset '+relative);
@@ -146,60 +131,24 @@ try {
    console.log('[og] '+jobs.length+' share cards');
   }
   endPhase('assets');
-  const snapshot=JSON.parse(fs.readFileSync(path.join(dist,'site-data.json'),'utf8'));
-  const localizer=prepareLocalization(stage,snapshot);
-  const canReuseLocale=reusableState?.inputs.localization===plan.inputs.localization;
-  localeInputHash=hash([
-   plan.inputs.content,
-   ...['archive-copy.js','archive-labels.js'].map(file=>hash(fs.readFileSync(path.join(stage,file)))),
+  // HTML rendering and audit keep large DOMs in memory. Exit that process
+  // before loading the previous release's sitemap and HTML history.
+  run(path.join(frontend,'scripts/build-page-output.mjs'),[
+   stage,planFile,previous,reusedStateFile,path.join(root,'.build/native-localization-audit.json'),pageResultFile,
   ]);
-  const sameLocaleInputs=localeInputHash===reusableState?.localeInputHash;
-  const reusable=new Set();
-  const urls=[];
-  pages={};
-  for(const file of bases) {
-   const source=fs.readFileSync(path.join(stage,file));
-   const raw=hash(source);
-   const prior=canReuseLocale ? reusableState.pages[file] : undefined;
-   const base=file==='index.html' ? '/' : '/'+file;
-   const outputs=LOCALES.map(({prefix})=>prefix ? prefix.slice(1)+'/'+file : file);
-   if(prior?.raw===raw && outputs.every(name=>Object.hasOwn(reusableState.outputs,name)) && (sameLocaleInputs || localizer.matches(prior.dependencies))){
-    for(const name of outputs)reuseArtifact(name);
-    pages[file]=prior;
-    reusable.add(file);
-   } else {
-    const html=source.toString('utf8');
-    const archive=html.includes('data-archive');
-    if(!archive&&!html.includes('class="v2"'))continue;
-    const result=await localizer.render(html,'/'+file);
-    pages[file]={raw,dependencies:result.record,indexable:archive&&/<meta name="robots" content="index,follow"\s*\/?>/.test(html)};
-    for(const {locale,html} of result.pages){
-     const name=locale.prefix ? locale.prefix.slice(1)+'/'+file : file;
-     const target=path.join(stage,name);
-     fs.mkdirSync(path.dirname(target),{recursive:true});
-     fs.writeFileSync(target,html);
-     knownOutputs.set(name,hash(html));
-     localized++;
-    }
-   }
-   if(pages[file].indexable)urls.push(base);
-  }
-  if(!urls.includes('/'))throw Error('The indexable home page is missing from the sitemap');
-  reusedLanguagePages=reusable.size*LOCALES.length;
-  endPhase('localize');
-  console.log(`[i18n] ${localized} localized, ${reusedLanguagePages} reused`);
-  ai=writeAiContent(stage,snapshot,{previousDir:reusableState ? previous : null,previousState:reusableState});
-  console.log('[ai-content] '+JSON.stringify(ai));
-  openApi=writeOpenApi(stage,snapshot,{previousDir:reusableState ? previous : null,previousState:reusableState});
-  console.log('[open-api] '+JSON.stringify(openApi));
-  endPhase('exports');
-  audit=auditLanguagePages(stage,{snapshot,previous:reusableState?.audit,reusable,digests:knownOutputs,reportFile:path.join(root,'.build/native-localization-audit.json')});
-  endPhase('audit');
+  const result=JSON.parse(fs.readFileSync(pageResultFile,'utf8'));
+  const {urls,reusable}=result;
+  ({pages,localeInputHash,localized,reusedLanguagePages,ai,openApi,audit}=result);
+  for(const [name,digest] of result.knownOutputs)knownOutputs.set(name,digest);
+  Object.assign(timings,result.timings);
+  phaseStart=performance.now();
+  const {languageSitemap,localizedPath,LOCALES,ORIGIN,sitemapWorkImage}=await import('./localize-pages.mjs');
+  const snapshot=JSON.parse(fs.readFileSync(path.join(stage,'site-data.json'),'utf8'));
   let previousSitemap={records:new Map(),seeded:0};
   try {
    previousSitemap=reusableState ? {records:new Map(Object.entries(reusableState.sitemap)),seeded:0} : readSitemapHistory(previous,{origin:ORIGIN,now:buildTime});
   } catch(error){console.warn('[sitemap] previous history unavailable: '+error.message);}
-  const unchangedPaths=new Set([...reusable].flatMap(file=>LOCALES.map(locale=>localizedPath('/'+file,locale))));
+  const unchangedPaths=new Set(reusable.flatMap(file=>LOCALES.map(locale=>localizedPath('/'+file,locale))));
   const sitemap=updateSitemapHistory(urls.flatMap(base=>LOCALES.map(locale=>localizedPath(base,locale))),stage,previousSitemap,{unchangedPaths,now:buildTime});
   const sitemapImages=new Map();
   for(const work of snapshot.works||[]){
@@ -245,4 +194,5 @@ try {
 } finally {
  if(!completed)fs.rmSync(stage,{recursive:true,force:true});
  fs.rmSync(planFile,{force:true});
+ fs.rmSync(pageResultFile,{force:true});
 }
