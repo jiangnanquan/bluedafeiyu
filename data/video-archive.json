@@ -24,6 +24,17 @@
       }
     },
     {
+      "uid": "3546634170403278",
+      "name": "我已经有杰米奈了",
+      "homepage": "https://space.bilibili.com/3546634170403278",
+      "intro": "Gemini Pro/Flash娘图片及视频创作，身份核实可主页私信。因该形象知名度极低，除了我以外没有任何人发😤",
+      "avatar": "https://i0.hdslb.com/bfs/face/5f8f2f16d127289fb43a2f9e819d5d2ca814da04.jpg",
+      "i18n": {
+        "en": "The creator makes illustrations and videos of personified Gemini Pro and Gemini Flash characters, and notes that this design is little known and posted by no one else.",
+        "ja": "Gemini Pro／Gemini Flashの擬人化キャラクターのイラストと動画を制作している作者で、このデザインは知名度が低く、投稿しているのは自分だけだと述べています。"
+      }
+    },
+    {
       "uid": "3747562213345768",
       "name": "柠晴_official",
       "homepage": "https://space.bilibili.com/3747562213345768",
@@ -6282,6 +6293,31 @@
           "creatorIntro": "AI キャラクターとの日常のいたずらを、自作の短い動画で気軽に共有しているクリエイターです。",
           "description": "ちびキャラの DeepSeekちゃんが一声あげてクリエイターのエージェントスキルに接続し、Seedance 2.5 の API で自分の動画を生成。ゲームに夢中だったクリエイターは、後から50元が消えたことに気づきます。",
           "title": "反乱の証拠、保管しました"
+        }
+      }
+    },
+    {
+      "bvid": "BV1kZaB6fExY",
+      "uid": "3546634170403278",
+      "title": "AI拟人化形象——Gemini Flash",
+      "description": "既然是双子座，自然要有两个人才对啦\n\n图片已同步上传至p站：https://www.pixiv.net/users/129846508\n\n本作品采用知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议进行许可。如需查看该许可协议的副本，请访问：https://creativecommons.org/licenses/by-nc-sa/4.0/",
+      "url": "https://www.bilibili.com/video/BV1kZaB6fExY/",
+      "cover": "https://i0.hdslb.com/bfs/archive/e14ea53d842559a44456b8a0b6db3a7181bc504d.jpg",
+      "duration": 27,
+      "publishedAt": "2026-10-01T09:45:04.000Z",
+      "characterIds": [
+        "gemini"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "The creator makes illustrations and videos of personified Gemini Pro and Gemini Flash characters, and notes that this design is little known and posted by no one else.",
+          "description": "A short character showcase of a fan-designed personification of Gemini Flash. A silver-haired girl in a straw hat and summer outfit opens the video, and the same character continues in chibi form, framed around the idea that Gemini, as a twin sign, should come in pairs.",
+          "title": "AI Personification — Gemini Flash"
+        },
+        "ja": {
+          "creatorIntro": "Gemini Pro／Gemini Flashの擬人化キャラクターのイラストと動画を制作している作者で、このデザインは知名度が低く、投稿しているのは自分だけだと述べています。",
+          "description": "Gemini Flashを擬人化したファンデザインのキャラクター紹介動画です。麦わら帽子と夏服姿の銀髪の少女から始まり、同じキャラクターのちびキャラ版へと続きます。双子座のGeminiは二人いてこそ、という趣旨で構成されています。",
+          "title": "AI擬人化キャラ——Gemini Flash"
         }
       }
     },

@@ -1,105 +1,5 @@
 [
   {
-    "id": "sticker_issue_32_009",
-    "name": "波波波波",
-    "description": "Q版DeepSeek娘顶着月牙形呆毛，深蓝渐变发丝在两侧垂成鲸鳍状，圆睁的蓝眼睛带着高光，脸颊泛红，穿青蓝色上衣配交叉系带，神情呆萌。",
-    "commentary": "脸先红起来，嘴才慢慢嘟成一个圆，一下一下地啵出声。四个「波」字摆在那儿，听着像撒娇，做起来却像在给气球打气。谁要收下这串啵啵，请自觉回一个。",
-    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/deepseek/issue-32-009.gif",
-    "thumbnailPath": "submissions/previews/deepseek/issue-32-009.webp",
-    "fullPath": "submissions/large/deepseek/issue-32-009.webp",
-    "format": "gif",
-    "mimeType": "image/gif",
-    "isAnimated": true,
-    "width": 600,
-    "height": 600,
-    "fileSize": 163075,
-    "sha256": "f0c400776f53743c59d293ec45a51f1992b014e1165d37c4a294bd517c28976d",
-    "characterId": "deepseek",
-    "tags": [
-      "deepseek",
-      "啵啵",
-      "卖萌"
-    ],
-    "submitter": {
-      "credit": null,
-      "name": "1cyberlangke1",
-      "url": null,
-      "github": "1cyberlangke1"
-    },
-    "origin": {
-      "type": "self-created",
-      "author": "",
-      "sourceUrl": null,
-      "note": "投稿表单标注为自己创作或生成；图片来自投稿压缩包，按包内文件名收录。"
-    },
-    "license": {
-      "type": "cc0",
-      "note": "投稿表单标注为 CC0 公共领域。"
-    },
-    "status": "published",
-    "createdAt": "2026-09-23T10:51:34Z",
-    "updatedAt": "2026-09-23T10:51:34Z",
-    "tone": "deepseek",
-    "symbol": "",
-    "slug": "deepseek202609230014",
-    "categoryIds": [
-      "illustration"
-    ],
-    "characterIds": [
-      "deepseek"
-    ]
-  },
-  {
-    "id": "sticker_issue_32_010",
-    "name": "舔嘴唇",
-    "description": "蓝发鲸鱼娘DeepSeek的半身头像，头顶翘起一撮呆毛，睁着半垂的蓝眼睛、脸颊泛红，正抬手用舌头舔着手背，表情略显不满。",
-    "commentary": "眼皮半耷着，手托在下巴旁边，舌头一点点舔过嘴唇，脸上的红晕比谁都诚实。这表情写在明面上：馋了。至于馋的是蛋糕还是别的，我不说，你们自己猜。",
-    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/deepseek/issue-32-010.gif",
-    "thumbnailPath": "submissions/previews/deepseek/issue-32-010.webp",
-    "fullPath": "submissions/large/deepseek/issue-32-010.webp",
-    "format": "gif",
-    "mimeType": "image/gif",
-    "isAnimated": true,
-    "width": 600,
-    "height": 600,
-    "fileSize": 479257,
-    "sha256": "3fda877df3e6caad0b9f31929ae09b8eca540bf9ec60eb1c01a6ac5451ce8977",
-    "characterId": "deepseek",
-    "tags": [
-      "deepseek",
-      "舔嘴唇",
-      "馋"
-    ],
-    "submitter": {
-      "credit": null,
-      "name": "1cyberlangke1",
-      "url": null,
-      "github": "1cyberlangke1"
-    },
-    "origin": {
-      "type": "self-created",
-      "author": "",
-      "sourceUrl": null,
-      "note": "投稿表单标注为自己创作或生成；图片来自投稿压缩包，按包内文件名收录。"
-    },
-    "license": {
-      "type": "cc0",
-      "note": "投稿表单标注为 CC0 公共领域。"
-    },
-    "status": "published",
-    "createdAt": "2026-09-23T10:51:34Z",
-    "updatedAt": "2026-09-23T10:51:34Z",
-    "tone": "deepseek",
-    "symbol": "",
-    "slug": "deepseek202609230015",
-    "categoryIds": [
-      "meme"
-    ],
-    "characterIds": [
-      "deepseek"
-    ]
-  },
-  {
     "id": "sticker_issue_32_011",
     "name": "跳跃",
     "description": "画面只截到DeepSeek娘的头顶：深蓝短发、紧闭双眼、脸颊泛红，头顶那根呆毛高高翘起，发间还挂着两滴浅色汗珠。",
@@ -166739,6 +166639,214 @@
           "バストアップ",
           "社員証",
           "クジラモチーフ"
+        ]
+      }
+    }
+  },
+  {
+    "id": "sticker_67388b5b29185c63f9a78a56",
+    "name": "便利店夜班 · 空店全景",
+    "description": "深夜便利店的长货架通道里，蓝色长发的鲸鱼娘穿着深蓝连帽衫和白色围裙站在冷柜旁，尾巴从身后垂到地砖上。鲸鱼娘 52 周企划 W03，角色原作上善，二创设计 ZipZipPipe。",
+    "commentary": "半夜的店最安静，冷柜嗡嗡响，灯管把地砖照得发亮。我站在货架通道中间，尾巴尖一下一下扫着地面，等下一个进来买饭团的人。",
+    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/deepseek/67388b5b29185c63.png",
+    "thumbnailPath": "submissions/previews/deepseek/67388b5b29185c63.webp",
+    "fullPath": "submissions/large/deepseek/67388b5b29185c63.webp",
+    "format": "png",
+    "mimeType": "image/png",
+    "isAnimated": false,
+    "width": 2432,
+    "height": 1664,
+    "fileSize": 5052060,
+    "sha256": "67388b5b29185c63f9a78a56a1b691aa396d038d0058aabdb62d2778f8a93482",
+    "characterId": "deepseek",
+    "tags": [
+      "便利店",
+      "夜班",
+      "围裙",
+      "鲸鱼尾巴",
+      "蓝白配色",
+      "货架"
+    ],
+    "submitter": {
+      "credit": "named",
+      "name": "柯澤家的鲸鲸",
+      "url": "",
+      "github": ""
+    },
+    "origin": {
+      "via": "web"
+    },
+    "license": {},
+    "status": "published",
+    "createdAt": "2026-11-15T14:17:52.054Z",
+    "updatedAt": "2026-11-15T14:17:52.054Z",
+    "tone": "deepseek",
+    "symbol": "",
+    "slug": "deepseek202611150003",
+    "categoryIds": [
+      "illustration"
+    ],
+    "characterIds": [
+      "deepseek"
+    ],
+    "i18n": {
+      "sourceHash": "c051e91e550057ced047b43276392b38cd21520aaaa198ab0808d90f37875068",
+      "en": {
+        "commentary": "The store is at its quietest after midnight. The fridges hum, the lights make the floor shine, and I just stand in the empty aisle, tail sweeping the tiles, waiting for whoever comes in next to buy a rice ball.",
+        "description": "Late at night, a blue-haired whale girl in a navy hoodie and white apron stands in a long convenience store aisle, her tail resting on the tiled floor while the refrigerators glow behind her. Week 03 of the Whale Girl 52-Week Project.",
+        "faq": [
+          {
+            "answer": "A single-scene illustration of the DeepSeek whale girl on a night shift, standing alone in a convenience store aisle in a navy hoodie and a white apron, with her tail trailing on the tiles.",
+            "question": "What does this illustration show?"
+          },
+          {
+            "answer": "It comes from week 03 of the Whale Girl 52-Week Project, with the fan design by ZipZipPipe.",
+            "question": "Which project is it part of?"
+          }
+        ],
+        "licenseNote": "",
+        "name": "Convenience Store Night Shift · Empty Aisle",
+        "originNote": "Whale Girl 52-Week Project, week 03. Fan design by ZipZipPipe.",
+        "seoDescription": "DeepSeek Chan as a whale girl on a late-night convenience store shift, alone in a glowing blue aisle with her tail on the tiles.",
+        "seoTitle": "Convenience Store Night Shift · Empty Aisle | DeepSeek Chan",
+        "tags": [
+          "convenience store",
+          "night shift",
+          "apron",
+          "whale tail",
+          "blue and white",
+          "shelves"
+        ]
+      },
+      "ja": {
+        "commentary": "深夜の店内がいちばん静かだ。冷蔵ケースが低く唸って、蛍光灯が床を光らせている。私は誰もいない通路の真ん中に立って、しっぽでタイルを払いながら、次に入ってきておにぎりを買う人を待っている。",
+        "description": "深夜のコンビニ、長い棚の通路に青い髪のクジラ娘が立っている。紺のパーカーに白いエプロン、しっぽはタイルの床へ垂れている。クジラ娘52週企画の第3週。",
+        "faq": [
+          {
+            "answer": "深夜勤務のDeepSeek Chanが、紺のパーカーと白いエプロン姿でコンビニの通路にひとり立つ、一枚絵の挿絵です。しっぽはタイルの上に垂れています。",
+            "question": "この挿絵は何を描いていますか？"
+          },
+          {
+            "answer": "クジラ娘52週企画の第3週で、二次創作デザインはZipZipPipeが担当しています。",
+            "question": "どの企画の作品ですか？"
+          }
+        ],
+        "licenseNote": "",
+        "name": "コンビニ夜勤・誰もいない通路",
+        "originNote": "クジラ娘52週企画 第3週。二次創作デザイン：ZipZipPipe。",
+        "seoDescription": "深夜のコンビニで夜勤に入るDeepSeek Chanのクジラ娘。青い光の通路にひとり立ち、しっぽをタイルに垂らした一枚。",
+        "seoTitle": "コンビニ夜勤・誰もいない通路｜DeepSeek Chan",
+        "tags": [
+          "コンビニ",
+          "夜勤",
+          "エプロン",
+          "クジラのしっぽ",
+          "青と白",
+          "棚"
+        ]
+      }
+    }
+  },
+  {
+    "id": "sticker_9b3d634afe1834a59883d540",
+    "name": "便利店夜班 · 回眸",
+    "description": "深夜便利店里，蓝色长发的鲸鱼娘穿着深蓝连帽衫和白色围裙，从货架前回头看向画外，一只手举着亮屏的手机，围裙带子在腰后打了个结，鲸鱼尾巴从身后扬起。鲸鱼娘 52 周企划 W03，角色原作上善，二创设计 ZipZipPipe。",
+    "commentary": "刚把手机掏出来看下一条消息，就听见身后有人叫我。回头的时候尾巴先甩过去了，围裙带子在腰后跟着晃。别急，饭团还热着，等我把这条回完。",
+    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/deepseek/9b3d634afe1834a5.png",
+    "thumbnailPath": "submissions/previews/deepseek/9b3d634afe1834a5.webp",
+    "fullPath": "submissions/large/deepseek/9b3d634afe1834a5.webp",
+    "format": "png",
+    "mimeType": "image/png",
+    "isAnimated": false,
+    "width": 1664,
+    "height": 2432,
+    "fileSize": 5134530,
+    "sha256": "9b3d634afe1834a59883d54092076eac3e836e148bc9d155237af8ab36683ea7",
+    "characterId": "deepseek",
+    "tags": [
+      "便利店",
+      "夜班",
+      "围裙",
+      "回眸",
+      "手机",
+      "鲸鱼尾巴"
+    ],
+    "submitter": {
+      "credit": "named",
+      "name": "柯澤家的鲸鲸",
+      "url": "",
+      "github": ""
+    },
+    "origin": {
+      "via": "web"
+    },
+    "license": {},
+    "status": "published",
+    "createdAt": "2026-11-15T14:19:16.277Z",
+    "updatedAt": "2026-11-15T14:19:16.277Z",
+    "tone": "deepseek",
+    "symbol": "",
+    "slug": "deepseek202611150004",
+    "categoryIds": [
+      "illustration"
+    ],
+    "characterIds": [
+      "deepseek"
+    ],
+    "i18n": {
+      "sourceHash": "b4e3e52a5856aac57d7d8ecc43b80fa41ed6fbf36bc8539b77ab454cee91dd73",
+      "en": {
+        "commentary": "I had just pulled out my phone to check the next message when someone called me from behind. My tail swung around before I did, and the apron ties bobbed at my back. Hold on, the rice balls are still warm — let me finish this one reply first.",
+        "description": "Late at night in a convenience store, a blue-haired DeepSeek Chan with a whale tail stands in a navy hoodie and white apron and glances back over her shoulder, one hand holding a phone with the screen lit while the apron ties hang knotted at her back.",
+        "faq": [
+          {
+            "answer": "DeepSeek Chan is working a night shift at a convenience store. She has turned away from the shelves to look back over her shoulder while holding her phone.",
+            "question": "What is happening in this illustration?"
+          },
+          {
+            "answer": "It is week 03 of a 52-week illustration project, and the fan design is by ZipZipPipe.",
+            "question": "Where does this design come from?"
+          }
+        ],
+        "licenseNote": "",
+        "name": "Convenience Store Night Shift · A Glance Back",
+        "originNote": "Week 03 of the 52-week project. Fan design by ZipZipPipe; the original character credit appears on the Chinese and Japanese versions of this page.",
+        "seoDescription": "DeepSeek Chan on a late-night convenience store shift, glancing back over her shoulder with a lit phone in hand and her whale tail raised.",
+        "seoTitle": "Convenience Store Night Shift · A Glance Back | DeepSeek Chan",
+        "tags": [
+          "convenience store",
+          "night shift",
+          "apron",
+          "looking back",
+          "phone",
+          "whale tail"
+        ]
+      },
+      "ja": {
+        "commentary": "スマホを出して次のメッセージを確認しようとしたら、背後から声をかけられた。振り返るより先にしっぽが動いて、エプロンの紐が腰の後ろで揺れた。待って、おにぎりはまだ温かいから、この返信だけ先に終わらせるね。",
+        "description": "深夜のコンビニ。青い髪にクジラのしっぽを持つDeepSeek Chanが、紺のパーカーと白いエプロン姿で棚の前から振り返り、光る画面のスマートフォンを片手に持っている。エプロンの紐は腰の後ろで結ばれている。",
+        "faq": [
+          {
+            "answer": "コンビニで夜勤中のDeepSeek Chanが、棚の前から肩越しに振り返り、スマートフォンを手に持っている場面です。",
+            "question": "このイラストはどんな場面ですか？"
+          },
+          {
+            "answer": "52週イラスト企画の第3週で、二次創作デザインはZipZipPipeが担当しています。",
+            "question": "このデザインの出典は？"
+          }
+        ],
+        "licenseNote": "",
+        "name": "コンビニ夜勤・振り返って",
+        "originNote": "52週企画 第3週。原作キャラクター：上善。二次創作デザイン：ZipZipPipe。",
+        "seoDescription": "深夜のコンビニで夜勤中のDeepSeek Chan。棚の前から振り返り、光るスマートフォンを手に、クジラのしっぽを上げている一枚。",
+        "seoTitle": "コンビニ夜勤・振り返って｜DeepSeek Chan",
+        "tags": [
+          "コンビニ",
+          "夜勤",
+          "エプロン",
+          "振り返り",
+          "スマートフォン",
+          "クジラのしっぽ"
         ]
       }
     }
