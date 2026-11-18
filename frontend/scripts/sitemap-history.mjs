@@ -50,10 +50,13 @@ export function readSitemapHistory(directory, { origin, now = new Date(), known 
   const sitemap = path.join(directory, 'sitemap.xml');
   if (!fs.existsSync(sitemap)) return { records, seeded };
   directory = fs.realpathSync(directory);
-  const xml = new DOMParser().parseFromString(fs.readFileSync(sitemap, 'utf8'), 'text/xml');
-  const entries = [...xml.querySelectorAll('url')];
-  if (!entries.length) throw new Error('Previous sitemap has no URL records');
-  for (const entry of entries) {
+  const xml = fs.readFileSync(sitemap, 'utf8');
+  const parser = new DOMParser();
+  let found = false;
+  // Visit one URL record at a time so old alternate links do not fill the heap.
+  for (const [row] of xml.matchAll(/<url(?:\s[^>]*)?>[\s\S]*?<\/url\s*>/g)) {
+    found = true;
+    const entry = parser.parseFromString(row, 'text/xml');
     const url = new URL(entry.querySelector('loc')?.textContent || '');
     if (url.origin !== origin) continue;
     const file = pageFile(directory, url.pathname);
@@ -64,6 +67,7 @@ export function readSitemapHistory(directory, { origin, now = new Date(), known 
     if (!prior) seeded++;
     records.set(url.pathname, { fingerprint: known.get(url.pathname)?.fingerprint || pageFingerprint(fs.readFileSync(file, 'utf8')), lastmod });
   }
+  if (!found) throw new Error('Previous sitemap has no URL records');
   return { records, seeded };
 }
 
