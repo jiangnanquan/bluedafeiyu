@@ -5,7 +5,7 @@ import vm from 'node:vm';
 import { Converter } from 'opencc-js/cn2t';
 import { renderWorkCard } from '../public/archive/work-card.js';
 
-const source = fs.readFileSync(new URL('../public/lang.js', import.meta.url), 'utf8');
+const source = ['lang/en.js','lang/ja.js','lang.js'].map(file=>fs.readFileSync(new URL('../public/'+file,import.meta.url),'utf8')).join('\n');
 const converter = Converter({ from: 'cn', to: 'twp' });
 function boot({ saved = null, language = 'zh-CN', search = '', blocked = false, baked = '', pathname = '/about.html', hash = '', copy = null } = {}) {
   const storage = new Map(saved ? [['bluedafeiyu-lang', saved]] : []);
@@ -21,6 +21,7 @@ function boot({ saved = null, language = 'zh-CN', search = '', blocked = false, 
     addEventListener(k, fn) { this.listeners[k] = fn; }
     focus() { document.activeElement = this; }
     matches(selector) {
+      if (selector === 'span') return this.tagName === 'SPAN';
       if (selector[0] === '.') return (this.className || '').split(' ').includes(selector.slice(1));
       const attr = selector.match(/^\[([^=\]]+)(?:=["']?([^\]"']+)["']?)?\]$/);
       return !!attr && this.attrs[attr[1]] != null && (attr[2] == null || this.attrs[attr[1]] === attr[2]);
@@ -34,12 +35,21 @@ function boot({ saved = null, language = 'zh-CN', search = '', blocked = false, 
   root.appendChild(body); root.appendChild(head);
   const appendScript = head.appendChild.bind(head);
   head.appendChild = el => { scripts.push(el); return appendScript(el); };
-  const hosts = ['top', 'drawer'].map(where => { const el = new Element(); el.setAttribute('data-lang-host', where); body.appendChild(el); return el; });
+  const picker = new Element(), trigger = new Element('button'), menu = new Element('ul'), status = new Element('span');
+  picker.id='language-picker'; trigger.id='lang'; menu.id='language-options'; status.id='language-status';
+  trigger.setAttribute('aria-controls',menu.id); trigger.appendChild(new Element('span'));
+  menu.hidden=true;
+  for(const value of ['zh-CN','zh-TW','en','ja']){
+    const option=new Element('li');
+    option.setAttribute('role','option');option.setAttribute('data-value',value);menu.appendChild(option);
+  }
+  for(const el of [trigger,menu,status])picker.appendChild(el);
+  body.appendChild(picker);
   const label = new Element('span'); label.setAttribute('data-i18n', 'nav.about'); label.textContent = '关于'; body.appendChild(label);
   const input = new Element('input'); input.setAttribute('data-i18n-attr', 'placeholder:v2.searchPh'); input.setAttribute('placeholder', '搜索作品、角色、别名或 Tag'); body.appendChild(input);
   document = { readyState: 'complete', documentElement: root, body, head, activeElement: body, title: '关于',
     createElement: tag => new Element(tag), querySelectorAll: selector => root.querySelectorAll(selector), querySelector: selector => root.querySelector(selector),
-    getElementById: id => [root, ...root.querySelectorAll('[data-lang-host]'), ...hosts.flatMap(host => [host.children[0]])].find(el => el?.id === id),
+    getElementById: id => [picker,trigger,menu,status].find(el => el.id === id),
     addEventListener: (type, fn) => { listeners[type] = fn; }, dispatchEvent: event => { events.push(event); },
   };
   const navigations = [];
@@ -50,7 +60,7 @@ function boot({ saved = null, language = 'zh-CN', search = '', blocked = false, 
     setItem: (key, value) => { if (blocked) throw Error('blocked'); storage.set(key, value); },
   } };
   vm.runInNewContext(source, { window, document, URL, URLSearchParams, WeakMap, Promise, CustomEvent: class { constructor(type, options) { this.type = type; this.detail = options.detail; } } });
-  return { api: window.SiteLang, hosts, label, input, root, document, storage, scripts, listeners, events, navigations, location,
+  return { api: window.SiteLang, picker, trigger, menu, status, label, input, root, document, storage, scripts, listeners, events, navigations, location,
     finishLoad: () => { window.OpenCC = { Converter: () => converter }; scripts.at(-1).onload(); },
     key: (box, key) => box.fire('keydown', { key }),
   };
@@ -162,25 +172,26 @@ test('中文标签链接在英日检索界面显示本地词汇，保留原检�
 test('转换资源失败可重试，迟到的加载不会覆盖新的语言选择', async () => {
   const page = boot(); const failed = page.api.setLang('zh-Hant'); page.scripts.at(-1).onerror(); await failed;
   assert.equal(page.api.current, 'zh'); assert.equal(page.storage.has('bluedafeiyu-lang'), false);
-  assert.equal(page.hosts[0].children[0].children[2].hidden, false);
+  assert.match(page.status.textContent,/載入失敗/);
   const pending = page.api.setLang('zh-Hant'); await page.api.setLang('ja'); page.finishLoad(); await pending;
   assert.equal(page.api.current, 'ja'); assert.equal(page.storage.get('bluedafeiyu-lang'), 'ja');
   await page.api.setLang('zh-Hant'); assert.equal(page.api.current, 'zh-Hant');
 });
-test('桌面和抽屉各有一个收起入口，四个选项同步且键盘、外部点击会收起', async () => {
-  const page = boot(); const boxes = page.hosts.map(host => host.children[0]);
-  const [trigger, menu] = boxes[0].children;
+test('页面唯一语言菜单保留首屏入口，支持键盘选择和外部关闭，并记住切换', async () => {
+  const page = boot({baked:'zh',search:'?q=test',hash:'#type=meme'});
+  const {picker,trigger,menu}=page;
+  assert.equal(trigger.hidden,false);
   assert.equal(menu.hidden, true); assert.equal(menu.children.length, 4);
   trigger.fire('click'); assert.equal(menu.hidden, false); assert.equal(page.document.activeElement, menu.children[0]);
-  page.key(boxes[0], 'ArrowDown'); assert.equal(page.document.activeElement, menu.children[1]);
-  page.key(boxes[0], 'End'); assert.equal(page.document.activeElement, menu.children[3]);
-  page.key(boxes[0], 'Escape'); assert.equal(menu.hidden, true); assert.equal(page.document.activeElement, trigger);
-  trigger.fire('click'); menu.children[2].fire('click');
-  for (const box of boxes) { assert.equal(box.children[0].children[1].textContent, 'English'); assert.equal(box.children[1].children[2].getAttribute('aria-checked'), 'true'); }
-  boxes[1].children[0].fire('click'); assert.equal(menu.hidden, true);
-  page.listeners.pointerdown({ target: page.document.body }); assert.equal(boxes[1].children[1].hidden, true);
+  page.key(picker, 'ArrowDown'); assert.equal(page.document.activeElement, menu.children[1]);
+  page.key(picker, 'End'); assert.equal(page.document.activeElement, menu.children[3]);
+  page.key(picker, 'Escape'); assert.equal(menu.hidden, true); assert.equal(page.document.activeElement, trigger);
+  trigger.fire('click'); page.key(picker,'End'); page.key(picker,'Enter');
+  assert.equal(page.storage.get('bluedafeiyu-lang'),'ja');
+  assert.equal(page.navigations.at(-1),'/ja/about.html?q=test#type=meme');
+  trigger.fire('click'); page.listeners.pointerdown({ target: page.document.body }); assert.equal(menu.hidden,true);
   assert.equal(trigger.getAttribute('aria-controls'), menu.id);
-  page.api.mountMenus(); assert.equal(boxes[0].children[1].children.length, 4);
+  page.api.mountMenus(); assert.equal(menu.children.length,4);
 });
 test('隐私模式阻止存储时仍可切换，刷新后恢复已保存的繁体选择', async () => {
   const blocked = boot({ blocked: true }); const pending = blocked.api.setLang('zh-Hant'); blocked.finishLoad(); await pending;

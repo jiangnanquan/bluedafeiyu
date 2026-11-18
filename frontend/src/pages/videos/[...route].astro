@@ -1,0 +1,11 @@
+---
+import DirectoryPage from '../../components/archive/DirectoryPage.astro';
+import {archivePages} from '../../lib/archive.mjs';
+
+export function getStaticPaths() {
+  return [...archivePages.values()].filter(page=>page.url.startsWith('/videos/'))
+    .map(page=>({params:{route:page.url.slice('/videos/'.length,-'.html'.length)},props:{page}}));
+}
+const {page}=Astro.props;
+---
+<DirectoryPage {page} />

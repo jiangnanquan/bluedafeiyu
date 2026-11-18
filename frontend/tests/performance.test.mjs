@@ -65,7 +65,7 @@ test('small homepage catalog gives identical real popularity results and localiz
   assert.ok(zlib.gzipSync(Buffer.from(JSON.stringify(home))).length<110*home.works.length,'Compact catalog stays within 110 compressed bytes per submission');
 });
 
-test('homepage bundles styles and keeps lower galleries lazy in all four languages',()=>{
+test('one homepage gallery and its lazy thumbnails are rendered in all four languages',()=>{
   for(const prefix of ['','en/','ja/','zh-hant/']){
     const {document}=parseHTML(fs.readFileSync(path.join(out,prefix+'index.html'),'utf8'));
     const styles=[...document.querySelectorAll('link[rel=stylesheet]')];
@@ -73,12 +73,69 @@ test('homepage bundles styles and keeps lower galleries lazy in all four languag
     assert.match(styles[0].getAttribute('href'),/^\/_astro\/.+\.css$/);
     const images=[...document.querySelectorAll('img')];
     assert.equal(images.filter(img=>img.getAttribute('fetchpriority')==='high').length,1);
-    const cards=document.querySelectorAll('.home-section .work-card img');
-    assert.equal(cards.length,36);
+    assert.equal(document.querySelectorAll('main .work-grid').length,1);
+    const cards=document.querySelectorAll('.home-gallery .work-card img');
+    assert.equal(cards.length,24);
     assert.equal([...cards].filter(img=>img.getAttribute('loading')==='eager').length,4);
-    assert.equal([...cards].filter(img=>img.getAttribute('loading')==='lazy').length,32);
+    assert.equal([...cards].filter(img=>img.getAttribute('loading')==='lazy').length,20);
+    assert.ok(document.querySelector('.home-gallery input[name="tag"]'));
+    assert.ok(document.querySelector('.home-gallery button[data-catalog-type="meme"]'));
+    assert.equal(document.querySelector('.home-gallery noscript a').getAttribute('href'),'/'+prefix+'page/2.html');
     assert.ok(document.querySelector('script[type=module][src^="/_astro/"]'));
     for(const name of ['archive-copy','archive-labels'])assert.equal(!!document.querySelector(`script[src^="/${name}.js"]`),['en/','ja/'].includes(prefix),prefix+' runtime dictionaries');
+  }
+});
+
+test('the initial video document stays under 80 KB and all locales link to their next page',()=>{
+  for(const prefix of ['','en/','ja/','zh-hant/']){
+    const html=fs.readFileSync(path.join(out,prefix+'videos.html'),'utf8');
+    assert.ok(Buffer.byteLength(html)<80_000);
+    const {document}=parseHTML(html);
+    assert.equal(document.querySelectorAll('main [data-video-bvid]').length,24);
+    assert.ok(document.querySelectorAll('main *').length<400);
+    assert.equal(document.querySelector('main a[rel="next"]').getAttribute('href'),'/'+prefix+'videos/page/2.html');
+    assert.ok(fs.existsSync(path.join(out,prefix+'videos/page/2.html')));
+    assert.ok(fs.existsSync(path.join(out,prefix+'videos/oldest.html')));
+  }
+});
+
+test('home uses only the current UI dictionary and keeps a stable language trigger in static HTML',()=>{
+  for(const prefix of ['','en/','ja/','zh-hant/']){
+    const {document}=parseHTML(fs.readFileSync(path.join(out,prefix+'index.html'),'utf8'));
+    assert.equal(document.querySelectorAll('#lang').length,1);
+    assert.equal(document.querySelector('#lang').hasAttribute('hidden'),false);
+    const dictionaries=[...document.querySelectorAll('script[src^="/lang/"]')].map(script=>script.getAttribute('src').split('?')[0]);
+    assert.deepEqual(dictionaries,['en/','ja/'].includes(prefix)?['/lang/'+prefix.slice(0,-1)+'.js']:[]);
+    const css=document.querySelector('link[rel="stylesheet"]').getAttribute('href').slice(1);
+    assert.ok(fs.statSync(path.join(out,css)).size<106_000,'shared CSS stays at least 20% below the previous bundle');
+    if(prefix==='en/'){
+      assert.match(document.title,/^Blue Dafeiyu/);
+      assert.doesNotMatch(document.title,/蓝色大肥鱼/);
+      assert.equal(document.querySelector('meta[property="og:title"]').getAttribute('content'),document.title);
+    }
+  }
+  assert.ok(fs.statSync(path.join(out,'lang.js')).size<25_000);
+});
+
+test('the published favicon and all staged gallery WebP previews meet their transfer budgets',()=>{
+  assert.ok(fs.statSync(path.join(out,'favicon.png')).size<10_000);
+  for(const dir of [path.join(out,'submissions/previews'),path.join(out,'owner-picks/previews'),path.join(root,'dist/data/blue-fish/previews')]){
+    for(const file of fs.readdirSync(dir,{recursive:true}).filter(name=>name.endsWith('.webp'))){
+      assert.ok(fs.statSync(path.join(dir,file)).size<100_000,file);
+    }
+  }
+});
+
+test('all four localized ZIP dialogs render real labels before the runtime opens them',()=>{
+  for(const prefix of ['','en/','ja/','zh-hant/']){
+    const {document}=parseHTML(fs.readFileSync(path.join(out,prefix+'topics.html'),'utf8'));
+    const dialog=document.querySelector('#topic-download-dialog');
+    assert.ok(dialog.querySelector('h2').textContent.trim());
+    for(const selector of ['[data-topic-retry]','[data-topic-save]','[data-topic-close]']){
+      const button=dialog.querySelector(selector);
+      assert.ok(button.querySelector('span[data-i18n]'),selector);
+      assert.doesNotMatch(button.textContent,/<\/?span/);
+    }
   }
 });
 

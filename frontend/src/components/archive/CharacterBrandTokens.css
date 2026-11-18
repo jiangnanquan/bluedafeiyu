@@ -61,7 +61,7 @@ body.archive.refined[data-character-page] {
 body.archive.refined[data-character-page] main#main {
   --ground: var(--brand-bg);
   --paper: var(--brand-surface);
-  --soft: var(--brand-surface-2);
+  --text-soft: var(--brand-muted);
   --ink: var(--brand-ink);
   --muted: var(--brand-muted);
   --line: var(--brand-line);

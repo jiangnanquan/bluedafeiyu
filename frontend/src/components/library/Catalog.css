@@ -26,32 +26,32 @@
   border-radius: var(--radius-sm);
   font-size: 10px
 }
-.card-preview,.card-save,.card-share {
+.work-card-actions {
   position: absolute;
   top: 8px;
+  left: 8px;
   z-index: 2;
-  width: 30px;
-  min-height: 30px;
+  display: flex;
+  gap: 6px;
+  opacity: 0;
+  pointer-events: none
+}
+.work-card-actions button {
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  min-height: 40px;
   padding: 6px;
   border-radius: var(--radius-pill);
   border: 1px solid var(--line);
-  background: var(--surface);
-    opacity: 1
-}
-.card-preview {
-  left: 8px
-}
-.card-save {
-  left: 43px
-}
-.card-share {
-  left: 78px
+  background: var(--surface)
 }
 .card-save span,.card-share span {
   display: none
 }
-.work-card:hover :is(.card-preview,.card-save,.card-share),.work-card:focus-within :is(.card-preview,.card-save,.card-share) {
-  opacity: 1
+.work-card:is(:hover,:focus-within) .work-card-actions {
+  opacity: 1;
+  pointer-events: auto
 }
 .card-save[aria-pressed=true] {
   color: var(--blue)
@@ -76,3 +76,7 @@
 @media(max-width:1240px){.work-grid{column-count:3}}
 @media(max-width:820px){.work-grid{column-count:2}}
 @media(max-width:560px){.work-grid{column-count:1}}
+@media(hover:none),(pointer:coarse){
+  .work-card-actions{position:static;opacity:1;pointer-events:auto}
+  .work-card-actions button{width:44px;min-height:44px}
+}

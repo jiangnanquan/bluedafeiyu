@@ -10,6 +10,7 @@ export function installSidebar({document:doc=document, window:win=window}={}) {
   const backdrop=app?.querySelector('[data-drawer-close]');
   if(!app||!sidebar||!main||!menu||!collapse||!backdrop)return;
   const media=win.matchMedia('(max-width:1024px)');
+  const links=sidebar.querySelectorAll('.nav-item[aria-label]');
   let collapsed=false, drawerOpen=false;
   try {collapsed=(win.localStorage.getItem('bluedafeiyu-sidebar')||win.localStorage.getItem('bluefish-sidebar'))==='collapsed';} catch {}
   const label=(key,fallback)=>win.SiteLang?.fmt(key,fallback)||fallback;
@@ -26,6 +27,10 @@ export function installSidebar({document:doc=document, window:win=window}={}) {
       ?label('d.closeNavigation','关闭导航')
       :label(collapsed?'d.home.expand':'d.home.collapse',collapsed?'展开侧栏':'收起侧栏'));
     if(state.sidebarInert)sidebar.setAttribute('aria-hidden','true');else sidebar.removeAttribute('aria-hidden');
+    for(const link of links){
+      if(collapsed&&!media.matches)link.title=link.getAttribute('aria-label');
+      else link.removeAttribute('title');
+    }
     if(focus)(state.open?collapse:menu).focus({preventScroll:true});
     doc.dispatchEvent(new win.CustomEvent('site:drawerchange',{detail:state}));
   }

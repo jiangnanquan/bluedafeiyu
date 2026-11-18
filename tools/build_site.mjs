@@ -79,7 +79,8 @@ function runStep(scriptRel, extraArgs, contentDir) {
   }
   log(`运行 ${scriptRel}${extraArgs.length ? " " + extraArgs.join(" ") : ""}`);
   const startedAt = Date.now();
-  const result = spawnSync(process.execPath, [scriptAbs, ...extraArgs], {
+  const executable = scriptRel.endsWith(".py") ? process.env.PYTHON || "python3" : process.execPath;
+  const result = spawnSync(executable, [scriptAbs, ...extraArgs], {
     cwd: REPO_ROOT,
     stdio: "inherit",
     env: { ...process.env, CONTENT_DIR: contentDir },
@@ -100,6 +101,7 @@ function main() {
   runStep("frontend/scripts/check-components.mjs", [], contentDir);
   runStep("tools/stage_data.mjs", [], contentDir);
   runStep("tools/sync_content.mjs", ["--content-dir", contentDir], contentDir);
+  runStep("tools/prepare_preview_assets.py", ["dist/submissions/previews", "dist/owner-picks/previews", "dist/data/blue-fish/previews"], contentDir);
   runStep("tools/build_site_snapshot.mjs", [], contentDir);
   runStep("frontend/scripts/build.mjs", [...passthrough, ...(forceClean ? ["--force-clean"] : [])], contentDir);
   log("站点构建完成");

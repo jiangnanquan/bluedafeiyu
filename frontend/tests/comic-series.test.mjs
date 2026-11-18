@@ -117,7 +117,9 @@ test('built gallery separates serial members while retaining the reader, search 
     const home=read(prefix+'index.html');
     assert.equal(home.querySelector('.portal-welcome-actions'),null);
     assert.ok(gallery.querySelector(`a[href="/${prefix}serials.html"]`));
-    for(const card of home.querySelectorAll('.home-section .work-card'))assert.ok(!serialIds.has(data.works.find(work=>work.slug===card.getAttribute('data-slug')).id));
+    const galleryCards=home.querySelectorAll('.home-gallery .work-card');
+    assert.ok(galleryCards.length>0);
+    for(const card of galleryCards)assert.ok(!serialIds.has(data.works.find(work=>work.slug===card.getAttribute('data-slug')).id));
     for(const character of data.characters){
       const expected=regular.filter(work=>work.cids.includes(character.id));
       const page=read(prefix+'characters/'+character.id+'.html');

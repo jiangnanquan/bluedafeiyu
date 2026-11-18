@@ -14,10 +14,11 @@ test('all public page families have one shared shell and one instance of each di
   assert.equal(document.querySelectorAll('main h1').length,1,relative+' h1');
  }
 });
-test('homepage sections contain distinct real works and the ordinary collection index excludes serials',()=>{
+test('the homepage gallery contains distinct real works and the ordinary collection index excludes serials',()=>{
  const home=doc('index.html');
- const slugs=[...home.querySelectorAll('.home-section .work-card')].map(card=>card.dataset.slug);
- assert.equal(slugs.length,36);assert.equal(new Set(slugs).size,slugs.length);
+ const slugs=[...home.querySelectorAll('.home-gallery .work-card')].map(card=>card.dataset.slug);
+ assert.equal(slugs.length,24);assert.equal(new Set(slugs).size,slugs.length);
+ assert.equal(home.querySelectorAll('#latest-title,#illustration-title,#meme-title').length,0);
  assert.equal(home.querySelectorAll('.guide-card details.faq summary').length,2,'one FAQ component');
  const topics=doc('topics.html');
  assert.equal(topics.querySelectorAll('.coll-row').length,6);

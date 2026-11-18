@@ -1,4 +1,4 @@
-"""Generate root Apple touch icons from the content repository's staged favicon."""
+"""Generate the browser favicon and Apple touch icons from the staged artwork."""
 import sys
 from pathlib import Path
 
@@ -11,6 +11,8 @@ def write_icons(source: Path, output: Path) -> None:
     canvas = Image.new("RGB", (180, 180), "white")
     canvas.paste(art, ((180 - art.width) // 2, (180 - art.height) // 2), art)
     output.mkdir(parents=True, exist_ok=True)
+    favicon = ImageOps.contain(art, (48, 48), Image.Resampling.LANCZOS)
+    favicon.save(output / "favicon.png", format="PNG", optimize=True)
     for name in ("apple-touch-icon.png", "apple-touch-icon-precomposed.png"):
         canvas.save(output / name, format="PNG", optimize=True)
 

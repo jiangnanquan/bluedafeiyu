@@ -21,11 +21,11 @@ const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..
 const SUBMIT_HTML = path.join(process.env.SITE_OUT_DIR || path.join(REPO_ROOT, ".build", "site"), "submit.html");
 const SUBMIT_FORM_ASTRO = path.join(REPO_ROOT, "frontend", "src", "components", "SubmissionForm.astro");
 const SCRIPT_JS = path.join(REPO_ROOT, "frontend", "public", "page-scripts", "submit-0.js");
-const LANG_JS = path.join(REPO_ROOT, "frontend", "public", "lang.js");
+const languageScripts = ["en","ja"].map(locale=>fs.readFileSync(path.join(REPO_ROOT,"frontend","public","lang",locale+".js"),"utf8"));
+const challengeScript = fs.readFileSync(path.join(REPO_ROOT,"frontend","public","page-scripts","turnstile-widget.js"),"utf8");
 
 const html = fs.readFileSync(SUBMIT_HTML, "utf8");
 const formAstro = fs.readFileSync(SUBMIT_FORM_ASTRO, "utf8");
-const lang = fs.readFileSync(LANG_JS, "utf8");
 
 /* 取 <form id="submission-form" …> … </form> 这一段，之后的断言只针对表单本身。 */
 function formSlice() {
@@ -57,7 +57,7 @@ test("表单把 endpoint 交给 data-api-endpoint，默认同源 /api/v1/submiss
 test("投稿表单从构建环境读取 Turnstile sitekey（空值不输出属性）", () => {
   assert.match(formAstro, /import\.meta\.env\.PUBLIC_TURNSTILE_SITEKEY/);
   assert.match(formAstro, /\.trim\(\)/);
-  assert.match(formAstro, /data-turnstile-sitekey=\{turnstileSitekey \|\| undefined\}/);
+  assert.match(formAstro, /data-turnstile-sitekey=\{turnstileSitekey\s*\|\|\s*undefined\}/);
   assert.match(script, /form\.getAttribute\("data-turnstile-sitekey"\)/);
 });
 
@@ -143,11 +143,10 @@ test("GitHub 入口与「审核后批量发布」文案保留", () => {
 
 test("en / ja 词典覆盖页内 script 用到的全部 submit.form.* key", () => {
   const keys = new Set();
-  for (const m of script.matchAll(/"(submit\.form\.[A-Za-z0-9]+(?:\.[A-Za-z0-9]+)*)"/g)) keys.add(m[1]);
+  for (const m of (script+'\n'+challengeScript).matchAll(/["'](submit\.form\.[A-Za-z0-9]+(?:\.[A-Za-z0-9]+)*)["']/g)) keys.add(m[1]);
   assert.ok(keys.size > 0, "没有解析到任何 submit.* key");
   for (const key of keys) {
-    const hits = lang.split(`"${key}":`).length - 1;
-    assert.ok(hits >= 2, `词典缺少 ${key}（en/ja 各需一份，当前 ${hits}）`);
+    for (const lang of languageScripts) assert.ok(lang.includes(`"${key}":`), `词典缺少 ${key}`);
   }
 });
 

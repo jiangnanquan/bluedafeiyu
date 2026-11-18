@@ -62,6 +62,7 @@ export function installTopicDownloads({ load, tx, toast, loadZip = () => import(
       failures.hidden = !result.failed.length;
       retry.hidden = !result.failed.length;
       if (result.failed.length) {
+        retry.textContent = tx('d.zipRetry','重试失败图片');
         status.textContent = tx('d.zipFailed','已获取 {done} / {total} 张，{failed} 张失败。可以重试，或保存已成功的图片。', { done: current.files.size, total: current.works.length, failed: result.failed.length });
       } else status.textContent = tx('d.zipPacking','正在打包原图…');
       if (current.files.size) {

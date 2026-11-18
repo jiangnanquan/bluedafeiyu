@@ -49,6 +49,8 @@ test('partial download, retry and full save stay one event in the same download 
   await fixture(async({document,events,downloads,click,setFailure})=>{
     setFailure(true);click('[data-download-topic]');
     await until(()=>document.querySelector('[data-topic-progress]').hidden&& !document.querySelector('[data-topic-save]').hidden);
+    assert.equal(document.querySelector('[data-topic-retry]').textContent,'重试失败图片');
+    assert.equal(document.querySelector('[data-topic-save]').textContent,'保存已成功的图片');
     assert.equal(events.length,0);
     click('[data-topic-save]');assert.equal(events.length,1);assert.equal(events[0][2].failed_count,1);
     setFailure(false);click('[data-topic-retry]');await until(()=>downloads.length===2);

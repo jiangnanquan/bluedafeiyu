@@ -12,6 +12,7 @@ export function installSubmissionTabs({document=globalThis.document,window=globa
       if(eyebrow)eyebrow.textContent=mode==='video'?'CREATOR REGISTRATION':'SUBMIT';
     }
     tabs.forEach(tab=>{const active=tab.dataset.submissionMode===mode;tab.setAttribute('aria-selected',String(active));tab.tabIndex=active?0:-1;});
+    document.dispatchEvent(new window.CustomEvent('site:submissiontab'));
   };
   tabs.forEach((tab,i)=>{
     tab.addEventListener('click',()=>select(tab.dataset.submissionMode));

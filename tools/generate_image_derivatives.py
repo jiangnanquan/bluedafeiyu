@@ -136,6 +136,7 @@ def frame_indices(frame_count: int, limit: int) -> list[int]:
 def animated_frames(
     image: Image.Image,
     edge: int,
+    frame_limit: int = MAX_ANIMATION_FRAMES,
 ) -> tuple[list[Image.Image], list[int], int]:
     """Decode, sample and resize an animated source into WebP frames.
 
@@ -143,18 +144,20 @@ def animated_frames(
     the animation keeps its original pace.
     """
     count = max(1, int(getattr(image, "n_frames", 1)))
-    indices = frame_indices(count, MAX_ANIMATION_FRAMES)
+    indices = frame_indices(count, frame_limit)
 
     source_durations: list[int] = []
+    frames: list[Image.Image] = []
+    retained = set(indices)
     for index in range(count):
         image.seek(index)
+        image.load()  # WebP exposes the current frame duration after decoding.
         source_durations.append(max(20, int(image.info.get("duration", 100) or 100)))
+        if index in retained:
+            frames.append(resize_image(image.convert("RGBA"), edge))
 
-    frames: list[Image.Image] = []
     durations: list[int] = []
     for position, index in enumerate(indices):
-        image.seek(index)
-        frames.append(resize_image(image.convert("RGBA"), edge))
         next_index = indices[position + 1] if position + 1 < len(indices) else count
         durations.append(max(20, sum(source_durations[index:next_index])))
 
@@ -162,12 +165,14 @@ def animated_frames(
     return frames, durations, loop
 
 
-def write_derivative(source: Path, destination: Path, edge: int, quality: int) -> tuple[int, int, bool]:
+def write_derivative(
+    source: Path, destination: Path, edge: int, quality: int, frame_limit: int = MAX_ANIMATION_FRAMES, method: int = 6,
+) -> tuple[int, int, bool]:
     """Write one WebP derivative; returns (width, height, is_animated)."""
     with Image.open(source) as image:
         is_animated = bool(getattr(image, "is_animated", False)) and int(getattr(image, "n_frames", 1)) > 1
         if is_animated:
-            frames, durations, loop = animated_frames(image, edge)
+            frames, durations, loop = animated_frames(image, edge, frame_limit)
             first, *rest = frames
             atomic_save(
                 first,
@@ -177,12 +182,12 @@ def write_derivative(source: Path, destination: Path, edge: int, quality: int) -
                 duration=durations,
                 loop=loop,
                 quality=quality,
-                method=6,
+                method=method,
             )
             width, height = first.size
         else:
             result = resize_image(image, edge)
-            atomic_save(result, destination, quality=quality, method=6)
+            atomic_save(result, destination, quality=quality, method=method)
             width, height = result.size
     return width, height, is_animated
 

@@ -1,7 +1,6 @@
 import {installCatalogFilters} from '../../public/components/catalog-controls.js';
 import {installSubmissionUpload} from '../../public/components/submission-upload.js';
 import {installComicReader} from '../../public/components/comic-reader.js';
-import {installVideoSort} from '../../public/components/video-archive.js';
 import {installSubmissionTabs} from '../../public/components/submission-tabs.js';
 import {installSidebar} from '../../public/components/sidebar-state.js';
 import {installCommunityProjects} from '../../public/components/community-projects.js';
@@ -10,11 +9,24 @@ import {installPagedFeeds} from '../../public/components/paged-feed.js';
 import {installHomeRankings} from '../../public/components/home-rankings.js';
 import './saved-ui.js';
 installPagedFeeds();
-installVideoSort();
 installCatalogFilters();
 installComicReader();
 installSidebar();
 installHomeRankings();
+
+const searchInput = document.querySelector('.topbar input[type="search"]');
+const shortcut = document.querySelector('.topbar kbd');
+if (searchInput && shortcut) {
+  const platform = navigator.userAgentData?.platform || navigator.platform || navigator.userAgent;
+  shortcut.textContent = /Mac|iPhone|iPad|iPod/i.test(platform) ? '⌘ K' : 'Ctrl K';
+  document.addEventListener('keydown', event => {
+    if (!event.defaultPrevented && (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k' &&
+        !document.body.classList.contains('sidebar-drawer-open') && !document.querySelector('dialog[open]')) {
+      event.preventDefault();
+      searchInput.focus();
+    }
+  });
+}
 
 installSubmissionTabs();
 installSubmissionUpload();

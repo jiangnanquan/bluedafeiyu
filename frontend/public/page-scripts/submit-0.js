@@ -40,7 +40,11 @@
       var turnstileRow = document.getElementById("turnstile-row");
       var turnstileSlot = document.getElementById("turnstile-slot");
       var turnstileSitekey = form.getAttribute("data-turnstile-sitekey") || "";
-      var turnstileWidgetId = null;
+      var challenge = window.SiteTurnstile?.install({
+        sitekey: turnstileSitekey, row: turnstileRow, slot: turnstileSlot,
+        status: turnstileRow.querySelector("[data-turnstile-status]"),
+        onToken: function (value) { turnstileInput.value = value; }
+      });
 
       var busy = false;
       var lastStatus = null;
@@ -135,6 +139,7 @@
           }
         }
         if (turnstileSitekey && !String(turnstileInput.value || "").trim()) {
+          if (challenge?.failed) return { key: window.SiteTurnstile.failureKey, fallback: window.SiteTurnstile.failureCopy, field: turnstileRow };
           return { key: "submit.form.err.turnstile", fallback: "请先完成人机验证。", field: turnstileRow };
         }
         return null;
@@ -152,9 +157,7 @@
       }
 
       function resetTurnstile() {
-        if (turnstileWidgetId !== null && window.turnstile && window.turnstile.reset) {
-          try { window.turnstile.reset(turnstileWidgetId); } catch (err) { /* 控件已失效：忽略 */ }
-        }
+        challenge?.reset();
         if (turnstileInput) turnstileInput.value = "";
       }
 
@@ -271,32 +274,6 @@
       /* 改动任一字段就清掉上一次的报错，避免旧提示误导。 */
       form.addEventListener("input", function () { if (lastStatus && lastStatus.kind === "error") clearStatus(); });
       form.addEventListener("change", function () { if (lastStatus && lastStatus.kind === "error") clearStatus(); });
-
-      /* Turnstile：只有配了 sitekey 才加载，失败不阻塞表单，由服务端最终判定。 */
-      function renderTurnstile() {
-        if (!turnstileSitekey || !window.turnstile || turnstileWidgetId !== null) return;
-        turnstileRow.hidden = false;
-        try {
-          turnstileWidgetId = window.turnstile.render(turnstileSlot, {
-            sitekey: turnstileSitekey,
-            theme: "light",
-            size: turnstileSlot.clientWidth > 0 && turnstileSlot.clientWidth < 300 ? "compact" : "normal",
-            callback: function (token) { turnstileInput.value = token || ""; },
-            "expired-callback": function () { turnstileInput.value = ""; },
-            "error-callback": function () { turnstileInput.value = ""; }
-          });
-        } catch (err) {
-          turnstileWidgetId = null;
-        }
-      }
-      if (turnstileSitekey) {
-        var turnstileScript = document.createElement("script");
-        turnstileScript.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
-        turnstileScript.async = true;
-        turnstileScript.defer = true;
-        turnstileScript.onload = function () { renderTurnstile(); document.dispatchEvent(new Event('turnstile:ready')); };
-        document.head.appendChild(turnstileScript);
-      }
 
       document.addEventListener("site:langchange", function () {
         updateTypeHint();

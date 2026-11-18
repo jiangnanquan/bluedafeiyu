@@ -18,11 +18,16 @@ export const LOCALES = [
   { id: 'en', prefix: '/en', html: 'en', hreflang: 'en', og: 'en_US', label: 'English' },
   { id: 'ja', prefix: '/ja', html: 'ja', hreflang: 'ja', og: 'ja_JP', label: '日本語' }
 ];
-const source = fs.readFileSync(new URL('../public/lang.js', import.meta.url), 'utf8');
-let program = new vm.Script(source, { filename: 'lang.js' });
+const program = new vm.Script(fs.readFileSync(new URL('../public/lang.js', import.meta.url),'utf8'),{filename:'lang.js'});
+const baseTranslations = {};
+for (const locale of ['en','ja']) {
+  const file = 'lang/'+locale+'.js';
+  vm.runInNewContext(fs.readFileSync(new URL('../public/'+file,import.meta.url),'utf8'),{window:baseTranslations},{filename:file});
+}
 const convertTraditional = Converter({ from: 'cn', to: 'twp' });
 const converter = text => convertTraditional(String(text ?? '')).replace(/孃/g, '娘');
 const normalizeHome = p => p === '/index.html' ? '/' : p;
+const isVideoList = path => path === '/videos.html' || path.startsWith('/videos/');
 export const localizedPath = (base, locale) => locale.prefix + normalizeHome(base);
 const escape = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;' }[c]));
 
@@ -108,12 +113,17 @@ function pageMeta(document, api, base, snapshot, archive) {
   }
   // Restore canonical credits after generic language substitutions, which may
   // otherwise translate a character alias embedded inside an uploader's name.
-  if (base === '/videos.html' || base.startsWith('/creators/')) {
+  const videoList = isVideoList(base);
+  if (videoList || base.startsWith('/creators/')) {
     const index = locale === 'en' ? 1 : locale === 'ja' ? 2 : 0;
     const copy = key => locale === 'zh-Hant' ? converter(videoCopy[key][index]) : videoCopy[key][index];
     const creator = videoArchive.creators.find(c => base === `/creators/bilibili-${c.uid}.html`);
     if (locale !== 'zh') {
-      document.title = (base.startsWith('/creators/') ? (creator?.name || document.querySelector('main h1')?.textContent || '') + ' · ' + copy('creatorProfile') : copy('videoTitle')) + ' | DeepSeek Chan';
+      const videoPage = document.body.dataset.videoPage;
+      const oldest = document.body.dataset.videoOrder === 'oldest';
+      const sortLabel = oldest ? ' · '+api.t('d.videoOldest','最早发布') : '';
+      const pageLabel = videoPage && videoPage !== '1' ? ' · '+api.fmt('v2.pageN','第 {n} 页',{n:videoPage}) : '';
+      document.title = (videoList ? copy('videoTitle')+sortLabel+pageLabel : (creator?.name || document.querySelector('main h1')?.textContent || '') + ' · ' + copy('creatorProfile')) + ' | DeepSeek Chan';
       setMeta(document, 'meta[name="description"]', copy('videoLead'));
     }
     if (creator && document.querySelector('main h1')) (document.querySelector('main h1 [data-creator-name]') || document.querySelector('main h1')).textContent = creator.name;
@@ -125,7 +135,7 @@ function pageMeta(document, api, base, snapshot, archive) {
   if(base==='/creators.html' && ['en','ja'].includes(locale)) {document.title=(locale==='en'?'Creators':'クリエイター')+' | DeepSeek Chan';setMeta(document,'meta[name="description"]',locale==='en'?'Explore the creators and their published AI-girl fan art and videos.':'AI娘の二次創作を手がける作者と公開作品をご覧ください。');for(const selector of ['meta[property="og:image:alt"]','meta[name="twitter:image:alt"]'])setMeta(document,selector,document.title);}
   for(const el of document.querySelectorAll('[data-creator-label]'))el.setAttribute('aria-label',el.getAttribute('data-creator-label'));
   if(base==='/saved.html'&&['en','ja'].includes(locale)){document.title=(locale==='en'?'Saved works':'お気に入り')+' | DeepSeek Chan';setMeta(document,'meta[name="description"]',locale==='en'?'Your saved images and creators stay in this browser.':'お気に入りの画像と作者は、このブラウザーにのみ保存されます。');for(const selector of ['meta[property="og:image:alt"]','meta[name="twitter:image:alt"]'])setMeta(document,selector,document.title);}
-  if(locale==='en'&&!base.startsWith('/characters/'))document.title=document.title.replaceAll('Blue Dafeiyu','DeepSeek Chan');
+  if(locale==='en'&&base!=='/index.html'&&!base.startsWith('/characters/'))document.title=document.title.replaceAll('Blue Dafeiyu','DeepSeek Chan');
   if(locale==='ja') {
     document.title=document.title.replace(/\|\s*DeepSeek Chan$/, '| 藍色大肥魚');
     for(const selector of ['meta[property="og:image:alt"]','meta[name="twitter:image:alt"]'])setMeta(document,selector,document.title);
@@ -138,7 +148,7 @@ function pageMeta(document, api, base, snapshot, archive) {
   return { work, desc };
 }
 
-export async function localizeHtml(html, base, locale, snapshot) {
+export async function localizeHtml(html, base, locale, snapshot, translations = baseTranslations) {
   const parsed = parseHTML(html);
   const document = parsed.document;
   // Templates stay inert in browsers. Expose their contents only while baking
@@ -148,7 +158,7 @@ export async function localizeHtml(html, base, locale, snapshot) {
     content.innerHTML = node.innerHTML; node.replaceWith(content);
     return {node, content};
   });
-  const window = { location: new URL(ORIGIN + base), navigator: { languages: ['zh-CN'] },
+  const window = { ...translations, location: new URL(ORIGIN + base), navigator: { languages: ['zh-CN'] },
     localStorage: { getItem() { return null; }, setItem() {} }, OpenCC: { Converter: () => converter } };
   program.runInNewContext({ window, document, URL, URLSearchParams, WeakMap, Promise, CustomEvent: parsed.CustomEvent });
   await window.SiteLang.setLang(locale.id, false);
@@ -167,6 +177,14 @@ export async function localizeHtml(html, base, locale, snapshot) {
   // pages use their rendered copy; Traditional Chinese uses OpenCC at runtime.
   if (!['en','ja'].includes(locale.id)) {
     for (const script of document.querySelectorAll('script[src^="/archive-copy.js"],script[src^="/archive-labels.js"]')) script.remove();
+  } else {
+    const runtime = document.querySelector('script[src^="/lang.js"]');
+    if (runtime) {
+      const dictionary = document.createElement('script');
+      dictionary.setAttribute('src', '/lang/'+locale.id+'.js'+new URL(runtime.getAttribute('src'),ORIGIN).search);
+      dictionary.setAttribute('defer','');
+      runtime.before(dictionary);
+    }
   }
   for (const label of document.querySelectorAll('[data-character-name]')) label.textContent = api.characterName(label.getAttribute('data-character-name'), label.getAttribute('data-character-label'));
   const native=applyNativeContent(document,api,base,snapshot);
@@ -228,7 +246,7 @@ export async function localizeHtml(html, base, locale, snapshot) {
         const guide = guides.find(g=>guidePath(g)===route);
         if (guide) value.name = localizedCopy(guide.name,locale.id);
         else if (['/category.html','/projects.html','/community-projects.html','/friend-links.html'].includes(route)) value.name = document.title;
-        else if (route === '/saved.html' || route === '/videos.html' || route === '/creators.html' || route.startsWith('/creators/')) value.name = document.title;
+        else if (route === '/saved.html' || isVideoList(route) || route === '/creators.html' || route.startsWith('/creators/')) value.name = document.title;
       }
       if (base === '/index.html' && ['WebSite','Organization'].includes(value['@type'])) {
         value.name = locale.id === 'en' ? 'DeepSeek Chan' : locale.id === 'zh' ? '蓝色大肥鱼' : '藍色大肥魚';
@@ -275,7 +293,10 @@ export async function localizeHtml(html, base, locale, snapshot) {
 export async function buildLanguagePages(out, snapshot, baseFiles = null) {
   const missing=snapshot.works.filter(w=>!w.i18n?.en||!w.i18n?.ja);
   if(missing.length) throw new Error('Native English/Japanese work content missing or stale: '+missing.map(w=>w.id).join(', '));
-  program = new vm.Script(fs.readFileSync(path.join(out, 'archive-copy.js'), 'utf8')+'\n'+fs.readFileSync(path.join(out, 'archive-labels.js'), 'utf8') + '\n' + source, { filename: 'lang.js' });
+  const translations={...baseTranslations};
+  for (const file of ['archive-copy.js','archive-labels.js']) {
+    vm.runInNewContext(fs.readFileSync(path.join(out,file),'utf8'),{window:translations},{filename:file});
+  }
   const files = [];
   function walk(dir) {
     for (const item of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -296,7 +317,7 @@ export async function buildLanguagePages(out, snapshot, baseFiles = null) {
     for (const locale of LOCALES) {
       const target = path.join(out, locale.prefix.slice(1), relative);
       fs.mkdirSync(path.dirname(target), { recursive: true });
-      fs.writeFileSync(target, await localizeHtml(html, base, locale, snapshot));
+      fs.writeFileSync(target, await localizeHtml(html, base, locale, snapshot, translations));
       count++;
     }
   }

@@ -18,9 +18,11 @@ export function renderWorkCard(work, {url = value => value, translate = (_key,va
   const preview = esc(translate('d.quickView','预览') + ' ' + names(work.n));
   return `<article class="work-card" data-slug="${esc(work.slug)}">
     <a class="work-art work-cover${long?' is-long':''}" ${workPreviewAttributes(work.slug)} aria-label="${preview}" href="${href}"><img src="${esc(work.i)}" alt="${esc(workImageAlt(work, names))}" width="${width}" height="${height}" loading="${eager ? 'eager' : 'lazy'}"${priority?' fetchpriority="high"':''} decoding="async"><span class="work-kind">${kinds}</span>${work.lk?`<span class="work-license" data-i18n="v2.licenseShort.${esc(work.lk)}" data-i18n-attr="title:license.${esc(work.lk)}" title="${esc(translate('license.'+work.lk,work.lt||''))}">${esc(translate('v2.licenseShort.'+work.lk,work.ls||work.lt||''))}</span>`:''}${long?`<span class="long-image-note" data-i18n="d.longImage">${esc(translate('d.longImage','长图 · 点击看全'))}</span>`:''}</a>
-    <button class="quick-view card-preview" type="button" ${workPreviewAttributes(work.slug)} aria-label="${preview}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="m15 15 6 6"/></svg></button>
-    ${renderSaveButton('works',work.slug,{translate,className:'card-save'})}
-    ${renderShareButton('/works/' + work.slug + '.html', {translate, compact:true})}
     <a class="work-title" ${workPreviewAttributes(work.slug)} aria-label="${preview}" href="${href}">${esc(names(work.n))}</a>${owners?`<div class="work-owner">${owners}</div>`:''}<div class="work-meta card-meta"><span class="card-roles">${roleLinks}</span> · <span>${kinds}</span><time title="${esc(work.dt)}"> · ${esc(work.dt)}</time></div>
+    <div class="work-card-actions">
+      <button class="quick-view card-preview" type="button" ${workPreviewAttributes(work.slug)} aria-label="${preview}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="m15 15 6 6"/></svg></button>
+      ${renderSaveButton('works',work.slug,{translate,className:'card-save'})}
+      ${renderShareButton('/works/' + work.slug + '.html', {translate, compact:true})}
+    </div>
   </article>`;
 }

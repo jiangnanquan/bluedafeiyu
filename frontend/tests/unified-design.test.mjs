@@ -28,8 +28,8 @@ test('home and appended work cards share stable preview, source, identity and im
  assert.equal(document.querySelector('[style]'),null);
 });
 test('the current-page language switch and existing saved state remain production contracts',()=>{
- assert.match(read('public/components/home-controls.js'),/location\.pathname\.replace/);
- assert.match(read('public/components/home-controls.js'),/location\.search\+location\.hash/);
+ assert.match(read('public/lang.js'),/window\.location\.assign\(languageUrl\(next\)\)/);
+ assert.doesNotMatch(read('src/layouts/Archive.astro'),/home-controls\.js/);
  assert.match(read('public/archive/saved-items.js'),/bluefish-demo:/);
  assert.doesNotMatch(read('src/components/pages/SubmitPage.astro'),/Demo|模拟/);
  assert.match(read('public/page-scripts/submit-0.js'),/api\/v1\/submissions/);

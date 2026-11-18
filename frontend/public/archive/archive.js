@@ -48,14 +48,26 @@ import {orderWorks, shuffledSlugs} from '../components/work-order.js';
     let dataset,searchIndex,all=[],filtered=[],shown=24;
     const pageNumber=Number(document.body.dataset.pageNumber)||1;
     const pageStart=(pageNumber-1)*24;
-    const defaultState={character:document.body.dataset.character||'',type:document.body.dataset.type||'',sort:document.body.dataset.sort||'latest',direction:document.body.dataset.sort==='curated'?'asc':'desc',creation:''};
+    const defaultState={character:document.body.dataset.character||'',type:document.body.dataset.type||'',sort:document.body.dataset.sort||'latest',direction:document.body.dataset.sort==='curated'?'asc':'desc',creation:'',tag:''};
     const form=$('#filter-form'),params=new URLSearchParams(location.search),query=$('#search-q'),result=$('#results'),count=$('#result-count');
+    const tagInput=form.elements.tag, tagSuggestions=$('#gallery-tags');
+    let tags=[];
+    const suggestTags=()=>{
+      if(!tagSuggestions)return;
+      const query=tagInput.value.trim().normalize('NFKC').toLocaleLowerCase();
+      const matching=tags.map(names).filter(tag=>tag.normalize('NFKC').toLocaleLowerCase().includes(query));
+      tagSuggestions.replaceChildren(...[...new Set(matching)].slice(0,16).map(tag=>{
+        const option=document.createElement('option');
+        option.value=tag;
+        return option;
+      }));
+    };
     // Transient sort/filter states use the fragment, so the gallery does not
     // expose an unbounded family of indexable query combinations. Old shared
     // query URLs are still accepted and normalized when the page is ready.
-    for(const [key,value] of new URLSearchParams(location.hash.slice(1))) if(['character','type','sort','direction','q','creation'].includes(key))params.set(key,value);
+    for(const [key,value] of new URLSearchParams(location.hash.slice(1))) if(key==='q'||Object.hasOwn(defaultState,key))params.set(key,value);
     const selected={...defaultState};
-    for(const name of ['character','type','sort','direction','creation'])if(params.has(name))selected[name]=params.get(name);
+    for(const name of Object.keys(defaultState))if(params.has(name))selected[name]=params.get(name);
     if(!['latest','popular','downloads','random',...(searchPage?['relevance']:[]),...(defaultState.sort==='curated'?['curated']:[])].includes(selected.sort))selected.sort=defaultState.sort;
     if(!['asc','desc'].includes(selected.direction))selected.direction=defaultState.direction;
     if(!['','non-ai'].includes(selected.creation))selected.creation='';
@@ -63,7 +75,7 @@ import {orderWorks, shuffledSlugs} from '../components/work-order.js';
     for(const [name,value]of Object.entries(selected))if(form.elements[name]){if(name==='character')setCharacters(value);else form.elements[name].value=value;}
     const sourceQuery=params.get('q')||'',displayQuery=names(sourceQuery);
     if(query)query.value=displayQuery;
-    const getState=()=>({q:query ? (query.value.trim()===displayQuery ? sourceQuery : query.value.trim()) : '',character:[...form.elements.character.selectedOptions].map(option=>option.value).filter(Boolean).join(','),type:form.elements.type.value,sort:form.elements.sort.value,direction:form.elements.direction.value,creation:form.elements.creation.value});
+    const getState=()=>({q:query ? (query.value.trim()===displayQuery ? sourceQuery : query.value.trim()) : '',character:[...form.elements.character.selectedOptions].map(option=>option.value).filter(Boolean).join(','),type:form.elements.type.value,sort:form.elements.sort.value,direction:form.elements.direction.value,creation:form.elements.creation.value,tag:tagInput?.value.trim()||''});
     const listBase=document.body.dataset.listBase||basePath(location.pathname);
     const globalArchive=listBase==='/browse.html'||listBase.startsWith('/categories/');
     const categoryURL=()=>{
@@ -91,12 +103,12 @@ import {orderWorks, shuffledSlugs} from '../components/work-order.js';
       document.dispatchEvent(new Event('archive:filter-sync'));
       syncCharacterTabs();
       const state=getState(),scores=state.q&&searchIndex?searchIndex.search(state.q):null;
-      filtered=filterWorks(all,state,{scores});
+      filtered=filterWorks(all,state,{scores,allowGif:!!tagInput,tagLabel:names});
       if(state.sort==='random'&&(reshuffle||!render.randomOrder))render.randomOrder=shuffledSlugs(all);
       filtered=orderWorks(filtered,{...state,scores,metric:(id,mode)=>window.WorkStats?.metric(id,mode)||0,randomOrder:render.randomOrder});
       if(searchPage&&!state.q&&!state.character&&!state.type&&!state.creation){count.textContent=tx('d.searchPrompt','输入关键词开始查找。');result.innerHTML='';$('#search-discovery').hidden=false;$('[data-load-more]').hidden=true;$('.load-more-wrap').hidden=true;return;}
       if(searchPage)$('#search-discovery').hidden=true;
-      count.textContent=tx('d.resultCounts','{count} 件作品',{count:filtered.length})+(state.q?' · “'+(query?.value||state.q)+'”':'');
+      count.textContent=(tagInput?tx('d.home.imageCount','{count} 张图片',{count:filtered.length.toLocaleString('en-US')}):tx('d.resultCounts','{count} 件作品',{count:filtered.length}))+(state.q?' · “'+(query?.value||state.q)+'”':'');
       const changed=Object.entries(defaultState).some(([name,value])=>state[name]!==value)||!!state.q;
       const start=changed?0:pageStart;
       const existingGrid=$('.work-grid',result);
@@ -119,7 +131,10 @@ import {orderWorks, shuffledSlugs} from '../components/work-order.js';
         const fragment=new URLSearchParams();if(state.character)fragment.set('character',state.character);if(state.creation)fragment.set('creation',state.creation);if(state.type)fragment.set('type',state.type);if(state.sort!=='latest')fragment.set('sort',state.sort);if(state.direction!=='desc')fragment.set('direction',state.direction);url.hash=fragment.toString();location.assign(localURL(url.href));return;
       }
       update(event.target.name==='sort');
-    });form.addEventListener('submit',e=>e.preventDefault());
+    });
+    form.addEventListener('submit',e=>{e.preventDefault();if(tagInput)update();});
+    tagInput?.addEventListener('input',suggestTags);
+    tagInput?.addEventListener('focus',suggestTags);
     document.addEventListener('click',event=>{
       const link=event.target.closest('[data-character-type]');
       if(!link||!document.body.hasAttribute('data-character-page'))return;
@@ -127,7 +142,7 @@ import {orderWorks, shuffledSlugs} from '../components/work-order.js';
       event.preventDefault();form.elements.type.value=link.dataset.characterType;update();
       document.querySelector('#all-works')?.scrollIntoView({block:'start'});
     });
-    document.addEventListener('click',e=>{if(e.target.closest('[data-reset]')){setCharacters(defaultState.character);form.elements.type.value=defaultState.type;form.elements.sort.value=defaultState.sort;form.elements.direction.value=defaultState.direction;form.elements.creation.value='';if(query)query.value='';update();}});
+    document.addEventListener('click',e=>{if(e.target.closest('[data-reset]')){setCharacters(defaultState.character);form.elements.type.value=defaultState.type;form.elements.sort.value=defaultState.sort;form.elements.direction.value=defaultState.direction;form.elements.creation.value='';if(query)query.value='';if(tagInput){tagInput.value='';suggestTags();}update();}});
     $('#search-form')?.addEventListener('submit',e=>{e.preventDefault();update();});
     let timer,composing=false;
     const scheduleSearch=()=>{clearTimeout(timer);timer=setTimeout(update,150);};
@@ -137,6 +152,7 @@ import {orderWorks, shuffledSlugs} from '../components/work-order.js';
     $('[data-load-more]').addEventListener('click',()=>{shown+=24;render(false,true);});
     document.addEventListener('site:langchange',()=>{
       if(!dataset)return;
+      suggestTags();
       const active=document.activeElement;
       const slug=result.contains(active)?active.dataset.preview:null;
       const entry=active?.matches('button.card-preview')?'button.card-preview':active?.matches('a.work-title')?'a.work-title':'a.work-art';
@@ -154,10 +170,17 @@ import {orderWorks, shuffledSlugs} from '../components/work-order.js';
       if(['popular','downloads'].includes(form.elements.sort.value))await window.WorkStats?.ready;
       dataset=d;
       const slugs=result.dataset.list?JSON.parse(result.dataset.list):null;
-      all=slugs?slugs.map(s=>d.works.find(w=>w.slug===s)).filter(Boolean):d.works;
+      const bySlug=slugs?new Map(d.works.map(work=>[work.slug,work])):null;
+      all=slugs?slugs.map(slug=>bySlug.get(slug)).filter(Boolean):d.works;
+      if(tagInput){
+        const counts=new Map();
+        for(const work of all)for(const tag of work.tg||[])counts.set(tag,(counts.get(tag)||0)+1);
+        tags=[...counts.keys()].sort((a,b)=>counts.get(b)-counts.get(a)||a.localeCompare(b));
+        suggestTags();
+      }
       shown=history.state?.feedVersion===7?history.state.feedShown||24:24;
       if(['popular','downloads'].includes(form.elements.sort.value)&&!window.WorkStats?.available())form.elements.sort.value=defaultState.sort;
-      if(['character','type','sort','direction','view','creation'].some(name=>params.has(name)))setURL();
+      if([...Object.keys(defaultState),'view'].some(name=>params.has(name)))setURL();
       render(false,false,true);
       if(performance.getEntriesByType('navigation')[0]?.type==='back_forward'){
         try{const y=Number(sessionStorage.getItem('bluefish-scroll:'+location.pathname+location.search));if(y)requestAnimationFrame(()=>requestAnimationFrame(()=>scrollTo(0,y)));}catch{}

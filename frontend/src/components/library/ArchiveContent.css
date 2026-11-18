@@ -62,9 +62,6 @@
   --blue-hover: #a5c1ff;
   --video-platform: #193e62
 }
-[hidden] {
-  display: none!important
-}
 body {
   overflow-wrap: anywhere
 }
@@ -203,12 +200,8 @@ h3 {
   color: var(--muted);
   line-height: 1.8
 }
-.section,.home-section {
+.section {
   margin-top: 36px
-}
-.home-section {
-  padding-top: 24px;
-  border-top: 1px solid var(--line)
 }
 .breadcrumbs {
   display: flex;

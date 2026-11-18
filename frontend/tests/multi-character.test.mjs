@@ -35,11 +35,22 @@ test('character options and counts are scoped to the full collection, including 
 });
 test('the browser filter uses AND rather than OR for multiple characters',()=>{
  const source=fs.readFileSync(new URL('../public/archive/archive.js',import.meta.url),'utf8');
- assert.match(source,/filtered=filterWorks\(all,state,\{scores\}\)/);
+ assert.match(source,/filtered\s*=\s*filterWorks\(all,\s*state,\s*\{\s*scores\b/);
  const all=[{slug:'a',cids:['deepseek'],k:['meme'],tg:['非AI']},{slug:'b',cids:['gpt'],k:['meme']},{slug:'both',cids:['deepseek','gpt'],k:['meme'],tg:['非AI']},{slug:'both-ai',cids:['deepseek','gpt'],k:['meme']}];
  const filter=creation=>filterWorks(all,{character:'deepseek,gpt',type:'',creation});
  assert.deepEqual(Array.from(filter(''),w=>w.slug),['both','both-ai']);
  assert.deepEqual(Array.from(filter('non-ai'),w=>w.slug),['both']);
+});
+test('tag and category filtering intersect the stored tags and ignore title-only matches',()=>{
+ const records=[
+  {slug:'match',cids:['gpt'],k:['meme'],tg:['晚安']},
+  {slug:'wrong-type',cids:['gpt'],k:['comic'],tg:['晚安']},
+  {slug:'title-only',cids:['gpt'],k:['meme'],n:'晚安',tg:['说晚安']}
+ ];
+ const options={tagLabel:tag=>tag==='晚安'?'Good night':tag};
+ for(const tag of ['晚安','GOOD NIGHT']){
+  assert.deepEqual(filterWorks(records,{type:'meme',tag},options).map(work=>work.slug),['match']);
+ }
 });
 test('cards show every role link without changing the frozen detail URL',()=>{
  const work={slug:'frozen',n:'Fixture',d:'Fixture',cid:'deepseek',c:'DeepSeek娘',col:'#123',roles:[{id:'deepseek',name:'DeepSeek娘',color:'#123'},{id:'gpt',name:'GPT娘',color:'#456'}],k:['meme'],i:'/fixture.webp',w:1,h:1,dt:'2026.10.11'};

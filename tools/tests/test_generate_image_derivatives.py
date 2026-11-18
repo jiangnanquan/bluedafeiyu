@@ -13,6 +13,34 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tools"))
 
 import generate_image_derivatives as derivatives  # noqa: E402
+from prepare_preview_assets import MAX_BYTES, fit_previews  # noqa: E402
+
+
+class GalleryPreviewBudgetTests(unittest.TestCase):
+    def test_animated_preview_retains_loop_and_duration_under_budget(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            preview = root / "animated.webp"
+            durations = [30, 70, 120, 280] * 3
+            frames = [Image.effect_noise((480, 320), 80).convert("RGB") for _ in durations]
+            frames[0].save(preview, format="WEBP", save_all=True, append_images=frames[1:],
+                           duration=durations, loop=2, quality=95, method=0)
+            self.assertGreater(preview.stat().st_size, MAX_BYTES)
+            small = root / "small.webp"
+            Image.new("RGB", (20, 20), "white").save(small)
+            original_small = small.read_bytes()
+            self.assertEqual(fit_previews(root), 1)
+            self.assertLess(preview.stat().st_size, MAX_BYTES)
+            self.assertEqual(small.read_bytes(), original_small)
+            with Image.open(preview) as image:
+                self.assertGreater(image.n_frames, 1)
+                self.assertEqual(image.info["loop"], 2)
+                total = 0
+                for index in range(image.n_frames):
+                    image.seek(index)
+                    image.load()
+                    total += image.info["duration"]
+                self.assertEqual(total, sum(durations))
 
 
 class GenerateSubmissionsWithoutOriginalsTests(unittest.TestCase):

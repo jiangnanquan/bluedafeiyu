@@ -8,7 +8,7 @@ import '../components/library/styles.css';
 import SiteShell from '../components/library/SiteShell.astro';
 import themeScript from '../../public/theme.js?raw';
 import componentRuntime from '../../public/components/runtime.js?raw';
-const ASSET_VERSION = '20261117-visual-3';
+const ASSET_VERSION = '20261118-gallery-audit';
 const { title, desc, path = '/', active = '', bodyPage = active, og, type = 'website', shareDesc = '',
   robots = 'index,follow', canonical = '', pageStyles = [], bodyAttrs = {}, schemas = [] } = Astro.props;
 ---
@@ -43,6 +43,5 @@ const { title, desc, path = '/', active = '', bodyPage = active, og, type = 'web
 
     <slot name="scripts" />
     <script src="../scripts/site-interactions.js"></script>
-    <script is:inline src={"/components/home-controls.js?v="+ASSET_VERSION} defer></script>
   </body>
 </html>

@@ -40,7 +40,7 @@ const turnstileSitekey=(import.meta.env.PUBLIC_TURNSTILE_SITEKEY||'').trim();
     <p class="hint" data-i18n="submit.form.metaHint">作品类型由你选择，审核时会核对；Tag、来源和授权由维护者补充。知道来源或授权时可写在说明里。</p>
   </div>
   <input id="f-turnstile-token" name="turnstileToken" type="hidden" value="" />
-  <div class="sub-block" id="turnstile-row" hidden><span class="hint" data-i18n="submit.form.turnstileHint">请先完成人机验证，再提交。</span><div class="turnstile-slot" id="turnstile-slot"></div></div>
+  <div class="sub-block" id="turnstile-row" hidden><span class="hint" data-i18n="submit.form.turnstileHint">请先完成人机验证，再提交。</span><div class="turnstile-slot" id="turnstile-slot"></div><p class="form-status is-error" data-turnstile-status role="status" hidden></p></div>
   <div class="sub-block">
     <b class="sub-label"><span data-i18n="submit.form.confirmLabel">提交前确认</span> <span class="req-mark">*</span></b><p class="hint" data-i18n="submit.form.confirmHint">三条全部勾选后才能提交。</p>
     <label class="check-line"><input id="f-confirm-1" name="confirmRights" type="checkbox" required /><span data-i18n="submit.confirm1">我确认自己有权提交本次全部图片，或已获原作者允许。</span></label>

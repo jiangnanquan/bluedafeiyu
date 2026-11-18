@@ -284,6 +284,9 @@ SHARED_SYNC_DIR="${STAGING_DIR}/shared-data"
 rm -rf "${SHARED_SYNC_DIR}"
 mkdir -p "${SHARED_SYNC_DIR}/blue-fish/previews"
 cp -a "${PREVIEW_SOURCE}/." "${SHARED_SYNC_DIR}/blue-fish/previews/"
+if ! guarded_build previews "${PYTHON:-python3}" "${SOURCE_DIR}/tools/prepare_preview_assets.py" "${SHARED_SYNC_DIR}/blue-fish/previews"; then
+  die "首批预览图压缩失败，继续使用当前发布版本"
+fi
 find "${SHARED_SYNC_DIR}" -type d -exec chmod 755 {} +
 find "${SHARED_SYNC_DIR}" -type f -exec chmod 644 {} +
 mkdir -p "${SHARED_DATA_DIR}/blue-fish/previews"

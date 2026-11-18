@@ -95,15 +95,15 @@ test('character descriptions merge search aliases into a single non-repeating li
   }
 });
 
-test('redesigned home retains thirty-six distinct real preview destinations in every language',()=>{
+test('the first homepage gallery page has 24 distinct preview destinations in every language',()=>{
   const archive=JSON.parse(fs.readFileSync(path.join(out,'archive-data.json'),'utf8'));
   const bySlug=new Map(archive.works.map(work=>[work.slug,work]));
   for(const locale of LOCALES){
     const section=read(localizedPath('/',locale)).querySelector('main');
     assert.ok(section,locale.id);
-    const picks=[...section.querySelectorAll('.home-section .work-card')];
-    assert.equal(picks.length,36,locale.id+' complete wall');
-    assert.equal(new Set(picks.map(pick=>pick.dataset.slug)).size,36);
+    const picks=[...section.querySelectorAll('.home-gallery .work-card')];
+    assert.equal(picks.length,24,locale.id+' gallery page');
+    assert.equal(new Set(picks.map(pick=>pick.dataset.slug)).size,24);
     for(const pick of picks){
       const work=bySlug.get(pick.dataset.slug),image=pick.querySelector('.work-art');
       assert.ok(work);assert.equal(image.dataset.preview,work.slug);

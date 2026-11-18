@@ -4,10 +4,10 @@ import {parseHTML} from 'linkedom';
 import {localizeHtml, LOCALES, ORIGIN} from '../scripts/localize-pages.mjs';
 import {videoArchive} from '../src/lib/video-archive.mjs';
 import {videoTerminology} from '../src/lib/video-terminology.mjs';
-import {renderVideoArchive} from '../src/components/archive/VideoPages.mjs';
+import {renderVideoArchive, VIDEO_PAGE_SIZE} from '../src/components/archive/VideoPages.mjs';
 import {createPrimitives} from '../src/components/archive/primitives.mjs';
 
-test('flat video archive keeps every approved video in Shanghai date order', () => {
+test('video archive sorts approved videos in Shanghai date order', () => {
   const ctx = createPrimitives({translations:{en:{},ja:{}},modelVendors:{}});
   const video = (bvid, publishedAt) => ({bvid,publishedAt,uid:'1',title:'A <video>',url:`https://www.bilibili.com/video/${bvid}/`,cover:'https://i1.hdslb.com/bfs/archive/test.jpg'});
   const videos = [video('BVold','2026-10-31T15:59:00Z'),video('BVnew','2026-11-02T00:00:00Z'),video('BVboundary','2026-10-31T16:01:00Z')];
@@ -22,9 +22,25 @@ test('flat video archive keeps every approved video in Shanghai date order', () 
   assert.equal(document.querySelector('.video-archive-register').getAttribute('href'),'/submit-video.html');
   for(const link of document.querySelectorAll('a[href^="https://www.bilibili.com/video/"]'))assert.equal(link.getAttribute('target'),'_blank');
   assert.equal(document.querySelectorAll('template').length,0);
-  const actual=parseHTML(renderVideoArchive(ctx,videoArchive)).document;
-  assert.equal(actual.querySelectorAll('[data-video-bvid]').length,videoArchive.videos.length);
-  assert.equal(new Set([...actual.querySelectorAll('[data-video-bvid]')].map(el=>el.dataset.videoBvid)).size,videoArchive.videos.length);
+});
+
+test('both video sort orders traverse each approved video once with 24 cards per page', () => {
+  const ctx=createPrimitives({translations:{en:{},ja:{}},modelVendors:{}});
+  const pages=Math.ceil(videoArchive.videos.length/VIDEO_PAGE_SIZE);
+  for(const order of ['latest','oldest']){
+    const collected=[];
+    for(let page=1;page<=pages;page++){
+      const {document}=parseHTML(renderVideoArchive(ctx,videoArchive,{page,order}));
+      const cards=[...document.querySelectorAll('[data-video-bvid]')];
+      assert.equal(cards.length,Math.min(VIDEO_PAGE_SIZE,videoArchive.videos.length-(page-1)*VIDEO_PAGE_SIZE));
+      assert.equal(document.querySelectorAll('template').length,0);
+      assert.equal(!!document.querySelector('[rel="next"]'),page<pages);
+      collected.push(...cards.map(card=>card.dataset.videoBvid));
+    }
+    const direction=order==='latest'?-1:1;
+    const expected=[...videoArchive.videos].sort((a,b)=>direction*(Date.parse(a.publishedAt)-Date.parse(b.publishedAt))||a.bvid.localeCompare(b.bvid));
+    assert.deepEqual(collected,expected.map(video=>video.bvid));
+  }
 });
 
 test('video archive provides an empty state and creator registration without videos', () => {
