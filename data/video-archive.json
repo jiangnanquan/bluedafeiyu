@@ -30,8 +30,8 @@
       "intro": "以換裝為主題進行大肥魚主體視頻創作。",
       "avatar": "https://i2.hdslb.com/bfs/face/e9f612261e88c2f48f558d9a79d69ac4a2bb3a60.jpg",
       "i18n": {
-        "en": "The creator describes their videos as outfit-change works built around DeepSeek Chan.",
-        "ja": "作者は、DeepSeek ちゃんを主体にした着せ替えテーマの動画を制作していると述べています。"
+        "en": "Creates videos themed around outfit changes, starring the DeepSeek Chan character.",
+        "ja": "着せ替えをテーマに、DeepSeekちゃんを主役にした動画を制作している。"
       }
     },
     {
@@ -74,8 +74,8 @@
       "intro": "大肥鱼和小克的同人短片",
       "avatar": "https://i0.hdslb.com/bfs/face/93118f51171662e3a60c3968f6668098f5a11387.jpg",
       "i18n": {
-        "en": "Creates fan shorts featuring DeepSeek Chan and Claude Chan.",
-        "ja": "ディープシークちゃんとクロードちゃんの同人ショートアニメを制作しています。"
+        "en": "A fan creator who makes chibi short dramas about AI characters.",
+        "ja": "AIキャラクターのちびキャラ短編劇を制作しているファン。"
       }
     },
     {
@@ -129,8 +129,8 @@
       "intro": "我想做很多视频，做很多很好玩的视频，首先肯定是自己觉得很好玩，其次嘛，也想传播快乐给大家。",
       "avatar": "https://i2.hdslb.com/bfs/face/e3445be765ec330ac29b07c328496e44ec04077a.jpg",
       "i18n": {
-        "en": "I want to make lots of videos, and lots of really fun videos. First of all they have to be fun for me, and then I want to spread that joy to everyone.",
-        "ja": "たくさん動画を作って、たくさん楽しい動画を作りたいです。まずは自分が楽しいと感じること、それからみんなに楽しさを届けたいです。"
+        "en": "I want to make lots of videos, and lots of really fun videos: first because I find them fun myself, and then because I want to spread some happiness to everyone.",
+        "ja": "たくさん動画を作りたいです。まず自分が楽しいと思える、面白い動画を。そして皆さんにも楽しさを届けたいです。"
       }
     },
     {
@@ -234,6 +234,82 @@
     }
   ],
   "videos": [
+    {
+      "bvid": "BV1SFsS6XE2w",
+      "uid": "9126506",
+      "title": "父女日常3",
+      "description": "父女小日常，嘴上说着不生气，心里悄悄记小账，软乎乎的傲娇谁能拒绝。",
+      "url": "https://www.bilibili.com/video/BV1SFsS6XE2w/",
+      "cover": "https://i0.hdslb.com/bfs/archive/c1b3fbb4f7f81cf46b92550aec9382c5a825e8da.jpg",
+      "duration": 61,
+      "publishedAt": "2026-11-18T13:57:32.000Z",
+      "characterIds": [
+        "deepseek"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "I want to make lots of videos, and lots of really fun videos: first because I find them fun myself, and then because I want to spread some happiness to everyone.",
+          "description": "An everyday father-and-daughter moment with chibi DeepSeek Chan: she says she is not angry, yet quietly keeps a little ledger in her heart. A soft, adorable tsundere scene.",
+          "title": "Father and Daughter Daily 3"
+        },
+        "ja": {
+          "creatorIntro": "たくさん動画を作りたいです。まず自分が楽しいと思える、面白い動画を。そして皆さんにも楽しさを届けたいです。",
+          "description": "ちびキャラのDeepSeekちゃんとの父娘の日常。怒っていないと言いながら、心の中ではしっかり小さな帳尻を合わせている、ふわふわのツンデレな一幕。",
+          "title": "父娘の日常3"
+        }
+      }
+    },
+    {
+      "bvid": "BV1bwsS6HEBW",
+      "uid": "9126506",
+      "title": "大肥鱼本来满心期待分配到文学院，结果被分院帽强行分配到计算机学院",
+      "description": "新生分流仪式的意外反转，文学梦碎代码之路。\n话说计算机学院属于那个系列那个学院？",
+      "url": "https://www.bilibili.com/video/BV1bwsS6HEBW/",
+      "cover": "https://i0.hdslb.com/bfs/archive/b82158792fe4bc3e1ceba338d626762e51549a47.jpg",
+      "duration": 51,
+      "publishedAt": "2026-11-18T13:35:31.000Z",
+      "characterIds": [
+        "deepseek"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "I want to make lots of videos, lots of really fun ones. First of all because I enjoy making them myself, and then because I'd like to spread some happiness to everyone.",
+          "description": "An unexpected twist at the freshman sorting ceremony: her literature dream gives way to the road of code. (By the way, which house does the computer science department belong to?)",
+          "title": "DeepSeek Chan Had Her Heart Set on Literature, but the Sorting Hat Sent Her to Computer Science"
+        },
+        "ja": {
+          "creatorIntro": "たくさん動画を作りたいです。たくさん楽しい動画を。まずは自分が楽しめること、それからみんなに楽しさを届けたいなと思っています。",
+          "description": "新入生の組分け式でまさかの逆転。文学の夢は消え、コードの道へ。ちなみに情報工学部はどの寮に属するのでしょうか？",
+          "title": "DeepSeekちゃんは文学部を希望していたのに、組分け帽子に情報工学部へ振り分けられた"
+        }
+      }
+    },
+    {
+      "bvid": "BV17ssm6ZEAG",
+      "uid": "13324467",
+      "title": "“你是不是想尝一尝”",
+      "description": "大肥鱼和小克的Q版小剧场第二集~\n\n形象来自：@ZipZipPipe     @这个刀子真甜",
+      "url": "https://www.bilibili.com/video/BV17ssm6ZEAG/",
+      "cover": "https://i1.hdslb.com/bfs/archive/205c52ee792b5ccdd998bce6c5f22f353ee24f45.jpg",
+      "duration": 76,
+      "publishedAt": "2026-11-18T08:56:56.000Z",
+      "characterIds": [
+        "deepseek",
+        "claude"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "A fan creator who makes chibi short dramas about AI characters.",
+          "description": "The second episode of a chibi short-drama series pairing DeepSeek Chan and Claude Chan: the two stroll through a European-style old town street and then relax on a park bench with drinks in hand.",
+          "title": "Wanna Try a Sip?"
+        },
+        "ja": {
+          "creatorIntro": "AIキャラクターのちびキャラ短編劇を制作しているファン。",
+          "description": "DeepSeekちゃんとClaudeちゃんが共演するちびキャラ小劇場の第2話。ヨーロッパ風の街並みを散歩し、公園のベンチでドリンクを片手にくつろぐ二人の日常を描いています。",
+          "title": "ちょっと味見してみる？"
+        }
+      }
+    },
     {
       "bvid": "BV1Mzs166Eq9",
       "uid": "3747573030456892",
@@ -1748,6 +1824,32 @@
       }
     },
     {
+      "bvid": "BV18X4p6JExa",
+      "uid": "45591374",
+      "title": "我要COS豆包！",
+      "description": "",
+      "url": "https://www.bilibili.com/video/BV18X4p6JExa/",
+      "cover": "https://i2.hdslb.com/bfs/archive/59746df6b65a2225b4a679916cd071d5a24ff3e3.jpg",
+      "duration": 27,
+      "publishedAt": "2026-11-07T16:00:43.000Z",
+      "characterIds": [
+        "deepseek",
+        "doubao"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "Creates outfit-change videos starring DeepSeek Chan.",
+          "description": "A short cosplay clip built around outfit changes: DeepSeek Chan dresses up as Doubao and shows off the resulting chibi look.",
+          "title": "I Want to Cosplay as Doubao!"
+        },
+        "ja": {
+          "creatorIntro": "DeepSeekちゃんを主役に、着せ替えをテーマにした動画を制作している。",
+          "description": "着せ替えをテーマにした短編コスプレ動画。DeepSeekちゃんが豆包のコスプレに挑戦し、ちびキャラになった姿を披露する。",
+          "title": "豆包にコスプレしたい！"
+        }
+      }
+    },
+    {
       "bvid": "BV1MM4n6kE9p",
       "uid": "9126506",
       "title": "大肥鱼与Gemini小剧场故事",
@@ -1929,6 +2031,31 @@
           "creatorIntro": "Bilibiliの投稿者・冬冰。AI製品の擬人化キャラクターを題材にしたショートアニメを投稿している。",
           "description": "DeepSeekちゃん、千問ちゃん、Grokちゃん、Claudeちゃん、豆包ちゃん、GPTちゃん、GLMちゃん、Geminiちゃんなど複数のAI製品のちびキャラが海のいかだに集まり、食事を分け合いながら軽口を叩くショートアニメ。青髪の小さな娘が「一口かじらせて」とねだる場面が中心。",
           "title": "ちょっと一口かじらせて腹ごしらえ"
+        }
+      }
+    },
+    {
+      "bvid": "BV11N456nEK9",
+      "uid": "45591374",
+      "title": "我要把主人Token花光！",
+      "description": "",
+      "url": "https://www.bilibili.com/video/BV11N456nEK9/",
+      "cover": "https://i1.hdslb.com/bfs/archive/f52f58fd67a5a0cb0a5e42f668d88a1e7b87fffa.jpg",
+      "duration": 38,
+      "publishedAt": "2026-11-06T17:50:10.000Z",
+      "characterIds": [
+        "deepseek"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "The creator makes outfit-change videos starring DeepSeek Chan.",
+          "description": "DeepSeek Chan in a maid outfit leans over a clothing shop counter to pick out new clothes, in a short fan video themed around an outfit change that runs up her master's token bill.",
+          "title": "I'm Going to Spend All My Master's Tokens!"
+        },
+        "ja": {
+          "creatorIntro": "DeepSeekちゃんを主役にした着せ替え動画を制作している投稿者です。",
+          "description": "メイド服姿のDeepSeekちゃんがお店のカウンターで新しい服を選ぶ、着せ替えをテーマにした短い二次創作動画です。",
+          "title": "ご主人様のトークンを使い切っちゃう！"
         }
       }
     },
@@ -2292,6 +2419,31 @@
       }
     },
     {
+      "bvid": "BV1PUx968E6K",
+      "uid": "45591374",
+      "title": "这得花不少Token！",
+      "description": "",
+      "url": "https://www.bilibili.com/video/BV1PUx968E6K/",
+      "cover": "https://i2.hdslb.com/bfs/archive/5c5afea6830654243399e740f9384ec7f2f70bb9.jpg",
+      "duration": 38,
+      "publishedAt": "2026-11-04T10:00:05.000Z",
+      "characterIds": [
+        "deepseek"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "The creator makes videos themed around outfit changes for DeepSeek Chan.",
+          "description": "A short chibi DeepSeek Chan video in which the character keeps changing outfits, from a ribboned maid-style apron dress to an ornate traditional gown, greeting viewers from a boutique counter.",
+          "title": "That Costs a Lot of Tokens!"
+        },
+        "ja": {
+          "creatorIntro": "DeepSeek娘を主役に、衣装替えをテーマにした動画を制作している。",
+          "description": "ちびキャラのDeepSeek娘が、リボン付きのメイド風エプロンドレスから華やかな中華風の衣装まで次々と着替えて見せるショート動画。ブティックのカウンターから視聴者に手を振っている。",
+          "title": "これはトークンがかなりかかる！"
+        }
+      }
+    },
+    {
       "bvid": "BV1zdxS6uE4j",
       "uid": "3747573030456892",
       "title": "【Day16】鲸鱼娘唱《雨爱》司凤版！邦吧邦吧邦吧…",
@@ -2340,6 +2492,56 @@
           "creatorIntro": "冬冰は、AIキャラクターの擬人化を題材にした短編コメディアニメをBilibiliで発表しているクリエイターです。",
           "description": "温室を舞台にした短編コメディアニメ。クジラのフードをかぶったちびキャラのDeepSeekちゃんをはじめ、AIキャラクターの擬人化たちがプランターの間で集まり、丸さをからかい合います。",
           "title": "ペンギンより丸いんだね"
+        }
+      }
+    },
+    {
+      "bvid": "BV1u4xm6nEvG",
+      "uid": "45591374",
+      "title": "这是我能得到的大肥鱼？！",
+      "description": "",
+      "url": "https://www.bilibili.com/video/BV1u4xm6nEvG/",
+      "cover": "https://i2.hdslb.com/bfs/archive/9da99e142658c8f62da436fa69cb0abf5e94323a.jpg",
+      "duration": 11,
+      "publishedAt": "2026-11-03T16:41:20.000Z",
+      "characterIds": [
+        "deepseek"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "Creates videos themed around outfit changes, starring the DeepSeek Chan character.",
+          "description": "An 11-second outfit-change fan video: DeepSeek Chan, with long blue hair and a blue whale tail, walks through a candle-lit hall in a layered white gown trimmed with lace and roses.",
+          "title": "Is This Really the DeepSeek Chan I Get?!"
+        },
+        "ja": {
+          "creatorIntro": "着せ替えをテーマに、DeepSeekちゃんを主役にした動画を制作している。",
+          "description": "青い長い髪と青いクジラの尾を持つDeepSeekちゃんが、レースとバラで飾られた白いドレス姿で、灯りのともるホールを歩く11秒の着せ替え動画。",
+          "title": "このDeepSeekちゃんが手に入るの？！"
+        }
+      }
+    },
+    {
+      "bvid": "BV1u4xm6nEuD",
+      "uid": "45591374",
+      "title": "这得要不少Token！",
+      "description": "",
+      "url": "https://www.bilibili.com/video/BV1u4xm6nEuD/",
+      "cover": "https://i1.hdslb.com/bfs/archive/f52f58fd67a5a0cb0a5e42f668d88a1e7b87fffa.jpg",
+      "duration": 29,
+      "publishedAt": "2026-11-03T16:40:32.000Z",
+      "characterIds": [
+        "deepseek"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "Creates videos themed around outfit changes, starring the DeepSeek Chan character.",
+          "description": "A 29-second outfit-change montage: DeepSeek Chan first appears in a chibi maid outfit at a figure-customisation counter, then switches through several different costumes.",
+          "title": "That Takes a Lot of Tokens!"
+        },
+        "ja": {
+          "creatorIntro": "着せ替えをテーマに、DeepSeekちゃんを主役にした動画を制作している。",
+          "description": "フィギュアカスタマイズカウンターの前に立つちびキャラのメイド姿から始まり、いくつもの衣装に切り替わっていく29秒の着せ替え動画。",
+          "title": "これはトークンがかなり必要！"
         }
       }
     },
@@ -2441,6 +2643,31 @@
           "creatorIntro": "楽しい動画をたくさん作りたいです。まずは自分が楽しむため、そしてその楽しさをみんなに届けたいからです。",
           "description": "アニメ調の短編二次創作。GPTちゃんとDeepSeekちゃんがオフィスのデスクで危機解決会議を開き、黒いパーカーの人物がモニター越しに向かいに座っています。",
           "title": "GPTちゃんとDeepSeekちゃんの仕事上の危機解決会議"
+        }
+      }
+    },
+    {
+      "bvid": "BV1Zn4N67EHn",
+      "uid": "45591374",
+      "title": "大肥鱼又在摸鱼？！",
+      "description": "",
+      "url": "https://www.bilibili.com/video/BV1Zn4N67EHn/",
+      "cover": "https://i2.hdslb.com/bfs/archive/626ade5fcd8c2911fe98a2e9d222b2b4787d9c44.jpg",
+      "duration": 33,
+      "publishedAt": "2026-11-02T19:33:07.000Z",
+      "characterIds": [
+        "deepseek"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "Creates videos themed around outfit changes, starring the DeepSeek Chan character.",
+          "description": "A 33-second skit: peeking through a gap in the door, we see DeepSeek Chan slacking off at the office desk at night, blue whale tail hanging over the back of the chair.",
+          "title": "DeepSeek Chan Is Slacking Off Again?!"
+        },
+        "ja": {
+          "creatorIntro": "着せ替えをテーマに、DeepSeekちゃんを主役にした動画を制作している。",
+          "description": "ドアの隙間から覗くと、夜のオフィスで椅子の背もたれに青いクジラの尾をかけてサボっているDeepSeekちゃんの姿が映る33秒の寸劇。",
+          "title": "DeepSeekちゃん、またサボってる？！"
         }
       }
     },

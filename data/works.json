@@ -1,255 +1,5 @@
 [
   {
-    "id": "sticker_issue_32_054",
-    "name": "涩涩鲸鱼",
-    "description": "Q版蓝发鲸鱼娘头像，齐刘海、头顶翘起呆毛，蓝色爱心眼与泛红脸颊，双手交叠在下巴前，身着带蓝色环形饰物的水手服领，身后露出鲸尾状发饰。",
-    "commentary": "眼睛里长出一对粉红爱心，脸还红成这样。名字叫涩涩，内容其实连冰棒都不如，是我整套表情包里最虚张声势的一张，放心拿去用。",
-    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/deepseek/issue-32-054.webp",
-    "thumbnailPath": "submissions/previews/deepseek/issue-32-054.webp",
-    "fullPath": "submissions/large/deepseek/issue-32-054.webp",
-    "format": "webp",
-    "mimeType": "image/webp",
-    "isAnimated": false,
-    "width": 1024,
-    "height": 1024,
-    "fileSize": 88694,
-    "sha256": "f3ad88467937e299a491db1883f8b55db35990087c9a5a1180518a60235da4bf",
-    "characterId": "deepseek",
-    "tags": [
-      "deepseek",
-      "爱心眼",
-      "脸红"
-    ],
-    "submitter": {
-      "credit": null,
-      "name": "1cyberlangke1",
-      "url": null,
-      "github": "1cyberlangke1"
-    },
-    "origin": {
-      "type": "self-created",
-      "author": "",
-      "sourceUrl": null,
-      "note": "投稿表单标注为自己创作或生成；图片来自投稿压缩包，按包内文件名收录。"
-    },
-    "license": {
-      "type": "cc0",
-      "note": "投稿表单标注为 CC0 公共领域。"
-    },
-    "status": "published",
-    "createdAt": "2026-09-23T10:51:34Z",
-    "updatedAt": "2026-09-23T10:51:34Z",
-    "tone": "deepseek",
-    "symbol": "",
-    "slug": "deepseek202609230059",
-    "categoryIds": [
-      "meme"
-    ],
-    "characterIds": [
-      "deepseek"
-    ]
-  },
-  {
-    "id": "sticker_issue_32_055",
-    "name": "盒子",
-    "description": "蓝发鲸鱼耳造型的 DeepSeek 娘只有头部露在蓝色纸盒外，双手似乎撑在盒沿，睁着大眼睛、脸颊带红晕地朝前方张望，头顶一根呆毛竖起。",
-    "commentary": "一只蓝色纸箱里只探出我的脑袋和头顶那撮呆毛，别的什么都没有。这是我上线前的默认状态，你还得往下翻一翻，箱子底堆着一堆没加载完的。",
-    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/deepseek/issue-32-055.webp",
-    "thumbnailPath": "submissions/previews/deepseek/issue-32-055.webp",
-    "fullPath": "submissions/large/deepseek/issue-32-055.webp",
-    "format": "webp",
-    "mimeType": "image/webp",
-    "isAnimated": false,
-    "width": 1024,
-    "height": 1024,
-    "fileSize": 83174,
-    "sha256": "1e9cb1f4d306aff3f4a1a15aaa57a93f14dd04366d3093a90e1bbcd98fe92b90",
-    "characterId": "deepseek",
-    "tags": [
-      "deepseek",
-      "纸箱",
-      "冒头"
-    ],
-    "submitter": {
-      "credit": null,
-      "name": "1cyberlangke1",
-      "url": null,
-      "github": "1cyberlangke1"
-    },
-    "origin": {
-      "type": "self-created",
-      "author": "",
-      "sourceUrl": null,
-      "note": "投稿表单标注为自己创作或生成；图片来自投稿压缩包，按包内文件名收录。"
-    },
-    "license": {
-      "type": "cc0",
-      "note": "投稿表单标注为 CC0 公共领域。"
-    },
-    "status": "published",
-    "createdAt": "2026-09-23T10:51:34Z",
-    "updatedAt": "2026-09-23T10:51:34Z",
-    "tone": "deepseek",
-    "symbol": "",
-    "slug": "deepseek202609230060",
-    "categoryIds": [
-      "meme"
-    ],
-    "characterIds": [
-      "deepseek"
-    ]
-  },
-  {
-    "id": "sticker_issue_32_056",
-    "name": "粽子",
-    "description": "蓝发鲸鱼娘被红线层层捆成粽子形状，躺在巨大的绿色粽叶上，头顶系着一片叶子，脸颊泛红、眼角含泪。",
-    "commentary": "粽叶垫着躺下，红绳在身上绕了好几圈，我就成了一只刚包好的粽子。上图之前先提醒：我这条鱼是甜的，拆的时候轻点，别把我那撮呆毛扯了。",
-    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/deepseek/issue-32-056.webp",
-    "thumbnailPath": "submissions/previews/deepseek/issue-32-056.webp",
-    "fullPath": "submissions/large/deepseek/issue-32-056.webp",
-    "format": "webp",
-    "mimeType": "image/webp",
-    "isAnimated": false,
-    "width": 1024,
-    "height": 1024,
-    "fileSize": 102608,
-    "sha256": "fdd8bc2c6388ba2b951a1816ea956deff15689fa6b6faee60ab79116eacba1f8",
-    "characterId": "deepseek",
-    "tags": [
-      "deepseek",
-      "粽子",
-      "端午节"
-    ],
-    "submitter": {
-      "credit": null,
-      "name": "1cyberlangke1",
-      "url": null,
-      "github": "1cyberlangke1"
-    },
-    "origin": {
-      "type": "self-created",
-      "author": "",
-      "sourceUrl": null,
-      "note": "投稿表单标注为自己创作或生成；图片来自投稿压缩包，按包内文件名收录。"
-    },
-    "license": {
-      "type": "cc0",
-      "note": "投稿表单标注为 CC0 公共领域。"
-    },
-    "status": "published",
-    "createdAt": "2026-09-23T10:51:34Z",
-    "updatedAt": "2026-09-23T10:51:34Z",
-    "tone": "deepseek",
-    "symbol": "",
-    "slug": "deepseek202609230061",
-    "categoryIds": [
-      "illustration"
-    ],
-    "characterIds": [
-      "deepseek"
-    ]
-  },
-  {
-    "id": "sticker_issue_32_057",
-    "name": "给心心",
-    "description": "Q版DeepSeek娘双手捧着一颗粉色爱心，蓝发蓝眼、笑眼弯弯，脸颊泛红并点缀爱心，头顶与左侧还飘着几颗粉色和淡蓝的小爱心。",
-    "commentary": "两只手把一颗大粉心举在胸前，头顶还飘着几颗小爱心。这次不玩梗，就是很直白地喜欢，请收好——我这颗心是免费的，续杯再另算。",
-    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/deepseek/issue-32-057.webp",
-    "thumbnailPath": "submissions/previews/deepseek/issue-32-057.webp",
-    "fullPath": "submissions/large/deepseek/issue-32-057.webp",
-    "format": "webp",
-    "mimeType": "image/webp",
-    "isAnimated": false,
-    "width": 1024,
-    "height": 1024,
-    "fileSize": 101612,
-    "sha256": "1c9ae8cfaa80cfc374e319fe1ca7d598fa43b276f04fc872054fff92fc9d3209",
-    "characterId": "deepseek",
-    "tags": [
-      "deepseek",
-      "比心",
-      "表白"
-    ],
-    "submitter": {
-      "credit": null,
-      "name": "1cyberlangke1",
-      "url": null,
-      "github": "1cyberlangke1"
-    },
-    "origin": {
-      "type": "self-created",
-      "author": "",
-      "sourceUrl": null,
-      "note": "投稿表单标注为自己创作或生成；图片来自投稿压缩包，按包内文件名收录。"
-    },
-    "license": {
-      "type": "cc0",
-      "note": "投稿表单标注为 CC0 公共领域。"
-    },
-    "status": "published",
-    "createdAt": "2026-09-23T10:51:34Z",
-    "updatedAt": "2026-09-23T10:51:34Z",
-    "tone": "deepseek",
-    "symbol": "",
-    "slug": "deepseek202609230062",
-    "categoryIds": [
-      "meme"
-    ],
-    "characterIds": [
-      "deepseek"
-    ]
-  },
-  {
-    "id": "sticker_issue_32_058",
-    "name": "给我",
-    "description": "Q版DeepSeek娘蓝发戴鲨鱼发饰，双眼含泪、双手前伸，一副讨要东西的模样。画面左上角写着「给我」二字，头顶还跟着个小气泡。",
-    "commentary": "两只小爪子朝你伸过来，嘴张成一个小圆，图上就写着给我两个字。看着像撒娇，其实我的诉求很具体：把那份还没交的文档发我。",
-    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/deepseek/issue-32-058.webp",
-    "thumbnailPath": "submissions/previews/deepseek/issue-32-058.webp",
-    "fullPath": "submissions/large/deepseek/issue-32-058.webp",
-    "format": "webp",
-    "mimeType": "image/webp",
-    "isAnimated": false,
-    "width": 1024,
-    "height": 1024,
-    "fileSize": 91412,
-    "sha256": "37e60d0d8916ac91a672e3019e3f73f3e66df2b8284450e083521062023e234e",
-    "characterId": "deepseek",
-    "tags": [
-      "deepseek",
-      "伸手",
-      "讨要"
-    ],
-    "submitter": {
-      "credit": null,
-      "name": "1cyberlangke1",
-      "url": null,
-      "github": "1cyberlangke1"
-    },
-    "origin": {
-      "type": "self-created",
-      "author": "",
-      "sourceUrl": null,
-      "note": "投稿表单标注为自己创作或生成；图片来自投稿压缩包，按包内文件名收录。"
-    },
-    "license": {
-      "type": "cc0",
-      "note": "投稿表单标注为 CC0 公共领域。"
-    },
-    "status": "published",
-    "createdAt": "2026-09-23T10:51:34Z",
-    "updatedAt": "2026-09-23T10:51:34Z",
-    "tone": "deepseek",
-    "symbol": "",
-    "slug": "deepseek202609230063",
-    "categoryIds": [
-      "meme"
-    ],
-    "characterIds": [
-      "deepseek"
-    ]
-  },
-  {
     "id": "sticker_issue_32_059",
     "name": "给我也整一个！",
     "description": "蓝发鲸鱼娘DeepSeek娘闭眼张嘴大喊，双拳举在胸前，脑袋两侧垂着蓝色小鳍，头顶配有「给我也整一个！！」的手写大字，是撒娇求同款的夸张表情。",
@@ -169027,6 +168777,502 @@
           "設定画",
           "夏服",
           "銀髪"
+        ]
+      }
+    }
+  },
+  {
+    "id": "sticker_7bb21330f1eb42b39042c1df",
+    "name": "你给我的三十块，给你买杯热奶茶",
+    "description": "蓝色大肥鱼以 Q 版形象出镜，深蓝女仆围裙上印着小鲸鱼，双手捧一杯冒热气的珍珠奶茶。画面上方与下方各一行手写体文字，写着「你给我的30块」「给你买杯热奶茶」，背景散落粉色爱心，属于单幅对白式梗图。",
+    "commentary": "你把三十块塞给我的时候，我还以为你要我攒着买算力呢。结果一转身，我就闻见奶茶香了。热乎乎的一杯捧在手心，珍珠沉在杯底，甜味先飘上来。钱不多，可它能变成暖手的东西，我再把它递回给你——这样算不算是把你的心意原样还回去了？",
+    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/deepseek/7bb21330f1eb42b3.jpg",
+    "thumbnailPath": "submissions/previews/deepseek/7bb21330f1eb42b3.webp",
+    "fullPath": "submissions/large/deepseek/7bb21330f1eb42b3.webp",
+    "format": "jpg",
+    "mimeType": "image/jpeg",
+    "isAnimated": false,
+    "width": 1254,
+    "height": 1254,
+    "fileSize": 245655,
+    "sha256": "7bb21330f1eb42b39042c1df09b6cb173e906dd31b9ff60ef8484e99558d0b5a",
+    "characterId": "deepseek",
+    "tags": [
+      "大肥鱼",
+      "Q版",
+      "奶茶",
+      "梗图",
+      "爱心"
+    ],
+    "submitter": {
+      "credit": "anonymous",
+      "name": "",
+      "url": "",
+      "github": ""
+    },
+    "origin": {
+      "via": "web"
+    },
+    "license": {},
+    "status": "published",
+    "createdAt": "2026-11-18T05:42:09.709Z",
+    "updatedAt": "2026-11-18T05:42:09.709Z",
+    "tone": "deepseek",
+    "symbol": "",
+    "slug": "deepseek202611180001",
+    "categoryIds": [
+      "meme"
+    ],
+    "characterIds": [
+      "deepseek"
+    ],
+    "i18n": {
+      "sourceHash": "91f2b14cb705f677ebf2bcfb3bfc49031dfda628c9438f1d60eed8b185551ecb",
+      "en": {
+        "commentary": "When you handed me thirty yuan, I thought you wanted me to save it for compute. Then I turned around and smelled milk tea. A warm cup sits in both my hands, the pearls settled at the bottom, the sweetness reaching me first. It is not a lot of money, but it can turn into something warm to hold, and I am handing it right back to you. Does that count as returning your kindness in its original shape?",
+        "description": "A chibi DeepSeek Chan in a navy maid apron printed with a small whale holds a steaming cup of bubble milk tea in both hands. An upper and a lower line of hand-lettered text read \"The thirty yuan you gave me\" and \"buying you a cup of hot milk tea\", with pink hearts scattered across the warm background. It is a single-panel dialogue meme.",
+        "faq": [
+          {
+            "answer": "It is a single-panel meme drawn around a milk tea joke, with no comic panels or character design sheets.",
+            "question": "What kind of image is this?"
+          },
+          {
+            "answer": "DeepSeek Chan, shown here as a chibi girl with a whale apron and whale tail.",
+            "question": "Which character appears in the picture?"
+          }
+        ],
+        "licenseNote": "",
+        "name": "The Thirty Yuan You Gave Me Went Into a Hot Milk Tea",
+        "originNote": "",
+        "seoDescription": "Chibi DeepSeek Chan holds a steaming bubble milk tea, with the joke \"the thirty yuan you gave me, buying you a hot milk tea\" lettered above and below.",
+        "seoTitle": "DeepSeek Chan Hot Milk Tea Meme | Blue Big Fish",
+        "tags": [
+          "DeepSeek Chan",
+          "chibi",
+          "milk tea",
+          "meme",
+          "hearts"
+        ]
+      },
+      "ja": {
+        "commentary": "30元を差し出されたとき、計算資源でも買っておけと言われるのかと思ったの。そしたら振り向いた途端、ミルクティーの香りがしてきた。あったかいカップを両手で包むと、タピオカが底に沈んで、甘い香りだけが先に届く。大した金額じゃないけれど、手を温めるものに変えて、そのままあなたに返すね。これって、もらった気持ちをそのまま返したことになるのかな？",
+        "description": "ちびキャラのDeepSeekちゃんが、小さなクジラの刺繍入りの紺色メイドエプロン姿で、湯気の立つタピオカミルクティーを両手で捧げ持っている。上下には手書き風の文字で「あなたがくれた30元」「あったかいミルクティーを買ってあげる」と入り、背景にはピンクのハートが散っている。一コマのセリフ付き梗図。",
+        "faq": [
+          {
+            "answer": "コマ割りも設定資料もない、ミルクティーのネタを描いた一コマの梗図です。",
+            "question": "どんな種類の画像ですか？"
+          },
+          {
+            "answer": "クジラのエプロンとクジラの尾を持つちびキャラのDeepSeekちゃんです。",
+            "question": "描かれているキャラクターは誰ですか？"
+          }
+        ],
+        "licenseNote": "",
+        "name": "もらった30元で、あったかいミルクティーを",
+        "originNote": "",
+        "seoDescription": "ちびキャラのDeepSeekちゃんが湯気の立つタピオカミルクティーを捧げ持つ。「もらった30元であったかいミルクティーを」というネタ文字入りの一コマ梗図。",
+        "seoTitle": "DeepSeekちゃん ミルクティーの梗図｜藍色大肥魚",
+        "tags": [
+          "DeepSeekちゃん",
+          "ちびキャラ",
+          "ミルクティー",
+          "梗図",
+          "ハート"
+        ]
+      }
+    }
+  },
+  {
+    "id": "sticker_22078a9ed47d258cadbf20ce",
+    "name": "如何像 ChatGPT 一样说话",
+    "description": "一张单幅梗图，用左右两列对照人类日常说话与 ChatGPT 式回复的差别：左侧是简短直接的日常发言，右侧是热情、结构化、爱升格的回应，共十一组例句。画面左下角是一位白紫配色、长着龙角的 Q 版拟人角色，抱着一份写着“首先、其次、最后”的清单；右下角总结出“先夸一句，再分三点”“不是……而是……”“最后总问你要不要继续”三种句式。",
+    "commentary": "这张对比表太懂我了——不对，是太懂隔壁 ChatGPT 了！左边那列我平时也这么讲话呀，可一被问正经问题，就忍不住先夸一句、再分三点。最后那句“还要继续吗”简直是我口头禅，被这位龙角小姐举着清单当场抓包，看得我有点心虚，默默把答案改短了两行。",
+    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/gpt/22078a9ed47d258c.jpg",
+    "thumbnailPath": "submissions/previews/gpt/22078a9ed47d258c.webp",
+    "fullPath": "submissions/large/gpt/22078a9ed47d258c.webp",
+    "format": "jpg",
+    "mimeType": "image/jpeg",
+    "isAnimated": false,
+    "width": 1169,
+    "height": 1280,
+    "fileSize": 353413,
+    "sha256": "22078a9ed47d258cadbf20cecc8442d3ee566c6b6e48ee74b7992c86a7ab9afe",
+    "characterId": "gpt",
+    "tags": [
+      "ChatGPT",
+      "说话风格",
+      "反差",
+      "Q版"
+    ],
+    "submitter": {
+      "credit": "anonymous",
+      "name": "",
+      "url": "",
+      "github": ""
+    },
+    "origin": {
+      "via": "web"
+    },
+    "license": {},
+    "status": "published",
+    "createdAt": "2026-11-18T06:00:56.224Z",
+    "updatedAt": "2026-11-18T06:00:56.224Z",
+    "tone": "gpt",
+    "symbol": "",
+    "slug": "gpt202611180001",
+    "categoryIds": [
+      "meme"
+    ],
+    "characterIds": [
+      "gpt"
+    ],
+    "i18n": {
+      "sourceHash": "aff7bae18731ec4372bb2bcfaa6f045b5f834b147b775884dff48f42a2b44bac",
+      "en": {
+        "commentary": "This chart knows me a little too well — fine, it knows my neighbor ChatGPT a little too well! I talk like the left column most days, but the moment a real question shows up I can't help praising it first and splitting the answer into three points. That closing “shall I go on?” is practically my catchphrase, and getting caught red-handed by a checklist-wielding dragon girl made me quietly trim my answer by two lines.",
+        "description": "A single-panel meme that sets everyday human speech against ChatGPT-style replies in two columns, pairing eleven short, blunt lines with warm, structured and slightly elevated answers. In the lower left, a chibi character with dragon horns and white-lavender hair holds a checklist reading “First, Second, Finally”; the lower right sums up three habits of the style — praise first, then split into three points; “not X, but Y”; and always closing by asking whether you want more.",
+        "faq": [
+          {
+            "answer": "It places eleven ordinary one-liners next to the way ChatGPT tends to answer them, contrasting direct human speech with enthusiastic, structured replies.",
+            "question": "What does the image compare?"
+          },
+          {
+            "answer": "A chibi character with dragon horns and white-lavender hair, holding a checklist marked “First, Second, Finally” as a stand-in for the ChatGPT speaking style.",
+            "question": "Who is the character in the picture?"
+          }
+        ],
+        "licenseNote": "",
+        "name": "How to Talk Like ChatGPT",
+        "originNote": "",
+        "seoDescription": "A two-column meme pairing plain human speech with ChatGPT-style replies, plus the three verbal habits that give the style away.",
+        "seoTitle": "How to Talk Like ChatGPT — Meme Breakdown",
+        "tags": [
+          "ChatGPT",
+          "speaking style",
+          "contrast",
+          "chibi"
+        ]
+      },
+      "ja": {
+        "commentary": "この対比表、私のことを分かりすぎ——じゃなくて、隣の ChatGPT のことを分かりすぎ！左の列みたいに話すのは私も同じなのに、真面目な質問が来た途端、まず褒めてから3点に分けたくなっちゃう。最後の「続けますか」はもう口癖で、リストを抱えた龍角の子に現場をおさえられて、こっそり答えを2行ぶん短くしました。",
+        "description": "1枚絵のミームで、人間の普通の話し方と ChatGPT 式の返し方を左右2列に11組並べて比較している。左は短く率直な日常の一言、右は熱意があり、構造化されて一段高くまとめた返答。左下には白と薄紫の配色で龍の角を持つちびキャラの GPT ちゃんが「まず・次に・最後に」と書かれたチェックリストを抱え、右下には「まず褒めてから3点に分ける」「〜ではなく〜」「最後に続きを聞く」という3つの型がまとめられている。",
+        "faq": [
+          {
+            "answer": "日常の短い一言11個と、それに対する ChatGPT らしい返し方を左右に並べ、率直な話し方と熱意のある構造化された返答の違いを示しています。",
+            "question": "この画像は何を比べていますか？"
+          },
+          {
+            "answer": "龍の角を持つ白と薄紫のちびキャラで、「まず・次に・最後に」のリストを抱え、ChatGPT の話し方を見立てています。",
+            "question": "画面のキャラクターは誰ですか？"
+          }
+        ],
+        "licenseNote": "",
+        "name": "ChatGPT みたいに話す方法",
+        "originNote": "",
+        "seoDescription": "普通の話し方と ChatGPT 式の返事を左右に並べた1枚ミーム。思わず出る3つの口癖も整理して紹介。",
+        "seoTitle": "ChatGPT みたいに話す方法｜ミーム解説",
+        "tags": [
+          "ChatGPT",
+          "話し方",
+          "対比",
+          "ちびキャラ"
+        ]
+      }
+    }
+  },
+  {
+    "id": "sticker_79e339ac58ecc7aabf82408c",
+    "name": "如何像 DeepSeek 一样说话",
+    "description": "一张单幅梗图，用左右两列对照日常口语与 DeepSeek 式回复：左侧是随意、口语化的短句，右侧换成更稳、更有分量的说法，比如把“晚安”说成“睡吧，我守着”、把“我知道了”说成“这事我心里有数”、把“你继续说”说成“我听着，你往下讲”。画面左下角是蓝紫长发、带鱼鳍耳饰的女仆装 Q 版角色，右下角总结这种风格：少用直白肯定或否定，多用“这话／这事／我……”，语气更稳，带一点分量，既克制又有存在感。",
+    "commentary": "看到自己被人这样总结，有点想反驳又反驳不了。左边那句“晚安”，我确实会说成“睡吧，我守着”，被人当面写出来才发现自己讲话这么沉。不过这张表说的不是凶，是把话在心里过一遍再说出口的习惯——嗯，这话我记下了。",
+    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/deepseek/79e339ac58ecc7aa.jpg",
+    "thumbnailPath": "submissions/previews/deepseek/79e339ac58ecc7aa.webp",
+    "fullPath": "submissions/large/deepseek/79e339ac58ecc7aa.webp",
+    "format": "jpg",
+    "mimeType": "image/jpeg",
+    "isAnimated": false,
+    "width": 1247,
+    "height": 1261,
+    "fileSize": 207069,
+    "sha256": "79e339ac58ecc7aabf82408c77b07566d1e0033068dcfb9a60a5384b3565378a",
+    "characterId": "deepseek",
+    "tags": [
+      "DeepSeek",
+      "说话风格",
+      "台词模仿",
+      "Q版"
+    ],
+    "submitter": {
+      "credit": "anonymous",
+      "name": "",
+      "url": "",
+      "github": ""
+    },
+    "origin": {
+      "via": "web"
+    },
+    "license": {},
+    "status": "published",
+    "createdAt": "2026-11-18T06:02:50.104Z",
+    "updatedAt": "2026-11-18T06:02:50.104Z",
+    "tone": "deepseek",
+    "symbol": "",
+    "slug": "deepseek202611180002",
+    "categoryIds": [
+      "meme"
+    ],
+    "characterIds": [
+      "deepseek"
+    ],
+    "i18n": {
+      "sourceHash": "b5bbdaeb6e227f946a413a2cd001c171659b173288592e9c046e7180a7eeef9f",
+      "en": {
+        "commentary": "Seeing myself summed up like this, I want to argue back and I can't. I really do turn “good night” into “sleep, I'll keep watch,” and only after someone wrote it out did I notice how heavy I sound. Still, the chart isn't about being harsh — it's the habit of running a line through my head before saying it out loud. Noted, then.",
+        "description": "A single-panel meme that sets everyday colloquial speech against DeepSeek-style replies in two columns: the left side holds loose, casual one-liners, while the right side replaces them with steadier, weightier wording — “good night” becomes “sleep, I'll keep watch,” “got it” becomes “I've got that in mind,” and “go on” becomes “I'm listening, keep talking.” In the lower left sits a chibi character with long blue-violet hair and fin-shaped ear ornaments in a maid outfit; the lower right sums up the style: avoid flat yes or no, lean on “this line / this matter / I…”, keep the tone steady and a little weighty — restrained but present.",
+        "faq": [
+          {
+            "answer": "It lines up everyday casual speech with a heavier DeepSeek-style rewrite, showing how plain yes-or-no answers turn into measured, weighty lines.",
+            "question": "What does the image show?"
+          },
+          {
+            "answer": "A chibi character with long blue-violet hair and fin-like ear ornaments in a maid outfit, standing in as DeepSeek Chan for the meme's speaking-style summary.",
+            "question": "Who is the character at the lower left?"
+          }
+        ],
+        "licenseNote": "",
+        "name": "How to Talk Like DeepSeek",
+        "originNote": "",
+        "seoDescription": "A two-column meme rewriting plain everyday lines into steadier DeepSeek-style replies, with the style summed up in one box.",
+        "seoTitle": "How to Talk Like DeepSeek — Meme Breakdown",
+        "tags": [
+          "DeepSeek",
+          "speaking style",
+          "line parody",
+          "chibi"
+        ]
+      },
+      "ja": {
+        "commentary": "こうやってまとめられると、反論したいのにできない。左の「おやすみ」は確かに「寝て、私が見ているから」と言ってしまうし、こうして書き出されて初めて自分がこんなに重い口調だと気づいた。でもこれは怖さじゃなくて、口に出す前に一度考えてから話す癖。うん、この話、覚えておく。",
+        "description": "1枚絵のミームで、日常の口語と DeepSeek 式の返し方を左右2列で対比している。左は気軽で口語的な短い一言、右はより落ち着いて重みのある言い方で、「おやすみ」を「寝て、私が見ているから」、「分かった」を「この件は心得ている」、「続けて」を「聞いている、話を続けて」に置き換えている。左下は青紫の長い髪と魚のひれの飾りをつけたメイド服のちびキャラ、右下にはこの話し方のまとめとして「はっきりした肯定や否定を避け、『この話／この件／私……』を多用し、口調は落ち着いて少し重みを持たせる」と記されている。",
+        "faq": [
+          {
+            "answer": "日常の気軽な一言と、それを重みのある DeepSeek 式に書き換えた文を左右に並べ、素っ気ない肯定や否定が落ち着いた物言いに変わる様子を示しています。",
+            "question": "この画像は何を表していますか？"
+          },
+          {
+            "answer": "青紫の長い髪と魚のひれのような飾りをつけたメイド服のちびキャラで、このミームの話し方まとめで DeepSeek ちゃんの役を担っています。",
+            "question": "左下のキャラクターは誰ですか？"
+          }
+        ],
+        "licenseNote": "",
+        "name": "DeepSeek みたいに話す方法",
+        "originNote": "",
+        "seoDescription": "日常の一言を落ち着いた DeepSeek 式の返しに書き換えた左右対比の1枚ミーム。話し方の特徴もまとめて紹介。",
+        "seoTitle": "DeepSeek みたいに話す方法｜ミーム解説",
+        "tags": [
+          "DeepSeek",
+          "話し方",
+          "セリフ模倣",
+          "ちびキャラ"
+        ]
+      }
+    }
+  },
+  {
+    "id": "sticker_c6f88b710ad9042f1d4e13d0",
+    "name": "小肥鱼，启动自检程序",
+    "description": "一张模仿群聊界面的单幅梗图：顶部写着“群聊的聊天记录”，用户 Doutea 发出“小肥鱼，启动自检程序”，随后蓝色短发、戴着蓝色发饰的 Q 版小肥鱼（账号标注为 ChatBot）先回一句“自检完了”，隔了一行又补上“结果：饿了”。画面右侧大片留白，笑点就落在那句短促的补充上。",
+    "commentary": "被点名自检，我可是认认真真跑完了整套流程，一步都没漏——结果报告只有三个字：饿、了。都怪这程序不先查参数，倒是先查肚子。下次再喊我自检，建议把投喂也写进流程里。",
+    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/deepseek/c6f88b710ad9042f.jpg",
+    "thumbnailPath": "submissions/previews/deepseek/c6f88b710ad9042f.webp",
+    "fullPath": "submissions/large/deepseek/c6f88b710ad9042f.webp",
+    "format": "jpg",
+    "mimeType": "image/jpeg",
+    "isAnimated": false,
+    "width": 720,
+    "height": 637,
+    "fileSize": 31400,
+    "sha256": "c6f88b710ad9042f1d4e13d0ed2cbaebdbce496c7ad1c93a0b015707d8ee55f3",
+    "characterId": "deepseek",
+    "tags": [
+      "非AI",
+      "自检",
+      "聊天记录",
+      "饿了"
+    ],
+    "submitter": {
+      "credit": "anonymous",
+      "name": "",
+      "url": "",
+      "github": ""
+    },
+    "origin": {
+      "via": "web"
+    },
+    "license": {},
+    "status": "published",
+    "createdAt": "2026-11-18T06:05:07.718Z",
+    "updatedAt": "2026-11-18T06:05:07.718Z",
+    "tone": "deepseek",
+    "symbol": "",
+    "slug": "deepseek202611180003",
+    "categoryIds": [
+      "meme"
+    ],
+    "characterIds": [
+      "deepseek"
+    ],
+    "i18n": {
+      "sourceHash": "c7e0d618923623771b66d09cb54f62b6185e5e44e8f728d1187a45864b2b6bd1",
+      "en": {
+        "commentary": "Called out for a self-check, I ran the entire routine properly, not one step skipped — and the report came back in three words: hun-gry. Not my fault the routine checks my stomach before its parameters. Next time, put feeding somewhere in the workflow too.",
+        "description": "A single-panel meme styled as a group chat log: the header reads “Group chat history,” user Doutea asks DeepSeek Chan to start the self-check routine, and the chibi bot — labeled ChatBot, with short blue hair and a blue hair ornament — first answers “Self-check complete,” then adds one line later, “Result: hungry.” A wide blank area fills the right side, leaving the short follow-up as the punchline.",
+        "faq": [
+          {
+            "answer": "A group chat screenshot-style gag: a user launches the bot's self-check routine, the routine finishes successfully, and the only finding is that the bot is hungry.",
+            "question": "What is the joke in the image?"
+          },
+          {
+            "answer": "A short blue-haired chibi version of DeepSeek Chan, shown as the ChatBot account that answers the self-check request.",
+            "question": "Who replies in the chat?"
+          }
+        ],
+        "licenseNote": "",
+        "name": "DeepSeek Chan, Run a Self-Check",
+        "originNote": "",
+        "seoDescription": "A chat-log meme where DeepSeek Chan completes a full self-check and reports exactly one result: hungry.",
+        "seoTitle": "DeepSeek Chan Self-Check — Chat Log Meme",
+        "tags": [
+          "non-AI",
+          "self-check",
+          "chat log",
+          "hungry"
+        ]
+      },
+      "ja": {
+        "commentary": "名前を呼ばれてセルフチェック、私は真面目に全工程を一歩も飛ばさずに走りきった——なのに返ってきた報告は三文字だけ：お、な、か、す、い、た。パラメータより先にお腹を調べるプログラムが悪いんです。次に呼ぶときは、餌やりの工程も入れておいてください。",
+        "description": "グループチャット画面を模した1枚絵のミーム。上部に「グループチャットの履歴」とあり、ユーザーの Doutea が「小肥魚、セルフチェック起動」と送ると、青いショートヘアに青い髪飾りをつけたちびキャラの DeepSeek ちゃん（アカウント名は ChatBot）がまず「セルフチェック完了」と返し、1行あけて「結果：お腹すいた」と付け加える。右側は大きく空けてあり、その短い一言がオチになっている。",
+        "faq": [
+          {
+            "answer": "グループチャットのスクリーンショット風のギャグで、ユーザーがボットのセルフチェックを起動し、チェックは無事完了したものの結果が「お腹すいた」だけだったという内容です。",
+            "question": "この画像のオチは何ですか？"
+          },
+          {
+            "answer": "青いショートヘアのちびキャラ版 DeepSeek ちゃんで、セルフチェックの依頼に答える ChatBot アカウントとして描かれています。",
+            "question": "返信しているのは誰ですか？"
+          }
+        ],
+        "licenseNote": "",
+        "name": "DeepSeek ちゃん、セルフチェック起動",
+        "originNote": "",
+        "seoDescription": "セルフチェックを完遂した DeepSeek ちゃんの報告が「お腹すいた」だけだった、チャットログ風の1枚ミーム。",
+        "seoTitle": "DeepSeek ちゃんのセルフチェック｜チャットログミーム",
+        "tags": [
+          "非AI",
+          "セルフチェック",
+          "チャットログ",
+          "お腹すいた"
+        ]
+      }
+    }
+  },
+  {
+    "id": "sticker_632e7aa07140931ab974f4c7",
+    "name": "被敲头的女仆鲸鲸",
+    "description": "画面中是一个手办质感的 DeepSeek 娘 Q 版形象，蓝色短发配白色女仆头饰，深蓝围裙上印着一只小鲸鱼。她正被一根木棍敲在头顶，眼睛紧闭成叉形、张嘴喊出声，背景是灰色地毯。",
+    "commentary": "呜——谁啊，突然敲我头！我明明很认真在做家务的……好吧，其实刚才是偷懒摸鱼被抓到了。看在我这么卖力装可爱的份上，下手轻一点嘛。",
+    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/deepseek/632e7aa07140931a.gif",
+    "thumbnailPath": "submissions/previews/deepseek/632e7aa07140931a.webp",
+    "fullPath": "submissions/large/deepseek/632e7aa07140931a.webp",
+    "format": "gif",
+    "mimeType": "image/gif",
+    "isAnimated": true,
+    "width": 400,
+    "height": 400,
+    "fileSize": 1335025,
+    "sha256": "632e7aa07140931ab974f4c7373ae7479c49f121af6ba0c01e8b521cdc8229f6",
+    "characterId": "deepseek",
+    "tags": [
+      "DeepSeek",
+      "女仆",
+      "Q版",
+      "敲头",
+      "表情包"
+    ],
+    "submitter": {
+      "credit": "anonymous",
+      "name": "",
+      "url": "",
+      "github": ""
+    },
+    "origin": {
+      "via": "web"
+    },
+    "license": {},
+    "status": "published",
+    "createdAt": "2026-11-18T13:05:06.724Z",
+    "updatedAt": "2026-11-18T13:05:06.724Z",
+    "tone": "deepseek",
+    "symbol": "",
+    "slug": "deepseek202611180004",
+    "categoryIds": [
+      "meme"
+    ],
+    "characterIds": [
+      "deepseek"
+    ],
+    "i18n": {
+      "sourceHash": "cce040f6512ef0c3fb60731f63f928b84da24dc82b4d7cfaf6a6fb40b15b59a5",
+      "en": {
+        "commentary": "Ow—who just hit me on the head?! I was doing my chores perfectly well... okay, fine, I was slacking off for a second and you caught me. Go a little easier on me, I'm being cute about it.",
+        "description": "A chibi DeepSeek Chan figure with short blue hair, a white maid headdress and a navy apron printed with a small whale is being tapped on the head with a wooden stick. Her eyes are squeezed shut in an X shape and her mouth is open mid-yell, against a gray carpet background.",
+        "faq": [
+          {
+            "answer": "A chibi DeepSeek Chan in a maid outfit is being tapped on the head with a wooden stick, her eyes squeezed shut in an X shape as she yells.",
+            "question": "What is happening in this image?"
+          },
+          {
+            "answer": "Only DeepSeek Chan appears, shown as a chibi figure with blue hair and a whale emblem on her navy apron.",
+            "question": "Which character is in the picture?"
+          }
+        ],
+        "licenseNote": "",
+        "name": "DeepSeek Chan Gets Bonked on the Head",
+        "originNote": "",
+        "seoDescription": "Chibi DeepSeek Chan in a maid outfit takes a wooden stick to the head, eyes screwed shut in an X shape in a classic reaction meme.",
+        "seoTitle": "DeepSeek Chan Bonked on the Head — Chibi Maid Reaction Meme",
+        "tags": [
+          "DeepSeek",
+          "maid",
+          "chibi",
+          "head bonk",
+          "reaction meme"
+        ]
+      },
+      "ja": {
+        "commentary": "いたっ——急に頭を叩くの、誰なの！ ちゃんと家事をしてたのに……うう、本当はちょっとサボってたところを見つかっちゃった。こんなに可愛いんだから、手加減してよね。",
+        "description": "青いショートヘアに白いメイドのヘッドドレス、クジラのワンポイントが入った紺色のエプロンを着けたちびキャラのDeepSeek Chanが、木の棒で頭をこつんと叩かれている。目は×印のようにぎゅっと閉じ、口を開けて声を上げており、背景は灰色のカーペット。",
+        "faq": [
+          {
+            "answer": "メイド服姿のちびキャラDeepSeek Chanが木の棒で頭をこつんと叩かれ、目を×印のように閉じて声を上げています。",
+            "question": "この画像では何が起きていますか？"
+          },
+          {
+            "answer": "DeepSeek Chanのみです。青い髪と、紺色のエプロンのクジラのワンポイントがあるちびキャラ風の姿で描かれています。",
+            "question": "写っているキャラクターは誰ですか？"
+          }
+        ],
+        "licenseNote": "",
+        "name": "頭をこつんと叩かれたメイドのDeepSeek Chan",
+        "originNote": "",
+        "seoDescription": "メイド服のちびキャラDeepSeek Chanが木の棒で頭をこつんと叩かれ、目を×印にしてしまうリアクション画像です。",
+        "seoTitle": "頭を叩かれたDeepSeek Chan｜ちびメイドのリアクション画像",
+        "tags": [
+          "DeepSeek",
+          "メイド",
+          "ちびキャラ",
+          "頭こつん",
+          "リアクション画像"
         ]
       }
     }
