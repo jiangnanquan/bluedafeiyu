@@ -80,10 +80,10 @@
     },
     {
       "uid": "169511987",
-      "name": "Rose丶mi",
+      "name": "盖盖大魔王_",
       "homepage": "https://space.bilibili.com/169511987",
       "intro": "AIGC 二创",
-      "avatar": "https://i2.hdslb.com/bfs/face/2038f2c5c79dbc4d922339a049454e0e30744eb1.jpg",
+      "avatar": "https://i2.hdslb.com/bfs/face/394c20a7025b07c49de7334aaf6a3d308e4d78e5.jpg",
       "i18n": {
         "en": "A Bilibili creator who describes their output as AIGC fan creation.",
         "ja": "AIGCの二次創作だと自ら説明しているBilibiliの投稿者。"
@@ -140,8 +140,8 @@
       "intro": "每日AI小四格/小动画",
       "avatar": "https://i0.hdslb.com/bfs/face/6f8600ad3d37069ef5106eaf96e7d5a936ba8c50.jpg",
       "i18n": {
-        "en": "Posts a daily AI four-panel comic or short animation.",
-        "ja": "毎日AIの4コマ漫画やショートアニメを投稿している。"
+        "en": "Daily AI four-panel comics and short animations.",
+        "ja": "毎日AI四コマ漫画・ショートアニメ。"
       }
     },
     {
@@ -234,6 +234,31 @@
     }
   ],
   "videos": [
+    {
+      "bvid": "BV13rsb6NEZt",
+      "uid": "15475629",
+      "title": "【科普向】《Claude酱对桥的24小时限定狂热》",
+      "description": "原事件（2024年5月23日）：Anthropic 展示了 Golden Gate Claude。他们放大 Claude 内部与金门大桥有关的特征，模型便常在无关的问题中提起这座桥。这项公开演示持续了24小时。\n\n本片的圣女、神官与马车故事为拟人化喜剧演绎。\n\n来源：\nhttps://www.anthropic.com/research/golden-gate-claude\n\n【Credit】\n音乐：アコースティック21\n魔王魂 · 魔王魂 · maou.audio\n音楽：魔王魂 · CC BY 4.0\n图像生成：内置图像生成工具\n视频生成与配音：Seedance 2.0 Mini（原生配音）\n桥梁长镜头：Wan 3.0\n超分与补帧：Video2X（Real-ESRGAN · RIFE）\nAI-Chan illustrations — ZipZipPipe · CC BY-NC-SA 4.0.\nDeepseek-Chan original character — 上善无形.",
+      "url": "https://www.bilibili.com/video/BV13rsb6NEZt/",
+      "cover": "https://i1.hdslb.com/bfs/archive/2c51daceee73edf3d4b2e0a24a6324b3439808d8.jpg",
+      "duration": 62,
+      "publishedAt": "2026-11-19T06:08:17.000Z",
+      "characterIds": [
+        "claude"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "Daily AI four-panel comics and short animations.",
+          "description": "A short anime fan animation inspired by Anthropic's May 23, 2024 Golden Gate Claude demonstration, in which amplifying the model's bridge-related internal feature made it bring up the Golden Gate Bridge even in unrelated conversations for 24 hours. The video retells that experiment as a personified comedy, with a saintly Claude Chan, shrine attendants and a carriage ride.",
+          "title": "[Pop Science] Claude Chan's 24-Hour Limited Golden Gate Fever"
+        },
+        "ja": {
+          "creatorIntro": "毎日AI四コマ漫画・ショートアニメ。",
+          "description": "2024年5月23日にAnthropicが公開した「Golden Gate Claude」の実演を題材にした短編アニメ。橋に関する内部特徴を増幅すると、無関係な会話でも金門橋に言及するようになった24時間限定のデモを、聖女クロードちゃんと神官たち、馬車の旅の物語として擬人化コメディに仕立てている。",
+          "title": "【解説風】クロードちゃんの橋への24時間限定の熱狂"
+        }
+      }
+    },
     {
       "bvid": "BV1SFsS6XE2w",
       "uid": "9126506",
