@@ -753,13 +753,14 @@ export async function processPublishRequest({ request, env = process.env, deps =
   };
   const startedAt = new Date().toISOString();
   let cfg = null;
+  let siteCfg = null;
   let lock = null;
   let journal = null;
   let step = 'init';
 
   try {
     cfg = resolveWorkerConfig(env);
-    const siteCfg = { ...cfg, branch: cfg.siteBranch };
+    siteCfg = { ...cfg, branch: cfg.siteBranch };
     const contentCfg = { ...cfg, branch: cfg.contentBranch };
 
     step = 'lock';
@@ -845,7 +846,6 @@ export async function processPublishRequest({ request, env = process.env, deps =
       }
       result.releasePath = currentReleasePath(cfg);
       result.healthCheck = { ok: true, noop: true, url: cfg.healthUrl || null };
-      clearPrebuilt(siteCfg);
       await postRunStatus(cfg, runId, {
         status: 'succeeded',
         step: 'done',
@@ -985,6 +985,10 @@ export async function processPublishRequest({ request, env = process.env, deps =
     await notifyPublishedResult(deps, result, cfg, log);
     return result;
   } finally {
+    if (siteCfg?.prebuiltDir) {
+      try { clearPrebuilt(siteCfg); }
+      catch (error) { logLine(log, `警告：清理发布预检产物失败：${errorMessage(error)}`); }
+    }
     if (lock) {
       try { await lock(); } catch { /* 释放锁失败不覆盖发布结果 */ }
     }

@@ -534,7 +534,7 @@ for (const scenario of ['missing-release', 'outdated-release', 'deploy-failure']
     const runId = 'run-recover-' + scenario;
     const ws = await makeWorkspace(t, {works:[baselineRecord()]});
     if (scenario !== 'missing-release') writeJson(path.join(ws.deployRoot, 'current', 'build-info.json'), {sourceCommit:'old',contentCommit:'old'});
-    const state = {statuses:[],snapshot:snapshotFrom(ws,runId),failDeploy:scenario==='deploy-failure'};
+    const state = {statuses:[],snapshot:snapshotFrom(ws,runId),failDeploy:scenario==='deploy-failure',workDir:path.join(ws.intake,'work')};
     const backend = await startBackend(t,state);
     const exec = makeFakeExec(state);
     writeRequest(ws,runId);
@@ -547,6 +547,8 @@ for (const scenario of ['missing-release', 'outdated-release', 'deploy-failure']
       assert.equal(result.code,1);
       assert.equal(output.status,'failed');
       assert.equal(state.statuses.some(status=>status.status==='succeeded'),false);
+      assert.equal(state.prebuiltAtDeploy,true);
+      assert.equal(fs.existsSync(state.prebuiltDir),false);
     }else{
       assert.equal(result.code,0,result.err);
       assert.equal(output.status,'succeeded');

@@ -853,6 +853,11 @@ function updateWorksManifest(cfg, items, originalText) {
 }
 
 export function runToolchain(cfg, exec, workDir) {
+  const out = cfg.buildCheck ? path.join(workDir, 'build-check') : null;
+  // A previous publish can leave this generated output on the build filesystem.
+  // Release it before measuring the space available for its replacement.
+  if (out) fs.rmSync(out, { recursive: true, force: true });
+
   assertBuildDiskSpace([cfg.siteDir, cfg.contentDir, workDir, cfg.deployRoot]);
   // 先确认服务器真能跑派生图（Pillow），避免写坏清单后才发现缺依赖。
   runCmd(exec, cfg.python, ['-c', 'import PIL, sys; sys.exit(0)'], { cwd: cfg.siteDir });
@@ -865,10 +870,9 @@ export function runToolchain(cfg, exec, workDir) {
     cwd: cfg.siteDir,
     env: { ...process.env, CONTENT_DIR: cfg.contentDir },
   });
-  if (cfg.buildCheck) {
+  if (out) {
     // 工作树可能刚快进到新增前端依赖的版本，构建前按锁文件同步依赖。
     runCmd(exec, cfg.node, ['tools/install_frontend.mjs'], { cwd: cfg.siteDir });
-    const out = path.join(workDir, 'build-check');
     const buildEnv={...process.env,CONTENT_DIR:cfg.contentDir};
     if(cfg.deploy && cfg.deployRoot) {
       const current=path.join(cfg.deployRoot,'current');
@@ -881,7 +885,6 @@ export function runToolchain(cfg, exec, workDir) {
         }
       }catch{ /* A first release has no successful baseline yet. */ }
     }
-    fs.rmSync(out, { recursive: true, force: true });
     runCmd(exec, cfg.node, ['tools/build_site.mjs', '--content-dir', cfg.contentDir, '--out', out, '--force-clean'], {
       cwd: cfg.siteDir,
       env: buildEnv,

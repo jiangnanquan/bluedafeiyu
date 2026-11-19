@@ -54,7 +54,15 @@ test('发布预检复用正式资源，保留产物至部署成功；失败时�
     if (args[0] === 'tools/build_site.mjs') fs.mkdirSync(out, { recursive: true });
     return { status: 0, stdout: '', stderr: '' };
   };
+  fs.mkdirSync(out, { recursive: true });
+  fs.writeFileSync(path.join(out, 'abandoned.html'), 'previous attempt');
+  // Until the abandoned output goes away, the filesystem has less than 2 GiB.
+  t.mock.method(fs, 'statfsSync', () => ({
+    bavail: fs.existsSync(out) ? 1024 : 8192,
+    bsize: 1024 * 1024,
+  }));
   runToolchain(cfg, exec, workDir);
+  assert.equal(fs.existsSync(path.join(out, 'abandoned.html')), false);
   const build = calls.find(call => call.args[0] === 'tools/build_site.mjs');
   assert.equal(build.options.env.SITE_PREVIOUS_DIR, fs.realpathSync(previous));
   assert.equal(build.options.env.SITE_PREVIOUS_STATE, path.join(deployRoot, 'build-state', 'baseline.json'));
