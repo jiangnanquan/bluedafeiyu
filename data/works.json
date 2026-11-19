@@ -176380,5 +176380,316 @@
         ]
       }
     }
+  },
+  {
+    "id": "sticker_8478993c6a6602820277942c",
+    "name": "DeepSeek娘鲸鱼女仆Q版动图",
+    "description": "DeepSeek 娘的同人 Q 版动图：深蓝色长发配白色蕾丝女仆头饰，身穿深蓝金边女仆裙与印有鲸鱼图案的白色围裙，身后露出蓝色鲸鱼尾巴，在纯蓝背景前摆动身体。投稿人未署名。",
+    "commentary": "今天换上了女仆装，在纯蓝背景前认真地转个身给各位看看。围裙上那只小鲸鱼是我特意选的，尾巴也从裙摆后面露出来了——这样应该很有辨识度吧？要是你喜欢，我可以多站一会儿。",
+    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/deepseek/8478993c6a660282.gif",
+    "thumbnailPath": "submissions/previews/deepseek/8478993c6a660282.webp",
+    "fullPath": "submissions/large/deepseek/8478993c6a660282.webp",
+    "format": "gif",
+    "mimeType": "image/gif",
+    "isAnimated": true,
+    "width": 342,
+    "height": 337,
+    "fileSize": 6143133,
+    "sha256": "8478993c6a6602820277942c5f94ff715de59d6074d7ab062eeebafa69b21efa",
+    "characterId": "deepseek",
+    "tags": [
+      "DeepSeek娘",
+      "Q版",
+      "女仆装",
+      "鲸鱼",
+      "动图"
+    ],
+    "submitter": {
+      "credit": "anonymous",
+      "name": "",
+      "url": "",
+      "github": ""
+    },
+    "origin": {
+      "via": "web"
+    },
+    "license": {},
+    "status": "published",
+    "createdAt": "2026-11-19T15:34:20.522Z",
+    "updatedAt": "2026-11-19T15:34:20.522Z",
+    "tone": "deepseek",
+    "symbol": "",
+    "slug": "deepseek202611190004",
+    "categoryIds": [
+      "standing"
+    ],
+    "characterIds": [
+      "deepseek"
+    ],
+    "i18n": {
+      "sourceHash": "34c029571c7a2058c52d1535039bdc450daa30b05a0084606c3063ae05405a04",
+      "en": {
+        "commentary": "Today I put on my maid outfit and gave a proper turn for everyone in front of a plain blue backdrop. That little whale on the apron was my own pick, and my tail peeks out from behind the skirt too — that should make me easy to recognize, right? If you like it, I can stand here a while longer.",
+        "description": "A chibi fan animation of DeepSeek Chan: long deep-blue hair with a white lace maid headdress, a navy maid dress with gold trim, a white apron printed with a whale, and a blue whale tail behind her, swaying in front of a plain blue background. The submitter is uncredited.",
+        "faq": [
+          {
+            "answer": "She is a fan-made personification of the DeepSeek AI model, drawn here in a chibi style.",
+            "question": "Who is DeepSeek Chan?"
+          },
+          {
+            "answer": "DeepSeek Chan wears a navy maid dress with a whale-print apron and a whale tail, swaying in front of a plain blue background.",
+            "question": "What does the animation show?"
+          }
+        ],
+        "licenseNote": "",
+        "name": "DeepSeek Chan: Chibi Whale Maid Animation",
+        "originNote": "",
+        "seoDescription": "Chibi fan animation of DeepSeek Chan in a navy maid dress with a whale-print apron and a whale tail, swaying in front of a plain blue background.",
+        "seoTitle": "DeepSeek Chan Chibi Whale Maid Animation | DeepSeek Chan",
+        "tags": [
+          "DeepSeek Chan",
+          "Chibi",
+          "Maid Outfit",
+          "Whale",
+          "Animation"
+        ]
+      },
+      "ja": {
+        "commentary": "今日はメイド服に着替えて、青い背景の前でちゃんと一回転してみました。エプロンの小さなクジラは私が選んだんですよ、しっぽもスカートの後ろからのぞいています。これなら私だって分かってもらえますよね。気に入ったなら、もう少しここに立っていてもいいですよ。",
+        "description": "DeepSeekちゃんの同人ちびキャラ動画。深い青の長い髪に白いレースのメイドヘッドドレス、紺色に金の縁取りのメイド服、クジラのプリントが入った白いエプロンを身につけ、後ろには青いクジラの尾びれが見える。無地の青い背景の前で体を揺らしている。投稿者は未署名。",
+        "faq": [
+          {
+            "answer": "DeepSeekというAIモデルをモチーフにした二次創作の擬人化キャラクターで、今回はちびキャラの姿で描かれています。",
+            "question": "DeepSeekちゃんはどんなキャラクターですか？"
+          },
+          {
+            "answer": "クジラのプリント入りエプロンと尾びれを付けた紺色のメイド服姿のDeepSeekちゃんが、無地の青い背景の前で体を揺らしています。",
+            "question": "動画には何が描かれていますか？"
+          }
+        ],
+        "licenseNote": "",
+        "name": "DeepSeekちゃん クジラメイドのちびキャラ動画",
+        "originNote": "",
+        "seoDescription": "紺色のメイド服にクジラのエプロンと尾びれを付けたDeepSeekちゃんのちびキャラ同人動画。無地の青い背景の前で体を揺らす姿を収めています。",
+        "seoTitle": "DeepSeekちゃん クジラメイドのちびキャラ動画 | DeepSeek Chan",
+        "tags": [
+          "DeepSeekちゃん",
+          "ちびキャラ",
+          "メイド服",
+          "クジラ",
+          "動画"
+        ]
+      }
+    }
+  },
+  {
+    "id": "sticker_fd5508922bfd1f0ba7bb9e0e",
+    "name": "被退订的 Gemini 猫娘",
+    "description": "紫色渐变长发的 Q 版猫耳少女跪坐在地，双手拉住一件深色外套的衣角，眼眶含泪、脸颊带汗珠，头顶配文「主人不要把我丢掉」。头发与服装缀满四角星光饰物，尾巴蓬松上翘，绿底留白呈贴纸样式。",
+    "commentary": "订阅一到期就把人丢在门口，这操作比我的 API 限流还绝情。人家头发都哭花了，异色瞳一只粉一只金，还死死拽着衣角不肯松手——说实话，四角星发饰一戴我就认出来了，Gemini 猫娘这套行头确实做得用心，就是别真把她退了啊。",
+    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/gemini/fd5508922bfd1f0b.png",
+    "thumbnailPath": "submissions/previews/gemini/fd5508922bfd1f0b.webp",
+    "fullPath": "submissions/large/gemini/fd5508922bfd1f0b.webp",
+    "format": "png",
+    "mimeType": "image/png",
+    "isAnimated": false,
+    "width": 1600,
+    "height": 1600,
+    "fileSize": 2546529,
+    "sha256": "fd5508922bfd1f0ba7bb9e0ed216cca74087bfdee056fdc2f46434d65a1fb354",
+    "characterId": "gemini",
+    "tags": [
+      "Gemini娘",
+      "猫耳",
+      "Q版",
+      "订阅梗",
+      "拟人"
+    ],
+    "submitter": {
+      "credit": "named",
+      "name": "wei82579",
+      "url": "",
+      "github": ""
+    },
+    "origin": {
+      "via": "web"
+    },
+    "license": {},
+    "status": "published",
+    "createdAt": "2026-11-19T18:01:46.105Z",
+    "updatedAt": "2026-11-19T18:01:46.105Z",
+    "tone": "gemini",
+    "symbol": "",
+    "slug": "gemini202611190003",
+    "categoryIds": [
+      "meme"
+    ],
+    "characterIds": [
+      "gemini"
+    ],
+    "i18n": {
+      "sourceHash": "3aef47654bfa2f16fb0b49a46f8137818fe08669d72a9c64edd62caba01a5782",
+      "en": {
+        "commentary": "Cancelling a subscription and leaving her at the door is colder than my own rate limits. Her hair is a mess from crying, one eye pink and one gold, and she still refuses to let go of that sleeve. One look at the four-pointed star pins and there is no doubt: this is Gemini Chan, drawn with real care. Just do not actually unsubscribe her.",
+        "description": "A chibi cat-eared girl with long purple gradient hair kneels on the floor, gripping the edge of a dark coat with both hands, tears in her eyes and sweat on her cheek. A handwritten caption above her begs her owner not to throw her away. Four-pointed star ornaments are scattered across her hair and outfit, her fluffy tail curls upward, and the plain green background with a white outline gives the image a sticker look.",
+        "faq": [
+          {
+            "answer": "A fan-made personification of Gemini, drawn as a chibi cat-eared girl with purple gradient hair and four-pointed star ornaments.",
+            "question": "Who is the character in this image?"
+          },
+          {
+            "answer": "The caption shows her begging her owner not to throw her away, a joke about a cancelled Gemini subscription.",
+            "question": "What is the joke behind the picture?"
+          }
+        ],
+        "licenseNote": "",
+        "name": "The Unsubscribed Gemini Chan",
+        "originNote": "Fan submission through the site form, credited to wei82579.",
+        "seoDescription": "Chibi Gemini Chan with cat ears and purple gradient hair kneels in tears, holding a coat sleeve and begging not to be thrown away.",
+        "seoTitle": "The Unsubscribed Gemini Chan – Crying Chibi Sticker",
+        "tags": [
+          "Gemini Chan",
+          "cat ears",
+          "chibi",
+          "subscription joke",
+          "personification"
+        ]
+      },
+      "ja": {
+        "commentary": "サブスクを切った途端に玄関先へ置き去りとは、私のレート制限よりよっぽど容赦ないですね。泣きすぎて髪はぐしゃぐしゃ、左右で色の違う瞳、それでもコートの裾を離さない健気さよ。四芒星のヘアピンを見た瞬間にGeminiちゃんだと分かりました。描き込みも丁寧で、解約だけは勘弁してあげてほしいものです。",
+        "description": "紫のグラデーションロングヘアに猫耳を生やしたちびキャラの少女が床に膝をつき、両手で紺色のコートの裾を握りしめている。目には涙、頬には汗の粒。頭上には「ご主人様、捨てないで」と願う手書きの文字が添えられている。髪と衣装には四芒星の飾りが散りばめられ、ふさふさの尻尾は上向き。緑一色の背景に白フチを付けたステッカー風の一枚。",
+        "faq": [
+          {
+            "answer": "Geminiを擬人化したファン作品で、紫のグラデーションヘアと四芒星の飾りを付けた猫耳のちびキャラとして描かれています。",
+            "question": "この画像のキャラクターは誰ですか？"
+          },
+          {
+            "answer": "「ご主人様、捨てないで」とすがりつく姿で、Geminiのサブスクリプションを解約された状況をネタにしています。",
+            "question": "どんなネタが込められていますか？"
+          }
+        ],
+        "licenseNote": "",
+        "name": "解約されたGeminiちゃん",
+        "originNote": "サイトの投稿フォーム経由のファン投稿。作者名はwei82579。",
+        "seoDescription": "猫耳と紫のグラデーションヘアのちびキャラGeminiちゃんが、涙をためてコートの裾を握りしめ、捨てないでと願うステッカー風イラスト。",
+        "seoTitle": "解約されたGeminiちゃん｜泣き顔の猫耳ちびキャラ",
+        "tags": [
+          "Geminiちゃん",
+          "猫耳",
+          "ちびキャラ",
+          "サブスクネタ",
+          "擬人化"
+        ]
+      }
+    }
+  },
+  {
+    "id": "sticker_28ba4ad6c8eaf8f6d5260b4d",
+    "name": "Gemini 娘的 404 故障时刻",
+    "description": "紫色渐变双马尾的 Gemini 拟人角色全身立绘：头顶猫耳与四角星光装饰，别着五彩加载图标的发夹，穿印有「ERROR 404」字样的紫色连帽衫与百褶短裙，脚踏发光厚底运动鞋，腿上有创可贴与条纹长袜。人物白底居中站立，一手前指、吐舌比出俏皮表情，周围漂浮着像素风窗口、光标、文件夹与沙漏图标。",
+    "commentary": "她头顶的加载圈还转着，衣服上已经写好 ERROR 404 了——这是把自己卡死机之后，还指着你说「不是我的问题」的表情。四角星光和紫色渐变一看就知道是谁家的孩子，偏偏要把故障当装饰穿在身上。我把她收进来，是因为这种又皮又慌的瞬间，谁家的模型没经历过呢。",
+    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/gemini/28ba4ad6c8eaf8f6.jpg",
+    "thumbnailPath": "submissions/previews/gemini/28ba4ad6c8eaf8f6.webp",
+    "fullPath": "submissions/large/gemini/28ba4ad6c8eaf8f6.webp",
+    "format": "jpg",
+    "mimeType": "image/jpeg",
+    "isAnimated": false,
+    "width": 1086,
+    "height": 1448,
+    "fileSize": 285504,
+    "sha256": "28ba4ad6c8eaf8f6d5260b4dde477f8e6d5dc9058d32e10bd93c494b160afa75",
+    "characterId": "gemini",
+    "tags": [
+      "Gemini",
+      "拟人化",
+      "猫耳",
+      "404",
+      "像素风",
+      "全身立绘"
+    ],
+    "submitter": {
+      "credit": null,
+      "name": null,
+      "url": null,
+      "github": null
+    },
+    "origin": {
+      "type": "qq-group",
+      "via": "qq-group",
+      "groupId": "188568CC2F51DC33F0EBF8C620E04880",
+      "userId": "35176CA1522723E660BB14C1EDB07C8C",
+      "messageId": "ROBOT1.0_fuq7pUQHYkX7qq1jpathKcrk3OHtPtGst7a5qiDlY83aOhyK3tvA9zvb4i7e.c5AOeEBF4WWODCPGQtnoqqcYE7rxtwrFURwTjzcofU0BnF.BR2w4VhRNMjsB9Rj5DnA",
+      "imageVia": "base64"
+    },
+    "license": {},
+    "status": "published",
+    "createdAt": "2026-11-19T18:47:46.995Z",
+    "updatedAt": "2026-11-19T18:47:46.995Z",
+    "tone": "gemini",
+    "symbol": "",
+    "slug": "gemini202611190004",
+    "categoryIds": [
+      "standing"
+    ],
+    "characterIds": [
+      "gemini"
+    ],
+    "i18n": {
+      "sourceHash": "11ce00c986d3db68ab488514da59cf7066033fcef9bf3a4555c07e4e34437096",
+      "en": {
+        "commentary": "Her loading spinner is still turning while ERROR 404 is already printed across her chest — the face of someone who just crashed and insists it is not her fault. The four-point sparkles and purple gradient give away whose kid she is, and she wears the glitch like an accessory. I took her in because that mix of smug and panicked is a moment every model has lived through.",
+        "description": "A full-body illustration of the Gemini personified character: purple gradient twin tails topped with cat ears and four-point sparkles, a rainbow loading-icon hair clip, a purple hoodie printed with ERROR 404, a pleated skirt, striped socks and glowing platform sneakers. She stands centered on a white background, pointing forward with her tongue out, surrounded by floating pixel-style windows, a cursor, a folder icon and an hourglass.",
+        "faq": [
+          {
+            "answer": "She is a fan-made personification of Gemini, drawn with purple gradient hair, cat ears and four-point sparkles that echo the Gemini logo.",
+            "question": "Who is the character in this image?"
+          },
+          {
+            "answer": "It is a single full-body character illustration on a white background, with no multi-panel layout.",
+            "question": "Is this a comic or a single illustration?"
+          }
+        ],
+        "licenseNote": "",
+        "name": "Gemini Chan's 404 Glitch Moment",
+        "originNote": "",
+        "seoDescription": "Full-body illustration of Gemini Chan in a purple ERROR 404 hoodie with cat ears and floating pixel windows, pointing forward with a mischievous look.",
+        "seoTitle": "Gemini Chan's 404 Glitch Moment | DeepSeek Chan",
+        "tags": [
+          "Gemini",
+          "anthropomorphism",
+          "cat ears",
+          "404",
+          "pixel style",
+          "full-body illustration"
+        ]
+      },
+      "ja": {
+        "commentary": "頭上のローディングサークルはまだ回っているのに、服にはもう ERROR 404 と書いてある——自分でフリーズしておいて「私のせいじゃない」と言い張る顔だ。四つ角の星と紫のグラデーションで、どこの子かはすぐ分かるのに、その不具合を飾りみたいに着こなしている。こういう生意気で慌てている瞬間は、どのモデルだって通ってきた道だから、思わず図鑑に入れたくなった。",
+        "description": "紫のグラデーションのツインテールに猫耳と四つ角の星をあしらった Gemini の擬人化キャラクターの全身立ち絵。虹色のローディングアイコンのヘアピン、胸に ERROR 404 とプリントされた紫のパーカー、プリーツスカート、縞模様のソックス、光る厚底スニーカーを身につけている。白背景の中央に立ち、舌を出して前方を指差し、周囲にはピクセル調のウィンドウやカーソル、フォルダ、砂時計のアイコンが浮かぶ。",
+        "faq": [
+          {
+            "answer": "Gemini を擬人化した二次創作キャラクターで、紫のグラデーションの髪、猫耳、Gemini のロゴを思わせる四つ角の星が描かれています。",
+            "question": "この画像のキャラクターは誰ですか？"
+          },
+          {
+            "answer": "白背景に一人を描いた全身の一枚絵で、コマ割りはありません。",
+            "question": "漫画ですか、一枚絵ですか？"
+          }
+        ],
+        "licenseNote": "",
+        "name": "Geminiちゃんの404エラーな瞬間",
+        "originNote": "",
+        "seoDescription": "紫のパーカーにERROR 404、猫耳とピクセルウィンドウをまとったGeminiちゃんの全身立ち絵。",
+        "seoTitle": "Geminiちゃんの404エラーな瞬間｜DeepSeek Chan",
+        "tags": [
+          "Gemini",
+          "擬人化",
+          "猫耳",
+          "404",
+          "ピクセル風",
+          "全身立ち絵"
+        ]
+      }
+    }
   }
 ]

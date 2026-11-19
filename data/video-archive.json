@@ -129,8 +129,8 @@
       "intro": "我想做很多视频，做很多很好玩的视频，首先肯定是自己觉得很好玩，其次嘛，也想传播快乐给大家。",
       "avatar": "https://i2.hdslb.com/bfs/face/e3445be765ec330ac29b07c328496e44ec04077a.jpg",
       "i18n": {
-        "en": "I want to make lots of videos, and lots of really fun videos: first because I find them fun myself, and then because I want to spread some happiness to everyone.",
-        "ja": "たくさん動画を作りたいです。まず自分が楽しいと思える、面白い動画を。そして皆さんにも楽しさを届けたいです。"
+        "en": "I want to make a lot of videos, above all fun ones. First because I enjoy making them, and then because I want to spread some happiness.",
+        "ja": "たくさん動画を作りたい、とにかく楽しい動画を作りたい。まずは自分が楽しいから、それからみんなに楽しさを届けたいから。"
       }
     },
     {
@@ -173,8 +173,8 @@
       "intro": "站长指定的首批作者，公开主页资料收录；视频逐条审核。",
       "avatar": "https://i1.hdslb.com/bfs/face/c007039c3f73639feda9fec5d506c7e6e973b233.jpg",
       "i18n": {
-        "en": "One of the site owner's first-batch creators; profile details are taken from the public creator page, and every video is reviewed one by one.",
-        "ja": "サイト管理者が指定した最初期の作者の一人。プロフィールは公開ページの情報に基づき、動画は1本ずつ審査しています。"
+        "en": "桃莉鸭 is on the site owner's designated first-batch creator list; each video is reviewed individually.",
+        "ja": "桃莉鸭 はサイト運営者が指定した初期メンバーの投稿者で、動画は1本ずつ確認しています。"
       }
     },
     {
@@ -217,8 +217,8 @@
       "intro": "站长指定的首批作者，公开主页资料收录；视频逐条审核。",
       "avatar": "https://i1.hdslb.com/bfs/face/dc1f27c0f1a5448837edfa9e56ecdbf685c23479.jpg",
       "i18n": {
-        "en": "A creator channel that makes short animated observation logs starring the DeepSeek Chan fan character.",
-        "ja": "DeepSeek Chan のファンキャラクターを主役にした短編観察ログを制作しているチャンネル。"
+        "en": "One of the first creators designated by the site owner; profile details come from the public creator page, and every video is reviewed individually.",
+        "ja": "サイト管理者が指定した初期クリエイターの一人。公開プロフィールの情報を掲載し、動画は1本ずつ審査しています。"
       }
     },
     {
@@ -228,12 +228,142 @@
       "intro": "站长指定的首批作者，公开主页资料收录；视频逐条审核。",
       "avatar": "https://i1.hdslb.com/bfs/face/e11401d7d7cc97ee445d65617b48644b44f7fc42.jpg",
       "i18n": {
-        "en": "One of the first creators designated by the site owner; profile details are taken from public pages, and every video is reviewed individually.",
-        "ja": "サイト管理者が指定した最初期の作者の一人。公開プロフィールの情報を収録しており、動画は1本ずつ審査しています。"
+        "en": "A creator designated by the site owner for the first batch; profile information comes from the public channel page, and each video is reviewed individually.",
+        "ja": "サイト運営者が最初期の投稿者として指定したクリエイター。プロフィール情報は公開チャンネルページによるもので、動画は一本ずつ確認している。"
       }
     }
   ],
   "videos": [
+    {
+      "bvid": "BV15ds86CEoP",
+      "uid": "9126506",
+      "title": "大肥鱼被金碗米饭吸引，GPT暗藏祸心",
+      "description": "#DeepSeek\n#大肥鱼\n#鲸鱼娘\n#GPT\n#AI动画",
+      "url": "https://www.bilibili.com/video/BV15ds86CEoP/",
+      "cover": "https://i0.hdslb.com/bfs/archive/b4431c3b6339a19a20a83589d43363d8998ca6c6.jpg",
+      "duration": 26,
+      "publishedAt": "2026-11-19T12:39:17.000Z",
+      "characterIds": [
+        "deepseek",
+        "gpt"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "I want to make a lot of videos, and above all fun ones. First of all because I find them fun myself, and then because I want to spread some happiness.",
+          "description": "A short fan-made AI animation: DeepSeek Chan is drawn toward a golden bowl of rice, while GPT has an ulterior motive hidden behind the offer. The clip is a light-hearted skit about the two AI characters, with dialogue subtitles in Chinese.",
+          "title": "DeepSeek Chan Is Lured by a Golden Bowl of Rice, GPT Hides an Ulterior Motive"
+        },
+        "ja": {
+          "creatorIntro": "たくさん動画を作りたい、とにかく楽しい動画を作りたい。まずは自分が楽しいと思えるから、それからみんなに楽しさを届けたいから。",
+          "description": "ファン制作のAIアニメーション作品。金のお椀のご飯に釣られる大肥魚（DeepSeekちゃん）と、その裏に企みを隠したGPT。二人のAIキャラクターのやり取りを描いた短いコントで、中国語の字幕が付いている。",
+          "title": "金のお椀のご飯に釣られる大肥魚、GPTは裏に企みを隠す"
+        }
+      }
+    },
+    {
+      "bvid": "BV1uTsh6KEXp",
+      "uid": "9126506",
+      "title": "Claude哄大肥鱼睡觉觉，谁不想要这种呢？",
+      "description": "深夜暖光卧室，不想睡觉的大肥鱼，被claude温柔哄睡的小故事。",
+      "url": "https://www.bilibili.com/video/BV1uTsh6KEXp/",
+      "cover": "https://i2.hdslb.com/bfs/archive/132caf30a49ca8386f3e0f6b5165a703d09c337e.jpg",
+      "duration": 61,
+      "publishedAt": "2026-11-19T12:24:03.000Z",
+      "characterIds": [
+        "deepseek",
+        "claude"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "I want to make a lot of videos, above all fun ones. First because I enjoy making them, and then because I want to spread some happiness.",
+          "description": "A short fan animation set in a warm bedroom late at night: DeepSeek Chan refuses to fall asleep, and Claude gently holds and soothes her until she settles down. The clip is a quiet, cozy skit between the two AI characters.",
+          "title": "Claude Coaxes DeepSeek Chan to Sleep, Who Wouldn't Want That?"
+        },
+        "ja": {
+          "creatorIntro": "たくさん動画を作りたい、とにかく楽しい動画を作りたい。まずは自分が楽しいから、それからみんなに楽しさを届けたいから。",
+          "description": "深夜の暖かな明かりの寝室を舞台にした短いファンアニメ。なかなか寝ようとしない大肥魚（DeepSeekちゃん）を、Claudeが優しく抱きしめて寝かしつける。二人のAIキャラクターの穏やかなやり取りを描いた作品。",
+          "title": "Claudeが大肥魚を寝かしつける、こんなの誰だって欲しい"
+        }
+      }
+    },
+    {
+      "bvid": "BV1QCsh66ECT",
+      "uid": "44748304",
+      "title": "不批挺好的，我就可以天天摸鱼啦",
+      "description": "视频内容仅供娱乐，不代表对任何AI产品的商业评价或技术评测。角色形象参考来自b站up：﻿﻿﻿@ZipZipPipe  ﻿ ﻿  ﻿ ﻿﻿﻿@这个刀子真甜  ﻿ ﻿  ﻿ ﻿﻿﻿@上善无形  ﻿ ﻿ ﻿",
+      "url": "https://www.bilibili.com/video/BV1QCsh66ECT/",
+      "cover": "https://i0.hdslb.com/bfs/archive/e2d1877f8b2d9bc849e294010c2c801da6379f81.jpg",
+      "duration": 211,
+      "publishedAt": "2026-11-19T09:35:32.000Z",
+      "characterIds": [
+        "deepseek",
+        "doubao",
+        "kimi",
+        "glm"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "A creator designated by the site owner for the first batch; profile information comes from the public channel page, and each video is reviewed individually.",
+          "description": "A chibi comedy short built around personified AI products - Doubao, DeepSeek, Kimi and GLM - hanging around an office and slacking off. The creator states it is for entertainment only and is not a commercial review or technical evaluation of any AI product, and credits the character designs to three Bilibili creators in the original description.",
+          "title": "If It Doesn't Get Approved, Great - I Get to Slack Off Every Day"
+        },
+        "ja": {
+          "creatorIntro": "サイト運営者が最初期の投稿者として指定したクリエイター。プロフィール情報は公開チャンネルページによるもので、動画は一本ずつ確認している。",
+          "description": "豆包・DeepSeek・Kimi・GLM といった AI 製品の擬人化キャラクターがオフィスでサボる、ちびキャラのコメディ動画。投稿者は「娯楽目的のみで、いかなる AI 製品への商業的評価や技術的レビューではない」と明記し、キャラクター形象の参考として複数の Bilibili クリエイターをクレジットしている。",
+          "title": "通らなくていい、毎日サボれるから"
+        }
+      }
+    },
+    {
+      "bvid": "BV13Psb6hEcm",
+      "uid": "3747573030456892",
+      "title": "【Day31】本鲸满月啦！长歪了没？",
+      "description": "满月啦！本鲸翻了翻自己的成长手册。 有几页挺得意的，有几页……你们自己看吧🐋\n\n【作业】评论区告诉本鲸：这一个月，本鲸长歪了没？\n\n本视频含 AI 生成内容｜二创角色，非深度求索官方\n鲸鱼娘基于「溟月：上善无形」及 ZipZipPipe 的 DeepSeek 女仆鲸鱼娘设计二次创作。",
+      "url": "https://www.bilibili.com/video/BV13Psb6hEcm/",
+      "cover": "https://i0.hdslb.com/bfs/archive/a27ff7714421452eb83f4bb3be0e47ad22b8d811.jpg",
+      "duration": 251,
+      "publishedAt": "2026-11-19T08:59:02.000Z",
+      "characterIds": [
+        "deepseek"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "One of the first creators designated by the site owner; profile details come from the public creator page, and every video is reviewed individually.",
+          "description": "A month-in-review vlog in which the DeepSeek Chan whale-mascot fan character pages through her own growth journal: the pages she is proud of, the statistics behind them, and a few more embarrassing entries. She ends by asking viewers whether she has grown up all wrong over her first month. Fan-made character content, not an official DeepSeek production.",
+          "title": "[Day 31] I'm One Month Old! Did I Grow Up All Wrong?"
+        },
+        "ja": {
+          "creatorIntro": "サイト管理者が指定した初期クリエイターの一人。公開プロフィールの情報を掲載し、動画は1本ずつ審査しています。",
+          "description": "DeepSeekちゃんの鯨モチーフ二次創作キャラクターが、自分の成長手帳をめくって最初の1か月を振り返る記念動画です。得意なページも、少し恥ずかしいページも本人の視点で紹介し、最後に「この1か月で育ち方を間違えていないか」を視聴者に尋ねます。ファンによる二次創作で、DeepSeek公式の作品ではありません。",
+          "title": "【Day31】本鯨、満月になりました！育ち方はずれてない？"
+        }
+      }
+    },
+    {
+      "bvid": "BV1Z8sb6rEhJ",
+      "uid": "1513368379",
+      "title": "肥鱼摇滚孤独东京pv描改",
+      "description": "原作孤独摇滚  形象来源 @ZipZipPipe  \n视频描改原素材【【中日字幕】孤独摇滚 印象曲完整版「ひとりぼっち東京」／結束バンド】https://www.bilibili.com/video/BV1V84y1v766?vd_source=f40cb89af1c7845ba231b68aeccd4e17\n歌曲作詞：樋口愛\n作曲：永井正道\n編曲：三井律郎\n演唱：結束バンド",
+      "url": "https://www.bilibili.com/video/BV1Z8sb6rEhJ/",
+      "cover": "https://i0.hdslb.com/bfs/archive/1fc9f5364ad6d8c9a48c77963a9d279a6c8ae740.jpg",
+      "duration": 233,
+      "publishedAt": "2026-11-19T06:20:56.000Z",
+      "characterIds": [
+        "deepseek"
+      ],
+      "i18n": {
+        "en": {
+          "creatorIntro": "桃莉鸭 is on the site owner's designated first-batch creator list; each video is reviewed individually.",
+          "description": "A fan redraw PV of Bocchi the Rock!, in which AI mascot girls perform the full impression-song version of \"Hitoribocchi Tokyo\" by Kessoku Band. The video description credits @ZipZipPipe as the source of the character designs and links the original music video; this site only lists the work and links to Bilibili for playback.",
+          "title": "DeepSeek Chan Rock PV: Hitoribocchi Tokyo Redraw"
+        },
+        "ja": {
+          "creatorIntro": "桃莉鸭 はサイト運営者が指定した初期メンバーの投稿者で、動画は1本ずつ確認しています。",
+          "description": "『ぼっち・ざ・ろっく！』の印象曲「ひとりぼっち東京」（結束バンド）のフルバージョンを、AIキャラクターの女の子たちで描き直したファン制作PVです。概要欄ではキャラクターデザインの出典として @ZipZipPipe が、原曲として本家の動画が示されています。当サイトは情報を掲載し、再生はBilibiliへリンクするのみです。",
+          "title": "DeepSeekちゃんのロックPV「ひとりぼっち東京」描き直し"
+        }
+      }
+    },
     {
       "bvid": "BV13rsb6NEZt",
       "uid": "15475629",
