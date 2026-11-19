@@ -8,7 +8,8 @@ import {imageRights} from '../../frontend/src/lib/image-metadata.mjs';
 
 // Bump when the traversal/checking logic changes; pattern and selector changes
 // are folded into AUDIT_RULES automatically.
-const CACHE_VERSION = 4;
+const CACHE_VERSION = 5;
+const TOKEN_BYTES = 1024;
 const LANGS = ['en', 'ja'];
 const PATTERNS = {
   en: /[\u3400-\u9fff]|Whale[ -]?Chan|DeepSeek Chan\.com|Blue Fish|Fat Fish/u,
@@ -101,18 +102,37 @@ function auditFailure(report) {
   return error;
 }
 
+function tokenIndex(text, index) {
+  const value = Math.imul(text.charCodeAt(index), 31 * 31)
+    + Math.imul(text.charCodeAt(index + 1), 31) + text.charCodeAt(index + 2);
+  return (value ^ (value >>> 13)) & (TOKEN_BYTES * 8 - 1);
+}
+
 function changedAllowances(before, after) {
   if (!Array.isArray(before)) return null;
-  let start = 0;
-  let oldEnd = before.length;
-  let newEnd = after.length;
-  while (start < oldEnd && start < newEnd && before[start] === after[start]) start++;
-  while (oldEnd > start && newEnd > start && before[oldEnd - 1] === after[newEnd - 1]) {
-    oldEnd--;
-    newEnd--;
+  const oldNames = new Set(before), newNames = new Set(after);
+  const oldCommon = before.filter(name => newNames.has(name));
+  const newCommon = after.filter(name => oldNames.has(name));
+  const changed = new Set([...before.filter(name => !newNames.has(name)), ...after.filter(name => !oldNames.has(name))]);
+  for (const [index, name] of oldCommon.entries()) {
+    if (name !== newCommon[index]) {
+      changed.add(name);
+      changed.add(newCommon[index]);
+    }
   }
-  return [...new Set([...before.slice(start, oldEnd), ...after.slice(start, newEnd)])]
-    .map(name => [...new Set(name.split(''))]);
+  return [...changed].map(name => ({
+    characters: [...new Set(name.split(''))],
+    tokens: Array.from({length: Math.max(0, name.length - 2)}, (_, index) => tokenIndex(name, index)),
+  }));
+}
+
+function allowancesMayAffect(entry, changed) {
+  if (!changed.length) return false;
+  const candidates = changed.filter(name => name.characters.every(character => entry.textCharacters.includes(character)));
+  if (!candidates.length) return false;
+  const mask = Buffer.from(entry.textTokens, 'base64');
+  if (mask.length !== TOKEN_BYTES) return true;
+  return candidates.some(name => name.tokens.every(token => mask[token >>> 3] & (1 << (token & 7))));
 }
 
 function cachedEntryMatches(entry, {hash, lang, works, changedNames, creditsBySlug}) {
@@ -120,10 +140,8 @@ function cachedEntryMatches(entry, {hash, lang, works, changedNames, creditsBySl
   if (entry.details !== 0 && entry.details !== 1) return false;
   if (entry.slug !== null && typeof entry.slug !== 'string') return false;
   if (entry.name !== null && typeof entry.name !== 'string') return false;
-  if (typeof entry.textCharacters !== 'string' || !changedNames) return false;
-  // Name stripping only deletes characters, so an altered allowance cannot
-  // match at any point if even one of its characters is absent from the page.
-  if (changedNames.some(name => name.every(character => entry.textCharacters.includes(character)))) return false;
+  if (typeof entry.textCharacters !== 'string' || typeof entry.textTokens !== 'string' || !changedNames) return false;
+  if (allowancesMayAffect(entry, changedNames)) return false;
   if (entry.credits !== (creditsBySlug.get(entry.slug)?.key ?? null)) return false;
   if (!entry.slug) return entry.details === 0 && entry.name === null;
   const work = works.get(entry.slug);
@@ -141,6 +159,7 @@ function auditPage(html, {lang, file, root, works, stripAllowances, creditsBySlu
   const problems = [];
   const seen = new Set();
   const textCharacters = new Set();
+  const textTokens = Buffer.alloc(TOKEN_BYTES);
   const checkedText = new Set();
   const slug = document.body?.getAttribute('data-work-slug') || null;
   const work = slug ? works.get(slug) : undefined;
@@ -151,13 +170,18 @@ function auditPage(html, {lang, file, root, works, stripAllowances, creditsBySlu
     problems.push({file: problemFile, problem: 'Missing native work title/FAQ'});
   }
 
+  function remember(text) {
+    if (checkedText.has(text)) return;
+    checkedText.add(text);
+    for (let index = 0; index < text.length; index++) textCharacters.add(text[index]);
+    for (let index = 0; index + 2 < text.length; index++) {
+      const token = tokenIndex(text, index);
+      textTokens[token >>> 3] |= 1 << (token & 7);
+    }
+  }
   function check(text, kind, element) {
     const value = String(text || '').trim();
     if (!value || seen.has(value)) return;
-    if (!checkedText.has(value)) {
-      checkedText.add(value);
-      for (let index = 0; index < value.length; index++) textCharacters.add(value[index]);
-    }
     let attributed = value;
     if (kind === 'body' && credits) {
       const template = element.getAttribute('data-i18n-tpl');
@@ -170,7 +194,12 @@ function auditPage(html, {lang, file, root, works, stripAllowances, creditsBySlu
         return;
       }
     }
-    let checked = stripAllowances(attributed);
+    remember(attributed);
+    const stripped = stripAllowances(attributed);
+    // Retain trigrams exposed by earlier removals too. When the prior and
+    // current allowance lists first differ, the text up to that step is shared.
+    for (const candidate of stripped?.intermediates || []) remember(candidate);
+    let checked = stripped?.text ?? attributed;
     // The homepage SEO intentionally includes the exact Chinese brand.
     if (BRAND_EXEMPT_KINDS.has(kind) && basename === 'index.html') {
       for (const brand of BRAND_EXEMPTIONS) checked = checked.replaceAll(brand, '');
@@ -211,6 +240,7 @@ function auditPage(html, {lang, file, root, works, stripAllowances, creditsBySlu
     slug: slug || null,
     name: details && typeof native?.name === 'string' ? native.name : null,
     textCharacters: [...textCharacters].join(''),
+    textTokens: textTokens.toString('base64'),
     credits: credits?.key ?? null
   };
 }
@@ -251,14 +281,19 @@ export function auditLanguagePages(out, {snapshot, previous, reportFile, digests
   const identityProbe = new RegExp([...identities, '投稿'].map(escapeRegExp).join('|'));
   const stripped = new Map();
   const stripAllowances = text => {
-    if (!identityProbe.test(text)) return text;
+    if (!identityProbe.test(text)) return null;
     if (stripped.has(text)) return stripped.get(text);
     // Keep replacement order, since a removal can join parts of a later match.
     let result = text;
-    for (const name of identities) result = result.replaceAll(name, '');
-    result = result.replaceAll('投稿', '');
-    if (stripped.size < 8192) stripped.set(text, result);
-    return result;
+    const intermediates = [];
+    for (const name of identities) {
+      const next = result.replaceAll(name, '');
+      if (next !== result) intermediates.push(next);
+      result = next;
+    }
+    const entry = {text: result.replaceAll('投稿', ''), intermediates};
+    if (stripped.size < 8192) stripped.set(text, entry);
+    return entry;
   };
   const cached = previous?.version === CACHE_VERSION && previous.rules === AUDIT_RULES
     && previous.pages && typeof previous.pages === 'object' && !Array.isArray(previous.pages) ? previous.pages : null;

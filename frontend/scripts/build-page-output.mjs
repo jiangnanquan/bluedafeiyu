@@ -4,6 +4,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {fork} from 'node:child_process';
+import {availableParallelism} from 'node:os';
 import {prepareLocalization,LOCALES} from './localize-pages.mjs';
 import {writeAiContent} from './ai-content.mjs';
 import {writeOpenApi} from './open-api.mjs';
@@ -43,6 +45,29 @@ const reuseArtifact=name=>{
 };
 const snapshot=JSON.parse(fs.readFileSync(path.join(stage,'site-data.json'),'utf8'));
 const localizer=prepareLocalization(stage,snapshot);
+const canParallelize=Boolean(localizationState) && availableParallelism()>1;
+let localeWorker;
+function renderInWorker(html, base, locale) {
+  localeWorker ??= fork(fileURLToPath(new URL('./localize-worker.mjs', import.meta.url)), [stage], {
+    execArgv: ['--max-old-space-size=224'],
+  });
+  return new Promise((resolve, reject) => {
+    const finish = (error, result) => {
+      localeWorker.off('message', onMessage);
+      localeWorker.off('exit', onExit);
+      localeWorker.off('error', onError);
+      if (error) reject(error);
+      else resolve(result);
+    };
+    const onMessage = ({error, result}) => finish(error ? Error(error) : null, result);
+    const onExit = (code, signal) => finish(Error('Localization worker stopped: ' + (signal || code)));
+    const onError = error => finish(error);
+    localeWorker.once('message', onMessage);
+    localeWorker.once('exit', onExit);
+    localeWorker.once('error', onError);
+    localeWorker.send({html, base, locale}, error => { if (error) finish(error); });
+  });
+}
 const dictionaries=[
  plan.inputs.dictionaries,
  ...['archive-copy.js','archive-labels.js'].map(file=>hash(fs.readFileSync(path.join(stage,file)))),
@@ -80,6 +105,7 @@ try {
     const indexable = unchangedSource ? prior.indexable
       : archive && /<meta name="robots" content="index,follow"\s*\/?>/.test(html ??= source.toString('utf8'));
     const page = {raw, indexable, locales: {}};
+    const missing=[];
     for (const locale of LOCALES) {
       const name = locale.prefix ? locale.prefix.slice(1) + '/' + file : file;
       const dependencies = unchangedSource ? prior.locales?.[locale.id] : null;
@@ -90,7 +116,9 @@ try {
         localeStats[locale.id].reused++;
         continue;
       }
-      const result = await localizer.render(html ??= source.toString('utf8'), '/' + file, locale);
+      missing.push({locale,name});
+    }
+    const writePage = ({locale,name}, result) => {
       const target = path.join(stage, name);
       fs.mkdirSync(path.dirname(target), {recursive: true});
       fs.writeFileSync(target, result.html);
@@ -98,6 +126,21 @@ try {
       page.locales[locale.id] = result.dependencies;
       localeStats[locale.id].generated++;
       localized++;
+    };
+    if (missing.length) html ??= source.toString('utf8');
+    for (let index=0; index<missing.length; index++) {
+      const current=missing[index], next=missing[index+1];
+      if (canParallelize && next) {
+        const [first,second]=await Promise.all([
+          renderInWorker(html,'/'+file,next.locale),
+          localizer.render(html,'/'+file,current.locale),
+        ]);
+        writePage(current,second);
+        writePage(next,first);
+        index++;
+      } else {
+        writePage(current,await localizer.render(html,'/'+file,current.locale));
+      }
     }
     fs.writeFileSync(output, separator + JSON.stringify(file) + ':' + JSON.stringify(page));
     separator = ',';
@@ -115,5 +158,6 @@ try {
   const rest = JSON.stringify({localeInputHash, localeInputs, urls, knownOutputs: [...knownOutputs], localized, reusedLanguagePages, localeStats, ai, openApi, timings});
   fs.writeFileSync(output, '},' + rest.slice(1));
 } finally {
+  if (localeWorker?.connected) localeWorker.disconnect();
   fs.closeSync(output);
 }

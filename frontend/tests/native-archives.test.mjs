@@ -200,12 +200,12 @@ test('audit reuse notices changed allowances that can join or expose untranslate
       fs.mkdirSync(path.join(out, lang));
       fs.writeFileSync(path.join(out, lang, 'archive.html'), '<html><head><title>Archive</title></head><body><p>All images</p></body></html>');
     }
-    fs.writeFileSync(path.join(out, 'en', 'work.html'), '<html><head><title>Archive</title></head><body><p>Blue ArtistFish</p><p>星空绘师</p></body></html>');
-    const snapshot = {works: [{origin: {author: '星空绘师'}}]};
+    fs.writeFileSync(path.join(out, 'en', 'work.html'), '<html><head><title>Archive</title></head><body><p>Blue ArExistingtistFish</p><p>星空绘师</p></body></html>');
+    const snapshot = {works: [{origin: {author: '星空绘师'}}, {origin: {author: 'Existing'}}]};
     const initial = auditLanguagePages(out, {snapshot});
     const unchanged = auditLanguagePages(out, {snapshot: {works: [...snapshot.works, {origin: {author: '未收录作者'}}]}, previous: initial});
     assert.equal(unchanged.stats.scanned, 0);
-    for (const [works, text] of [[[], '星空绘师'], [[...snapshot.works, {origin: {author: 'Artist'}}], 'Blue ArtistFish']]) {
+    for (const [works, text] of [[[], '星空绘师'], [[...snapshot.works, {origin: {author: 'Artist'}}], 'Blue ArExistingtistFish']]) {
       assert.throws(() => auditLanguagePages(out, {snapshot: {works}, previous: initial}), error =>
         error.code === 'AUDIT_FAILED' && error.report.problems.some(problem => problem.text === text));
     }

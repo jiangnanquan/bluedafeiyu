@@ -6,7 +6,8 @@ import {spawnSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {readSitemapHistory,updateSitemapHistory,languageSitemap,sitemapWorkImage} from './sitemap-history.mjs';
 import {localizedPath,LOCALES,ORIGIN} from './site-locales.mjs';
-import {STATE_VERSION,STATE_FILE,readState,hash,outputHashes,copyArtifact,copyImmutableAsset,filesIn,excludeInvalidArtifacts} from './incremental.mjs';
+import {STATE_VERSION,STATE_FILE,readState,hash,outputHashes,copyImmutableAsset,filesIn,excludeInvalidArtifacts} from './incremental.mjs';
+import {buildShareCards} from './og-output.mjs';
 
 const started=performance.now();
 let phaseStart=started;
@@ -84,7 +85,8 @@ try {
  const reusableState=plan.force ? null : excludeInvalidArtifacts(baseline,plan.invalidArtifacts);
  const knownOutputs=new Map();
  let history=reusableState?.sitemap||{},pages=reusableState?.pages||{},audit=reusableState?.audit;
- let localeInputHash=reusableState?.localeInputHash,localeInputs=reusableState?.localeInputs,ogFingerprint=reusableState?.ogFingerprint;
+ let localeInputHash=reusableState?.localeInputHash,localeInputs=reusableState?.localeInputs;
+ let ogFingerprint=reusableState?.ogFingerprint,ogJobs=reusableState?.ogJobs,ogStats;
  let localeStats, auditStats, sitemapStats;
  let ai={},openApi={},localized=0,reusedLanguagePages=0,reusedAssets=0;
  if(plan.mode==='noop') {
@@ -131,32 +133,12 @@ try {
   const icons=spawnSync(process.env.PYTHON||'python3',[path.join(root,'tools/prepare_apple_touch_icons.py'),path.join(dist,'favicon.png'),stage],{stdio:'inherit'});
   if(icons.error||icons.status!==0)throw Error('Apple touch icon generation failed: '+(icons.error?.message||icons.status));
   if(process.env.SKIP_OG!=='1') {
-   const jobs=[...new Map(fs.readFileSync(ogJobsFile,'utf8').split('\n').filter(Boolean).map(line=>JSON.parse(line)).map(job=>[job.id,job])).values()];
-   ogFingerprint=hash([jobs,plan.inputs.og,plan.inputs.assets,plan.inputs.runtime]);
-   if (reusableState?.ogFingerprint===ogFingerprint && jobs.every(job=>reusableState.outputs['og/'+job.id+'.jpg'])) {
-    for(const job of jobs){
-     const name='og/'+job.id+'.jpg';
-     copyArtifact(previous,stage,name);
-     knownOutputs.set(name,reusableState.outputs[name]);
-    }
-    reusedAssets+=jobs.length;
-    console.log('[og] '+jobs.length+' share cards reused');
-   } else {
-    const cache=path.join(root,'.build/og-cache');fs.mkdirSync(cache,{recursive:true});
-    const jobsJson=path.join(cache,'jobs.json');fs.writeFileSync(jobsJson,JSON.stringify(jobs));
-    const result=spawnSync(process.env.PYTHON||'python3',[path.join(root,'tools/og_cards.py'),jobsJson,cache,dist,path.join(dist,'avatar.png')],{cwd:root,stdio:'inherit'});
-    if(result.error||result.status!==0)throw Error('Share card generation failed: '+(result.error?.message||result.status));
-    fs.mkdirSync(path.join(stage,'og'),{recursive:true});
-    for(const job of jobs){
-     const name='og/'+job.id+'.jpg',digest=reusableState?.outputs[name];
-     if(copyImmutableAsset(path.join(cache,job.id+'.jpg'),path.join(stage,name),path.join(previous,name),digest)){
-      if(digest)knownOutputs.set(name,digest);
-      reusedAssets++;
-     }
-    }
-    console.log('[og] '+jobs.length+' share cards');
-   }
-  } else ogFingerprint=undefined;
+   const result=buildShareCards({jobsFile:ogJobsFile,root,dist,stage,previous,state:reusableState,inputs:plan.inputs,assets:assetManifest,knownOutputs});
+   ogFingerprint=result.fingerprint;
+   ogJobs=result.jobKeys;
+   ogStats={reused:result.reused,checked:result.checked};
+   reusedAssets+=result.reused;
+  }
   endPhase('assets');
   // Run localization and audit in separate processes so their DOMs cannot
   // accumulate in one heap.
@@ -220,7 +202,7 @@ try {
  const git=(dir)=>spawnSync('git',['-C',dir,'rev-parse','HEAD'],{encoding:'utf8'}).stdout?.trim()||null;
  const artifacts={};
  const outputs=outputHashes(stage,knownOutputs,artifacts);
- const state={version:STATE_VERSION,inputs:plan.inputs,astroKey:plan.astroKey,routes:plan.routes,pages,audit,outputs,artifacts,assetManifest,sitemap:history,baselineSitemap,localeInputHash,localeInputs,ogFingerprint};
+ const state={version:STATE_VERSION,inputs:plan.inputs,astroKey:plan.astroKey,routes:plan.routes,pages,audit,outputs,artifacts,assetManifest,sitemap:history,baselineSitemap,localeInputHash,localeInputs,ogFingerprint,ogJobs};
  delete plan.assetManifest;
  endPhase('inventory');
  const report={
@@ -228,7 +210,7 @@ try {
   reasons:preflight?['validated-prebuilt-artifact']:plan.reasons,preflight:preflight||null,
   sourceCommit:git(root),contentCommit:process.env.CONTENT_DIR?git(process.env.CONTENT_DIR):null,
   planned:preflight?.planned||{changed:plan.changed.length,reused:plan.reused.length,removed:plan.removed.length},
-  rendered:(plan.rendered||[]).length,localized,reusedLanguagePages,locales:localeStats,reusedAssets,markdown:ai,openApi,audit:auditStats,sitemap:sitemapStats,timings,
+  rendered:(plan.rendered||[]).length,localized,reusedLanguagePages,locales:localeStats,reusedAssets,og:ogStats,markdown:ai,openApi,audit:auditStats,sitemap:sitemapStats,timings,
   baselineChecks:plan.baselineChecks,
   seconds:Number(((performance.now()-started)/1000).toFixed(2)),
  };
