@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// Localize the staged pages, export AI/Open API artifacts and audit them in a
-// child process so the temporary localization state dies with this process.
+// Localize the staged pages and export AI/Open API artifacts. Exit before the
+// audit so dependency indexes and localization DOMs are released.
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -8,19 +8,16 @@ import {prepareLocalization,LOCALES} from './localize-pages.mjs';
 import {writeAiContent} from './ai-content.mjs';
 import {writeOpenApi} from './open-api.mjs';
 import {readState,hash,copyArtifact,filesIn} from './incremental.mjs';
-import {auditLanguagePages} from '../../tools/localization/audit-pages.mjs';
 
-const usage='Usage: build-page-output.mjs <stage> <planFile> <previous> <stateFile> <reportFile> <resultFile>';
-const [stage,planFile,previous,stateFile,reportFile,resultFile]=process.argv.slice(2);
-if([stage,planFile,previous,stateFile,reportFile,resultFile].some(value=>!value))throw Error(usage);
+const usage='Usage: build-page-output.mjs <stage> <planFile> <previous> <stateFile> <resultFile>';
+const [stage,planFile,previous,stateFile,resultFile]=process.argv.slice(2);
+if([stage,planFile,previous,stateFile,resultFile].some(value=>!value))throw Error(usage);
 const frontend=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const plan=JSON.parse(fs.readFileSync(planFile,'utf8'));
-const baseline = plan.baselineVerified ? readState(stateFile) : null;
-if(plan.baselineVerified && !baseline)throw Error('Previous build state is missing or incompatible: '+stateFile);
 // Shared toolchain changes can alter parsing and conversion without changing Astro HTML.
-const reusableState = plan.mode === 'full' ? null : baseline;
+const reusableState = plan.mode === 'full' ? null : readState(stateFile);
+if (plan.mode !== 'full' && !reusableState) throw Error('Previous build state is missing or incompatible: '+stateFile);
 const localizationState = reusableState?.inputs.localization === plan.inputs.localization ? reusableState : null;
-const auditState = reusableState?.inputs.audit === plan.inputs.audit ? reusableState?.audit : null;
 
 const timings={};
 let phaseStart=performance.now();
@@ -105,9 +102,7 @@ try {
   const openApi = writeOpenApi(stage, snapshot, {previousDir: reusableState ? previous : null, previousState: reusableState});
   console.log('[open-api] ' + JSON.stringify(openApi));
   endPhase('exports');
-  const audit = auditLanguagePages(stage, {snapshot, previous: auditState, digests: knownOutputs, reportFile});
-  endPhase('audit');
-  const rest = JSON.stringify({localeInputHash, urls, knownOutputs: [...knownOutputs], localized, reusedLanguagePages, localeStats, ai, openApi, audit, timings});
+  const rest = JSON.stringify({localeInputHash, urls, knownOutputs: [...knownOutputs], localized, reusedLanguagePages, localeStats, ai, openApi, timings});
   fs.writeFileSync(output, '},' + rest.slice(1));
 } finally {
   fs.closeSync(output);

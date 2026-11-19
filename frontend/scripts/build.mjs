@@ -44,14 +44,22 @@ let previous=fs.existsSync(previousPath)?fs.realpathSync(previousPath):previousP
 const publishedPrevious=previous;
 const previousStateFile=process.env.SITE_PREVIOUS_STATE||path.join(previous,STATE_FILE);
 const run=(script,argv=[],cwd=root,env={})=>{
- const result=spawnSync(process.execPath,[script,...argv],{cwd,env:{...process.env,...env},stdio:'inherit'});
- if(result.error||result.status!==0)throw Error(script+' failed: '+(result.error?.message||result.status));
+ const result=spawnSync(process.execPath,[script,...argv],{
+  cwd,env:{...process.env,...env},stdio:['inherit','inherit','pipe'],encoding:'utf8',maxBuffer:8*1024*1024,
+ });
+ if(result.stderr)process.stderr.write(result.stderr);
+ if(result.error||result.status!==0){
+  const diagnostic=result.stderr?.split(/\r?\n/).find(line=>/^(?:\w*Error:|FATAL ERROR)/.test(line.trim()))?.trim();
+  const reason=result.error?.message??result.signal??result.status;
+  throw Error(script+' failed: '+reason+(diagnostic ? ' · '+diagnostic : ''));
+ }
 };
 const astro=path.join(frontend,'node_modules/astro/bin/astro.mjs');
 if(!fs.existsSync(astro))throw Error('Astro is not installed: run npm ci in frontend/');
 fs.mkdirSync(path.join(root,'.build'),{recursive:true});
 const planFile=path.join(root,'.build','build-plan-'+process.pid+'.json');
 const pageResultFile=path.join(root,'.build','build-pages-'+process.pid+'.json');
+const auditStateFile=path.join(root,'.build','audit-state-'+process.pid+'.json');
 const ogJobsFile=path.join(frontend,'.astro/og-jobs.jsonl');
 fs.mkdirSync(path.dirname(ogJobsFile),{recursive:true});fs.writeFileSync(ogJobsFile,'');
 process.env.OG_JOBS_FILE=ogJobsFile;
@@ -137,18 +145,27 @@ try {
    console.log('[og] '+jobs.length+' share cards');
   }
   endPhase('assets');
-  // HTML rendering and audit keep large DOMs in memory. Exit that process
-  // before loading the previous release's sitemap and HTML history.
+  // Run localization and audit in separate processes so their DOMs cannot
+  // accumulate in one heap.
   run(path.join(frontend,'scripts/build-page-output.mjs'),[
-   stage,planFile,previous,reusedStateFile,path.join(root,'.build/native-localization-audit.json'),pageResultFile,
+   stage,planFile,previous,reusedStateFile,pageResultFile,
   ]);
-  const result=JSON.parse(fs.readFileSync(pageResultFile,'utf8'));
-  const {urls}=result;
-  ({pages,localeInputHash,localized,reusedLanguagePages,localeStats,ai,openApi,audit}=result);
-  auditStats = audit.stats;
-  for(const [name,digest] of result.knownOutputs)knownOutputs.set(name,digest);
-  Object.assign(timings,result.timings);
+  let urls;
+  {
+   const result=JSON.parse(fs.readFileSync(pageResultFile,'utf8'));
+   ({urls,pages,localeInputHash,localized,reusedLanguagePages,localeStats,ai,openApi}=result);
+   for(const [name,digest] of result.knownOutputs)knownOutputs.set(name,digest);
+   Object.assign(timings,result.timings);
+  }
   phaseStart=performance.now();
+  const previousAudit = plan.mode !== 'full' && baseline?.inputs.audit === plan.inputs.audit ? baseline.audit : null;
+  fs.writeFileSync(auditStateFile,JSON.stringify({previous:previousAudit,digests:Object.fromEntries(knownOutputs)}));
+  run(path.join(root,'tools/localization/audit-pages.mjs'),[
+   stage,path.join(root,'.build/native-localization-audit.json'),auditStateFile,
+  ]);
+  audit=JSON.parse(fs.readFileSync(auditStateFile,'utf8'));
+  auditStats=audit.stats;
+  endPhase('audit');
   const snapshot=JSON.parse(fs.readFileSync(path.join(stage,'site-data.json'),'utf8'));
   let previousSitemap={records:new Map(),seeded:0};
   let previousPagesRead = 0;
@@ -207,8 +224,12 @@ try {
  fs.renameSync(stage,out);completed=true;
  console.log('[build-result] '+JSON.stringify(report));
  console.log('[astro] output '+out);
+} catch(error) {
+ console.error('[build] '+error.message);
+ process.exitCode=1;
 } finally {
  if(!completed)fs.rmSync(stage,{recursive:true,force:true});
  fs.rmSync(planFile,{force:true});
  fs.rmSync(pageResultFile,{force:true});
+ fs.rmSync(auditStateFile,{force:true});
 }

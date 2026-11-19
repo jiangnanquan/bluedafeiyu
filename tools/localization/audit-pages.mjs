@@ -280,7 +280,6 @@ export function auditLanguagePages(out, {snapshot, previous, reportFile, digests
 
   const report = {pages: pageCount, details: detailCount, problems};
   writeReport(reportFile ? path.resolve(reportFile) : path.join(root, 'native-localization-audit.json'), report);
-  // Keep the standalone CLI's JSON stdout unchanged; builds get progress counts.
   if (!invokedAsScript) process.stdout.write(`[audit] ${pageCount} pages, ${reusedCount} reused, ${pageCount - reusedCount} scanned, ${problems.length} problems\n`);
   if (problems.length) throw auditFailure(report);
   return {
@@ -295,14 +294,22 @@ export function auditLanguagePages(out, {snapshot, previous, reportFile, digests
 function cli() {
   const out = path.resolve(process.argv[2] || '.build/native-localization');
   const reportFile = process.argv[3] ? path.resolve(process.argv[3]) : undefined;
+  const auditStateFile = process.argv[4] ? path.resolve(process.argv[4]) : null;
+  const {previous, digests} = auditStateFile ? JSON.parse(fs.readFileSync(auditStateFile, 'utf8')) : {};
   let record;
   try {
-    record = auditLanguagePages(out, {reportFile});
+    record = auditLanguagePages(out, {reportFile, previous, digests});
   } catch (error) {
     if (error?.code !== 'AUDIT_FAILED') throw error;
     const {report} = error;
     console.log(JSON.stringify({pages: report.pages, details: report.details, problems: report.problems.length, samples: report.problems.slice(0, 25)}, null, 2));
     process.exitCode = 1;
+    return;
+  }
+  if (auditStateFile) {
+    fs.writeFileSync(auditStateFile, JSON.stringify(record));
+    const {scanned, reused} = record.stats;
+    console.log(`[audit] ${scanned + reused} pages, ${reused} reused, ${scanned} scanned, 0 problems`);
     return;
   }
   const entries = Object.values(record.pages);
