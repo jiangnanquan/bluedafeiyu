@@ -671,6 +671,17 @@ function deployedCheckoutMatches(cfg, exec) {
   } catch { return false; }
 }
 
+function changesOnlyPublicText(cfg, exec, files) {
+  return files.every(file => {
+    if (file === 'data/video-archive.json') return true;
+    if (file !== 'data/works.json') return false;
+    const stripTranslations = records => records.map(({ i18n, ...record }) => record);
+    const before = JSON.parse(gitCmd(exec, cfg.siteDir, ['show', 'HEAD:' + file]).stdout);
+    const after = readJsonFile(path.join(cfg.siteDir, file), file);
+    return JSON.stringify(stripTranslations(before)) === JSON.stringify(stripTranslations(after));
+  });
+}
+
 function markSnapshotPublished(cfg, snapshot, runId, atIso) {
   for (const item of snapshot.originals) {
     const meta = path.join(cfg.intake.metaDir, `${item.sha256}.json`);
@@ -752,6 +763,8 @@ export async function processPublishRequest({ request, env = process.env, deps =
     journalPath: null,
   };
   const startedAt = new Date().toISOString();
+  const started = performance.now();
+  const reportElapsed = label => logLine(log, `[publish-timing] ${label} ${((performance.now() - started) / 1000).toFixed(2)}s`);
   let cfg = null;
   let siteCfg = null;
   let lock = null;
@@ -806,32 +819,41 @@ export async function processPublishRequest({ request, env = process.env, deps =
     const siteWritten = writeSiteSnapshotFiles(cfg, snapshot.files);
     if (siteWritten.length) logLine(log, `写入站点清单：${siteWritten.join(', ')}`);
 
-    step = 'toolchain';
-    journal.step = step;
-    fs.mkdirSync(cfg.workDir, { recursive: true, mode: 0o700 });
-    try {
-      await runToolchain(siteCfg, exec, cfg.workDir);
-    } catch (error) {
-      refreshJournalFiles(cfg, exec, journal);
-      throw error;
-    }
-    refreshJournalFiles(cfg, exec, journal);
-
-    step = 'results';
-    journal.step = step;
-    result.results = collectPublishResults(cfg, snapshot);
-
     step = 'discover';
     journal.step = step;
-    const siteChanges = discoverRepoChanges(siteCfg, exec, 'site');
-    const contentChanges = discoverRepoChanges(contentCfg, exec, 'content');
+    let siteChanges = discoverRepoChanges(siteCfg, exec, 'site');
+    let contentChanges = discoverRepoChanges(contentCfg, exec, 'content');
+    const matchingBaseline = !snapshot.originals.length && !contentChanges.files.length && deployedCheckoutMatches(cfg, exec);
+    const alreadyPublished = matchingBaseline && !siteChanges.files.length;
+    if (!alreadyPublished) {
+      reportElapsed('changes-ready');
+      step = 'toolchain';
+      journal.step = step;
+      fs.mkdirSync(cfg.workDir, { recursive: true, mode: 0o700 });
+      try {
+        const prepareImages = !matchingBaseline || !changesOnlyPublicText(cfg, exec, siteChanges.files);
+        await runToolchain(siteCfg, exec, cfg.workDir, {prepareImages});
+        reportElapsed('preflight-built');
+      } catch (error) {
+        refreshJournalFiles(cfg, exec, journal);
+        throw error;
+      }
+      step = 'discover';
+      journal.step = step;
+      siteChanges = discoverRepoChanges(siteCfg, exec, 'site');
+      contentChanges = discoverRepoChanges(contentCfg, exec, 'content');
+    }
     journal.files = {
       site: siteChanges.files.length ? siteChanges.files : [...SITE_ALLOWLIST],
       content: contentChanges.files.length ? contentChanges.files : journal.files.content,
     };
 
+    step = 'results';
+    journal.step = step;
+    result.results = collectPublishResults(cfg, snapshot);
+
     const noChanges = siteChanges.files.length === 0 && contentChanges.files.length === 0;
-    if (noChanges && deployedCheckoutMatches(cfg, exec)) {
+    if (alreadyPublished || (noChanges && deployedCheckoutMatches(cfg, exec))) {
       result.status = 'succeeded';
       result.step = 'noop';
       result.log = '无变更';
@@ -855,6 +877,7 @@ export async function processPublishRequest({ request, env = process.env, deps =
         healthCheck: result.healthCheck,
         results: { works: result.results },
       }, fetchImpl);
+      reportElapsed('noop-status');
       journal.status = 'succeeded';
       journal.step = 'done';
       journal.releasePath = result.releasePath;
@@ -900,6 +923,7 @@ export async function processPublishRequest({ request, env = process.env, deps =
 
     step = 'deploy';
     journal.step = step;
+    reportElapsed('deploy-handoff');
     await runDeploy(siteCfg, exec, log);
     result.releasePath = currentReleasePath(cfg);
     result.healthCheck = { ok: true, url: cfg.healthUrl || null };

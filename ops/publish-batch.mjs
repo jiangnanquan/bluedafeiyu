@@ -852,20 +852,22 @@ function updateWorksManifest(cfg, items, originalText) {
   return added;
 }
 
-export function runToolchain(cfg, exec, workDir) {
+export function runToolchain(cfg, exec, workDir, {prepareImages = true} = {}) {
   const out = cfg.buildCheck ? path.join(workDir, 'build-check') : null;
   // A previous publish can leave this generated output on the build filesystem.
   // Release it before measuring the space available for its replacement.
   if (out) fs.rmSync(out, { recursive: true, force: true });
 
   assertBuildDiskSpace([cfg.siteDir, cfg.contentDir, workDir, cfg.deployRoot]);
-  // 先确认服务器真能跑派生图（Pillow），避免写坏清单后才发现缺依赖。
-  runCmd(exec, cfg.python, ['-c', 'import PIL, sys; sys.exit(0)'], { cwd: cfg.siteDir });
-  runCmd(exec, cfg.node, ['tools/prepare_works.mjs'], { cwd: cfg.siteDir });
-  runCmd(exec, cfg.python, ['tools/generate_image_derivatives.py', '--content-dir', cfg.contentDir], {
-    cwd: cfg.siteDir,
-    env: { ...process.env, CONTENT_DIR: cfg.contentDir },
-  });
+  if (prepareImages) {
+    // 先确认 Pillow 可用，再补齐清单并生成派生图。
+    runCmd(exec, cfg.python, ['-c', 'import PIL, sys; sys.exit(0)'], { cwd: cfg.siteDir });
+    runCmd(exec, cfg.node, ['tools/prepare_works.mjs'], { cwd: cfg.siteDir });
+    runCmd(exec, cfg.python, ['tools/generate_image_derivatives.py', '--content-dir', cfg.contentDir], {
+      cwd: cfg.siteDir,
+      env: { ...process.env, CONTENT_DIR: cfg.contentDir },
+    });
+  }
   runCmd(exec, cfg.node, ['tools/sync_issue_template.mjs', '--check', '--content-dir', cfg.contentDir], {
     cwd: cfg.siteDir,
     env: { ...process.env, CONTENT_DIR: cfg.contentDir },
@@ -882,6 +884,7 @@ export function runToolchain(cfg, exec, workDir) {
           buildEnv.SITE_PREVIOUS_DIR=real;
           buildEnv.SITE_PREVIOUS_STATE=path.join(cfg.deployRoot,'build-state',path.basename(real)+'.json');
           buildEnv.SITE_REUSE_ASSETS='1';
+          buildEnv.SITE_REUSE_ARTIFACTS='1';
         }
       }catch{ /* A first release has no successful baseline yet. */ }
     }

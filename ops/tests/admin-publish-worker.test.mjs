@@ -507,11 +507,7 @@ test('无变更 noop：跳过提交、推送和部署，状态上报 succeeded',
   const submission = await startSubmissionService(t, state);
   state.snapshot = snapshotFrom(ws, runId);
   const fakeExec = makeFakeExec(state);
-  const exec = (command, args, options) => {
-    const result = fakeExec(command, args, options);
-    if (args[0] === 'tools/build_site.mjs' && result.status === 0) fs.mkdirSync(path.join(ws.intake, 'work', 'build-check'), { recursive: true });
-    return result;
-  };
+  const exec = fakeExec;
   writeRequest(ws, runId);
 
   const result = await capture(() => main(['--run', runId], {
@@ -526,6 +522,8 @@ test('无变更 noop：跳过提交、推送和部署，状态上报 succeeded',
   assert.equal(state.deployRuns || 0, 0);
   assert.equal(state.statuses.at(-1).status, 'succeeded');
   assert.match(state.statuses.at(-1).log, /无变更/);
+  assert.ok(!fakeExec.calls.some(call=>call.args[0]==='tools/build_site.mjs'));
+  assert.ok(!fakeExec.calls.some(call=>call.args[0]==='tools/generate_image_derivatives.py'));
   assert.equal(fs.existsSync(path.join(ws.intake, 'work', 'build-check')), false);
 });
 

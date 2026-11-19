@@ -6,7 +6,7 @@ import {spawnSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {readSitemapHistory,updateSitemapHistory,languageSitemap,sitemapWorkImage} from './sitemap-history.mjs';
 import {localizedPath,LOCALES,ORIGIN} from './site-locales.mjs';
-import {STATE_VERSION,STATE_FILE,readState,hash,outputHashes,copyImmutableAsset,filesIn} from './incremental.mjs';
+import {STATE_VERSION,STATE_FILE,readState,hash,outputHashes,copyArtifact,copyImmutableAsset,filesIn,excludeInvalidArtifacts} from './incremental.mjs';
 
 const started=performance.now();
 let phaseStart=started;
@@ -69,6 +69,7 @@ const baselineSitemap=fs.existsSync(previousSitemapFile) ? hash(fs.readFileSync(
 run(path.join(frontend,'scripts/plan-build.mjs'),[root,previous,previousStateFile,planFile,String(full),candidate,baselineSitemap||''],frontend);
 let plan=JSON.parse(fs.readFileSync(planFile,'utf8'));
 const preflight=plan.preflight;
+const assetManifest=plan.assetManifest;
 if(preflight)previous=fs.realpathSync(candidate);
 fs.copyFileSync(planFile,path.join(root,'.build/build-plan.json'));
 endPhase('plan');
@@ -80,10 +81,10 @@ try {
  const reusedStateFile=preflight ? path.join(previous,STATE_FILE) : previousStateFile;
  const baseline=plan.baselineVerified ? readState(reusedStateFile) : null;
  if(plan.baselineVerified&&!baseline)throw Error('Build baseline changed after planning');
- const reusableState=plan.force ? null : baseline;
+ const reusableState=plan.force ? null : excludeInvalidArtifacts(baseline,plan.invalidArtifacts);
  const knownOutputs=new Map();
  let history=reusableState?.sitemap||{},pages=reusableState?.pages||{},audit=reusableState?.audit;
- let localeInputHash=reusableState?.localeInputHash;
+ let localeInputHash=reusableState?.localeInputHash,localeInputs=reusableState?.localeInputs,ogFingerprint=reusableState?.ogFingerprint;
  let localeStats, auditStats, sitemapStats;
  let ai={},openApi={},localized=0,reusedLanguagePages=0,reusedAssets=0;
  if(plan.mode==='noop') {
@@ -118,10 +119,11 @@ try {
    fs.mkdirSync(path.join(stage,fs.statSync(source).isDirectory()?relative:path.dirname(relative)),{recursive:true});
    for(const name of names){
     const digest=reusableState?.outputs[name];
-    if(copyImmutableAsset(path.join(dist,name),path.join(stage,name),path.join(previous,name),digest)){
-     if(digest)knownOutputs.set(name,digest);
+    const sourceDigest=assetManifest['dist/'+name]?.digest;
+    if(copyImmutableAsset(path.join(dist,name),path.join(stage,name),path.join(previous,name),digest,sourceDigest)){
      reusedAssets++;
     }
+    if(sourceDigest)knownOutputs.set(name,sourceDigest);
    }
   };
   for(const file of ['avatar.png','favicon.ico','credits/shuangshuang.jpg','events/national-day-2026.webp','characters.json','categories.json','blue-fish-ids.json','topics.json','site-data.json','site-data.js','submissions/works.json','owner-picks/works.json'])copy(file);
@@ -130,20 +132,31 @@ try {
   if(icons.error||icons.status!==0)throw Error('Apple touch icon generation failed: '+(icons.error?.message||icons.status));
   if(process.env.SKIP_OG!=='1') {
    const jobs=[...new Map(fs.readFileSync(ogJobsFile,'utf8').split('\n').filter(Boolean).map(line=>JSON.parse(line)).map(job=>[job.id,job])).values()];
-   const cache=path.join(root,'.build/og-cache');fs.mkdirSync(cache,{recursive:true});
-   const jobsJson=path.join(cache,'jobs.json');fs.writeFileSync(jobsJson,JSON.stringify(jobs));
-   const result=spawnSync(process.env.PYTHON||'python3',[path.join(root,'tools/og_cards.py'),jobsJson,cache,dist,path.join(dist,'avatar.png')],{cwd:root,stdio:'inherit'});
-   if(result.error||result.status!==0)throw Error('Share card generation failed: '+(result.error?.message||result.status));
-   fs.mkdirSync(path.join(stage,'og'),{recursive:true});
-   for(const job of jobs){
-    const name='og/'+job.id+'.jpg',digest=reusableState?.outputs[name];
-    if(copyImmutableAsset(path.join(cache,job.id+'.jpg'),path.join(stage,name),path.join(previous,name),digest)){
-     if(digest)knownOutputs.set(name,digest);
-     reusedAssets++;
+   ogFingerprint=hash([jobs,plan.inputs.og,plan.inputs.assets,plan.inputs.runtime]);
+   if (reusableState?.ogFingerprint===ogFingerprint && jobs.every(job=>reusableState.outputs['og/'+job.id+'.jpg'])) {
+    for(const job of jobs){
+     const name='og/'+job.id+'.jpg';
+     copyArtifact(previous,stage,name);
+     knownOutputs.set(name,reusableState.outputs[name]);
     }
+    reusedAssets+=jobs.length;
+    console.log('[og] '+jobs.length+' share cards reused');
+   } else {
+    const cache=path.join(root,'.build/og-cache');fs.mkdirSync(cache,{recursive:true});
+    const jobsJson=path.join(cache,'jobs.json');fs.writeFileSync(jobsJson,JSON.stringify(jobs));
+    const result=spawnSync(process.env.PYTHON||'python3',[path.join(root,'tools/og_cards.py'),jobsJson,cache,dist,path.join(dist,'avatar.png')],{cwd:root,stdio:'inherit'});
+    if(result.error||result.status!==0)throw Error('Share card generation failed: '+(result.error?.message||result.status));
+    fs.mkdirSync(path.join(stage,'og'),{recursive:true});
+    for(const job of jobs){
+     const name='og/'+job.id+'.jpg',digest=reusableState?.outputs[name];
+     if(copyImmutableAsset(path.join(cache,job.id+'.jpg'),path.join(stage,name),path.join(previous,name),digest)){
+      if(digest)knownOutputs.set(name,digest);
+      reusedAssets++;
+     }
+    }
+    console.log('[og] '+jobs.length+' share cards');
    }
-   console.log('[og] '+jobs.length+' share cards');
-  }
+  } else ogFingerprint=undefined;
   endPhase('assets');
   // Run localization and audit in separate processes so their DOMs cannot
   // accumulate in one heap.
@@ -153,12 +166,12 @@ try {
   let urls;
   {
    const result=JSON.parse(fs.readFileSync(pageResultFile,'utf8'));
-   ({urls,pages,localeInputHash,localized,reusedLanguagePages,localeStats,ai,openApi}=result);
+   ({urls,pages,localeInputHash,localeInputs,localized,reusedLanguagePages,localeStats,ai,openApi}=result);
    for(const [name,digest] of result.knownOutputs)knownOutputs.set(name,digest);
    Object.assign(timings,result.timings);
   }
   phaseStart=performance.now();
-  const previousAudit = plan.mode !== 'full' && baseline?.inputs.audit === plan.inputs.audit ? baseline.audit : null;
+  const previousAudit = plan.mode !== 'full' && plan.dependenciesCompatible && baseline?.inputs.audit === plan.inputs.audit ? baseline.audit : null;
   fs.writeFileSync(auditStateFile,JSON.stringify({previous:previousAudit,digests:Object.fromEntries(knownOutputs)}));
   run(path.join(root,'tools/localization/audit-pages.mjs'),[
    stage,path.join(root,'.build/native-localization-audit.json'),auditStateFile,
@@ -170,7 +183,7 @@ try {
   let previousSitemap={records:new Map(),seeded:0};
   let previousPagesRead = 0;
   try {
-   if (baseline && ['sitemap', 'build', 'runtime'].every(key => baseline.inputs[key] === plan.inputs[key])) {
+   if (baseline && plan.dependenciesCompatible && ['sitemap', 'runtime'].every(key => baseline.inputs[key] === plan.inputs[key])) {
     previousSitemap = {records: new Map(Object.entries(baseline.sitemap)), seeded: 0};
    } else {
     previousSitemap = readSitemapHistory(publishedPrevious, {origin: ORIGIN, now: buildTime});
@@ -205,7 +218,10 @@ try {
  let placeholderStat=null;try{placeholderStat=fs.statSync(placeholder);}catch{}
  if(!placeholderStat?.isFile()||placeholderStat.size===0)throw Error('components/image-placeholder.svg is missing or empty from the release');
  const git=(dir)=>spawnSync('git',['-C',dir,'rev-parse','HEAD'],{encoding:'utf8'}).stdout?.trim()||null;
- const state={version:STATE_VERSION,inputs:plan.inputs,routes:plan.routes,pages,audit,outputs:outputHashes(stage,knownOutputs),sitemap:history,baselineSitemap,localeInputHash};
+ const artifacts={};
+ const outputs=outputHashes(stage,knownOutputs,artifacts);
+ const state={version:STATE_VERSION,inputs:plan.inputs,astroKey:plan.astroKey,routes:plan.routes,pages,audit,outputs,artifacts,assetManifest,sitemap:history,baselineSitemap,localeInputHash,localeInputs,ogFingerprint};
+ delete plan.assetManifest;
  endPhase('inventory');
  const report={
   version:STATE_VERSION,mode:preflight?'prebuilt':plan.mode,
@@ -213,6 +229,7 @@ try {
   sourceCommit:git(root),contentCommit:process.env.CONTENT_DIR?git(process.env.CONTENT_DIR):null,
   planned:preflight?.planned||{changed:plan.changed.length,reused:plan.reused.length,removed:plan.removed.length},
   rendered:(plan.rendered||[]).length,localized,reusedLanguagePages,locales:localeStats,reusedAssets,markdown:ai,openApi,audit:auditStats,sitemap:sitemapStats,timings,
+  baselineChecks:plan.baselineChecks,
   seconds:Number(((performance.now()-started)/1000).toFixed(2)),
  };
  fs.writeFileSync(path.join(stage,STATE_FILE),JSON.stringify(state));

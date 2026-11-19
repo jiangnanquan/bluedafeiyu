@@ -8,7 +8,7 @@ import {imageRights} from '../../frontend/src/lib/image-metadata.mjs';
 
 // Bump when the traversal/checking logic changes; pattern and selector changes
 // are folded into AUDIT_RULES automatically.
-const CACHE_VERSION = 3;
+const CACHE_VERSION = 4;
 const LANGS = ['en', 'ja'];
 const PATTERNS = {
   en: /[\u3400-\u9fff]|Whale[ -]?Chan|DeepSeek Chan\.com|Blue Fish|Fat Fish/u,
@@ -101,11 +101,30 @@ function auditFailure(report) {
   return error;
 }
 
-function cachedEntryMatches(entry, {hash, lang, works}) {
+function changedAllowances(before, after) {
+  if (!Array.isArray(before)) return null;
+  let start = 0;
+  let oldEnd = before.length;
+  let newEnd = after.length;
+  while (start < oldEnd && start < newEnd && before[start] === after[start]) start++;
+  while (oldEnd > start && newEnd > start && before[oldEnd - 1] === after[newEnd - 1]) {
+    oldEnd--;
+    newEnd--;
+  }
+  return [...new Set([...before.slice(start, oldEnd), ...after.slice(start, newEnd)])]
+    .map(name => [...new Set(name.split(''))]);
+}
+
+function cachedEntryMatches(entry, {hash, lang, works, changedNames, creditsBySlug}) {
   if (!entry || typeof entry !== 'object' || entry.hash !== hash) return false;
   if (entry.details !== 0 && entry.details !== 1) return false;
   if (entry.slug !== null && typeof entry.slug !== 'string') return false;
   if (entry.name !== null && typeof entry.name !== 'string') return false;
+  if (typeof entry.textCharacters !== 'string' || !changedNames) return false;
+  // Name stripping only deletes characters, so an altered allowance cannot
+  // match at any point if even one of its characters is absent from the page.
+  if (changedNames.some(name => name.every(character => entry.textCharacters.includes(character)))) return false;
+  if (entry.credits !== (creditsBySlug.get(entry.slug)?.key ?? null)) return false;
   if (!entry.slug) return entry.details === 0 && entry.name === null;
   const work = works.get(entry.slug);
   if (!work) return entry.details === 0 && entry.name === null;
@@ -114,13 +133,15 @@ function cachedEntryMatches(entry, {hash, lang, works}) {
   return entry.details === 1 && entry.name === native.name;
 }
 
-function auditPage(html, {lang, file, root, works, identities, identityProbe, creditsBySlug}) {
+function auditPage(html, {lang, file, root, works, stripAllowances, creditsBySlug}) {
   const {document} = parseHTML(html);
   const pattern = PATTERNS[lang];
   const basename = path.basename(file);
   const problemFile = path.relative(root, file);
   const problems = [];
   const seen = new Set();
+  const textCharacters = new Set();
+  const checkedText = new Set();
   const slug = document.body?.getAttribute('data-work-slug') || null;
   const work = slug ? works.get(slug) : undefined;
   const credits = creditsBySlug.get(slug);
@@ -130,14 +151,13 @@ function auditPage(html, {lang, file, root, works, identities, identityProbe, cr
     problems.push({file: problemFile, problem: 'Missing native work title/FAQ'});
   }
 
-  const remaining = text => {
-    let result = String(text || '');
-    for (const name of identities) result = result.replaceAll(name, '');
-    return result.replaceAll('投稿', '');
-  };
   function check(text, kind, element) {
     const value = String(text || '').trim();
     if (!value || seen.has(value)) return;
+    if (!checkedText.has(value)) {
+      checkedText.add(value);
+      for (let index = 0; index < value.length; index++) textCharacters.add(value[index]);
+    }
     let attributed = value;
     if (kind === 'body' && credits) {
       const template = element.getAttribute('data-i18n-tpl');
@@ -150,10 +170,7 @@ function auditPage(html, {lang, file, root, works, identities, identityProbe, cr
         return;
       }
     }
-    // Removing an allowance token can join ASCII pieces into a banned phrase,
-    // so text containing any token still needs the original replacement pass.
-    // When none is present the pass is a no-op and the value is exact.
-    let checked = identityProbe.test(attributed) ? remaining(attributed) : attributed;
+    let checked = stripAllowances(attributed);
     // The homepage SEO intentionally includes the exact Chinese brand.
     if (BRAND_EXEMPT_KINDS.has(kind) && basename === 'index.html') {
       for (const brand of BRAND_EXEMPTIONS) checked = checked.replaceAll(brand, '');
@@ -192,7 +209,9 @@ function auditPage(html, {lang, file, root, works, identities, identityProbe, cr
     problems,
     details,
     slug: slug || null,
-    name: details && typeof native?.name === 'string' ? native.name : null
+    name: details && typeof native?.name === 'string' ? native.name : null,
+    textCharacters: [...textCharacters].join(''),
+    credits: credits?.key ?? null
   };
 }
 
@@ -209,7 +228,7 @@ function auditPage(html, {lang, file, root, works, identities, identityProbe, cr
  * @param {Map<string,string>|Record<string,string>} [options.digests] SHA-256 of
  *   each locale-relative HTML file (for example en/index.html), so cache hits do
  *   not reread the file.
- * @returns {{version:number,rules:string,identities:string,pages:Record<string,{hash:string,details:0|1,slug:string|null,name:string|null}>}}
+ * @returns {{version:number,rules:string,identities:string[],pages:Record<string,object>}}
  * @throws {Error & {code:'AUDIT_FAILED',report:{pages:number,details:number,problems:object[]}}}
  *   after writing the same report file the CLI uses.
  */
@@ -227,12 +246,23 @@ export function auditLanguagePages(out, {snapshot, previous, reportFile, digests
       creator: singleHan.test(creator) ? creator : '',
       creditName: singleHan.test(creditName) ? creditName : '',
     };
-    if (credits.creator || credits.creditName) creditsBySlug.set(slug, credits);
+    if (credits.creator || credits.creditName) creditsBySlug.set(slug, {...credits, key: digest(credits)});
   }
-  // The ordered list is scope: replacement order can change the audit outcome.
-  const identityDigest = digest([identities, [...creditsBySlug]]);
   const identityProbe = new RegExp([...identities, '投稿'].map(escapeRegExp).join('|'));
-  const cached = previous && previous.version === CACHE_VERSION && previous.rules === AUDIT_RULES && previous.identities === identityDigest && previous.pages && typeof previous.pages === 'object' && !Array.isArray(previous.pages) ? previous.pages : null;
+  const stripped = new Map();
+  const stripAllowances = text => {
+    if (!identityProbe.test(text)) return text;
+    if (stripped.has(text)) return stripped.get(text);
+    // Keep replacement order, since a removal can join parts of a later match.
+    let result = text;
+    for (const name of identities) result = result.replaceAll(name, '');
+    result = result.replaceAll('投稿', '');
+    if (stripped.size < 8192) stripped.set(text, result);
+    return result;
+  };
+  const cached = previous?.version === CACHE_VERSION && previous.rules === AUDIT_RULES
+    && previous.pages && typeof previous.pages === 'object' && !Array.isArray(previous.pages) ? previous.pages : null;
+  const changedNames = cached ? changedAllowances(previous.identities, identities) : null;
   // Integrations already hash every localized artifact they copy or write.
   // Reuse those digests so a cache hit never rereads the locale HTML.
   const knownDigest = key => digests instanceof Map ? digests.get(key) : digests && typeof digests === 'object' ? digests[key] : undefined;
@@ -254,8 +284,9 @@ export function auditLanguagePages(out, {snapshot, previous, reportFile, digests
       const suppliedHash = suppliedDigest(key);
       pageCount += 1;
       const prior = cached && Object.hasOwn(cached, key) ? cached[key] : null;
-      if (suppliedHash && prior && cachedEntryMatches(prior, {hash: suppliedHash, lang, works})) {
-        pages[key] = {hash: suppliedHash, details: prior.details, slug: prior.slug, name: prior.name};
+      const scope = {lang, works, changedNames, creditsBySlug};
+      if (suppliedHash && prior && cachedEntryMatches(prior, {hash: suppliedHash, ...scope})) {
+        pages[key] = prior;
         detailCount += prior.details;
         reusedCount += 1;
         byLocale[lang].reused++;
@@ -263,18 +294,18 @@ export function auditLanguagePages(out, {snapshot, previous, reportFile, digests
       }
       const bytes = fs.readFileSync(file);
       const currentHash = digest(bytes);
-      if (prior && cachedEntryMatches(prior, {hash: currentHash, lang, works})) {
-        pages[key] = {hash: currentHash, details: prior.details, slug: prior.slug, name: prior.name};
+      if (prior && cachedEntryMatches(prior, {hash: currentHash, ...scope})) {
+        pages[key] = prior;
         detailCount += prior.details;
         reusedCount += 1;
         byLocale[lang].reused++;
         continue;
       }
-      const result = auditPage(bytes.toString('utf8'), {lang, file, root, works, identities, identityProbe, creditsBySlug});
+      const {problems: pageProblems, ...result} = auditPage(bytes.toString('utf8'), {lang, file, root, works, stripAllowances, creditsBySlug});
       byLocale[lang].scanned++;
       detailCount += result.details;
-      if (result.problems.length) problems.push(...result.problems);
-      else pages[key] = {hash: currentHash, details: result.details, slug: result.slug, name: result.name};
+      if (pageProblems.length) problems.push(...pageProblems);
+      else pages[key] = {hash: currentHash, ...result};
     }
   }
 
@@ -285,7 +316,7 @@ export function auditLanguagePages(out, {snapshot, previous, reportFile, digests
   return {
     version: CACHE_VERSION,
     rules: AUDIT_RULES,
-    identities: identityDigest,
+    identities,
     pages,
     stats: {scanned: pageCount - reusedCount, reused: reusedCount, byLocale},
   };

@@ -7,7 +7,7 @@ import {fileURLToPath} from 'node:url';
 import {prepareLocalization,LOCALES} from './localize-pages.mjs';
 import {writeAiContent} from './ai-content.mjs';
 import {writeOpenApi} from './open-api.mjs';
-import {readState,hash,copyArtifact,filesIn} from './incremental.mjs';
+import {readState,hash,copyArtifact,filesIn,excludeInvalidArtifacts} from './incremental.mjs';
 
 const usage='Usage: build-page-output.mjs <stage> <planFile> <previous> <stateFile> <resultFile>';
 const [stage,planFile,previous,stateFile,resultFile]=process.argv.slice(2);
@@ -15,9 +15,9 @@ if([stage,planFile,previous,stateFile,resultFile].some(value=>!value))throw Erro
 const frontend=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const plan=JSON.parse(fs.readFileSync(planFile,'utf8'));
 // Shared toolchain changes can alter parsing and conversion without changing Astro HTML.
-const reusableState = plan.mode === 'full' ? null : readState(stateFile);
+const reusableState = plan.mode === 'full' ? null : excludeInvalidArtifacts(readState(stateFile),plan.invalidArtifacts);
 if (plan.mode !== 'full' && !reusableState) throw Error('Previous build state is missing or incompatible: '+stateFile);
-const localizationState = reusableState?.inputs.localization === plan.inputs.localization ? reusableState : null;
+const localizationState = plan.localizationCompatible && reusableState?.inputs.localization === plan.inputs.localization ? reusableState : null;
 
 const timings={};
 let phaseStart=performance.now();
@@ -43,12 +43,22 @@ const reuseArtifact=name=>{
 };
 const snapshot=JSON.parse(fs.readFileSync(path.join(stage,'site-data.json'),'utf8'));
 const localizer=prepareLocalization(stage,snapshot);
-const localeInputHash=hash([
- plan.inputs.content,
+const dictionaries=[
  plan.inputs.dictionaries,
  ...['archive-copy.js','archive-labels.js'].map(file=>hash(fs.readFileSync(path.join(stage,file)))),
-]);
+];
+const localeInputHash=hash([plan.inputs.content,...dictionaries]);
 const sameLocaleInputs=localeInputHash===localizationState?.localeInputHash;
+// The snapshot carries every work field used by the localizer. Other data and
+// assembled dictionaries conservatively invalidate this fast path.
+const localeInputs=Object.fromEntries(LOCALES.map(({id})=>{
+ const data=JSON.stringify(snapshot,(key,value)=>{
+  if ((key==='i18n'||key==='creditsI18n') && value && typeof value==='object' && !Array.isArray(value)) return value[id];
+  return value;
+ });
+ return [id,hash([id,plan.inputs.localeExternal,dictionaries,hash(data)])];
+}));
+const unchangedLocale=new Set(LOCALES.filter(({id})=>sameLocaleInputs || localeInputs[id]===localizationState?.localeInputs?.[id]).map(({id})=>id));
 const localeStats = Object.fromEntries(LOCALES.map(({id}) => [id, {generated: 0, reused: 0}]));
 const urls=[];
 let localized = 0;
@@ -74,7 +84,7 @@ try {
       const name = locale.prefix ? locale.prefix.slice(1) + '/' + file : file;
       const dependencies = unchangedSource ? prior.locales?.[locale.id] : null;
       if (dependencies && Object.hasOwn(reusableState.outputs, name)
-        && (sameLocaleInputs || localizer.matches(dependencies, locale))) {
+        && (unchangedLocale.has(locale.id) || localizer.matches(dependencies, locale))) {
         reuseArtifact(name);
         page.locales[locale.id] = dependencies;
         localeStats[locale.id].reused++;
@@ -102,7 +112,7 @@ try {
   const openApi = writeOpenApi(stage, snapshot, {previousDir: reusableState ? previous : null, previousState: reusableState});
   console.log('[open-api] ' + JSON.stringify(openApi));
   endPhase('exports');
-  const rest = JSON.stringify({localeInputHash, urls, knownOutputs: [...knownOutputs], localized, reusedLanguagePages, localeStats, ai, openApi, timings});
+  const rest = JSON.stringify({localeInputHash, localeInputs, urls, knownOutputs: [...knownOutputs], localized, reusedLanguagePages, localeStats, ai, openApi, timings});
   fs.writeFileSync(output, '},' + rest.slice(1));
 } finally {
   fs.closeSync(output);

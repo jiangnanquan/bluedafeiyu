@@ -32,16 +32,14 @@ function archiveModelPlugin(){
   };
 }
 
-// Shared script endpoints read the mutable translation registry, which lazy page bodies
-// populate. Materialising once keeps endpoint output identical to a full render instead
-// of depending on which pages this incremental build happened to render.
-async function ensureArchiveModel(root){
+async function ensureArchiveModel(root, translations){
   const loaded=globalThis[MODEL_BINDING];
   if(loaded) return loaded;
   const model=await import(new URL(MODEL_FILE,root).href);
-  for(const page of model.archivePages.values())page.content;
-  globalThis[MODEL_BINDING]=model;
-  return model;
+  // Standalone Astro builds still need the complete registry. A planned build
+  // uses the planner's registry so the endpoint is independent of cache misses.
+  if(!translations) for(const page of model.archivePages.values())page.content;
+  globalThis[MODEL_BINDING]={...model,archiveTranslations:translations ?? model.archiveTranslations};
 }
 
 // Public Astro 7 prerenderer API. Astro owns template dependency tracking and its cache.
@@ -54,10 +52,12 @@ export function incrementalIntegration() {
       if(command==='build') updateConfig({vite:{plugins:[archiveModelPlugin()]}});
     },
     async 'astro:build:start'({setPrerenderer}) {
-      await ensureArchiveModel(root);
       const planFile=process.env.SITE_BUILD_PLAN_FILE;
-      if (!planFile) return;
-      const plan=JSON.parse(fs.readFileSync(planFile,'utf8'));
+      const plan=planFile ? JSON.parse(fs.readFileSync(planFile,'utf8')) : null;
+      await ensureArchiveModel(root,plan?.archiveTranslations);
+      if (!plan) return;
+      delete plan.archiveTranslations;
+      delete plan.assetManifest;
       const rendered=[];
       setPrerenderer(base=>({
         name:'site-incremental-prerenderer',
@@ -69,7 +69,7 @@ export function incrementalIntegration() {
             // Static endpoints and informational pages also depend on the exported catalog.
             const model=plan.routes[key] || hash(plan.inputs);
             plan.routes[key]=model;
-            return {...item,cacheKey:hash([model,plan.inputs.build,plan.inputs.runtime])};
+            return {...item,cacheKey:hash([model,plan.astroKey ?? plan.inputs.astro,plan.inputs.runtime])};
           });
         },
         async render(request, options) {

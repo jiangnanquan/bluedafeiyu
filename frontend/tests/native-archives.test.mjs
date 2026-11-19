@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {parseHTML} from 'linkedom';
 import {createCreatorViews} from '../src/components/archive/CreatorViews.mjs';
 import {summarizeAuditFailure} from '../../tools/localization/audit-summary.mjs';
+import {auditLanguagePages} from '../../tools/localization/audit-pages.mjs';
 import {applyNativeArchives,nativeArchiveName} from '../scripts/native-archives.mjs';
 import {localizeHtml,LOCALES,ORIGIN} from '../scripts/localize-pages.mjs';
 import fs from 'node:fs';
@@ -187,6 +188,27 @@ test('publication audit accepts single Han character credits only in the work at
     assert.equal(invalid.status, 1);
     const report = JSON.parse(fs.readFileSync(path.join(out, 'native-localization-audit.json')));
     assert.deepEqual(report.problems.map(problem => problem.text), ['甶 · 中文', '甶']);
+  } finally {
+    fs.rmSync(out, {recursive: true, force: true});
+  }
+});
+
+test('audit reuse notices changed allowances that can join or expose untranslated text', () => {
+  const out = fs.mkdtempSync(path.join(os.tmpdir(), 'dafeiyu-audit-allowances-'));
+  try {
+    for (const lang of ['en', 'ja']) {
+      fs.mkdirSync(path.join(out, lang));
+      fs.writeFileSync(path.join(out, lang, 'archive.html'), '<html><head><title>Archive</title></head><body><p>All images</p></body></html>');
+    }
+    fs.writeFileSync(path.join(out, 'en', 'work.html'), '<html><head><title>Archive</title></head><body><p>Blue ArtistFish</p><p>星空绘师</p></body></html>');
+    const snapshot = {works: [{origin: {author: '星空绘师'}}]};
+    const initial = auditLanguagePages(out, {snapshot});
+    const unchanged = auditLanguagePages(out, {snapshot: {works: [...snapshot.works, {origin: {author: '未收录作者'}}]}, previous: initial});
+    assert.equal(unchanged.stats.scanned, 0);
+    for (const [works, text] of [[[], '星空绘师'], [[...snapshot.works, {origin: {author: 'Artist'}}], 'Blue ArtistFish']]) {
+      assert.throws(() => auditLanguagePages(out, {snapshot: {works}, previous: initial}), error =>
+        error.code === 'AUDIT_FAILED' && error.report.problems.some(problem => problem.text === text));
+    }
   } finally {
     fs.rmSync(out, {recursive: true, force: true});
   }

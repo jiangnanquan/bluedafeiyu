@@ -85,7 +85,10 @@ test('plans cold starts, edits, additions, deletions and unchanged inputs',()=>{
  assert.equal(next.mode,'incremental');assert.deepEqual(next.changed,['/a.html','/c.html']);assert.deepEqual(next.removed,['/b.html']);
  assert.equal(makePlan(inputs,previous.routes,previous,{ok:true}).mode,'noop');
  assert.equal(makePlan({...inputs,code:'new'},previous.routes,previous,{ok:true}).mode,'incremental');
- assert.equal(makePlan({...inputs,build:'new'},previous.routes,previous,{ok:true}).mode,'full');
+ const scripts=makePlan({...inputs,build:'new'},previous.routes,previous,{ok:true});
+ assert.equal(scripts.mode,'incremental');
+ assert.deepEqual(scripts.changed,[]);
+ assert.equal(scripts.astroKey,inputs.build);
  assert.equal(makePlan({...inputs,runtime:'new'},previous.routes,previous,{ok:true}).mode,'full');
  assert.equal(makePlan({...inputs,code:'new'},previous.routes,previous,{ok:true}).changed.length,0);
  assert.equal(makePlan(inputs,previous.routes,previous,{ok:true},true).mode,'full');

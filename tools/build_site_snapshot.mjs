@@ -152,7 +152,7 @@ function main() {
   // Card geometry comes from the actual derivatives, even when legacy records
   // have no original dimensions. Original metadata and frozen paths stay intact.
   const mediaPaths = [...new Set(unique.flatMap(work => [work.thumbUrl, work.displayUrl]).filter(value => value && !/^https?:/.test(value)))];
-  const probe = spawnSync(process.env.PYTHON || 'python3', [path.join(ROOT, 'tools/image_dimensions.py'), DIST], {
+  const probe = spawnSync(process.env.PYTHON || 'python3', [path.join(ROOT, 'tools/image_dimensions.py'), DIST, path.join(ROOT, '.build/image-dimensions.json')], {
     input: JSON.stringify(mediaPaths), encoding: 'utf8', maxBuffer: 4 * 1024 * 1024,
   });
   if (probe.error || probe.status !== 0) throw new Error('图片占位尺寸读取失败：' + (probe.error?.message || probe.stderr));
@@ -174,9 +174,10 @@ function main() {
   const translationsPath = path.join(DIST,"data/work-localizations.json");
   const localized = fs.existsSync(translationsPath) ? readJson(translationsPath).works : {};
   for (const work of unique) {
-    const candidate = work.i18n?.sourceHash === sourceHash(work) ? work.i18n : localized[work.id];
+    const currentHash = sourceHash(work);
+    const candidate = work.i18n?.sourceHash === currentHash ? work.i18n : localized[work.id];
     delete work.i18n;
-    if (candidate?.sourceHash === sourceHash(work)) work.i18n = {sourceHash:candidate.sourceHash, ...validateI18n(candidate,work)};
+    if (candidate?.sourceHash === currentHash) work.i18n = {sourceHash:candidate.sourceHash, ...validateI18n(candidate,work)};
     else console.warn(`[i18n] Missing or stale localization: ${work.id}`);
   }
   const snapshot = {

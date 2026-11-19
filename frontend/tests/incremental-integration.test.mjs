@@ -222,16 +222,23 @@ test('real Astro builds: no-op, edits, additions, removals, cold-cache fallback 
  const incomplete=path.join(fixture,'.build/removed-missing');
  fs.cpSync(deletion.out,incomplete,{recursive:true,mode:fs.constants.COPYFILE_FICLONE,filter:source=>source!==path.join(deletion.out,missing)});
  assert.equal(fs.existsSync(path.join(incomplete,missing)),false);
- const recovered=build('recovered','removed-missing');assert.equal(recovered.report.mode,'full');assert.match(recovered.report.reasons.join(','),/baseline-artifact-missing/);
+ const recovered=build('recovered','removed-missing');
+ assert.equal(recovered.report.mode,'incremental');
+ assert.match(recovered.report.reasons.join(','),/baseline-artifact-missing/);
+ assert.deepEqual(htmlRendered(recovered),[]);
+ assert.equal(recovered.report.localized,1);
+ assert.equal(recovered.report.locales.en.generated,1);
+ sameArtifacts(recovered.out,deletion.out,'repair restores one missing localized artifact');
 
- fs.appendFileSync(path.join(fixture,'frontend/package-lock.json'),'\n');
+ fs.appendFileSync(path.join(fixture,'tools/stage_data.mjs'),'\n// Build orchestration fixture.\n');
  const toolchain=build('toolchain','recovered');
- assert.equal(toolchain.report.mode,'full');
- assert.ok(toolchain.report.reasons.includes('build-toolchain-changed'));
- assert.equal(toolchain.report.reusedLanguagePages,0);
- assert.equal(toolchain.report.audit.reused,0);
- assert.ok(toolchain.report.sitemap.previousPagesRead > 0);
- sameArtifacts(toolchain.out,recovered.out,'toolchain fallback preserves identical artifacts when dependencies did not change');
+ assert.equal(toolchain.report.mode,'incremental');
+ assert.ok(toolchain.report.reasons.includes('build-scripts-changed'));
+ assert.deepEqual(htmlRendered(toolchain),[]);
+ assert.equal(toolchain.report.localized,0);
+ assert.equal(toolchain.report.audit.scanned,0);
+ assert.equal(toolchain.report.sitemap.previousPagesRead,0);
+ sameArtifacts(toolchain.out,recovered.out,'orchestration changes preserve cached artifacts');
 
  const before=outputHashes(recovered.out);
  const failure=spawnSync(process.execPath,[path.join(fixture,'frontend/scripts/build.mjs'),'--out',recovered.out,'--full'],{cwd:path.join(fixture,'frontend'),env:{...process.env,SITE_SNAPSHOT:snapshot,SOURCE_DATE_EPOCH:epoch,PYTHON:'missing-python-for-failure-check'},encoding:'utf8',maxBuffer:8*1024*1024,timeout:240000});

@@ -1,14 +1,16 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {pathToFileURL} from 'node:url';
-import {buildInputs,readState,verifyPrevious,makePlan,filesIn,hash,STATE_FILE,STATE_VERSION} from './incremental.mjs';
+import {buildInputs,readState,verifyPrevious,inspectPrevious,makePlan,filesIn,hash,STATE_FILE,STATE_VERSION,recoverRendererInputs} from './incremental.mjs';
 
 const [root,previousDir,stateFile,target,force,candidate,baselineSitemap]=process.argv.slice(2);
 // Hash the exact inputs before the model registry is loaded: an unchanged release can
 // answer from verified state without building any page body.
-const inputs=buildInputs(root);
+const previous=readState(stateFile);
+const assetManifest={};
+const inputs=buildInputs(root,previous?.assetManifest,assetManifest);
 const write=plan=>{
-  fs.writeFileSync(target,JSON.stringify(plan,null,2));
+  fs.writeFileSync(target,JSON.stringify({...plan,assetManifest}));
   console.log(`[build-plan] ${plan.mode}: ${plan.changed.length} changed, ${plan.reused.length} reusable, ${plan.removed.length} removed${plan.reasons.length?'; '+plan.reasons.join(', '):''}`);
 };
 if(candidate && force!=='true' && fs.existsSync(path.join(candidate,'.build-output'))) {
@@ -26,15 +28,17 @@ if(candidate && force!=='true' && fs.existsSync(path.join(candidate,'.build-outp
     }
   }
 }
-const previous=readState(stateFile);
-const validation=verifyPrevious(previousDir,previous);
+if (previous && (!previous.inputs.astro || !previous.inputs.localeHelpers)) {
+  Object.assign(previous.inputs, recoverRendererInputs(root, previousDir));
+}
+const validation=inspectPrevious(previousDir,previous);
 if(previous && force!=='true') {
   const decision=makePlan(inputs,previous.routes,previous,validation);
   if(decision.mode==='noop'){write(decision);process.exit(0);}
 }
 const pagesDir=path.join(root,'frontend/src/pages');
 const modelURL=pathToFileURL(path.join(root,'frontend/src/lib/archive.mjs'));
-const {archivePages}=await import(modelURL.href);
+const {archivePages,archiveTranslations}=await import(modelURL.href);
 const models=new Map([...archivePages].map(([url,page])=>[url,page.cacheKey]));
 
 // A model URL without a page route would be rendered by nothing and then pruned from
@@ -94,4 +98,6 @@ for(const file of pageFiles.filter(file=>/\.(?:js|mjs)$/.test(file))) {
   }
 }
 
-write(makePlan(inputs,routes,previous,validation,force==='true'));
+// Evaluating the route keys collected the translation registry in canonical
+// page order. Astro can now render just its cache misses.
+write({...makePlan(inputs,routes,previous,validation,force==='true'),archiveTranslations});
