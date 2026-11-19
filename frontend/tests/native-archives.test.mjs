@@ -155,6 +155,43 @@ test('publication audit protects overlapping full credits regardless of new subm
  }finally{fs.rmSync(temp,{recursive:true,force:true});}
 });
 
+test('publication audit accepts single Han character credits only in the work attribution', () => {
+  const out = fs.mkdtempSync(path.join(os.tmpdir(), 'dafeiyu-single-character-credit-'));
+  try {
+    const work = {
+      ...snapshot.works[0],
+      origin: {author: '鲸'},
+      submitter: {credit: 'named', name: '甶'},
+    };
+    fs.writeFileSync(path.join(out, 'site-data.json'), JSON.stringify({works: [work]}));
+    for (const lang of ['en', 'ja']) {
+      fs.mkdirSync(path.join(out, lang));
+      const copyright = lang === 'en' ? 'Original author 鲸.' : '原作者鲸に帰属します。';
+      const html = '<html><head><title>Archive</title></head><body data-work-slug="frozen">' +
+        '<main><h1>' + work.i18n[lang].name + '</h1><section data-work-faq></section>' +
+        '<dl class="work-facts"><div><dd>鲸</dd></div><div><dd><a>甶</a></dd></div></dl>' +
+        '<p class="source-note"><span data-i18n-tpl="work.imageCreditText">甶 · DeepSeek Chan (archive)</span>' +
+        '<span data-i18n-tpl="work.copyright.named">' + copyright + '</span></p></main></body></html>';
+      fs.writeFileSync(path.join(out, lang, 'work.html'), html);
+    }
+    const audit = path.resolve(import.meta.dirname, '../../tools/localization/audit-pages.mjs');
+    const run = () => spawnSync(process.execPath, [audit, out], {encoding: 'utf8'});
+    const valid = run();
+    assert.equal(valid.status, 0, valid.stdout + valid.stderr);
+
+    const english = path.join(out, 'en', 'work.html');
+    const original = fs.readFileSync(english, 'utf8');
+    fs.writeFileSync(english, original.replace('</main>', '<p>甶</p></main>')
+      .replace('甶 · DeepSeek Chan (archive)', '甶 · 中文'));
+    const invalid = run();
+    assert.equal(invalid.status, 1);
+    const report = JSON.parse(fs.readFileSync(path.join(out, 'native-localization-audit.json')));
+    assert.deepEqual(report.problems.map(problem => problem.text), ['甶 · 中文', '甶']);
+  } finally {
+    fs.rmSync(out, {recursive: true, force: true});
+  }
+});
+
 test('creator avatar initials stay decorative without exempting untranslated body text',()=>{
  const temp=fs.mkdtempSync(path.join(os.tmpdir(),'dafeiyu-avatar-audit-'));
  try{

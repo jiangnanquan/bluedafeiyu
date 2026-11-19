@@ -4,10 +4,11 @@ import crypto from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {parseHTML} from '../../frontend/node_modules/linkedom/esm/index.js';
 import {videoArchive} from '../../frontend/src/lib/video-archive.mjs';
+import {imageRights} from '../../frontend/src/lib/image-metadata.mjs';
 
 // Bump when the traversal/checking logic changes; pattern and selector changes
 // are folded into AUDIT_RULES automatically.
-const CACHE_VERSION = 2;
+const CACHE_VERSION = 3;
 const LANGS = ['en', 'ja'];
 const PATTERNS = {
   en: /[\u3400-\u9fff]|Whale[ -]?Chan|DeepSeek Chan\.com|Blue Fish|Fat Fish/u,
@@ -42,7 +43,7 @@ const AUDIT_RULES = digest({
   strip: '投稿'
 });
 
-// Author/submitter names are allowed verbatim in both locales. Longest first
+// Multi-character author/submitter names are allowed verbatim. Longest first
 // keeps overlapping full credits intact; equal-length names keep snapshot order
 // because replacement order can matter when one removal joins the next match.
 function allowanceIdentities(snapshot) {
@@ -113,7 +114,7 @@ function cachedEntryMatches(entry, {hash, lang, works}) {
   return entry.details === 1 && entry.name === native.name;
 }
 
-function auditPage(html, {lang, file, root, works, identities, identityProbe}) {
+function auditPage(html, {lang, file, root, works, identities, identityProbe, creditsBySlug}) {
   const {document} = parseHTML(html);
   const pattern = PATTERNS[lang];
   const basename = path.basename(file);
@@ -122,6 +123,7 @@ function auditPage(html, {lang, file, root, works, identities, identityProbe}) {
   const seen = new Set();
   const slug = document.body?.getAttribute('data-work-slug') || null;
   const work = slug ? works.get(slug) : undefined;
+  const credits = creditsBySlug.get(slug);
   const native = work?.i18n?.[lang];
   const details = work ? 1 : 0;
   if (work && (!native || document.querySelector('main h1')?.textContent !== native.name || !document.querySelector('[data-work-faq]'))) {
@@ -133,13 +135,25 @@ function auditPage(html, {lang, file, root, works, identities, identityProbe}) {
     for (const name of identities) result = result.replaceAll(name, '');
     return result.replaceAll('投稿', '');
   };
-  function check(text, kind) {
+  function check(text, kind, element) {
     const value = String(text || '').trim();
     if (!value || seen.has(value)) return;
+    let attributed = value;
+    if (kind === 'body' && credits) {
+      const template = element.getAttribute('data-i18n-tpl');
+      const prefix = credits.creditName ? credits.creditName + ' · ' : '';
+      if (template === 'work.imageCreditText' && prefix && value.startsWith(prefix)) {
+        attributed = value.slice(prefix.length);
+      } else if (template === 'work.copyright.named' && credits.creator) {
+        attributed = value.replace(credits.creator, '');
+      } else if ((value === credits.creditName || value === credits.creator) && element.closest('.work-facts dd')) {
+        return;
+      }
+    }
     // Removing an allowance token can join ASCII pieces into a banned phrase,
     // so text containing any token still needs the original replacement pass.
     // When none is present the pass is a no-op and the value is exact.
-    let checked = identityProbe.test(value) ? remaining(value) : value;
+    let checked = identityProbe.test(attributed) ? remaining(attributed) : attributed;
     // The homepage SEO intentionally includes the exact Chinese brand.
     if (BRAND_EXEMPT_KINDS.has(kind) && basename === 'index.html') {
       for (const brand of BRAND_EXEMPTIONS) checked = checked.replaceAll(brand, '');
@@ -155,7 +169,7 @@ function auditPage(html, {lang, file, root, works, identities, identityProbe}) {
   const walk = element => {
     for (const child of element.children) {
       if (child.matches(SKIP_SELECTOR)) continue;
-      for (const node of child.childNodes) if (node.nodeType === 3) check(node.textContent, 'body');
+      for (const node of child.childNodes) if (node.nodeType === 3) check(node.textContent, 'body', child);
       for (const attribute of ATTRIBUTES) if (child.hasAttribute(attribute)) check(child.getAttribute(attribute), attribute);
       walk(child);
     }
@@ -205,10 +219,21 @@ export function auditLanguagePages(out, {snapshot, previous, reusable, reportFil
   const root = path.resolve(out);
   const data = snapshot || JSON.parse(fs.readFileSync(path.join(root, 'site-data.json'), 'utf8'));
   const identities = allowanceIdentities(data);
-  // The ordered list is scope: replacement order can change the audit outcome.
-  const identityDigest = digest(identities);
-  const identityProbe = new RegExp([...identities, '投稿'].map(escapeRegExp).join('|'));
   const works = workIndex(data);
+  // A single Han character is only exempt in its work's attribution fields.
+  const creditsBySlug = new Map();
+  const singleHan = /^[\u3400-\u9fff]$/u;
+  for (const [slug, work] of works) {
+    const {creator, creditName} = imageRights(work);
+    const credits = {
+      creator: singleHan.test(creator) ? creator : '',
+      creditName: singleHan.test(creditName) ? creditName : '',
+    };
+    if (credits.creator || credits.creditName) creditsBySlug.set(slug, credits);
+  }
+  // The ordered list is scope: replacement order can change the audit outcome.
+  const identityDigest = digest([identities, [...creditsBySlug]]);
+  const identityProbe = new RegExp([...identities, '投稿'].map(escapeRegExp).join('|'));
   const reuseBase = new Set();
   for (const value of reusable || []) if (typeof value === 'string' && value) reuseBase.add(value.replace(/^\/+/, ''));
   const cached = previous && previous.version === CACHE_VERSION && previous.rules === AUDIT_RULES && previous.identities === identityDigest && previous.pages && typeof previous.pages === 'object' && !Array.isArray(previous.pages) ? previous.pages : null;
@@ -246,7 +271,7 @@ export function auditLanguagePages(out, {snapshot, previous, reusable, reportFil
         reusedCount += 1;
         continue;
       }
-      const result = auditPage(bytes.toString('utf8'), {lang, file, root, works, identities, identityProbe});
+      const result = auditPage(bytes.toString('utf8'), {lang, file, root, works, identities, identityProbe, creditsBySlug});
       detailCount += result.details;
       if (result.problems.length) problems.push(...result.problems);
       else pages[key] = {hash: currentHash, details: result.details, slug: result.slug, name: result.name};
