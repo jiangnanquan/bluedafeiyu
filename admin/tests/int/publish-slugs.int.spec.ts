@@ -3,9 +3,11 @@ import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import { execFileSync } from 'node:child_process'
+import type { Payload } from 'payload'
 import { describe, expect, it } from 'vitest'
 
-import { buildSiteDataTexts } from '@/lib/export-site-data'
+import { buildSiteDataTexts, exportSiteData } from '@/lib/export-site-data'
+import { buildPublishSnapshot } from '@/lib/publish'
 
 const work = (workId: string, status: string, slug?: string) => ({
   workId, status, slug, kind: 'submission', name: workId,
@@ -14,6 +16,39 @@ const work = (workId: string, status: string, slug?: string) => ({
 })
 
 describe('发布时永久保留已分配的网址', () => {
+  it('归档超过 2000 条后，发布快照仍保留旧作品和全部待发布记录', async () => {
+    const works = Array.from({ length: 2000 }, (_, index) => work(`sticker_${index}`, 'published', `frozen-${index}`))
+    const oldest = work('sticker_oldest', 'published', 'frozen-oldest')
+    const pending = {
+      ...work('sticker_pending', 'pending'),
+      sha256: 'a'.repeat(64),
+      submissionId: 'incoming',
+      needsPublish: true,
+    }
+    const records = [...works, oldest, pending]
+    const payload = {
+      find: async (query: { collection: string; limit?: number; where?: unknown }) => {
+        if (query.collection !== 'works') return { docs: [] }
+        const matching = query.where ? [pending] : records
+        return { docs: matching.slice(0, query.limit ?? matching.length) }
+      },
+    } as unknown as Payload
+
+    const directExport = await exportSiteData(payload)
+    const published = JSON.parse(directExport['data/works.json'])
+    expect(published).toHaveLength(2001)
+    expect(published).toContainEqual(expect.objectContaining({ id: oldest.workId, slug: oldest.slug }))
+
+    const snapshot = await buildPublishSnapshot(payload, { runId: 'large-archive' })
+    const exported = JSON.parse(snapshot.files['data/works.json'])
+    expect(exported).toHaveLength(2002)
+    expect(exported).toContainEqual(expect.objectContaining({ id: oldest.workId, slug: oldest.slug }))
+    expect(exported).toContainEqual(expect.objectContaining({ id: pending.workId, status: 'published' }))
+    expect(snapshot.originals).toMatchObject([{ workId: pending.workId }])
+    expect(snapshot.versions[pending.workId]).toBe(pending.updatedAt)
+    expect(snapshot.summary.added).toBe(1)
+  })
+
   it('隐藏、移除和删除记录继续占用 slug，新作品编号跳过它们', () => {
     const retired = ['hidden', 'removed', 'deleted'].map((status, index) => work(`sticker_${status}`, status, `deepseek20261006000${index + 1}`))
     const texts = buildSiteDataTexts({ works: [...retired, work('sticker_new', 'pending')], characters: [], categories: [], topics: [], treatPendingAsPublished: true })

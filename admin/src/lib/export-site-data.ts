@@ -371,14 +371,19 @@ export function buildSiteDataTexts(input: {
 
 export async function exportSiteData(
   payload: Payload,
-  options: { originalUrlByWorkId?: Record<string, string>; treatPendingAsPublished?: boolean; videoRecords?: { creators: any[]; videos: any[] } } = {},
+  options: {
+    originalUrlByWorkId?: Record<string, string>
+    treatPendingAsPublished?: boolean
+    workRecords?: any[]
+    videoRecords?: { creators: any[]; videos: any[] }
+  } = {},
 ): Promise<SiteDataTexts> {
   const api = payload as any
   const [works, characters, categories, topics, snapshots, creators, videos] = await Promise.all([
-    api.find({ collection: 'works', depth: 2, limit: 2000, overrideAccess: true, pagination: false }),
-    api.find({ collection: 'characters', depth: 0, limit: 1000, overrideAccess: true, pagination: false }),
-    api.find({ collection: 'categories', depth: 0, limit: 1000, overrideAccess: true, pagination: false }),
-    api.find({ collection: 'topics', depth: 2, limit: 1000, overrideAccess: true, pagination: false }),
+    options.workRecords ? Promise.resolve({ docs: options.workRecords }) : api.find({ collection: 'works', depth: 2, overrideAccess: true, pagination: false }),
+    api.find({ collection: 'characters', depth: 0, overrideAccess: true, pagination: false }),
+    api.find({ collection: 'categories', depth: 0, overrideAccess: true, pagination: false }),
+    api.find({ collection: 'topics', depth: 2, overrideAccess: true, pagination: false }),
     api.find({ collection: 'legacy-snapshots', where: { key: { equals: 'blue-fish-editorial' } }, limit: 1, overrideAccess: true }),
     options.videoRecords ? Promise.resolve({ docs: options.videoRecords.creators }) : api.find({ collection: 'creators', pagination: false, depth: 0, overrideAccess: true }),
     options.videoRecords ? Promise.resolve({ docs: options.videoRecords.videos }) : api.find({ collection: 'videos', pagination: false, depth: 0, overrideAccess: true }),

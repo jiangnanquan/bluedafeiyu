@@ -28,8 +28,12 @@ function briefTopic(doc: any) {
 
 export async function buildPublishPlan(payload: Payload): Promise<PublishPlan> {
   const [works, topics, videos, creators, activeRuns] = await Promise.all([
-    (payload as any).find({ collection: 'works', depth: 0, limit: 2000, overrideAccess: true, pagination: false }),
-    (payload as any).find({ collection: 'topics', depth: 0, limit: 1000, overrideAccess: true, pagination: false }),
+    (payload as any).find({
+      collection: 'works',
+      where: { or: [{ needsPublish: { equals: true } }, { status: { equals: 'pending' } }] },
+      depth: 0, overrideAccess: true, pagination: false,
+    }),
+    (payload as any).find({ collection: 'topics', where: { needsPublish: { equals: true } }, depth: 0, overrideAccess: true, pagination: false }),
     (payload as any).find({ collection: 'videos', where: { needsPublish: { equals: true } }, depth: 0, overrideAccess: true, pagination: false }),
     (payload as any).find({ collection: 'creators', where: { needsPublish: { equals: true } }, depth: 0, overrideAccess: true, pagination: false }),
     (payload as any).find({ collection: 'publish-runs', where: { status: { in: ['queued', 'in_progress'] } }, sort: '-createdAt', limit: 1, depth: 0, overrideAccess: true }),
@@ -137,10 +141,10 @@ export async function buildPublishSnapshot(payload: Payload, run: any): Promise<
   versions: Record<string, string>
 }> {
   const plan = await buildPublishPlan(payload)
-  const allWorks = await (payload as any).find({ collection: 'works', depth: 2, limit: 2000, overrideAccess: true, pagination: false })
+  const { docs: workRecords } = await (payload as any).find({ collection: 'works', depth: 2, overrideAccess: true, pagination: false })
   const originalUrlByWorkId: Record<string, string> = {}
   const originals: any[] = []
-  for (const work of allWorks.docs) {
+  for (const work of workRecords) {
     if (work.status !== 'pending' || work.kind !== 'submission' || !work.submissionId || !work.sha256) continue
     const targetPath = targetOriginalPath(work)
     originalUrlByWorkId[work.workId] = `https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/${targetPath}`
@@ -153,13 +157,13 @@ export async function buildPublishSnapshot(payload: Payload, run: any): Promise<
       submissionId: work.submissionId,
     })
   }
-  const deletions = allWorks.docs
+  const deletions = workRecords
     .filter((work: any) => work.status === 'deleted')
     .map((work: any) => ({ workId: work.workId, kind: work.kind, contentPaths: contentPathsForWork(work) }))
   const videoRecords: { creators: any[]; videos: any[] } = { creators: [], videos: [] }
   for (const collection of ['videos', 'creators'] as const) videoRecords[collection] = (await (payload as any).find({ collection, depth: 0, pagination: false, overrideAccess: true })).docs
-  const files = await exportSiteData(payload, { originalUrlByWorkId, treatPendingAsPublished: true, videoRecords })
-  const versions = Object.fromEntries(allWorks.docs.filter((w: any) => w.needsPublish).map((w: any) => [w.workId, w.updatedAt]))
+  const files = await exportSiteData(payload, { originalUrlByWorkId, treatPendingAsPublished: true, videoRecords, workRecords })
+  const versions = Object.fromEntries(workRecords.filter((w: any) => w.needsPublish).map((w: any) => [w.workId, w.updatedAt]))
   for (const collection of ['videos', 'creators']) {
     for (const doc of videoRecords[collection as 'videos' | 'creators']) if (doc.needsPublish) versions[`${collection}:${doc.id}`] = doc.updatedAt
   }
@@ -177,7 +181,7 @@ export async function applyPublishStatus(
   let publishedWorks = 0
   let updatedTopics = 0
   try {
-    const works = await (payload as any).find({ collection: 'works', where: { needsPublish: { equals: true } }, depth: 0, limit: 2000, overrideAccess: true, pagination: false, req: { transactionID } })
+    const works = await (payload as any).find({ collection: 'works', where: { needsPublish: { equals: true } }, depth: 0, overrideAccess: true, pagination: false, req: { transactionID } })
     const results = new Map<string, any>((body.results?.works || []).map((result: any) => [String(result.workId), result]))
     const finishedAt = new Date().toISOString()
     for (const work of works.docs) {
@@ -241,7 +245,7 @@ export async function applyPublishStatus(
       publishedWorks += 1
     }
 
-    const topics = await (payload as any).find({ collection: 'topics', where: { needsPublish: { equals: true } }, depth: 0, limit: 1000, overrideAccess: true, pagination: false, req: { transactionID } })
+    const topics = await (payload as any).find({ collection: 'topics', where: { needsPublish: { equals: true } }, depth: 0, overrideAccess: true, pagination: false, req: { transactionID } })
     for (const topic of topics.docs) {
       await (payload as any).update({
         collection: 'topics',
@@ -266,7 +270,7 @@ export async function applyPublishStatus(
     throw error
   }
 
-  const deleted = await (payload as any).find({ collection: 'works', where: { status: { equals: 'deleted' } }, limit: 2000, depth: 1, overrideAccess: true, pagination: false })
+  const deleted = await (payload as any).find({ collection: 'works', where: { status: { equals: 'deleted' } }, depth: 1, overrideAccess: true, pagination: false })
   for (const work of deleted.docs) {
     for (const relation of [work.preview]) {
       if (!relation) continue
