@@ -45,7 +45,8 @@ const reuseArtifact=name=>{
 };
 const snapshot=JSON.parse(fs.readFileSync(path.join(stage,'site-data.json'),'utf8'));
 const localizer=prepareLocalization(stage,snapshot);
-const canParallelize=Boolean(localizationState) && availableParallelism()>1;
+const canParallelize=Boolean(localizationState) && availableParallelism()>1
+  && process.availableMemory()>=512*1024*1024;
 let localeWorker;
 function renderInWorker(html, base, locale) {
   localeWorker ??= fork(fileURLToPath(new URL('./localize-worker.mjs', import.meta.url)), [stage], {
