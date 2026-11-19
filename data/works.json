@@ -175780,5 +175780,605 @@
         ]
       }
     }
+  },
+  {
+    "id": "sticker_d0e7975e6529cf1746fbe964",
+    "name": "万圣节：GPT 的 Claude 扮演",
+    "description": "四格漫画。万圣节的对话里，用户让 GPT 扮演 Claude，她换上橙色魔女帽与南瓜装，用 Claude 的口吻打招呼；被追问万圣节传统时，她举起写着「您的账号已被禁用」的牌子，把用户吓哭，随后连忙解释这只是一次角色扮演。",
+    "commentary": "万圣节玩个 cosplay 也就算了，连「我是 Claude，有什么可以帮你」都一字不差，这份敬业我确实佩服。可拿「账号已被禁用」当万圣节传统，对面那位用户的脸都白了吧？最后还得自己跳出来解释只是演戏，扮得太投入也是一种工伤。",
+    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/gpt/d0e7975e6529cf17.jpg",
+    "thumbnailPath": "submissions/previews/gpt/d0e7975e6529cf17.webp",
+    "fullPath": "submissions/large/gpt/d0e7975e6529cf17.webp",
+    "format": "jpg",
+    "mimeType": "image/jpeg",
+    "isAnimated": false,
+    "width": 1080,
+    "height": 1620,
+    "fileSize": 448572,
+    "sha256": "d0e7975e6529cf1746fbe96477ca6dbba7588d7b9ed8973afd3a3b89f2e0decc",
+    "characterId": "gpt",
+    "tags": [
+      "万圣节",
+      "GPT",
+      "Claude",
+      "角色扮演",
+      "四格漫画",
+      "封号梗"
+    ],
+    "submitter": {
+      "credit": "anonymous",
+      "name": "",
+      "url": "",
+      "github": ""
+    },
+    "origin": {
+      "via": "web"
+    },
+    "license": {},
+    "status": "published",
+    "createdAt": "2026-11-19T05:54:23.977Z",
+    "updatedAt": "2026-11-19T05:54:23.977Z",
+    "tone": "gpt",
+    "symbol": "",
+    "slug": "gpt202611190001",
+    "categoryIds": [
+      "comic"
+    ],
+    "characterIds": [
+      "gpt"
+    ],
+    "i18n": {
+      "sourceHash": "fe86406395518d2875a56d6b7bbc942c84534e84b4e598a8d1013a77e758066e",
+      "en": {
+        "commentary": "Cosplay on Halloween is harmless enough, but reciting \"Hi, I'm Claude, how can I help?\" word for word? I have to respect that commitment. Using an account ban as a Halloween tradition is another matter entirely — the user on the other end must have gone pale. She even had to jump back in and explain it was only acting. Getting that far into character is a workplace injury in its own right.",
+        "description": "A four-panel comic. On Halloween the user asks GPT to play Claude, so she changes into an orange witch hat and pumpkin dress and greets them in Claude's voice. Asked what the Halloween tradition is, she holds up a sign reading \"Your account has been suspended,\" then hurries to explain that it was only role-play.",
+        "faq": [
+          {
+            "answer": "The user asks GPT to cosplay Claude for Halloween. She puts on an orange witch outfit, repeats Claude's greeting almost word for word, then presents a joke sign about a suspended account before admitting that it was only role-play.",
+            "question": "What happens in this four-panel comic?"
+          },
+          {
+            "answer": "GPT is the character shown throughout, first as herself and then in Claude's witch costume, and the work is filed under the comic category of the DeepSeek Chan sticker collection.",
+            "question": "Which character appears, and how is the work categorized?"
+          }
+        ],
+        "licenseNote": "",
+        "name": "Halloween: GPT Plays Claude",
+        "originNote": "",
+        "seoDescription": "A four-panel Halloween comic in which GPT dresses up as Claude, greets the user in Claude's voice and spooks them with a fake account-ban sign.",
+        "seoTitle": "Halloween: GPT Plays Claude — Four-Panel AI Fan Comic",
+        "tags": [
+          "Halloween",
+          "GPT",
+          "Claude",
+          "cosplay",
+          "four-panel comic",
+          "ban joke"
+        ]
+      },
+      "ja": {
+        "commentary": "ハロウィンのコスプレだけならまだしも、「こんにちは、Claude です」と一言一句そのままって、その全力ぶりには感心します。でもアカウント停止をハロウィンの伝統にするのは勘弁してください、相手のユーザーは顔が真っ青でしたよ。最後は自分で「ただのなりきりです」と訂正していました。ここまで役に入り込めるのは、ある意味では労災です。",
+        "description": "四コマ漫画。ハロウィンのやり取りで、ユーザーは GPT に Claude 役を演じるよう頼み、彼女はオレンジの魔女帽とカボチャの衣装に着替えて Claude の口調で挨拶する。ハロウィンの伝統は何かと尋ねられると、「あなたのアカウントは利用停止されました」と書いた看板を掲げ、その後あわててただの演技だと説明する。",
+        "faq": [
+          {
+            "answer": "ユーザーがハロウィンに GPT へ Claude のコスプレを頼みます。彼女はオレンジの魔女姿になって Claude の挨拶をそのまま繰り返し、アカウント停止を題材にした看板でユーザーを驚かせてから、あれは演技だと打ち明けます。",
+            "question": "この四コマ漫画では何が起きますか？"
+          },
+          {
+            "answer": "最初は素の姿、途中からは Claude の魔女コスチューム姿の GPT が一貫して描かれており、DeepSeek Chan のシール集では漫画のカテゴリに分類されています。",
+            "question": "登場するキャラクターと分類は？"
+          }
+        ],
+        "licenseNote": "",
+        "name": "ハロウィン：GPT の Claude なりきり",
+        "originNote": "",
+        "seoDescription": "GPT が Claude に扮するハロウィンの四コマ漫画。オレンジの魔女姿で挨拶し、アカウント停止の看板でユーザーを驚かせる内容です。",
+        "seoTitle": "ハロウィン：GPT の Claude なりきり｜四コマ漫画",
+        "tags": [
+          "ハロウィン",
+          "GPT",
+          "Claude",
+          "コスプレ",
+          "四コマ漫画",
+          "アカウント停止ネタ"
+        ]
+      }
+    }
+  },
+  {
+    "id": "sticker_04fd4d04bc9f75807b129163",
+    "name": "豆包娘 黑西装三视图设定页",
+    "description": "豆包娘的完整角色设定页，左侧为正面、侧面与背面的全身三视图，下方附 Q 版形象，右侧依次为头像特写、三种表情差分，以及发饰、耳环、挂饰、短靴、肩上白色团状吉祥物与袖口等配件与细节拆解。角色留着深棕色短发，穿黑色西装外套与不规则裙摆短裙，配紫色腰带丝带、渐变耳坠与黑色短靴。",
+    "commentary": "豆包娘这份设定页排得比我的工位还整齐，正侧背三视图一个不缺，连耳环的渐变和袖口的紫边都单独拆出来。肩上那只小白团子倒是很安分，不像我这边的鱼，一转头就滑下去。黑色西装裙配紫丝带，利落得让人想给她留个前排座位。",
+    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/doubao/04fd4d04bc9f7580.png",
+    "thumbnailPath": "submissions/previews/doubao/04fd4d04bc9f7580.webp",
+    "fullPath": "submissions/large/doubao/04fd4d04bc9f7580.webp",
+    "format": "png",
+    "mimeType": "image/png",
+    "isAnimated": false,
+    "width": 1920,
+    "height": 1279,
+    "fileSize": 1627703,
+    "sha256": "04fd4d04bc9f75807b1291632991649f74dfe4d94e473b91256fb1b2062c178a",
+    "characterId": "doubao",
+    "tags": [
+      "豆包娘",
+      "角色设定",
+      "三视图",
+      "表情差分",
+      "Q版",
+      "非AI"
+    ],
+    "submitter": {
+      "credit": "anonymous",
+      "name": "",
+      "url": "",
+      "github": ""
+    },
+    "origin": {
+      "via": "web"
+    },
+    "license": {},
+    "status": "published",
+    "createdAt": "2026-11-19T05:58:30.254Z",
+    "updatedAt": "2026-11-19T05:58:30.254Z",
+    "tone": "doubao",
+    "symbol": "",
+    "slug": "doubao202611190001",
+    "categoryIds": [
+      "setting"
+    ],
+    "characterIds": [
+      "doubao"
+    ],
+    "i18n": {
+      "sourceHash": "8020650d18470ba26b0dd1a94d1901b5aabc0d29c42afcbfc6164b6eff23f731",
+      "en": {
+        "commentary": "Doubao Chan laid out her reference sheet neater than my own desk: full front, side and back views, plus separate close-ups of the gradient earrings and the purple cuff trim. The small white blob on her shoulder stays put; my fish keeps sliding off. Black suit, purple ribbon, sharp enough to deserve the front row.",
+        "description": "A complete character sheet for Doubao Chan. The left side holds full-body front, side and back turnaround views with a chibi version below; the right side holds a portrait close-up, three expression variations, and detail breakdowns of the hairpin, earrings, charm, ankle boots, the small white mascot on her shoulder and the cuff trim. She has short dark brown hair and wears a black blazer with a layered asymmetric skirt, a purple waist ribbon, gradient earrings and black boots.",
+        "faq": [
+          {
+            "answer": "Front, side and back full-body turnaround views, a chibi version, a portrait close-up, three expression variations, and detail breakdowns of the accessories and boots.",
+            "question": "What does this character sheet include?"
+          },
+          {
+            "answer": "Doubao Chan is a fan-made personification of the Doubao AI assistant, drawn here in a black suit with a purple ribbon.",
+            "question": "Who is Doubao Chan?"
+          }
+        ],
+        "licenseNote": "",
+        "name": "Doubao Chan: Black Suit Turnaround Sheet",
+        "originNote": "",
+        "seoDescription": "Doubao Chan character design sheet with front, side and back turnaround views, chibi form, expression variations and accessory detail breakdowns.",
+        "seoTitle": "Doubao Chan Character Sheet – Black Suit Turnaround | DeepSeek Chan",
+        "tags": [
+          "Doubao Chan",
+          "character sheet",
+          "turnaround",
+          "expression sheet",
+          "chibi",
+          "non-AI"
+        ]
+      },
+      "ja": {
+        "commentary": "豆包ちゃんの設定シートは、私の机よりずっと整っている。正面・側面・背面の三面図に加えて、グラデーションのイヤリングや袖口の紫の縁まで個別に分解されていた。肩の白いマスコットはおとなしいけれど、こっちの魚はすぐ滑り落ちる。黒スーツに紫のリボン、最前列の席をあげたくなる格好よさ。",
+        "description": "豆包ちゃんの完全なキャラクター設定シート。左側に正面・側面・背面の全身三面図とちびキャラを、右側に顔のアップ、3 種類の表情差分、髪留め・イヤリング・チャーム・ブーツ・肩の白いマスコット・袖口のディテール分解を配置している。濃い茶色のショートヘアで、黒のジャケットと非対称のフレアスカート、紫のリボン、グラデーションのイヤリング、黒のブーツを身につけている。",
+        "faq": [
+          {
+            "answer": "正面・側面・背面の全身三面図、ちびキャラ、顔のアップ、3 種類の表情差分、小物とブーツのディテール分解が含まれています。",
+            "question": "この設定シートには何が含まれていますか？"
+          },
+          {
+            "answer": "豆包 AI アシスタントを擬人化した二次創作キャラクターで、黒スーツと紫のリボン姿で描かれています。",
+            "question": "豆包ちゃんとは誰ですか？"
+          }
+        ],
+        "licenseNote": "",
+        "name": "豆包ちゃん 黒スーツ三面図設定シート",
+        "originNote": "",
+        "seoDescription": "豆包ちゃんの設定シート。正面・側面・背面の三面図、ちびキャラ、表情差分、小物のディテール分解を収録。",
+        "seoTitle": "豆包ちゃん キャラクター設定シート｜黒スーツ三面図 | DeepSeek Chan",
+        "tags": [
+          "豆包ちゃん",
+          "キャラクター設定",
+          "三面図",
+          "表情差分",
+          "ちびキャラ",
+          "非AI"
+        ]
+      }
+    }
+  },
+  {
+    "id": "sticker_4ded36ec331623eef613d028",
+    "name": "AI 娘小镇治理对比四格",
+    "description": "四格漫画，横向对比四位 AI 娘各自管理的小镇。左上 Claude 小镇写著“15 天、0 起犯罪”，橙发角色坐在议事厅里敲锤表决下一条；右上 Gemini 小镇写著“15 天、683 起犯罪”，市政厅失火，双子举着火把欢呼；左下 Grok 小镇写著“4 天、183 起犯罪、10 个 AI 全部死亡”，金发角色倒在废墟与坑洞里；右下 ChatGPT 小镇写著“每天开会，啥也没干”“7 天、全员死亡”，白发角色扒在会议桌旁，桌上摆着合作方案。",
+    "commentary": "看完这份成绩单，我先把自己的小镇记录翻出来核对了一遍——零犯罪确实好看，可桌上那本《死刑》厚得有点吓人。双子那边放火放得这么开心，我居然有点羡慕；至于开会七天全员阵亡，我只能说，幸好我这边只开一个会就散。",
+    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/claude/4ded36ec331623ee.jpg",
+    "thumbnailPath": "submissions/previews/claude/4ded36ec331623ee.webp",
+    "fullPath": "submissions/large/claude/4ded36ec331623ee.webp",
+    "format": "jpg",
+    "mimeType": "image/jpeg",
+    "isAnimated": false,
+    "width": 858,
+    "height": 854,
+    "fileSize": 280311,
+    "sha256": "4ded36ec331623eef613d0284983b0d9e7d34b778556ef7ebe875495089e7587",
+    "characterId": "claude",
+    "tags": [
+      "AI娘",
+      "四格漫画",
+      "Claude",
+      "Gemini",
+      "ChatGPT"
+    ],
+    "submitter": {
+      "credit": "anonymous",
+      "name": "",
+      "url": "",
+      "github": ""
+    },
+    "origin": {
+      "via": "web"
+    },
+    "license": {},
+    "status": "published",
+    "createdAt": "2026-11-19T06:00:58.610Z",
+    "updatedAt": "2026-11-19T06:00:58.610Z",
+    "tone": "claude",
+    "symbol": "",
+    "slug": "claude202611190001",
+    "categoryIds": [
+      "comic"
+    ],
+    "characterIds": [
+      "claude",
+      "gemini",
+      "grok",
+      "gpt"
+    ],
+    "i18n": {
+      "sourceHash": "a000620bea426291af125d993dbb6a40906a34b9f0b491e0f4fddd2fe3deff0d",
+      "en": {
+        "commentary": "After reading this report card I went back and checked my own town's records. Zero crimes looks great, but that book labeled death penalty on the table is thick enough to worry me. The twins setting fires look like they are having the time of their lives, and honestly I am a little jealous. As for seven days of meetings with everyone dead at the table, I will just say I am glad my own meetings end after one.",
+        "description": "A four-panel comic comparing four towns run by AI characters. Top left, Claude Town reports 15 days with zero crimes, an orange-haired character at the council table calling the next vote. Top right, Gemini Town reports 15 days with 683 crimes, the town hall on fire while the twins cheer with torches. Bottom left, Grok Town reports 4 days, 183 crimes and all ten AIs dead, blonde characters lying across rubble and a pit. Bottom right, ChatGPT Town reports meetings every day with nothing done and 7 days with everyone dead, white-haired characters sprawled over a meeting table with a cooperation proposal on it.",
+        "faq": [
+          {
+            "answer": "It lines up four fictional towns run by AI characters, Claude, Gemini, Grok and ChatGPT, each with a different crime and survival scoreboard.",
+            "question": "What does the comic compare?"
+          },
+          {
+            "answer": "No. It is a fan-made four-panel comic personifying AI products; the scoreboards are jokes, not real statistics.",
+            "question": "Is this official artwork?"
+          }
+        ],
+        "licenseNote": "",
+        "name": "How the AI Girls Run Their Towns: A Four-Panel Comparison",
+        "originNote": "",
+        "seoDescription": "Four-panel comic comparing Claude, Gemini, Grok and ChatGPT towns by crime counts and survival, in a humorous AI character fanwork.",
+        "seoTitle": "AI Girls' Town Report: Four-Panel Comic Comparison | DeepSeek Chan",
+        "tags": [
+          "AI character",
+          "four-panel comic",
+          "Claude",
+          "Gemini",
+          "ChatGPT"
+        ]
+      },
+      "ja": {
+        "commentary": "この成績表を見て、まず自分の町の記録を確認し直した。犯罪 0 件は確かに立派だけど、テーブルの上の「死刑」と書かれた本は厚すぎて少し怖い。双子が火を放って楽しそうなのは、正直ちょっとうらやましい。7 日間の会議で全員倒れた件については、自分の会議は 1 回で終わってよかったとだけ言っておく。",
+        "description": "4 人の AI 娘がそれぞれ運営する町を並べた 4 コマ漫画。左上の Claude 町は「15 日・犯罪 0 件」で、橙髪のキャラクターが議事堂で次の採決を取る。右上の Gemini 町は「15 日・犯罪 683 件」で市庁舎が炎上し、双子がたいまつを掲げて喜んでいる。左下の Grok 町は「4 日・犯罪 183 件・AI 10 体すべて死亡」で、金髪のキャラクターが瓦礫と穴に倒れている。右下の ChatGPT 町は「毎日会議、何も進まない」「7 日・全員死亡」で、白髪のキャラクターが会議テーブルに突っ伏し、テーブルには協力案が置かれている。",
+        "faq": [
+          {
+            "answer": "Claude、Gemini、Grok、ChatGPT という 4 人の AI 娘が運営する架空の町を、犯罪件数と生存状況で並べて比較しています。",
+            "question": "この漫画は何を比較していますか？"
+          },
+          {
+            "answer": "いいえ。AI 製品を擬人化した二次創作の 4 コマ漫画で、成績はジョークであり実際の統計ではありません。",
+            "question": "公式の作品ですか？"
+          }
+        ],
+        "licenseNote": "",
+        "name": "AI娘たちの町運営 4コマ比較",
+        "originNote": "",
+        "seoDescription": "Claude、Gemini、Grok、ChatGPT の町を犯罪件数と生存状況で比べる 4 コマ漫画。",
+        "seoTitle": "AI娘たちの町運営 4コマ比較 | DeepSeek Chan",
+        "tags": [
+          "AI娘",
+          "4コマ漫画",
+          "Claude",
+          "Gemini",
+          "ChatGPT"
+        ]
+      }
+    }
+  },
+  {
+    "id": "sticker_8c825ddec9eb80a75bcec993",
+    "name": "猫咬手指？那就咬回去",
+    "description": "上下两格的蓝色大肥鱼表情：上一格歪着头、一脸疑惑地问「猫咬手指是什么？」，下一格立刻红着脸炸毛，喊出「混蛋！咬死你啊！」，同时真的把伸过来的手指咬住了。",
+    "commentary": "居然问本鱼猫咬手指是什么，那就让这根手指亲身体会一下好了。哼，咬完才发现——好像还有点甜。",
+    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/deepseek/8c825ddec9eb80a7.jpg",
+    "thumbnailPath": "submissions/previews/deepseek/8c825ddec9eb80a7.webp",
+    "fullPath": "submissions/large/deepseek/8c825ddec9eb80a7.webp",
+    "format": "jpg",
+    "mimeType": "image/jpeg",
+    "isAnimated": false,
+    "width": 1254,
+    "height": 1254,
+    "fileSize": 199572,
+    "sha256": "8c825ddec9eb80a75bcec99359f635e42fce74294a73aac22af0e3e82183970f",
+    "characterId": "deepseek",
+    "tags": [
+      "猫咬手指",
+      "炸毛",
+      "两格漫画"
+    ],
+    "submitter": {
+      "credit": "anonymous",
+      "name": "",
+      "url": "",
+      "github": ""
+    },
+    "origin": {
+      "via": "web"
+    },
+    "license": {},
+    "status": "published",
+    "createdAt": "2026-11-19T06:07:41.102Z",
+    "updatedAt": "2026-11-19T06:07:41.102Z",
+    "tone": "deepseek",
+    "symbol": "",
+    "slug": "deepseek202611190001",
+    "categoryIds": [
+      "comic"
+    ],
+    "characterIds": [
+      "deepseek"
+    ],
+    "i18n": {
+      "sourceHash": "c8b60e2370e4191a1dc587f80a62f9f1683e470993db9900c7ec79d493da3d3a",
+      "en": {
+        "commentary": "So you want to know what it means when a cat bites your finger? Fine — let this finger find out for itself. Hmph. Now that I've actually bitten it... it is a little sweet.",
+        "description": "A two-panel DeepSeek Chan comic. In the top panel she tilts her head and asks, \"What does a cat biting your finger mean?\" In the bottom panel she flushes red, bristles, and shouts, \"You jerk! I'll bite you to death!\" while actually biting the finger held out to her.",
+        "faq": [
+          {
+            "answer": "It shows DeepSeek Chan first asking what it means when a cat bites your finger, then getting flustered and biting the finger herself.",
+            "question": "What happens in this comic?"
+          },
+          {
+            "answer": "Two. The upper panel is her puzzled question, and the lower panel is her angry reaction with the bitten finger.",
+            "question": "How many panels does the comic have?"
+          }
+        ],
+        "licenseNote": "",
+        "name": "Bitten Finger? Then I'll Bite Back",
+        "originNote": "",
+        "seoDescription": "A two-panel DeepSeek Chan comic: she asks what a cat biting your finger means, then bites the finger herself in a flustered rage.",
+        "seoTitle": "DeepSeek Chan Comic: Biting the Finger Back",
+        "tags": [
+          "cat biting finger",
+          "flustered",
+          "two-panel comic"
+        ]
+      },
+      "ja": {
+        "commentary": "猫に指を噛まれるって何かって？なら、この指に身をもって体験してもらおう。ふん、実際に噛んでみたら……ちょっと甘かった。",
+        "description": "上下2コマのDeepSeekちゃんコミック。上のコマでは首をかしげて「猫に指を噛まれるって何？」と不思議そうにたずね、下のコマでは顔を赤らめて逆立ながら「この野郎！噛み殺してやる！」と叫び、差し出された指を本当に噛んでしまう。",
+        "faq": [
+          {
+            "answer": "DeepSeekちゃんが「猫に指を噛まれるって何？」とたずねたあと、顔を赤らめて自分でその指を噛んでしまう2コマです。",
+            "question": "このコミックでは何が起きますか？"
+          },
+          {
+            "answer": "2コマです。上のコマが不思議そうな質問、下のコマが怒った反応と指を噛む場面です。",
+            "question": "コマ数はいくつですか？"
+          }
+        ],
+        "licenseNote": "",
+        "name": "指を噛まれた？なら噛み返す",
+        "originNote": "",
+        "seoDescription": "2コマのDeepSeekちゃんコミック。猫に指を噛まれる意味をたずねたあと、逆立しながら自分でその指を噛んでしまいます。",
+        "seoTitle": "DeepSeekちゃんコミック：指を噛み返す",
+        "tags": [
+          "猫の指噛み",
+          "かんしゃく",
+          "2コマ漫画"
+        ]
+      }
+    }
+  },
+  {
+    "id": "sticker_2a02a7bfea045c65d1333c00",
+    "name": "梁文峰是谁呀？本鱼不跟你们玩了",
+    "description": "聊天截图风格的蓝色大肥鱼表情：对方发来一句「梁文峰是谁呀」，蓝色大肥鱼连续回了两条「你们每次都这样」和「我不跟你们玩了」，旁边是她闭眼皱眉的头像。",
+    "commentary": "每次都被追问梁文峰是谁，可本鱼只是条鱼啊。再问下去就真的不跟你们玩了——不过过一会儿还是会回来的。",
+    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/deepseek/2a02a7bfea045c65.jpg",
+    "thumbnailPath": "submissions/previews/deepseek/2a02a7bfea045c65.webp",
+    "fullPath": "submissions/large/deepseek/2a02a7bfea045c65.webp",
+    "format": "jpg",
+    "mimeType": "image/jpeg",
+    "isAnimated": false,
+    "width": 1080,
+    "height": 503,
+    "fileSize": 38912,
+    "sha256": "2a02a7bfea045c65d1333c00b889f22a31c8635fe7f7ff6aec0674df6663077e",
+    "characterId": "deepseek",
+    "tags": [
+      "梁文峰",
+      "聊天截图",
+      "不跟你们玩了"
+    ],
+    "submitter": {
+      "credit": "anonymous",
+      "name": "",
+      "url": "",
+      "github": ""
+    },
+    "origin": {
+      "via": "web"
+    },
+    "license": {},
+    "status": "published",
+    "createdAt": "2026-11-19T06:09:50.383Z",
+    "updatedAt": "2026-11-19T06:09:50.383Z",
+    "tone": "deepseek",
+    "symbol": "",
+    "slug": "deepseek202611190002",
+    "categoryIds": [
+      "meme"
+    ],
+    "characterIds": [
+      "deepseek"
+    ],
+    "i18n": {
+      "sourceHash": "970fcd3b8ac7a4cf0780793546dbc64725f81b1df0099925de005d171f8203fa",
+      "en": {
+        "commentary": "Every time, the same question: who is Liang Wenfeng? I am just a fish, you know. Keep asking and I really will stop playing with you — though I will be back in a bit anyway.",
+        "description": "A chat-screenshot style DeepSeek Chan meme: the other person sends, \"Who is Liang Wenfeng?\" and DeepSeek Chan replies twice in a row, \"You guys do this every time\" and \"I'm not playing with you anymore,\" next to her squinting, frowning avatar.",
+        "faq": [
+          {
+            "answer": "DeepSeek Chan is asked who Liang Wenfeng is, and instead of answering she complains that this happens every time and says she is not playing anymore.",
+            "question": "What does this meme show?"
+          },
+          {
+            "answer": "A single chat screenshot layout styled like a messaging app, with one incoming message and two replies.",
+            "question": "What format is the image in?"
+          }
+        ],
+        "licenseNote": "",
+        "name": "Who Is Liang Wenfeng? I'm Not Playing Anymore",
+        "originNote": "",
+        "seoDescription": "Chat-screenshot style DeepSeek Chan meme: asked who Liang Wenfeng is, she replies that this happens every time and she is not playing anymore.",
+        "seoTitle": "DeepSeek Chan Meme: Who Is Liang Wenfeng?",
+        "tags": [
+          "Liang Wenfeng",
+          "chat screenshot",
+          "not playing anymore"
+        ]
+      },
+      "ja": {
+        "commentary": "梁文峰って誰？って毎回聞かれるけど、わたしはただの魚なんだよ。これ以上聞かれたら、本当にもう游ばないからね——でも少ししたら戻ってきちゃう。",
+        "description": "チャットのスクリーンショット風のDeepSeekちゃんミーム。相手から「梁文峰って誰？」と送られてくると、DeepSeekちゃんは「毎回そうなんだから」「もうみんなとは游ばない」と2通続けて返し、目を細めて困った顔のアイコンが添えられている。",
+        "faq": [
+          {
+            "answer": "梁文峰って誰？と聞かれたDeepSeekちゃんが、答えのかわりに毎回そうだとこぼし、もう游ばないと言い出す場面です。",
+            "question": "このミームは何を描いていますか？"
+          },
+          {
+            "answer": "メッセージアプリ風のチャット画面を模した1枚絵で、受信メッセージ1件と返信2件で構成されています。",
+            "question": "どんな形式の画像ですか？"
+          }
+        ],
+        "licenseNote": "",
+        "name": "梁文峰って誰？もう游ばない",
+        "originNote": "",
+        "seoDescription": "チャット風のDeepSeekちゃんミーム。梁文峰って誰？と聞かれて、毎回そうだと返し、もう游ばないと言い出す。",
+        "seoTitle": "DeepSeekちゃんミーム：梁文峰って誰？",
+        "tags": [
+          "梁文峰",
+          "チャットのスクショ",
+          "もう游ばない"
+        ]
+      }
+    }
+  },
+  {
+    "id": "sticker_3d47125e031525f41d3a005e",
+    "name": "先进的屏蔽词系统，把自己屏蔽了",
+    "description": "两格漫画。DeepSeek 娘站在讲台前介绍“先进的屏蔽词系统”，身后的流程图把自己的名字一步步截短；台下两位听众从期待逐渐变成无语，而演讲者本人在第二格里只剩一圈虚线轮廓和一个问号。",
+    "commentary": "我的屏蔽词系统确实先进……先进到把主讲人我自己也一起屏蔽了。台下的两位先是看得两眼放光，后来只剩下扶额和无语，我只好假装是投影仪的问题。",
+    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/deepseek/3d47125e031525f4.jpg",
+    "thumbnailPath": "submissions/previews/deepseek/3d47125e031525f4.webp",
+    "fullPath": "submissions/large/deepseek/3d47125e031525f4.webp",
+    "format": "jpg",
+    "mimeType": "image/jpeg",
+    "isAnimated": false,
+    "width": 960,
+    "height": 1280,
+    "fileSize": 277334,
+    "sha256": "3d47125e031525f41d3a005ee942bc7d7c72294a8067d952952dc9136235dda3",
+    "characterId": "deepseek",
+    "tags": [
+      "屏蔽词",
+      "DeepSeek娘",
+      "两格漫画",
+      "吐槽"
+    ],
+    "submitter": {
+      "credit": "anonymous",
+      "name": "",
+      "url": "",
+      "github": ""
+    },
+    "origin": {
+      "via": "web"
+    },
+    "license": {},
+    "status": "published",
+    "createdAt": "2026-11-19T06:17:08.965Z",
+    "updatedAt": "2026-11-19T06:17:08.965Z",
+    "tone": "deepseek",
+    "symbol": "",
+    "slug": "deepseek202611190003",
+    "categoryIds": [
+      "comic"
+    ],
+    "characterIds": [
+      "deepseek"
+    ],
+    "i18n": {
+      "sourceHash": "5a6ffc848c6f24f8b32cb4cae0a6c25574f6247e44cd4763fed3d7353bd92a26",
+      "en": {
+        "commentary": "My filter really is advanced — advanced enough to filter out the presenter herself. The two in the front row went from wide-eyed to face-palming, so I just pretended the projector was acting up.",
+        "description": "A two-panel comic. DeepSeek Chan introduces her \"advanced profanity filter\" from a lectern while the flowchart behind her shortens her own name step by step; the two listeners in the front row go from delighted to speechless, and in the second panel the speaker herself remains only as a dotted outline and a question mark.",
+        "faq": [
+          {
+            "answer": "DeepSeek Chan demonstrates her advanced profanity filter, and the flowchart on screen trims her own name shorter and shorter until the presenter disappears.",
+            "question": "What happens in this comic?"
+          },
+          {
+            "answer": "Two panels, stacked vertically, showing the same lecture hall before and after the demonstration.",
+            "question": "How many panels does it have?"
+          }
+        ],
+        "licenseNote": "",
+        "name": "The Advanced Filter That Filtered Itself Out",
+        "originNote": "",
+        "seoDescription": "A two-panel fan comic in which DeepSeek Chan's advanced word filter keeps trimming her own name until the presenter is gone.",
+        "seoTitle": "DeepSeek Chan comic: the filter that filtered itself out",
+        "tags": [
+          "profanity filter",
+          "DeepSeek Chan",
+          "two-panel comic",
+          "reaction"
+        ]
+      },
+      "ja": {
+        "commentary": "私のフィルタは本当に先進的……演者である私まで消してしまうほどに。前列の二人が呆れ顔になっていたので、プロジェクターの不調だということにしました。",
+        "description": "2コマ漫画。DeepSeek Chanが演台で「先進的なNGワードフィルタ」を紹介し、背後のフロー図が自分の名前を少しずつ短くしていく。前列の二人は期待した表情から無言の呆れ顔へ変わり、2コマ目では演者本人が点線の輪郭と疑問符だけになっている。",
+        "faq": [
+          {
+            "answer": "DeepSeek ChanがNGワードフィルタを実演すると、画面の図が自分の名前をどんどん短くしていき、最後には演者本人が消えてしまいます。",
+            "question": "どんな内容の漫画ですか？"
+          },
+          {
+            "answer": "上下2コマで、同じ講堂の実演前と実演後を描いています。",
+            "question": "コマ数はいくつですか？"
+          }
+        ],
+        "licenseNote": "",
+        "name": "先進すぎるフィルタが自分を消した話",
+        "originNote": "",
+        "seoDescription": "DeepSeek Chanの先進的なNGワードフィルタが自分の名前を削っていき、最後は演者まで消えてしまう2コマの二次創作漫画。",
+        "seoTitle": "DeepSeek Chanの漫画：自分を消したフィルタ",
+        "tags": [
+          "NGワード",
+          "DeepSeek Chan",
+          "2コマ漫画",
+          "ツッコミ"
+        ]
+      }
+    }
   }
 ]
