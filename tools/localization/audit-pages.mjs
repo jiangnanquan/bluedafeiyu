@@ -204,8 +204,6 @@ function auditPage(html, {lang, file, root, works, identities, identityProbe, cr
  * @param {object} [options]
  * @param {object} [options.snapshot] Site snapshot; read from site-data.json when omitted.
  * @param {object} [options.previous] state.audit from the validated previous release.
- * @param {Set<string>|Iterable<string>} [options.reusable] Base HTML files (no
- *   leading slash) whose locale outputs were copied byte-for-byte from `previous`.
  * @param {string} [options.reportFile] Report path; defaults to
  *   <out>/native-localization-audit.json like the CLI.
  * @param {Map<string,string>|Record<string,string>} [options.digests] SHA-256 of
@@ -215,7 +213,7 @@ function auditPage(html, {lang, file, root, works, identities, identityProbe, cr
  * @throws {Error & {code:'AUDIT_FAILED',report:{pages:number,details:number,problems:object[]}}}
  *   after writing the same report file the CLI uses.
  */
-export function auditLanguagePages(out, {snapshot, previous, reusable, reportFile, digests} = {}) {
+export function auditLanguagePages(out, {snapshot, previous, reportFile, digests} = {}) {
   const root = path.resolve(out);
   const data = snapshot || JSON.parse(fs.readFileSync(path.join(root, 'site-data.json'), 'utf8'));
   const identities = allowanceIdentities(data);
@@ -234,8 +232,6 @@ export function auditLanguagePages(out, {snapshot, previous, reusable, reportFil
   // The ordered list is scope: replacement order can change the audit outcome.
   const identityDigest = digest([identities, [...creditsBySlug]]);
   const identityProbe = new RegExp([...identities, '投稿'].map(escapeRegExp).join('|'));
-  const reuseBase = new Set();
-  for (const value of reusable || []) if (typeof value === 'string' && value) reuseBase.add(value.replace(/^\/+/, ''));
   const cached = previous && previous.version === CACHE_VERSION && previous.rules === AUDIT_RULES && previous.identities === identityDigest && previous.pages && typeof previous.pages === 'object' && !Array.isArray(previous.pages) ? previous.pages : null;
   // Integrations already hash every localized artifact they copy or write.
   // Reuse those digests so a cache hit never rereads the locale HTML.
@@ -250,17 +246,19 @@ export function auditLanguagePages(out, {snapshot, previous, reusable, reportFil
   let pageCount = 0;
   let detailCount = 0;
   let reusedCount = 0;
+  const byLocale = Object.fromEntries(LANGS.map(lang => [lang, {scanned: 0, reused: 0}]));
   for (const lang of LANGS) {
     for (const relative of htmlFiles(path.join(root, lang))) {
       const key = lang + '/' + relative;
       const file = path.join(root, lang, relative);
       const suppliedHash = suppliedDigest(key);
       pageCount += 1;
-      const prior = cached && reuseBase.has(relative) && Object.hasOwn(cached, key) ? cached[key] : null;
+      const prior = cached && Object.hasOwn(cached, key) ? cached[key] : null;
       if (suppliedHash && prior && cachedEntryMatches(prior, {hash: suppliedHash, lang, works})) {
         pages[key] = {hash: suppliedHash, details: prior.details, slug: prior.slug, name: prior.name};
         detailCount += prior.details;
         reusedCount += 1;
+        byLocale[lang].reused++;
         continue;
       }
       const bytes = fs.readFileSync(file);
@@ -269,9 +267,11 @@ export function auditLanguagePages(out, {snapshot, previous, reusable, reportFil
         pages[key] = {hash: currentHash, details: prior.details, slug: prior.slug, name: prior.name};
         detailCount += prior.details;
         reusedCount += 1;
+        byLocale[lang].reused++;
         continue;
       }
       const result = auditPage(bytes.toString('utf8'), {lang, file, root, works, identities, identityProbe, creditsBySlug});
+      byLocale[lang].scanned++;
       detailCount += result.details;
       if (result.problems.length) problems.push(...result.problems);
       else pages[key] = {hash: currentHash, details: result.details, slug: result.slug, name: result.name};
@@ -283,7 +283,13 @@ export function auditLanguagePages(out, {snapshot, previous, reusable, reportFil
   // Keep the standalone CLI's JSON stdout unchanged; builds get progress counts.
   if (!invokedAsScript) process.stdout.write(`[audit] ${pageCount} pages, ${reusedCount} reused, ${pageCount - reusedCount} scanned, ${problems.length} problems\n`);
   if (problems.length) throw auditFailure(report);
-  return {version: CACHE_VERSION, rules: AUDIT_RULES, identities: identityDigest, pages};
+  return {
+    version: CACHE_VERSION,
+    rules: AUDIT_RULES,
+    identities: identityDigest,
+    pages,
+    stats: {scanned: pageCount - reusedCount, reused: reusedCount, byLocale},
+  };
 }
 
 function cli() {

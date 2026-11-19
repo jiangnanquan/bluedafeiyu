@@ -151,23 +151,42 @@ function presentKeys(target) {
   return map;
 }
 
-export function createDependencyChecker(translations, snapshot) {
+// Native lookups read shared fields and the rendering locale's translations.
+function localizedRecord(record, language) {
+  if (!language || !record) return record;
+  const {i18n, ...common} = record;
+  if (i18n?.[language] !== undefined) common.i18n = i18n[language];
+  if (record.reader?.creditsI18n) {
+    const {creditsI18n, ...reader} = record.reader;
+    if (creditsI18n[language] !== undefined) reader.creditsI18n = creditsI18n[language];
+    common.reader = reader;
+  }
+  return common;
+}
+
+export function createDependencyChecker(translations, snapshot, language = null) {
   const table = tableFor(snapshot);
   const copy = translations?.ArchiveCopy;
   const labels = translations?.ArchiveLabels;
+  const messages = translations?.SiteMessages;
   const cache = new Map();
   const memo = (name, build) => {
     if (!cache.has(name)) cache.set(name, build());
     return cache.get(name);
   };
 
-  const copyIndex = name => memo('copy:' + name, () => ownValues(copy?.[name]));
-  const labelIndex = language => memo('labels:' + language, () => {
+  const copyIndex = name => memo('copy:' + name, () => {
+    const section = copy?.[name];
+    if (!language || !section) return ownValues(section);
     const map = new Map();
-    const row = labels?.[language];
-    if (row && typeof row === 'object') for (const key of Object.keys(row)) map.set(keyHash(key), valueDigest({ own: true, value: row[key] }));
+    for (const [key, entry] of Object.entries(section)) {
+      const value = entry?.[language];
+      if (value !== undefined) map.set(keyHash(key), valueDigest(value));
+    }
     return map;
   });
+  const dictionaryIndex = (section, locale, source) => memo(section + ':' + locale, () => ownValues(source?.[locale]));
+  const recordIndex = (name, records) => memo(name, () => mapValueIndex(records(), value => localizedRecord(value, language)));
   const textIndex = language => memo('texts:' + language, () => {
     const map = new Map();
     for (const [key, value] of textMap(table, language)) map.set(keyHash(key), valueDigest(value));
@@ -186,23 +205,28 @@ export function createDependencyChecker(translations, snapshot) {
         return memo('labels:section', () => presentKeys(labels)).get(key) ?? 0;
       case 'labels.en':
       case 'labels.ja':
-        return labelIndex(section.slice('labels.'.length)).get(key) ?? 0;
+        return dictionaryIndex('labels', section.slice('labels.'.length), labels).get(key) ?? 0;
+      case 'messages.section':
+        return memo('messages:section', () => presentKeys(messages)).get(key) ?? 0;
+      case 'messages.en':
+      case 'messages.ja':
+        return dictionaryIndex('messages', section.slice('messages.'.length), messages).get(key) ?? 0;
       case 'works.slug.first':
-        return memo('works:slug:first', () => mapValueIndex(bySlugFirst(table))).get(key) ?? 0;
+        return recordIndex('works:slug:first', () => bySlugFirst(table)).get(key) ?? 0;
       case 'works.slug.last':
-        return memo('works:slug:last', () => mapValueIndex(bySlugLast(table))).get(key) ?? 0;
+        return recordIndex('works:slug:last', () => bySlugLast(table)).get(key) ?? 0;
       case 'works.id':
-        return memo('works:id', () => mapValueIndex(byWorkId(table))).get(key) ?? 0;
+        return recordIndex('works:id', () => byWorkId(table)).get(key) ?? 0;
       case 'topics.id':
-        return memo('topics:id', () => mapValueIndex(byTopicId(table))).get(key) ?? 0;
+        return recordIndex('topics:id', () => byTopicId(table)).get(key) ?? 0;
       case 'characters.id':
         return memo('characters:id', () => mapValueIndex(byCharacterId(table))).get(key) ?? 0;
       case 'videos.bvid':
-        return memo('videos:bvid', () => mapValueIndex(byVideoId(table))).get(key) ?? 0;
+        return recordIndex('videos:bvid', () => byVideoId(table)).get(key) ?? 0;
       case 'creators.uid':
-        return memo('creators:uid', () => mapValueIndex(byCreatorUid(table))).get(key) ?? 0;
+        return recordIndex('creators:uid', () => byCreatorUid(table)).get(key) ?? 0;
       case 'creators.path':
-        return memo('creators:path', () => firstValueIndex(videoArchive.creators, creator => '/creators/bilibili-' + creator.uid + '.html')).get(key) ?? 0;
+        return recordIndex('creators:path', () => byCreatorPath(table)).get(key) ?? 0;
       case 'video.creatorCharacters':
         return memo('video:creatorCharacters', () => {
           const map = new Map();
@@ -449,81 +473,43 @@ export function matchesRecord(record, checker) {
   return true;
 }
 
-// Only the tables lang.js actually indexes are wrapped; unrelated data stays a
-// plain object. Both `get` and `getOwnPropertyDescriptor` are observed because
-// lang.js checks hasOwnProperty for ArchiveLabels.
+// Observe table and entry lookups, including missing keys that can gain a translation.
 export function createTrackedTranslations(translations, trace) {
-  const copyTarget = translations?.ArchiveCopy && typeof translations.ArchiveCopy === 'object' ? translations.ArchiveCopy : {};
-  const labelsTarget = translations?.ArchiveLabels && typeof translations.ArchiveLabels === 'object' ? translations.ArchiveLabels : {};
-  const sectionProxies = new Map();
-  const labelProxies = new Map();
-
-  const sectionProxy = (name, target) => {
-    let proxy = sectionProxies.get(name);
-    if (!proxy) {
-      proxy = new Proxy(target, {
-        get(section, property, receiver) {
-          if (typeof property === 'symbol') return Reflect.get(section, property, receiver);
-          trace.key('copy.' + name, property);
-          return Reflect.get(section, property, receiver);
-        },
-        has(section, property) {
-          if (typeof property !== 'symbol') trace.key('copy.' + name, property);
-          return Reflect.has(section, property);
-        },
-        getOwnPropertyDescriptor(section, property) {
-          if (typeof property !== 'symbol') trace.key('copy.' + name, property);
-          return Reflect.getOwnPropertyDescriptor(section, property);
+  const trackTables = (kind, target) => {
+    const tables = new Map();
+    return new Proxy(target || {}, {
+      get(object, table, receiver) {
+        const value = Reflect.get(object, table, receiver);
+        if (typeof table === 'symbol') return value;
+        trace.key(kind + '.section', table);
+        if (!value || typeof value !== 'object') return value;
+        if (!tables.has(table)) {
+          const record = property => {
+            if (typeof property !== 'symbol') trace.key(kind + '.' + table, property);
+          };
+          tables.set(table, new Proxy(value, {
+            get(row, property, rowReceiver) {
+              record(property);
+              return Reflect.get(row, property, rowReceiver);
+            },
+            has(row, property) {
+              record(property);
+              return Reflect.has(row, property);
+            },
+            getOwnPropertyDescriptor(row, property) {
+              record(property);
+              return Reflect.getOwnPropertyDescriptor(row, property);
+            }
+          }));
         }
-      });
-      sectionProxies.set(name, proxy);
-    }
-    return proxy;
-  };
-
-  const copyProxy = new Proxy(copyTarget, {
-    get(target, property, receiver) {
-      if (typeof property === 'symbol') return Reflect.get(target, property, receiver);
-      if (property === 'texts' || property === 'tags' || property === 'characters') {
-        trace.key('copy.section', property);
-        const section = Reflect.get(target, property, receiver);
-        return section && typeof section === 'object' ? sectionProxy(property, section) : section;
+        return tables.get(table);
       }
-      return Reflect.get(target, property, receiver);
-    }
-  });
-
-  const labelProxy = (language, target) => {
-    let proxy = labelProxies.get(language);
-    if (!proxy) {
-      proxy = new Proxy(target, {
-        get(labels, property, receiver) {
-          if (typeof property === 'symbol') return Reflect.get(labels, property, receiver);
-          trace.key('labels.' + language, property);
-          return Reflect.get(labels, property, receiver);
-        },
-        has(labels, property) {
-          if (typeof property !== 'symbol') trace.key('labels.' + language, property);
-          return Reflect.has(labels, property);
-        },
-        getOwnPropertyDescriptor(labels, property) {
-          if (typeof property !== 'symbol') trace.key('labels.' + language, property);
-          return Reflect.getOwnPropertyDescriptor(labels, property);
-        }
-      });
-      labelProxies.set(language, proxy);
-    }
-    return proxy;
+    });
   };
-
-  const labelsProxy = new Proxy(labelsTarget, {
-    get(target, property, receiver) {
-      if (typeof property === 'symbol') return Reflect.get(target, property, receiver);
-      trace.key('labels.section', property);
-      const value = Reflect.get(target, property, receiver);
-      return value && typeof value === 'object' ? labelProxy(property, value) : value;
-    }
-  });
-
-  return { ...translations, ArchiveCopy: copyProxy, ArchiveLabels: labelsProxy };
+  return {
+    ...translations,
+    ArchiveCopy: trackTables('copy', translations?.ArchiveCopy),
+    ArchiveLabels: trackTables('labels', translations?.ArchiveLabels),
+    SiteMessages: trackTables('messages', translations?.SiteMessages),
+  };
 }

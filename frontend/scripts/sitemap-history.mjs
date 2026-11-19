@@ -2,6 +2,38 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { DOMParser, parseHTML } from 'linkedom';
+import {ORIGIN, LOCALES, localizedPath} from './site-locales.mjs';
+
+const escape = value => String(value).replace(/[&<>"']/g, char => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;'}[char]));
+
+// sitemap image: absolute URL through the punycode origin, or the remote URL
+// unchanged. The shared placeholder is never advertised as a work image.
+export function sitemapImageURL(value) {
+  if (typeof value !== 'string' || !value.trim()) return null;
+  let url;
+  try { url = new URL(value.trim(), ORIGIN + '/'); } catch { return null; }
+  if (url.protocol !== 'http:' && url.protocol !== 'https:') return null;
+  if (url.pathname.split('/').pop() === 'image-placeholder.svg') return null;
+  return url.href;
+}
+
+// Display image first; when it is missing or a placeholder, reuse the real
+// thumbnail of the same work (and never mix in another work's image).
+export function sitemapWorkImage(work) {
+  return sitemapImageURL(work?.displayUrl) || sitemapImageURL(work?.thumbUrl);
+}
+
+export function languageSitemap(paths, lastmods = new Map(), images = new Map()) {
+  const rows = paths.flatMap(base => LOCALES.map(locale => {
+    const alternatives = LOCALES.concat([{ prefix: '', hreflang: 'x-default' }]).map(other => '<xhtml:link rel="alternate" hreflang="' + other.hreflang + '" href="' + escape(ORIGIN + localizedPath(base, other)) + '"/>').join('');
+    const lastmod = lastmods.get(localizedPath(base, locale));
+    // Work pages advertise their own image so image search indexes the real file.
+    const image = sitemapImageURL(images.get(base));
+    const imageTag = image ? '<image:image><image:loc>' + escape(image) + '</image:loc></image:image>' : '';
+    return '  <url><loc>' + escape(ORIGIN + localizedPath(base, locale)) + '</loc>' + (lastmod ? '<lastmod>' + escape(lastmod) + '</lastmod>' : '') + imageTag + alternatives + '</url>';
+  }));
+  return '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n' + rows.join('\n') + '\n</urlset>\n';
+}
 
 const text = value => String(value || '').replace(/\s+/gu, ' ').trim();
 const attributes = ['href', 'src', 'srcset', 'alt', 'title', 'datetime', 'width', 'height', 'type'];
@@ -74,10 +106,12 @@ export function readSitemapHistory(directory, { origin, now = new Date(), known 
 export function updateSitemapHistory(paths, directory, previous, { now = new Date(), unchangedPaths = new Set() } = {}) {
   const lastmods = new Map();
   const records = new Map();
-  let changed = 0, unchanged = 0, added = 0;
+  let changed = 0, unchanged = 0, added = 0, fingerprinted = 0;
   for (const pathname of paths) {
     const prior = previous.records.get(pathname);
-    const fingerprint = unchangedPaths.has(pathname) && prior ? prior.fingerprint : pageFingerprint(fs.readFileSync(pageFile(directory, pathname), 'utf8'));
+    const reuse = unchangedPaths.has(pathname) && prior;
+    const fingerprint = reuse ? prior.fingerprint : pageFingerprint(fs.readFileSync(pageFile(directory, pathname), 'utf8'));
+    if (!reuse) fingerprinted++;
     if (prior?.fingerprint === fingerprint) {
       lastmods.set(pathname, timestamp(prior.lastmod, now));
       unchanged++;
@@ -87,5 +121,5 @@ export function updateSitemapHistory(paths, directory, previous, { now = new Dat
     }
     records.set(pathname,{fingerprint,lastmod:lastmods.get(pathname)});
   }
-  return { lastmods, records, changed, unchanged, added, seeded: previous.seeded };
+  return { lastmods, records, changed, unchanged, added, fingerprinted, seeded: previous.seeded };
 }

@@ -12,7 +12,7 @@ function sameArtifacts(left,right,message,untrackedRight=[]) {
  const differences=[...new Set([...Object.keys(a),...Object.keys(b)])].filter(name=>a[name]!==b[name]);
  assert.deepEqual(differences,[],message);
 }
-test('real Astro builds: no-op, edits, additions, removals, cold-cache fallback and atomic failure', {timeout:900000},()=>{
+test('real Astro builds: no-op, edits, additions, removals, cold-cache fallback and atomic failure', {timeout:1200000},()=>{
  const sandbox=fs.mkdtempSync(path.join(root,'.build/incremental-fixture-'));
  const fixture=path.join(sandbox,'source');fs.mkdirSync(fixture);
  const logRoot=path.join(root,'.build/incremental-integration');fs.mkdirSync(logRoot,{recursive:true});
@@ -60,6 +60,17 @@ test('real Astro builds: no-op, edits, additions, removals, cold-cache fallback 
    return {out,report,plan:JSON.parse(fs.readFileSync(path.join(out,'.build-plan.json'),'utf8'))};
  }
  const htmlRendered=build=>build.plan.rendered.filter(route=>route.endsWith('.html')).sort();
+ const assertEnglishOnly = (release, previous) => {
+   assert.equal(release.report.mode,'incremental');
+   assert.ok(release.report.locales.en.generated > 0);
+   for (const locale of ['zh','zh-Hant','ja']) {
+     assert.equal(release.report.locales[locale].generated,0,locale+' should reuse all pages');
+     assert.ok(release.report.locales[locale].reused > 0);
+     assert.equal(release.report.locales[locale].reused,previous.report.locales[locale].generated + previous.report.locales[locale].reused);
+   }
+   assert.equal(release.report.audit.byLocale.ja.scanned,0);
+   assert.equal(release.report.sitemap.previousPagesRead,0);
+ };
  write(sample);
  const initial=build('initial',null,['--full']);assert.equal(initial.report.mode,'full');
  for(const name of ['apple-touch-icon.png','apple-touch-icon-precomposed.png']) {
@@ -145,16 +156,57 @@ test('real Astro builds: no-op, edits, additions, removals, cold-cache fallback 
  assert.match(fs.readFileSync(path.join(translated.out,'en/videos.html'),'utf8'),/Video translation dependency check\./);
  assert.ok(fs.existsSync(path.join(translated.out,'en/videos/oldest/page/2.html')));
  assert.ok(!htmlRendered(translated).includes('/videos.html'),'a translation-only edit need not render the base route');
- assert.ok(translated.report.reusedLanguagePages>translated.report.localized);
+ assertEnglishOnly(translated,stylesFull);
  const translatedFull=build('video-translation-full','home-styles-full',['--full']);
  sameArtifacts(translated.out,translatedFull.out,'translation and nested routes equal full build');
+
+ const englishEdit=structuredClone(sample);
+ const englishWork=englishEdit.works.at(-1);
+ englishWork.i18n.en.description+=' English-only artwork description.';
+ write(englishEdit);
+ const english=build('english-work','video-translation-full');
+ assertEnglishOnly(english,translatedFull);
+ assert.match(fs.readFileSync(path.join(english.out,'en/works',englishWork.slug+'.html'),'utf8'),/English-only artwork description\./);
+ const englishFull=build('english-work-full','video-translation-full',['--full']);
+ sameArtifacts(english.out,englishFull.out,'English-only incremental artifacts');
+
+ const dictionary=path.join(fixture,'frontend/public/lang/en.js');
+ const englishDictionary=fs.readFileSync(dictionary,'utf8');
+ assert.ok(englishDictionary.includes('DeepSeek Chan (archive)'));
+ fs.writeFileSync(dictionary,englishDictionary.replace('DeepSeek Chan (archive)','DeepSeek Chan artwork archive'));
+ const dictionaryEdit=build('english-dictionary','english-work-full');
+ assertEnglishOnly(dictionaryEdit,englishFull);
+ assert.match(fs.readFileSync(path.join(dictionaryEdit.out,'en/works',englishWork.slug+'.html'),'utf8'),/DeepSeek Chan artwork archive/);
+ const dictionaryFull=build('english-dictionary-full','english-work-full',['--full']);
+ sameArtifacts(dictionaryEdit.out,dictionaryFull.out,'dictionary-only incremental artifacts');
+
+ fs.appendFileSync(path.join(fixture,'tools/localization/audit-pages.mjs'),'\n// Audit rule fingerprint fixture.\n');
+ const audit=build('audit-only','english-dictionary-full');
+ assert.ok(audit.report.reasons.includes('audit-rules-changed'));
+ assert.deepEqual(htmlRendered(audit),[]);
+ assert.equal(audit.report.localized,0);
+ assert.equal(audit.report.audit.scanned,englishFull.report.audit.scanned);
+ assert.equal(audit.report.audit.reused,0);
+ assert.equal(audit.report.sitemap.fingerprinted,0);
+ assert.equal(audit.report.sitemap.previousPagesRead,0);
+ sameArtifacts(audit.out,dictionaryFull.out,'audit-only artifacts');
+
+ fs.appendFileSync(path.join(fixture,'frontend/scripts/sitemap-history.mjs'),'\n// Sitemap rule fingerprint fixture.\n');
+ const sitemapRule=build('sitemap-rule-only','audit-only');
+ assert.ok(sitemapRule.report.reasons.includes('sitemap-rules-changed'));
+ assert.deepEqual(htmlRendered(sitemapRule),[]);
+ assert.equal(sitemapRule.report.localized,0);
+ assert.equal(sitemapRule.report.audit.scanned,0);
+ assert.ok(sitemapRule.report.sitemap.previousPagesRead > 0);
+ sameArtifacts(sitemapRule.out,audit.out,'sitemap rule change preserves lastmod and other artifacts');
+
  const edited=structuredClone(sample),work=edited.works.at(-1);
  work.description+=' 增量构建验证。';work.i18n.en.description+=' Incremental build verification.';work.i18n.ja.description+=' 増分ビルドの検証。';
  write(edited);
- const increment=build('edited','video-translation-full',[],{PUBLISH_PREBUILT_DIR:initial.out});assert.equal(increment.report.mode,'incremental');assert.ok(increment.report.rendered<initial.report.rendered,'unaffected pages must be restored');
+ const increment=build('edited','sitemap-rule-only',[],{PUBLISH_PREBUILT_DIR:initial.out});assert.equal(increment.report.mode,'incremental');assert.ok(increment.report.rendered<initial.report.rendered,'unaffected pages must be restored');
  assert.notEqual(readApi(increment,'works/'+work.id+'.json').work.revision,readApi(component,'works/'+work.id+'.json').work.revision);
  assert.ok(increment.report.openApi.reused>0,'unchanged API files must be reused');
- const reference=build('edited-full','video-translation-full',['--full']);sameArtifacts(increment.out,reference.out,'incremental edits equal a clean full build');
+ const reference=build('edited-full','sitemap-rule-only',['--full']);sameArtifacts(increment.out,reference.out,'incremental edits equal a clean full build');
  const added=structuredClone(edited);added.works.push(fixtureTags(structuredClone(ordered[24])));write(added);
  const addition=build('added','edited');assert.equal(addition.report.mode,'incremental');assert.ok(fs.existsSync(path.join(addition.out,'works',ordered[24].slug+'.html')));
  assert.ok(readApi(addition,'manifest.json').items.some(w=>w.id===ordered[24].id));
@@ -171,6 +223,16 @@ test('real Astro builds: no-op, edits, additions, removals, cold-cache fallback 
  fs.cpSync(deletion.out,incomplete,{recursive:true,mode:fs.constants.COPYFILE_FICLONE,filter:source=>source!==path.join(deletion.out,missing)});
  assert.equal(fs.existsSync(path.join(incomplete,missing)),false);
  const recovered=build('recovered','removed-missing');assert.equal(recovered.report.mode,'full');assert.match(recovered.report.reasons.join(','),/baseline-artifact-missing/);
+
+ fs.appendFileSync(path.join(fixture,'frontend/package-lock.json'),'\n');
+ const toolchain=build('toolchain','recovered');
+ assert.equal(toolchain.report.mode,'full');
+ assert.ok(toolchain.report.reasons.includes('build-toolchain-changed'));
+ assert.equal(toolchain.report.reusedLanguagePages,0);
+ assert.equal(toolchain.report.audit.reused,0);
+ assert.ok(toolchain.report.sitemap.previousPagesRead > 0);
+ sameArtifacts(toolchain.out,recovered.out,'toolchain fallback preserves identical artifacts when dependencies did not change');
+
  const before=outputHashes(recovered.out);
  const failure=spawnSync(process.execPath,[path.join(fixture,'frontend/scripts/build.mjs'),'--out',recovered.out,'--full'],{cwd:path.join(fixture,'frontend'),env:{...process.env,SITE_SNAPSHOT:snapshot,SOURCE_DATE_EPOCH:epoch,PYTHON:'missing-python-for-failure-check'},encoding:'utf8',maxBuffer:8*1024*1024,timeout:240000});
  assert.notEqual(failure.status,0);assert.deepEqual(outputHashes(recovered.out),before,'failed replacement preserves every prior artifact');

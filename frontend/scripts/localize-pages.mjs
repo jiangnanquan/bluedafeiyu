@@ -8,14 +8,10 @@ import path from 'node:path';
 import vm from 'node:vm';
 import { parseHTML } from 'linkedom';
 import { Converter } from 'opencc-js/cn2t';
+import {ORIGIN, LOCALES, localizedPath, normalizeHome} from './site-locales.mjs';
 
-export const ORIGIN = 'https://xn--pssy23gqgbz2d718b.com';
-export const LOCALES = [
-  { id: 'zh', prefix: '', html: 'zh-CN', hreflang: 'zh-Hans', og: 'zh_CN', label: '简体中文' },
-  { id: 'zh-Hant', prefix: '/zh-hant', html: 'zh-Hant', hreflang: 'zh-Hant', og: 'zh_TW', label: '繁體中文' },
-  { id: 'en', prefix: '/en', html: 'en', hreflang: 'en', og: 'en_US', label: 'English' },
-  { id: 'ja', prefix: '/ja', html: 'ja', hreflang: 'ja', og: 'ja_JP', label: '日本語' }
-];
+export {ORIGIN, LOCALES, localizedPath} from './site-locales.mjs';
+export {languageSitemap, sitemapImageURL, sitemapWorkImage} from './sitemap-history.mjs';
 const program = new vm.Script(fs.readFileSync(new URL('../public/lang.js', import.meta.url),'utf8'),{filename:'lang.js'});
 const baseTranslations = {};
 for (const locale of ['en','ja']) {
@@ -24,27 +20,8 @@ for (const locale of ['en','ja']) {
 }
 const convertTraditional = Converter({ from: 'cn', to: 'twp' });
 const converter = text => convertTraditional(String(text ?? '')).replace(/孃/g, '娘');
-const normalizeHome = p => p === '/index.html' ? '/' : p;
 const isVideoList = path => path === '/videos.html' || path.startsWith('/videos/');
-export const localizedPath = (base, locale) => locale.prefix + normalizeHome(base);
 const escape = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;' }[c]));
-
-// sitemap image: absolute URL through the punycode origin, or the remote URL
-// unchanged. The shared placeholder is never advertised as a work image.
-export function sitemapImageURL(value) {
-  if (typeof value !== 'string' || !value.trim()) return null;
-  let url;
-  try { url = new URL(value.trim(), ORIGIN + '/'); } catch { return null; }
-  if (url.protocol !== 'http:' && url.protocol !== 'https:') return null;
-  if (url.pathname.split('/').pop() === 'image-placeholder.svg') return null;
-  return url.href;
-}
-
-// Display image first; when it is missing or a placeholder, reuse the real
-// thumbnail of the same work (and never mix in another work's image).
-export function sitemapWorkImage(work) {
-  return sitemapImageURL(work?.displayUrl) || sitemapImageURL(work?.thumbUrl);
-}
 
 function setMeta(document, selector, value) {
   if (value != null) document.querySelector(selector)?.setAttribute('content', value);
@@ -296,22 +273,20 @@ function createLocalizationInputs(out, snapshot) {
   for (const file of ['archive-copy.js','archive-labels.js']) {
     vm.runInNewContext(fs.readFileSync(path.join(out,file),'utf8'),{window:translations},{filename:file});
   }
-  return {translations,checker:createDependencyChecker(translations,snapshot),lookup:createNativeLookup(snapshot)};
+  return {translations,lookup:createNativeLookup(snapshot)};
 }
 
-// Localize one source page into every locale while tracing exactly which copy
-// and native-data keys the render used. `matches` rehashes only those deps.
 export function prepareLocalization(out, snapshot) {
-  const inputs=createLocalizationInputs(out,snapshot);
+  const {translations} = createLocalizationInputs(out, snapshot);
+  const checkers = new Map(LOCALES.map(({id}) => [id, createDependencyChecker(translations, snapshot, id)]));
   return {
-    matches(record) { return matchesRecord(record,inputs.checker); },
-    async render(html, base) {
-      const trace=createTrace();
-      const lookup=createNativeLookup(snapshot,trace);
-      const translations=createTrackedTranslations(inputs.translations,trace);
-      const pages=[];
-      for (const locale of LOCALES) pages.push({locale,html:await localizeHtml(html,base,locale,snapshot,translations,{lookup})});
-      return {pages,record:finishRecord(trace,inputs.checker,base)};
+    matches(record, locale) { return matchesRecord(record, checkers.get(locale.id)); },
+    async render(html, base, locale) {
+      const trace = createTrace();
+      const lookup = createNativeLookup(snapshot, trace);
+      const tracked = createTrackedTranslations(translations, trace);
+      const localized = await localizeHtml(html, base, locale, snapshot, tracked, {lookup});
+      return {html: localized, dependencies: finishRecord(trace, checkers.get(locale.id), base)};
     }
   };
 }
@@ -343,16 +318,4 @@ export async function buildLanguagePages(out, snapshot, baseFiles = null) {
     }
   }
   console.log('[i18n] ' + count + ' static language pages');
-}
-
-export function languageSitemap(paths, lastmods = new Map(), images = new Map()) {
-  const rows = paths.flatMap(base => LOCALES.map(locale => {
-    const alternatives = LOCALES.concat([{ prefix: '', hreflang: 'x-default' }]).map(other => '<xhtml:link rel="alternate" hreflang="' + other.hreflang + '" href="' + escape(ORIGIN + localizedPath(base, other)) + '"/>').join('');
-    const lastmod = lastmods.get(localizedPath(base, locale));
-    // Work pages advertise their own image so image search indexes the real file.
-    const image = sitemapImageURL(images.get(base));
-    const imageTag = image ? '<image:image><image:loc>' + escape(image) + '</image:loc></image:image>' : '';
-    return '  <url><loc>' + escape(ORIGIN + localizedPath(base, locale)) + '</loc>' + (lastmod ? '<lastmod>' + escape(lastmod) + '</lastmod>' : '') + imageTag + alternatives + '</url>';
-  }));
-  return '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n' + rows.join('\n') + '\n</urlset>\n';
 }

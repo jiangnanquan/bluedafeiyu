@@ -8,7 +8,8 @@ const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 // without JavaScript and the frozen conversation ID remains on the article.
 const source=read('src/pages/works/[slug].astro');
 if(source.includes('readLegacy'))throw new Error('作品页仍使用 readLegacy');
-if(!source.includes('ArchivePage')||!source.includes('archivePages'))throw new Error('作品路由未使用共用页面组件');
+const detailPage=read('src/components/archive/WorkDetailPage.astro');
+if(!source.includes('<WorkDetailPage ')||!source.includes('archivePages')||!detailPage.includes('<ArchivePage '))throw new Error('作品路由未使用共用页面组件');
 const detail=read('src/components/archive/WorkPages.mjs');
 for(const need of ['data-static-work','sticker-${esc(w.id)}','renderWorkActions(w)','w.rights.creditText','w.rights.copyrightNotice'])if(!detail.includes(need))throw new Error('作品详情缺少 '+need);
 const actions=read('public/components/work-actions.js');

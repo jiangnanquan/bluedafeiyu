@@ -4,7 +4,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {spawnSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
-import {readSitemapHistory,updateSitemapHistory} from './sitemap-history.mjs';
+import {readSitemapHistory,updateSitemapHistory,languageSitemap,sitemapWorkImage} from './sitemap-history.mjs';
+import {localizedPath,LOCALES,ORIGIN} from './site-locales.mjs';
 import {STATE_VERSION,STATE_FILE,readState,hash,outputHashes,copyImmutableAsset,filesIn} from './incremental.mjs';
 
 const started=performance.now();
@@ -69,11 +70,13 @@ const stage=fs.mkdtempSync(path.join(path.dirname(out),'.build-pending-'));
 let completed=false;
 try {
  const reusedStateFile=preflight ? path.join(previous,STATE_FILE) : previousStateFile;
- const reusableState=plan.mode==='full' ? null : readState(reusedStateFile);
- if(plan.mode!=='full'&&!reusableState)throw Error('Build baseline changed after planning');
+ const baseline=plan.baselineVerified ? readState(reusedStateFile) : null;
+ if(plan.baselineVerified&&!baseline)throw Error('Build baseline changed after planning');
+ const reusableState=plan.force ? null : baseline;
  const knownOutputs=new Map();
  let history=reusableState?.sitemap||{},pages=reusableState?.pages||{},audit=reusableState?.audit;
  let localeInputHash=reusableState?.localeInputHash;
+ let localeStats, auditStats, sitemapStats;
  let ai={},openApi={},localized=0,reusedLanguagePages=0,reusedAssets=0;
  if(plan.mode==='noop') {
   for(const [name,digest] of Object.entries(reusableState.outputs)) {
@@ -88,8 +91,11 @@ try {
     knownOutputs.set(name,digest);
   }
   plan.rendered=[];
-  const {LOCALES}=await import('./localize-pages.mjs');
-  reusedLanguagePages=Object.keys(pages).length*LOCALES.length;
+  const pageCount = Object.keys(pages).length;
+  reusedLanguagePages=pageCount*LOCALES.length;
+  localeStats = Object.fromEntries(LOCALES.map(({id}) => [id, {generated: 0, reused: pageCount}]));
+  auditStats = {scanned: 0, reused: Object.keys(audit?.pages || {}).length};
+  sitemapStats = {fingerprinted: 0, reused: Object.keys(history).length, previousPagesRead: 0};
   endPhase('reuse');
  } else {
   run(path.join(frontend,'scripts/prepare-language-assets.mjs'));
@@ -137,19 +143,32 @@ try {
    stage,planFile,previous,reusedStateFile,path.join(root,'.build/native-localization-audit.json'),pageResultFile,
   ]);
   const result=JSON.parse(fs.readFileSync(pageResultFile,'utf8'));
-  const {urls,reusable}=result;
-  ({pages,localeInputHash,localized,reusedLanguagePages,ai,openApi,audit}=result);
+  const {urls}=result;
+  ({pages,localeInputHash,localized,reusedLanguagePages,localeStats,ai,openApi,audit}=result);
+  auditStats = audit.stats;
   for(const [name,digest] of result.knownOutputs)knownOutputs.set(name,digest);
   Object.assign(timings,result.timings);
   phaseStart=performance.now();
-  const {languageSitemap,localizedPath,LOCALES,ORIGIN,sitemapWorkImage}=await import('./localize-pages.mjs');
   const snapshot=JSON.parse(fs.readFileSync(path.join(stage,'site-data.json'),'utf8'));
   let previousSitemap={records:new Map(),seeded:0};
+  let previousPagesRead = 0;
   try {
-   previousSitemap=reusableState ? {records:new Map(Object.entries(reusableState.sitemap)),seeded:0} : readSitemapHistory(previous,{origin:ORIGIN,now:buildTime});
+   if (baseline && ['sitemap', 'build', 'runtime'].every(key => baseline.inputs[key] === plan.inputs[key])) {
+    previousSitemap = {records: new Map(Object.entries(baseline.sitemap)), seeded: 0};
+   } else {
+    previousSitemap = readSitemapHistory(publishedPrevious, {origin: ORIGIN, now: buildTime});
+    previousPagesRead = previousSitemap.records.size;
+   }
   } catch(error){console.warn('[sitemap] previous history unavailable: '+error.message);}
-  const unchangedPaths=new Set(reusable.flatMap(file=>LOCALES.map(locale=>localizedPath('/'+file,locale))));
-  const sitemap=updateSitemapHistory(urls.flatMap(base=>LOCALES.map(locale=>localizedPath(base,locale))),stage,previousSitemap,{unchangedPaths,now:buildTime});
+  const paths = urls.flatMap(base => LOCALES.map(locale => localizedPath(base, locale)));
+  const unchangedPaths = new Set();
+  for (const route of paths) {
+   const file = (route.endsWith('/') ? route + 'index.html' : route).slice(1);
+   if (!fs.existsSync(path.join(stage, file))) throw Error('Language page missing: ' + route);
+   const digest = knownOutputs.get(file);
+   if (reusableState && digest && digest === reusableState.outputs[file]) unchangedPaths.add(route);
+  }
+  const sitemap=updateSitemapHistory(paths,stage,previousSitemap,{unchangedPaths,now:buildTime});
   const sitemapImages=new Map();
   for(const work of snapshot.works||[]){
     if(work.status!=='published')continue;
@@ -159,11 +178,8 @@ try {
   }
   fs.writeFileSync(path.join(stage,'sitemap.xml'),languageSitemap(urls,sitemap.lastmods,sitemapImages));
   history=Object.fromEntries(sitemap.records);
+  sitemapStats = {fingerprinted: sitemap.fingerprinted, reused: paths.length - sitemap.fingerprinted, previousPagesRead};
   console.log(`[sitemap] ${sitemap.unchanged} unchanged, ${sitemap.changed} changed, ${sitemap.added} new`);
-  for(const base of urls)for(const locale of LOCALES) {
-   const route=localizedPath(base,locale),file=route.endsWith('/')?route+'index.html':route;
-   if(!fs.existsSync(path.join(stage,file.slice(1))))throw Error('Language page missing: '+route);
-  }
   endPhase('sitemap');
  }
  // A missing placeholder turns every fallback into a broken image (issue #33).
@@ -179,7 +195,7 @@ try {
   reasons:preflight?['validated-prebuilt-artifact']:plan.reasons,preflight:preflight||null,
   sourceCommit:git(root),contentCommit:process.env.CONTENT_DIR?git(process.env.CONTENT_DIR):null,
   planned:preflight?.planned||{changed:plan.changed.length,reused:plan.reused.length,removed:plan.removed.length},
-  rendered:(plan.rendered||[]).length,localized,reusedLanguagePages,reusedAssets,markdown:ai,openApi,timings,
+  rendered:(plan.rendered||[]).length,localized,reusedLanguagePages,locales:localeStats,reusedAssets,markdown:ai,openApi,audit:auditStats,sitemap:sitemapStats,timings,
   seconds:Number(((performance.now()-started)/1000).toFixed(2)),
  };
  fs.writeFileSync(path.join(stage,STATE_FILE),JSON.stringify(state));
