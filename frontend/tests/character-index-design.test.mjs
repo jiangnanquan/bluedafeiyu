@@ -20,5 +20,8 @@ for(const prefix of ['','zh-hant/','en/','ja/'])test('shared character cards pre
  }
  assert.equal(document.querySelector('.sidebar [aria-current=page]').getAttribute('href'),'/'+prefix+'characters.html');
  assert.equal(document.querySelectorAll('#language-options [role=option]').length,4);
- assert.ok(document.querySelector('.brand-mark svg[aria-hidden="true"]'));
+ const brand=document.querySelector('.brand-mark');
+ assert.equal(brand.getAttribute('href'),'/'+prefix);
+ assert.ok(brand.getAttribute('aria-label'));
+ assert.ok(brand.querySelector('img[src="/avatar.png"][alt=""]'));
 });

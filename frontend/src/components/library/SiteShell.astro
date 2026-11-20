@@ -7,7 +7,7 @@ const {activePage=''}=Astro.props;
   <button class="drawer-backdrop" type="button" data-drawer-close tabindex="-1" aria-label="关闭导航" data-i18n-attr="aria-label:d.closeNavigation"></button>
   <aside class="sidebar" id="site-sidebar" aria-label="站点导航" data-i18n-attr="aria-label:d.home.nav">
     <div class="brand">
-      <a class="brand-mark" href="/" aria-label="蓝色大肥鱼首页" data-i18n-attr="aria-label:d.home.homeLabel"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s4-5 9-5 9 5 9 5-4 5-9 5-9-5-9-5Z"/><circle cx="16" cy="12" r="1"/></svg></a>
+      <a class="brand-mark" href="/" aria-label="蓝色大肥鱼首页" data-i18n-attr="aria-label:d.home.homeLabel"><img src="/avatar.png" width="36" height="36" alt=""></a>
       <a class="brand-text" href="/">
         <div class="brand-name" data-i18n="d.home.brand">蓝色大肥鱼</div>
         <div class="brand-sub" data-i18n="d.home.brandSub">AI 娘同人档案</div>
@@ -30,7 +30,6 @@ const {activePage=''}=Astro.props;
 <a aria-label="加入社群" data-i18n-attr="aria-label:d.home.join" aria-current={activePage==='community'?'page':undefined} class:list={['nav-item',{'is-active':activePage==='community'}]} href="/community.html"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/></svg><span data-i18n="d.home.join">加入社群</span></a>
 <a aria-label="友情链接" data-i18n-attr="aria-label:d.home.friends" aria-current={activePage==='friendWall'?'page':undefined} class:list={['nav-item',{'is-active':activePage==='friendWall'}]} href="/friend-links.html"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><span data-i18n="d.home.friends">友情链接</span></a>
     </nav>
-    <div class="sidebar-spacer" aria-hidden="true"></div>
     <hr>
     <div class="sidebar-links"><a href="/about.html" data-i18n="d.home.about">关于</a><a href="/about.html#open-data-api" data-i18n="d.openApi">开放接口</a><a href="/changelog.html" data-i18n="d.home.log">日志</a></div>
     <a aria-label="投稿" data-i18n-attr="aria-label:d.home.submit" class="cta" href="/submit.html"><span data-i18n="d.home.submit">投稿</span><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg></a>

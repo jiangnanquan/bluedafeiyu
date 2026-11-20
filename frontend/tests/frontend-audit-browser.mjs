@@ -91,7 +91,9 @@ try {
   }
   await desktop.locator('#theme').click();
   await assertContrast(desktop.locator('.sidebar .cta'));
-  await assertContrast(desktop.locator('.brand-mark'),3);
+  const logo=desktop.locator('.brand-mark img');
+  await logo.waitFor({state:'visible'});
+  assert.ok(await logo.evaluate(async img=>{await img.decode();return img.naturalWidth>0}));
   await desktop.locator('#theme').click();
   await desktop.goto(origin+'/characters/deepseek.html',{waitUntil:'domcontentloaded'});
   const more=desktop.locator('.load-more-wrap .button span').first();

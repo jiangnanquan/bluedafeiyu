@@ -31,6 +31,7 @@ export function decorativeReason(img) {
   if(img.matches('.archive-event .event-cover[aria-hidden="true"][tabindex="-1"] img')&&named('.archive-event','.event-summary h2'))return 'hidden-repeated-event-cover';
   // An otherwise decorative image must not leave its own control unnamed.
   if(link && !linkName(link))return null;
+  if(img.matches('a.brand-mark > img[src="/avatar.png"]'))return 'named-site-brand';
   if(img.matches('.character-portrait img[src="/avatar.png"]') && !img.closest('[data-cutout]') && !img.parentElement.querySelector('.character-cover-credit'))return 'character-brand-placeholder';
   if(img.matches('.collection-art img') && named('a.collection-card','.collection-copy h2'))return 'named-collection-mosaic';
   if(img.matches('.coll-covers .coll-cover-side img') && named('.coll-row','.coll-info h2'))return 'named-collection-mosaic';

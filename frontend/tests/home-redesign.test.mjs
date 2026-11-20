@@ -31,7 +31,13 @@ test('home image and title open the shared real preview, retain modifiers and re
 test('homepage uses the shared shell, production data and the single work renderer',()=>{
  const page=fs.readFileSync(new URL('../src/components/home/HomePage.astro',import.meta.url),'utf8');assert.match(page,/ArchivePage/);assert.match(page,/archivePages/);
  const source=fs.readFileSync(new URL('../src/components/archive/PageComposition.mjs',import.meta.url),'utf8');assert.match(source,/orderWorks\(galleryWorks\)/);assert.match(source,/works.length/);
- const shell=fs.readFileSync(new URL('../src/components/library/SiteShell.astro',import.meta.url),'utf8');const {document}=parseHTML(shell);assert.equal(document.querySelector('.brand-mark').getAttribute('href'),'/');assert.ok(document.querySelector('.brand-mark svg[aria-hidden="true"]'));assert.match(shell,/<slot/);
+ const shell=fs.readFileSync(new URL('../src/components/library/SiteShell.astro',import.meta.url),'utf8');
+ const {document}=parseHTML(shell);
+ const brand=document.querySelector('.brand-mark');
+ assert.equal(brand.getAttribute('href'),'/');
+ assert.ok(brand.getAttribute('aria-label'));
+ assert.ok(brand.querySelector('img[src="/avatar.png"][alt=""]'));
+ assert.match(shell,/<slot/);
  assert.doesNotMatch(source,/data:image|preview-isolation|DecompressionStream/);
  assert.ok(Object.values(homeCopy).every(row=>row.length===3&&row.every(Boolean)));
 });
