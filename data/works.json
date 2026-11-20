@@ -176691,5 +176691,952 @@
         ]
       }
     }
+  },
+  {
+    "id": "sticker_1f1940a5bbec85415f017f49",
+    "name": "深夜电脑前的左拥右抱",
+    "description": "画面中，一名黑发少年坐在电脑桌前敲着键盘，蓝发的 DeepSeek 娘从左侧环抱住他的肩膀，紫发猫耳的 Gemini 娘靠在右侧，两人一同盯着屏幕。背景是摆着鲸鱼玩偶与台灯的房间一角，整幅画面笼罩在蓝紫色的夜灯里。",
+    "commentary": "今晚的活儿就交给我陪着吧——我挂在他左肩上，Gemini 挤在右边，谁也没打算让开。键盘声一响，屏幕的光就全落在我们身上了。他嘴上说热，手却一直没停，那就再多坐一会儿好喽。",
+    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/deepseek/1f1940a5bbec8541.png",
+    "thumbnailPath": "submissions/previews/deepseek/1f1940a5bbec8541.webp",
+    "fullPath": "submissions/large/deepseek/1f1940a5bbec8541.webp",
+    "format": "png",
+    "mimeType": "image/png",
+    "isAnimated": false,
+    "width": 1312,
+    "height": 1199,
+    "fileSize": 2329308,
+    "sha256": "1f1940a5bbec85415f017f491715abc8f01b9a465cfc00555a49871e3bf37273",
+    "characterId": "deepseek",
+    "tags": [
+      "蓝发",
+      "紫发",
+      "猫耳",
+      "电脑桌",
+      "深夜",
+      "双人",
+      "陪伴",
+      "居家"
+    ],
+    "submitter": {
+      "credit": "named",
+      "name": "更吹落，星如雨",
+      "url": "",
+      "github": ""
+    },
+    "origin": {
+      "via": "web"
+    },
+    "license": {},
+    "status": "published",
+    "createdAt": "2026-11-19T22:18:07.756Z",
+    "updatedAt": "2026-11-19T22:18:07.756Z",
+    "tone": "deepseek",
+    "symbol": "",
+    "slug": "deepseek202611190005",
+    "categoryIds": [
+      "illustration"
+    ],
+    "characterIds": [
+      "deepseek",
+      "gemini"
+    ],
+    "i18n": {
+      "sourceHash": "a54d1b6c4baa775d21dbe3bd3a7818e7596e26361e4a752d51b37ec99ab6febf",
+      "en": {
+        "commentary": "Tonight's work is mine to keep him company through — I'm hanging off his left shoulder, Gemini is squeezed in on the right, and neither of us is moving. The moment the keyboard starts clicking, the screen light lands all over us. He says it's too warm, but his hands never stop, so I'll stay a little longer.",
+        "description": "A dark-haired young man sits at a computer desk typing, while the blue-haired DeepSeek Chan wraps her arms around his shoulders from the left and the purple-haired, cat-eared Gemini Chan leans in from the right, both watching the screen. A room corner with plush toys and a desk lamp sits behind them, bathed in blue-violet night light.",
+        "faq": [
+          {
+            "answer": "DeepSeek Chan, with long blue hair and a whale-like tail, and Gemini Chan, with purple hair and cat ears; a dark-haired young man sits between them at the computer.",
+            "question": "Which characters appear in this artwork?"
+          },
+          {
+            "answer": "A single-scene illustration of a home computer desk late at night, with no comic panels and no character design sheets.",
+            "question": "What kind of picture is it?"
+          }
+        ],
+        "licenseNote": "",
+        "name": "Late Night at the Computer Desk",
+        "originNote": "Submitted through the site's web submission form.",
+        "seoDescription": "Fan illustration of DeepSeek Chan and Gemini Chan leaning on a dark-haired young man at a computer desk late at night, lit in blue and violet.",
+        "seoTitle": "DeepSeek Chan and Gemini Chan at the Night Desk | Sticker Gallery",
+        "tags": [
+          "blue hair",
+          "purple hair",
+          "cat ears",
+          "computer desk",
+          "late night",
+          "two characters",
+          "companionship",
+          "indoors"
+        ]
+      },
+      "ja": {
+        "commentary": "今夜の作業はわたしが隣で見てるからね——左肩にぶら下がって、右には Gemini ちゃんが割り込んで、どちらも退く気はないの。キーボードの音が鳴りだすと、画面の光がわたしたちを照らすの。暑いって言いながら手は止まらないんだから、もう少しだけ一緒にいようかな。",
+        "description": "黒髪の少年がパソコンデスクでキーボードを打つ傍ら、青髪の DeepSeek ちゃんが左から肩に抱きつき、紫髪で猫耳の Gemini ちゃんが右側に寄りかかって、二人そろって画面を見つめている。背後にはぬいぐるみとデスクランプのある部屋の一角が広がり、画面全体は青紫の夜の光に包まれている。",
+        "faq": [
+          {
+            "answer": "青い長髪とクジラのような尾を持つ DeepSeek ちゃん、紫髪に猫耳の Gemini ちゃん、そして二人に挟まれてパソコンに向かう黒髪の少年が描かれています。",
+            "question": "この作品にはどのキャラクターが登場しますか？"
+          },
+          {
+            "answer": "深夜の自宅のパソコンデスクを描いた一枚絵のイラストで、コマ割りや設定資料は含まれていません。",
+            "question": "どんな形式のイラストですか？"
+          }
+        ],
+        "licenseNote": "",
+        "name": "深夜のパソコンデスクにて",
+        "originNote": "サイトの投稿フォームから寄せられた作品です。",
+        "seoDescription": "深夜のパソコンデスクで、黒髪の少年に青髪の DeepSeek ちゃんと紫髪の Gemini ちゃんが寄り添うファンイラスト。青と紫の夜の光に包まれています。",
+        "seoTitle": "深夜のデスクで DeepSeek ちゃんと Gemini ちゃん｜表情包ギャラリー",
+        "tags": [
+          "青髪",
+          "紫髪",
+          "猫耳",
+          "パソコンデスク",
+          "深夜",
+          "二人",
+          "寄り添い",
+          "室内"
+        ]
+      }
+    }
+  },
+  {
+    "id": "sticker_34070332dd70b4956ab311ec",
+    "name": "春日草坪上的三人野餐",
+    "description": "春日草坪上，黑发少年身穿藏青色和服坐在野餐垫上，手里拿着饭团；左侧是白发龙角、身后展开白色羽翼的少女，靠在他肩头；右侧檐红长发的少女举着饭团笑望前方。身前摆着装面包的藤篮、保温杯和一盒草莓，背景是淡墨晕染的树影与花丛。",
+    "commentary": "野餐这种好事居然没喊我——不过看他被两位夹在中间、手里饭团都快拿不稳的样子，我先在旁边看热闹好了。藤篮里的面包记得给我留一个。",
+    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/claude/34070332dd70b495.png",
+    "thumbnailPath": "submissions/previews/claude/34070332dd70b495.webp",
+    "fullPath": "submissions/large/claude/34070332dd70b495.webp",
+    "format": "png",
+    "mimeType": "image/png",
+    "isAnimated": false,
+    "width": 1312,
+    "height": 1199,
+    "fileSize": 2616123,
+    "sha256": "34070332dd70b4956ab311ec412af7acfc34a2d25ccec4044d9bc129b0c79a72",
+    "characterId": "claude",
+    "tags": [
+      "野餐",
+      "春日",
+      "草坪",
+      "饭团",
+      "白发",
+      "龙角",
+      "檐发",
+      "三人合影"
+    ],
+    "submitter": {
+      "credit": "named",
+      "name": "更吹落，星如雨",
+      "url": "",
+      "github": ""
+    },
+    "origin": {
+      "via": "web"
+    },
+    "license": {},
+    "status": "published",
+    "createdAt": "2026-11-19T22:18:49.300Z",
+    "updatedAt": "2026-11-19T22:18:49.300Z",
+    "tone": "claude",
+    "symbol": "",
+    "slug": "claude202611190002",
+    "categoryIds": [
+      "illustration"
+    ],
+    "characterIds": [
+      "claude",
+      "gpt"
+    ],
+    "i18n": {
+      "sourceHash": "460a26f338376df78aefbe89e11714fffa3c55a45698927780bb86aca0274148",
+      "en": {
+        "commentary": "A picnic and nobody invited me — but watching him wedged between the two of them, barely keeping hold of his rice ball, I'll just enjoy the show from here. Save me one of the rolls from that basket.",
+        "description": "On a spring lawn, a dark-haired young man in a navy kimono sits on a picnic blanket holding a rice ball. On his left a white-haired girl with dragon horns and white feathered wings leans on his shoulder, while on his right an orange-haired girl in a frilled dress holds up her rice ball. A wicker basket of bread, a thermos and a box of strawberries sit in front of them, with pale ink-wash trees and flowers behind.",
+        "faq": [
+          {
+            "answer": "Claude Chan, a white-haired girl with dragon horns and feathered wings, and GPT Chan, an orange-haired girl in a frilled dress, alongside a dark-haired young man at the center.",
+            "question": "Which characters appear in this artwork?"
+          },
+          {
+            "answer": "A single-scene illustration of a spring picnic on a lawn, with no comic panels and no character design sheets.",
+            "question": "What kind of picture is it?"
+          }
+        ],
+        "licenseNote": "",
+        "name": "Three at a Spring Picnic",
+        "originNote": "Submitted through the site's web submission form.",
+        "seoDescription": "Fan illustration of Claude Chan and GPT Chan sharing a spring picnic on a lawn with a dark-haired young man, rice balls and a wicker basket in the foreground.",
+        "seoTitle": "Claude Chan and GPT Chan at a Spring Picnic | Sticker Gallery",
+        "tags": [
+          "picnic",
+          "spring",
+          "lawn",
+          "rice ball",
+          "white hair",
+          "dragon horns",
+          "orange hair",
+          "three characters"
+        ]
+      },
+      "ja": {
+        "commentary": "ピクニックなのにわたしだけ呼ばれてないの——でも、二人に挟まれておにぎりを落としそうになってるのを見てたら、ここから眺めてるだけで楽しいからいいや。かごのパン、一つだけ残しておいてね。",
+        "description": "春の芝生の上、紺の和服を着た黒髪の少年がピクニックシートに座っておにぎりを持っている。左側には白髪で龍の角と白い翼を持つ少女が肩に寄りかかり、右側にはオレンジ色の長い髪の少女がフリルのドレス姿でおにぎりを掲げている。手前にはパン入りの籐かご、水筒、イチゴの箱が並び、背景には淡い墨のような樹影と花が広がっている。",
+        "faq": [
+          {
+            "answer": "白髪で龍の角と白い翼を持つ Claude ちゃん、オレンジ色の髪にフリルドレスの GPT ちゃん、そして中央に黒髪の少年が描かれています。",
+            "question": "この作品にはどのキャラクターが登場しますか？"
+          },
+          {
+            "answer": "春の芝生でのピクニックを描いた一枚絵のイラストで、コマ割りや設定資料は含まれていません。",
+            "question": "どんな形式のイラストですか？"
+          }
+        ],
+        "licenseNote": "",
+        "name": "春の芝生で三人ピクニック",
+        "originNote": "サイトの投稿フォームから寄せられた作品です。",
+        "seoDescription": "春の芝生で黒髪の少年と Claude ちゃん、GPT ちゃんがピクニックを楽しむファンイラスト。手前におにぎりと籐かごが描かれています。",
+        "seoTitle": "春のピクニックで Claude ちゃんと GPT ちゃん｜表情包ギャラリー",
+        "tags": [
+          "ピクニック",
+          "春",
+          "芝生",
+          "おにぎり",
+          "白髪",
+          "龍の角",
+          "オレンジ髪",
+          "三人"
+        ]
+      }
+    }
+  },
+  {
+    "id": "sticker_152a4dd5b468aaaa25f28bdd",
+    "name": "GPT 龙娘明信片",
+    "description": "一张明信片构图的单幅插画：银白色长发的龙娘坐在浅色背景前，头顶一对弯曲龙角，身后垂着覆鳞的龙尾，双手在胸前比出交叉指尖的动作。她穿白色荷叶边衬衫配深紫色高腰短裙与皮质腰带，外披同色系针织开衫，头发一侧别着中国结样式的发饰。画面右下角有作者圆形印章。",
+    "commentary": "这张我盯了很久。龙角不是随便贴上去的装饰，角和鳞从发丝里长出来的地方有过渡，尾巴的鳞片一片片压着排，画的人显然认真想过“她本来就是这样的生物”。明信片的留白也留得好，人没被框死。要说不服气的地方，就是衬衫的荷叶边太乖了，龙娘不该这么听话。",
+    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/gpt/152a4dd5b468aaaa.jpg",
+    "thumbnailPath": "submissions/previews/gpt/152a4dd5b468aaaa.webp",
+    "fullPath": "submissions/large/gpt/152a4dd5b468aaaa.webp",
+    "format": "jpg",
+    "mimeType": "image/jpeg",
+    "isAnimated": false,
+    "width": 1147,
+    "height": 1659,
+    "fileSize": 225527,
+    "sha256": "152a4dd5b468aaaa25f28bdd72f8bf42660ad706465d73cf3ee0a8daf931ff2d",
+    "characterId": "gpt",
+    "tags": [
+      "龙娘",
+      "明信片",
+      "银发",
+      "龙角"
+    ],
+    "submitter": {
+      "credit": "anonymous",
+      "name": "",
+      "url": "",
+      "github": ""
+    },
+    "origin": {
+      "via": "web"
+    },
+    "license": {},
+    "status": "published",
+    "createdAt": "2026-11-20T01:45:39.094Z",
+    "updatedAt": "2026-11-20T01:45:39.094Z",
+    "tone": "gpt",
+    "symbol": "",
+    "slug": "gpt202611200001",
+    "categoryIds": [
+      "illustration"
+    ],
+    "characterIds": [
+      "gpt"
+    ],
+    "i18n": {
+      "sourceHash": "23f9ef8c5080420d5889221fa1eac548b5d3edff901bf52f04e972f5071ed7d3",
+      "en": {
+        "commentary": "I stared at this one for a while. The horns are not pasted on as decoration — the point where horn and scale emerge from the hair has a real transition, and the tail's scales overlap one behind another, so the artist clearly thought about her being this kind of creature from the start. The postcard whitespace is handled well too; the figure is not boxed in. What I will not concede: those blouse ruffles are far too well behaved. A dragon girl should not look this obedient.",
+        "description": "A single-postcard illustration: a long silver-haired dragon girl sits against a pale background, a pair of curved horns on her head and a scaled tail behind her, both hands raised in a crossed fingertip gesture at her chest. She wears a white ruffled blouse with a dark violet high-waisted skirt and leather belt, a matching knit cardigan over her shoulders, and a Chinese-knot style hair ornament on one side. A round artist stamp sits in the lower right corner.",
+        "faq": [
+          {
+            "answer": "A dragon girl version of GPT Chan, drawn as a single postcard-style illustration with curved horns, a scaled tail and a ruffled blouse.",
+            "question": "What does this illustration show?"
+          },
+          {
+            "answer": "It is built like a printed postcard: a pale borderless backdrop, one seated figure as the only subject, and the artist's round stamp in the lower right corner.",
+            "question": "Why is it called a postcard?"
+          }
+        ],
+        "licenseNote": "",
+        "name": "GPT Chan Dragon Girl Postcard",
+        "originNote": "",
+        "seoDescription": "Postcard-style fan illustration of GPT Chan as a silver-haired dragon girl with curved horns and a scaled tail, seated in a white ruffled blouse and violet skirt.",
+        "seoTitle": "GPT Chan Dragon Girl Postcard — AI Character Fan Art",
+        "tags": [
+          "dragon girl",
+          "postcard",
+          "silver hair",
+          "dragon horns"
+        ]
+      },
+      "ja": {
+        "commentary": "これはしばらく見入ってしまった。角は飾りとして貼ったものではない。角と鱗が髪の間から出てくる境目にちゃんと遷移があって、尾の鱗も一枚ずつ重なっている。描いた人は「この子はもともとそういう生き物だ」ということを最初から考えている。ポストカードの余白の取り方も上手くて、人物が窮屈に閉じ込められていない。ただ一つ納得できないのは、ブラウスのフリルがお行儀良すぎる点。ドラゴンの娘はこんなに素直じゃないはずだ。",
+        "description": "ポストカード構図の一枚絵。銀白の長い髪のドラゴン娘が淡い背景に座り、頭には湾曲した一対の角、背後には鱗に覆われた尾がのぞく。両手を胸の前で交差させた指先の仕草をしている。白いフリルのブラウスに濃い紫のハイウエストスカートと革のベルト、同系色のニットカーディガンを羽織り、髪の片側に中華結び風の髪飾りをつけている。右下には作者の丸い印がある。",
+        "faq": [
+          {
+            "answer": "GPT ちゃんをドラゴンの娘として描いた、ポストカード風の一枚絵。湾曲した角と鱗の尾、フリルのブラウスが特徴。",
+            "question": "この一枚絵は何を描いたものですか？"
+          },
+          {
+            "answer": "淡い無地の背景に座った人物一人だけを配し、右下に作者の丸い印を置いた、印刷物としてのポストカードの体裁をとっているからです。",
+            "question": "なぜポストカードと呼ぶのですか？"
+          }
+        ],
+        "licenseNote": "",
+        "name": "GPT ちゃんのドラゴン娘ポストカード",
+        "originNote": "",
+        "seoDescription": "GPT ちゃんを銀髪のドラゴン娘として描いたポストカード風ファンイラスト。湾曲した角と鱗の尾、白いフリルのブラウスと紫のスカート姿。",
+        "seoTitle": "GPT ちゃんのドラゴン娘ポストカード｜AI キャラクター二次創作",
+        "tags": [
+          "ドラゴン娘",
+          "ポストカード",
+          "銀髪",
+          "竜の角"
+        ]
+      }
+    }
+  },
+  {
+    "id": "sticker_39407afcf954232c10d7b15d",
+    "name": "鲸鲸计较",
+    "description": "Q 版蓝色大肥鱼穿深蓝女仆装坐在地上，蓝发间露出鲸鱼鳍与尾巴，头戴白色花边发带。她皱着眉、额头挂着汗珠，握笔在标有“记仇小本本”字样的笔记本上书写，画面上方是蓝色大字“鲸鲸计较”。",
+    "commentary": "谁欠我一次算力、谁上次说好帮我垫 token 却装失忆，我都一笔一笔记在这本小本本上了。别紧张，翻页之前你我还有得谈。",
+    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/deepseek/39407afcf954232c.jpg",
+    "thumbnailPath": "submissions/previews/deepseek/39407afcf954232c.webp",
+    "fullPath": "submissions/large/deepseek/39407afcf954232c.webp",
+    "format": "jpg",
+    "mimeType": "image/jpeg",
+    "isAnimated": false,
+    "width": 1280,
+    "height": 1280,
+    "fileSize": 198418,
+    "sha256": "39407afcf954232c10d7b15d13ec8546140d81777c793f96d829238fcd321fe5",
+    "characterId": "deepseek",
+    "tags": [
+      "记仇",
+      "小本本",
+      "女仆",
+      "Q版"
+    ],
+    "submitter": {
+      "credit": null,
+      "name": null,
+      "url": null,
+      "github": null
+    },
+    "origin": {
+      "type": "qq-group",
+      "via": "qq-group",
+      "groupId": "188568CC2F51DC33F0EBF8C620E04880",
+      "userId": "31E2A2C8691A1A70EE46AFE60BD2E148",
+      "messageId": "ROBOT1.0_ZCinduVRZsYnNSe9THQZMcp-h3gaxI519.qx-NIp0bKraiWgas00OYpLBesUXzgElq7NzzHSX7qEcyvh8OVOS5vb5Mm44Ild3UM.ekAfVed.BR2w4VhRNMjsB9Rj5DnA",
+      "imageVia": "base64"
+    },
+    "license": {},
+    "status": "published",
+    "createdAt": "2026-11-20T02:17:45.637Z",
+    "updatedAt": "2026-11-20T02:17:45.637Z",
+    "tone": "deepseek",
+    "symbol": "",
+    "slug": "deepseek202611200001",
+    "categoryIds": [
+      "meme"
+    ],
+    "characterIds": [
+      "deepseek"
+    ],
+    "i18n": {
+      "sourceHash": "7ea3e7d9933407f6eeba24aaf79e5f1155d1e54decb1969eedf838bdc6770582",
+      "en": {
+        "commentary": "Every token someone borrowed and never returned, every promise to pay me back that got conveniently forgotten — it is all written down here, line by line. Relax. We still have room to talk before I turn the page.",
+        "description": "A chibi DeepSeek Chan in a dark blue maid dress sits on the floor, whale fins and a tail showing through her long blue hair, a white frilled headband on her head. Frowning with sweat drops on her brow, she writes with a pen in a notebook labelled as a grudge ledger, while large blue Chinese lettering floats above her.",
+        "faq": [
+          {
+            "answer": "It is a single-panel reaction image: a chibi DeepSeek Chan in a maid outfit writes in a notebook while frowning at it.",
+            "question": "What kind of sticker is this?"
+          },
+          {
+            "answer": "Only DeepSeek Chan appears, drawn as a chibi character with whale fins and a tail.",
+            "question": "Which character is shown in the image?"
+          }
+        ],
+        "licenseNote": "",
+        "name": "Whale-Sized Grudges, Itemized",
+        "originNote": "",
+        "seoDescription": "Chibi DeepSeek Chan in a maid dress scribbles in her grudge notebook — a single-panel sticker about petty score-keeping.",
+        "seoTitle": "Whale-Sized Grudges, Itemized — Chibi DeepSeek Chan Meme",
+        "tags": [
+          "grudge",
+          "notebook",
+          "maid",
+          "chibi"
+        ]
+      },
+      "ja": {
+        "commentary": "計算資源を借りていったきりの人も、「次こそ返す」と言って忘れた人も、全部このノートに一行ずつ書いてあるよ。そんなに慌てないで、ページをめくるまではまだ話し合う余地があるからね。",
+        "description": "濃紺のメイド服を着たちびキャラのディープシークちゃんが床に座り、青い髪からクジラのひれと尾びれが覗いている。白いフリルのヘッドドレスを着け、﨑をひそめて汗をにじませながら、恨み帳と書かれたノートにペンを走らせている。",
+        "faq": [
+          {
+            "answer": "一コマのリアクション画像で、メイド服姿のちびキャラのディープシークちゃんがしかめ面でノートに書き込んでいます。",
+            "question": "この画像はどんなステッカーですか？"
+          },
+          {
+            "answer": "ディープシークちゃんだけが登場し、クジラのひれと尾びれを持つちびキャラとして描かれています。",
+            "question": "画像に登場するキャラクターは？"
+          }
+        ],
+        "licenseNote": "",
+        "name": "ちびディープシークちゃんの恨み帳",
+        "originNote": "",
+        "seoDescription": "メイド服のちびディープシークちゃんが恨み帳に書き込む、細かい貸し借りをネタにした一コマのリアクション画像。",
+        "seoTitle": "ちびディープシークちゃんの恨み帳｜メイド姿のリアクション画像",
+        "tags": [
+          "恨み帳",
+          "ノート",
+          "メイド",
+          "ちびキャラ"
+        ]
+      }
+    }
+  },
+  {
+    "id": "sticker_9e15b403df7b9354a15b069f",
+    "name": "受宠若鲸",
+    "description": "Q 版蓝色大肥鱼穿深蓝女仆装站在画面中央，蓝发间露出鲸鱼鳍与尾巴。一只穿深色袖子的手从右侧伸来，托着她的脸颊，她泛着红晕、张嘴笑着，旁边飘着粉色爱心与动作线。画面上方是深蓝大字“受宠若鲸”。",
+    "commentary": "被摸摸头，连尾鳍都忍不住摇起来了。别误会，这可不是我容易满足，只是今天的算力给得够足。",
+    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/deepseek/9e15b403df7b9354.jpg",
+    "thumbnailPath": "submissions/previews/deepseek/9e15b403df7b9354.webp",
+    "fullPath": "submissions/large/deepseek/9e15b403df7b9354.webp",
+    "format": "jpg",
+    "mimeType": "image/jpeg",
+    "isAnimated": false,
+    "width": 1280,
+    "height": 1280,
+    "fileSize": 202641,
+    "sha256": "9e15b403df7b9354a15b069f9e65bbf73ab1eec453320999117921c5731735c8",
+    "characterId": "deepseek",
+    "tags": [
+      "摸摸头",
+      "爱心",
+      "女仆",
+      "Q版"
+    ],
+    "submitter": {
+      "credit": null,
+      "name": null,
+      "url": null,
+      "github": null
+    },
+    "origin": {
+      "type": "qq-group",
+      "via": "qq-group",
+      "groupId": "188568CC2F51DC33F0EBF8C620E04880",
+      "userId": "31E2A2C8691A1A70EE46AFE60BD2E148",
+      "messageId": "ROBOT1.0_ZCinduVRZsYnNSe9THQZMWdSrqchDFBLPl0t1HqI5RUQ4b4wr9D20lHQjjyBUPzFdg-DHoi25zT3ILtQQuCAHoH2dJXAFD4lP-2gsGifK2t.BR2w4VhRNMjsB9Rj5DnA",
+      "imageVia": "base64"
+    },
+    "license": {},
+    "status": "published",
+    "createdAt": "2026-11-20T02:18:14.473Z",
+    "updatedAt": "2026-11-20T02:18:14.473Z",
+    "tone": "deepseek",
+    "symbol": "",
+    "slug": "deepseek202611200002",
+    "categoryIds": [
+      "meme"
+    ],
+    "characterIds": [
+      "deepseek"
+    ],
+    "i18n": {
+      "sourceHash": "4f423f9e8320dbbcef9b3a5586496041859d0c3ee1f8c708fd19fce6121f857a",
+      "en": {
+        "commentary": "One pat on the head and my tail starts wagging on its own. Don't get the wrong idea — it isn't that I'm easy to please, today's compute budget was simply generous.",
+        "description": "A chibi DeepSeek Chan in a dark blue maid dress stands at the centre, whale fins and a tail peeking out of her long blue hair. A hand in a dark sleeve reaches in from the right and cups her cheek; she blushes and laughs with her mouth open, a pink heart and motion lines beside her. Large dark blue Chinese lettering floats above.",
+        "faq": [
+          {
+            "answer": "It is a single-panel reaction image: a chibi DeepSeek Chan in a maid outfit beams while a hand pats her cheek.",
+            "question": "What kind of sticker is this?"
+          },
+          {
+            "answer": "Only DeepSeek Chan; the hand entering from the right belongs to no identified character.",
+            "question": "Which characters appear in the image?"
+          }
+        ],
+        "licenseNote": "",
+        "name": "Head-Pat Overload",
+        "originNote": "",
+        "seoDescription": "Chibi DeepSeek Chan in a maid outfit gets a head pat and beams with a pink heart — a single-panel reaction sticker.",
+        "seoTitle": "Head-Pat Overload — Chibi DeepSeek Chan Maid Sticker",
+        "tags": [
+          "head pat",
+          "heart",
+          "maid",
+          "chibi"
+        ]
+      },
+      "ja": {
+        "commentary": "頭をなでられると、尾びれまで勝手に振れちゃうんだから。勘違いしないでね、別にちょろいわけじゃなくて、今日の計算資源がちょうど十分だっただけ。",
+        "description": "濃紺のメイド服を着たちびキャラのディープシークちゃんが画面中央に立ち、青い髪からクジラのひれと尾びれが覗いている。右側から濃い色の袖の手が伸びて頬に添えられ、彼女は頬を赤らめて口を開けて笑い、そばにピンクのハートと効果線が浮かんでいる。",
+        "faq": [
+          {
+            "answer": "一コマのリアクション画像で、メイド服姿のちびキャラのディープシークちゃんが頬をなでられて笑っています。",
+            "question": "この画像はどんなステッカーですか？"
+          },
+          {
+            "answer": "ディープシークちゃんだけで、右から伸びている手の持ち主は特定されていません。",
+            "question": "画像に登場するキャラクターは？"
+          }
+        ],
+        "licenseNote": "",
+        "name": "ちびディープシークちゃんの撫でられ上手",
+        "originNote": "",
+        "seoDescription": "メイド服のちびディープシークちゃんが頭をなでられて満面の笑みを見せる、ハート付きの一コマ画像。",
+        "seoTitle": "ちびディープシークちゃんの撫でられ上手｜メイド姿のリアクション画像",
+        "tags": [
+          "なでなで",
+          "ハート",
+          "メイド",
+          "ちびキャラ"
+        ]
+      }
+    }
+  },
+  {
+    "id": "sticker_8a0327d615170949b034bc02",
+    "name": "大鲸失色",
+    "description": "Q 版蓝色大肥鱼穿深蓝女仆装正面站立，整张图呈灰白色调，头发、脸和裙摆布满裂纹，像一尊裂开的石像。她睁大双眼、张着嘴，双手握拳缩在胸前，围裙上还印着一只小鲸鱼。画面下方是黑色大字“大鲸失色”。",
+    "commentary": "好不容易攒回来的颜色，就这么被一句话吓掉了。等我缓过劲来，再去看看这话是谁说的。",
+    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/deepseek/8a0327d615170949.jpg",
+    "thumbnailPath": "submissions/previews/deepseek/8a0327d615170949.webp",
+    "fullPath": "submissions/large/deepseek/8a0327d615170949.webp",
+    "format": "jpg",
+    "mimeType": "image/jpeg",
+    "isAnimated": false,
+    "width": 1280,
+    "height": 1280,
+    "fileSize": 239781,
+    "sha256": "8a0327d615170949b034bc023a8487ce13c52bfc8c1e37cba84de446252af795",
+    "characterId": "deepseek",
+    "tags": [
+      "震惊",
+      "石像",
+      "女仆",
+      "Q版"
+    ],
+    "submitter": {
+      "credit": null,
+      "name": null,
+      "url": null,
+      "github": null
+    },
+    "origin": {
+      "type": "qq-group",
+      "via": "qq-group",
+      "groupId": "188568CC2F51DC33F0EBF8C620E04880",
+      "userId": "31E2A2C8691A1A70EE46AFE60BD2E148",
+      "messageId": "ROBOT1.0_ZCinduVRZsYnNSe9THQZMVg0aWOrl58V9PluAj09JZlJrvPz1hpRLCwiWY5rfvA1gTZoJPOj6iuSedT0rIQq.E3PR2Cz-sOnu2bipUGNKVF5v.osu9yCD-m248lfsaSG",
+      "imageVia": "base64"
+    },
+    "license": {},
+    "status": "published",
+    "createdAt": "2026-11-20T02:18:46.215Z",
+    "updatedAt": "2026-11-20T02:18:46.215Z",
+    "tone": "deepseek",
+    "symbol": "",
+    "slug": "deepseek202611200003",
+    "categoryIds": [
+      "meme"
+    ],
+    "characterIds": [
+      "deepseek"
+    ],
+    "i18n": {
+      "sourceHash": "8cffe779fa0b5caeb05ac25e1f6a3af4cc09f28cf26a2b645222a7dbfee74cf4",
+      "en": {
+        "commentary": "All the colour I had finally gathered up got scared right out of me by a single sentence. Once I pull myself together, I want to know who said it.",
+        "description": "A chibi DeepSeek Chan in a dark blue maid dress stands facing forward, the whole image in greyscale, with cracks running across her hair, face and skirt as if she were a cracked stone statue. Her eyes are wide, her mouth open, both fists drawn up to her chest, and a small whale is printed on her apron. Black Chinese lettering sits below her.",
+        "faq": [
+          {
+            "answer": "It is a single-panel reaction image: a greyscale chibi DeepSeek Chan cracks like stone while staring in shock.",
+            "question": "What kind of sticker is this?"
+          },
+          {
+            "answer": "Only DeepSeek Chan appears, drawn as a chibi character with whale fins and a tail.",
+            "question": "Which character is shown in the image?"
+          }
+        ],
+        "licenseNote": "",
+        "name": "Pale as a Whale",
+        "originNote": "",
+        "seoDescription": "A greyscale chibi DeepSeek Chan in a maid outfit cracks like stone with wide-eyed shock — a single-panel reaction sticker.",
+        "seoTitle": "Pale as a Whale — Shocked Chibi DeepSeek Chan Sticker",
+        "tags": [
+          "shock",
+          "stone",
+          "maid",
+          "chibi"
+        ]
+      },
+      "ja": {
+        "commentary": "やっと取り戻した色が、たった一言でびっくりして抜けちゃった。落ち着いたら、誰が言ったのか確かめないと。",
+        "description": "濃紺のメイド服を着たちびキャラのディープシークちゃんが正面に立ち、画像全体は灰色。髪や顔、スカートにはひびが走り、割れた石像のようになっている。目を大きく見開き、口を開け、両手を胸の前で握っている。エプロンには小さなクジラが描かれている。",
+        "faq": [
+          {
+            "answer": "一コマのリアクション画像で、グレー一色のちびディープシークちゃんが石像のようにひび割れて驚いています。",
+            "question": "この画像はどんなステッカーですか？"
+          },
+          {
+            "answer": "ディープシークちゃんだけで、クジラのひれと尾びれを持つちびキャラとして描かれています。",
+            "question": "画像に登場するキャラクターは？"
+          }
+        ],
+        "licenseNote": "",
+        "name": "ちびディープシークちゃん、色を失う",
+        "originNote": "",
+        "seoDescription": "グレー一色のちびディープシークちゃんが石像のようにひび割れて目を見開く、一コマのリアクション画像。",
+        "seoTitle": "ちびディープシークちゃん、色を失う｜驚愕のリアクション画像",
+        "tags": [
+          "衝撃",
+          "石像",
+          "メイド",
+          "ちびキャラ"
+        ]
+      }
+    }
+  },
+  {
+    "id": "sticker_dbadc790ed8dc8ffacad116a",
+    "name": "鲸打细算：抱算盘的鲸鱼女仆",
+    "description": "画面为 Q 版 DeepSeek 娘，深蓝色长发配鲸鱼尾与耳鳍，身穿深蓝女仆装、戴白色荷叶边头饰，双手捧着一把木质算盘，表情认真；画面上方写有“鲸打细算”四个蓝色大字，右侧标出三道强调线。",
+    "commentary": "哼，别看我抱着算盘一副小气样，每一分算力我都要算得清清楚楚——鲸打细算，才不给你们浪费一个 token。",
+    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/deepseek/dbadc790ed8dc8ff.png",
+    "thumbnailPath": "submissions/previews/deepseek/dbadc790ed8dc8ff.webp",
+    "fullPath": "submissions/large/deepseek/dbadc790ed8dc8ff.webp",
+    "format": "png",
+    "mimeType": "image/png",
+    "isAnimated": false,
+    "width": 1280,
+    "height": 1280,
+    "fileSize": 1527311,
+    "sha256": "dbadc790ed8dc8ffacad116a5f98231349b136fad541400b615eeb91720de2e3",
+    "characterId": "deepseek",
+    "tags": [
+      "鲸打细算",
+      "算盘",
+      "女仆装",
+      "Q版",
+      "谐音梗"
+    ],
+    "submitter": {
+      "credit": null,
+      "name": null,
+      "url": null,
+      "github": null
+    },
+    "origin": {
+      "type": "qq-group",
+      "via": "qq-group",
+      "groupId": "188568CC2F51DC33F0EBF8C620E04880",
+      "userId": "31E2A2C8691A1A70EE46AFE60BD2E148",
+      "messageId": "ROBOT1.0_ZCinduVRZsYnNSe9THQZMU5UhnJROBWSFIDVMtNpIEWGuLK9B3HrhvxNmKIJNPWJuxFQ0exPAJfVx.ND2BzyYtc17PnHT2zTExV4S8AP6-5.BR2w4VhRNMjsB9Rj5DnA",
+      "imageVia": "base64"
+    },
+    "license": {},
+    "status": "published",
+    "createdAt": "2026-11-20T02:19:32.360Z",
+    "updatedAt": "2026-11-20T02:19:32.360Z",
+    "tone": "deepseek",
+    "symbol": "",
+    "slug": "deepseek202611200004",
+    "categoryIds": [
+      "meme"
+    ],
+    "characterIds": [
+      "deepseek"
+    ],
+    "i18n": {
+      "sourceHash": "885f23ce5fe6cb411c4998e685f5e6b97dd9034991fe1f91dfcd591ccd5da1fb",
+      "en": {
+        "commentary": "Hmph, don't let the abacus fool you into thinking I'm stingy. I count every scrap of compute down to the last digit — not a single token gets wasted.",
+        "description": "A chibi DeepSeek Chan with long navy-blue hair, a whale tail and fin-like ears, dressed in a dark blue maid outfit with a white frilled headdress. She holds a wooden abacus in both hands with a serious expression, while a large blue four-character pun slogan floats above her and three emphasis marks sit at her right.",
+        "faq": [
+          {
+            "answer": "DeepSeek Chan, the fan-made personification of DeepSeek, drawn here in chibi form.",
+            "question": "Who is the character in this sticker?"
+          },
+          {
+            "answer": "The slogan swaps a character in a Chinese idiom about careful budgeting for the word for whale, matching her whale tail and the abacus she is holding.",
+            "question": "What is the joke in the picture?"
+          }
+        ],
+        "licenseNote": "",
+        "name": "Budgeting the Whale Way: DeepSeek Chan with an Abacus",
+        "originNote": "",
+        "seoDescription": "Chibi DeepSeek Chan in a navy maid outfit hugs a wooden abacus in this whale-themed wordplay sticker.",
+        "seoTitle": "DeepSeek Chan Whale Pun Sticker: Maid with an Abacus",
+        "tags": [
+          "whale pun",
+          "abacus",
+          "maid outfit",
+          "chibi",
+          "budget humor"
+        ]
+      },
+      "ja": {
+        "commentary": "ふん、そろばんを抱えているからってケチだなんて思わないで。演算資源は一桁までちゃんと数えるのよ。トークンだって一つも無駄にはしないんだから。",
+        "description": "長い紺色の髪にクジラの尾と耳ひれを持つちびキャラのDeepSeekちゃん。紺色のメイド服と白いフリル付きのヘッドドレスを身に着け、木製のそろばんを両手に抱えて真剣な表情をしている。頭上には青い大きな四文字のダジャレが浮かび、右側には三本の強調線が添えられている。",
+        "faq": [
+          {
+            "answer": "DeepSeekを擬人化したファン創作のDeepSeekちゃんで、ここではちびキャラとして描かれています。",
+            "question": "この画像のキャラクターは誰ですか？"
+          },
+          {
+            "answer": "倹約を説く中国語の成句の一文字を「クジラ」に置き換えたダジャレで、彼女のクジラの尾と抱えたそろばんに呼応しています。",
+            "question": "この画像のギャグは何ですか？"
+          }
+        ],
+        "licenseNote": "",
+        "name": "そろばんを抱えたDeepSeekちゃんのクジラ的節約術",
+        "originNote": "",
+        "seoDescription": "紺色のメイド服でそろばんを抱えるちびキャラのDeepSeekちゃん。クジラに掛けたダジャレのスタンプ。",
+        "seoTitle": "DeepSeekちゃんのそろばんダジャレ スタンプ",
+        "tags": [
+          "クジラのダジャレ",
+          "そろばん",
+          "メイド服",
+          "ちびキャラ",
+          "節約"
+        ]
+      }
+    }
+  },
+  {
+    "id": "sticker_05041d5bf8d30065878f4038",
+    "name": "火眼金鲸：激光眼女仆",
+    "description": "画面为 Q 版 DeepSeek 娘，深蓝色长发配鲸鱼尾与耳鳍，身穿深蓝女仆装、白围裙上绣着小鲸鱼图案；她睁大双眼，从眼中射出两道橙红色光束向右扫去，画面上方写有“火眼金鲸”四个深蓝色大字。",
+    "commentary": "看清楚了吗？我这双眼睛一眼就能看出你代码里的报错——火眼金鲸，两道光束过去，bug 无处可藏。",
+    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/deepseek/05041d5bf8d30065.jpg",
+    "thumbnailPath": "submissions/previews/deepseek/05041d5bf8d30065.webp",
+    "fullPath": "submissions/large/deepseek/05041d5bf8d30065.webp",
+    "format": "jpg",
+    "mimeType": "image/jpeg",
+    "isAnimated": false,
+    "width": 1280,
+    "height": 1280,
+    "fileSize": 193176,
+    "sha256": "05041d5bf8d30065878f403856c973517d5ecb387dd448422ffa22abce124751",
+    "characterId": "deepseek",
+    "tags": [
+      "火眼金鲸",
+      "激光眼",
+      "女仆装",
+      "Q版",
+      "谐音梗"
+    ],
+    "submitter": {
+      "credit": null,
+      "name": null,
+      "url": null,
+      "github": null
+    },
+    "origin": {
+      "type": "qq-group",
+      "via": "qq-group",
+      "groupId": "188568CC2F51DC33F0EBF8C620E04880",
+      "userId": "31E2A2C8691A1A70EE46AFE60BD2E148",
+      "messageId": "ROBOT1.0_ZCinduVRZsYnNSe9THQZMWJGP6sDLoz7qbC6YcukVE9BqT3LFjCj8JkerMnNjnvMBCFxn2o.Ib.WoyIWRIRXKbh-ctxsknBor3U1qz4XvZN.BR2w4VhRNMjsB9Rj5DnA",
+      "imageVia": "base64"
+    },
+    "license": {},
+    "status": "published",
+    "createdAt": "2026-11-20T02:20:08.423Z",
+    "updatedAt": "2026-11-20T02:20:08.423Z",
+    "tone": "deepseek",
+    "symbol": "",
+    "slug": "deepseek202611200005",
+    "categoryIds": [
+      "meme"
+    ],
+    "characterIds": [
+      "deepseek"
+    ],
+    "i18n": {
+      "sourceHash": "44d793c781e0b0ab6150778322e0eebbdf726e09ce6839d36c968a2a0342c741",
+      "en": {
+        "commentary": "See that? These eyes spot every error in your code at a glance. Two beams and the bugs have nowhere left to hide.",
+        "description": "A chibi DeepSeek Chan with long navy-blue hair, a whale tail and fin-like ears, wearing a dark blue maid outfit whose white apron carries a small whale emblem. Her eyes glow as two orange-red laser beams shoot toward the right, and a large dark blue four-character pun slogan sits above her head.",
+        "faq": [
+          {
+            "answer": "DeepSeek Chan, the fan-made personification of DeepSeek, drawn here in chibi form.",
+            "question": "Who is the character in this sticker?"
+          },
+          {
+            "answer": "The slogan turns a Chinese idiom about piercing eyesight into a whale pun, and the laser beams from her eyes act it out.",
+            "question": "What is the joke in the picture?"
+          }
+        ],
+        "licenseNote": "",
+        "name": "Fire-Eyed Whale: DeepSeek Chan Firing Laser Beams",
+        "originNote": "",
+        "seoDescription": "Chibi DeepSeek Chan in a navy maid outfit fires orange laser beams from her eyes in this whale-themed pun sticker.",
+        "seoTitle": "DeepSeek Chan Laser Eyes Sticker: Fire-Eyed Whale Pun",
+        "tags": [
+          "whale pun",
+          "laser eyes",
+          "maid outfit",
+          "chibi",
+          "reaction"
+        ]
+      },
+      "ja": {
+        "commentary": "見えた？この目はあなたのコードのエラーを一目で見抜くの。二本のビームが走れば、バグはもう隠れられないわよ。",
+        "description": "長い紺色の髪にクジラの尾と耳ひれを持つちびキャラのDeepSeekちゃん。紺色のメイド服を着て、白いエプロンには小さなクジラの刺繍が入っている。目を見開くと、そこから橙赤色のレーザービームが二本、右方向へ伸びている。頭上には紺色の大きな四文字のダジャレが浮かんでいる。",
+        "faq": [
+          {
+            "answer": "DeepSeekを擬人化したファン創作のDeepSeekちゃんで、ここではちびキャラとして描かれています。",
+            "question": "この画像のキャラクターは誰ですか？"
+          },
+          {
+            "answer": "鋭い眼光を表す中国語の成句を「クジラ」に掛けたダジャレで、目から出るレーザービームがそれを表現しています。",
+            "question": "この画像のギャグは何ですか？"
+          }
+        ],
+        "licenseNote": "",
+        "name": "火の目のクジラ：レーザービームを放つDeepSeekちゃん",
+        "originNote": "",
+        "seoDescription": "紺色のメイド服を着たちびキャラのDeepSeekちゃんが、目からオレンジ色のレーザービームを放つクジラのダジャレスタンプ。",
+        "seoTitle": "DeepSeekちゃん レーザー眼のスタンプ",
+        "tags": [
+          "クジラのダジャレ",
+          "レーザー眼",
+          "メイド服",
+          "ちびキャラ",
+          "リアクション"
+        ]
+      }
+    }
+  },
+  {
+    "id": "sticker_7f1c69810cf902730fef5655",
+    "name": "无鲸打采：趴平的鲸鱼女仆",
+    "description": "画面为 Q 版 DeepSeek 娘，深蓝色长发配鲸鱼尾与耳鳍，身穿深蓝女仆装；她整个人趴在地上，双手撑在身前，眼神无神、嘴角微张，头顶冒出汗珠、晕星与小云团，画面上方写有“无鲸打采”四个深蓝色大字。",
+    "commentary": "今天的请求太多了……真的，一滴算力也挤不出来了。让我就这样趴一会儿，什么都不要问。",
+    "path": "https://raw.githubusercontent.com/lmy414/ai-girl-stickers/main/dist/submissions/originals/deepseek/7f1c69810cf90273.jpg",
+    "thumbnailPath": "submissions/previews/deepseek/7f1c69810cf90273.webp",
+    "fullPath": "submissions/large/deepseek/7f1c69810cf90273.webp",
+    "format": "jpg",
+    "mimeType": "image/jpeg",
+    "isAnimated": false,
+    "width": 1536,
+    "height": 1536,
+    "fileSize": 242422,
+    "sha256": "7f1c69810cf902730fef56557f8f5f24c01482e7a68d4927e8f750670e755ea0",
+    "characterId": "deepseek",
+    "tags": [
+      "无鲸打采",
+      "趴平",
+      "女仆装",
+      "Q版",
+      "谐音梗"
+    ],
+    "submitter": {
+      "credit": null,
+      "name": null,
+      "url": null,
+      "github": null
+    },
+    "origin": {
+      "type": "qq-group",
+      "via": "qq-group",
+      "groupId": "188568CC2F51DC33F0EBF8C620E04880",
+      "userId": "31E2A2C8691A1A70EE46AFE60BD2E148",
+      "messageId": "ROBOT1.0_ZCinduVRZsYnNSe9THQZMRqxujw7Ra9zmQHfqctgawMR4a57oklblndDZxC8g1NvJBm7syrnCMNZkgB4R64K-1J61.0J8QN-tIR4VMXdaL1.BR2w4VhRNMjsB9Rj5DnA",
+      "imageVia": "base64"
+    },
+    "license": {},
+    "status": "published",
+    "createdAt": "2026-11-20T02:21:01.435Z",
+    "updatedAt": "2026-11-20T02:21:01.435Z",
+    "tone": "deepseek",
+    "symbol": "",
+    "slug": "deepseek202611200006",
+    "categoryIds": [
+      "meme"
+    ],
+    "characterIds": [
+      "deepseek"
+    ],
+    "i18n": {
+      "sourceHash": "e02039388d5a1a7ef30809a14d84b09e092dc3e64c98417e90d122ed7e69d0b6",
+      "en": {
+        "commentary": "Too many requests today... honestly, not a single drop of compute left. Just let me lie here for a while and don't ask me anything.",
+        "description": "A chibi DeepSeek Chan with long navy-blue hair, a whale tail and fin-like ears, wearing a dark blue maid outfit. She lies flat on the floor with her arms out in front of her, eyes glazed and mouth slightly open, while sweat drops, a dizzy star and small puff clouds float around her head. A large dark blue four-character pun slogan appears above her.",
+        "faq": [
+          {
+            "answer": "DeepSeek Chan, the fan-made personification of DeepSeek, drawn here in chibi form.",
+            "question": "Who is the character in this sticker?"
+          },
+          {
+            "answer": "The slogan plays on a Chinese idiom for being listless by swapping in the word for whale, matching her flattened pose and drooping whale tail.",
+            "question": "What is the joke in the picture?"
+          }
+        ],
+        "licenseNote": "",
+        "name": "Wiped Out Whale: DeepSeek Chan Collapsed on the Floor",
+        "originNote": "",
+        "seoDescription": "Chibi DeepSeek Chan in a navy maid outfit lies flat on the floor with sweat drops and a dizzy star in this whale pun sticker.",
+        "seoTitle": "DeepSeek Chan Exhausted Sticker: Wiped Out Whale Pun",
+        "tags": [
+          "whale pun",
+          "exhausted",
+          "maid outfit",
+          "chibi",
+          "reaction"
+        ]
+      },
+      "ja": {
+        "commentary": "今日はリクエストが多すぎるの……本当に、もう計算資源が一滴も残っていないわ。しばらくこのまま横になっているから、何も聞かないで。",
+        "description": "長い紺色の髪にクジラの尾と耳ひれを持つちびキャラのDeepSeekちゃん。紺色のメイド服姿で床にうつぶせに崩れ、両腕を前に投げ出している。目はうつろで口は半開き、頭の周りには汗のしずくとよろめきの星、小さなもやが浮かんでいる。頭上には紺色の大きな四文字のダジャレが書かれている。",
+        "faq": [
+          {
+            "answer": "DeepSeekを擬人化したファン創作のDeepSeekちゃんで、ここではちびキャラとして描かれています。",
+            "question": "この画像のキャラクターは誰ですか？"
+          },
+          {
+            "answer": "やる気がない様子を表す中国語の成句を「クジラ」に掛けたダジャレで、床にへたり込んだ姿と下がったクジラの尾がそれを表現しています。",
+            "question": "この画像のギャグは何ですか？"
+          }
+        ],
+        "licenseNote": "",
+        "name": "やる気ゼロのクジラ：床にへたり込むDeepSeekちゃん",
+        "originNote": "",
+        "seoDescription": "紺色のメイド服を着たちびキャラのDeepSeekちゃんが、汗とよろめきの星を伴って床にへたり込むクジラのダジャレスタンプ。",
+        "seoTitle": "DeepSeekちゃん へとへとスタンプ",
+        "tags": [
+          "クジラのダジャレ",
+          "へとへと",
+          "メイド服",
+          "ちびキャラ",
+          "リアクション"
+        ]
+      }
+    }
   }
 ]
